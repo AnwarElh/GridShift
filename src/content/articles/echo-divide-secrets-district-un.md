@@ -1,7 +1,7 @@
 ---
 type: guide
-title: "Tous les secrets du district un"
-lede: "Onze zones optionnelles, dont quatre ferment définitivement au passage au district deux."
+title: "Echo Divide : quatre zones du district un se ferment sans prévenir"
+lede: "Onze zones optionnelles, quatre condamnées dès la porte du district deux. Vérifié en 4.1, repassé en 4.2a cette semaine."
 date: 2026-08-02T10:00:00+02:00
 author: lina-morel
 game: echo-divide

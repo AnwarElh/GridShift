@@ -32,7 +32,7 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
         <div class="mega" id="mega" hidden>
           <div class="mega-grid">
             <div class="mega-col">
-              <h4>Jeux les plus suivis</h4>
+              <p class="mega-h">Jeux les plus suivis</p>
               <div class="mega-list">
                 {followed.map((g) => (
                   <a class="mega-item" href={`/jeux/${g.id}/`}>
@@ -46,17 +46,17 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
               </div>
             </div>
             <div class="mega-col">
-              <h4>Par plateforme</h4>
+              <p class="mega-h">Par plateforme</p>
               <div class="chipbar">
                 {platforms.map((p) => <a class="tag" href={`/tag/${slugifyTag(p)}/`}>{p}</a>)}
               </div>
-              <h4 style="margin-top:24px">Par genre</h4>
+              <p class="mega-h" style="margin-top:24px">Par genre</p>
               <div class="chipbar">
                 {genres.map((g) => <a class="tag" href={`/tag/${slugifyTag(g)}/`}>{g}</a>)}
               </div>
             </div>
             <div class="mega-col">
-              <h4>Prochaines sorties</h4>
+              <p class="mega-h">Prochaines sorties</p>
               <div class="cal">
                 {upcoming.map((g) => {
                   const [d, m] = shortDate(g.data.releaseDate!).split(' ');
@@ -82,8 +82,10 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
     </nav>
 
     <span class="nav-sp"></span>
-    <button class="searchbar" data-search>
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <!-- sous 860px le libellé et le raccourci passent en display:none : sans
+         aria-label le bouton n'avait plus aucun nom accessible au doigt -->
+    <button class="searchbar" data-search aria-label="Chercher un jeu, un test">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <span>Chercher un jeu, un test…</span><kbd>⌘K</kbd>
     </button>
     <button class="btn btn-ico btn-quiet" id="theme" aria-label="Changer de thème" title="Thème clair / sombre">◐</button>

@@ -1,7 +1,7 @@
 ---
 type: actu
-title: "Gamescom 2026 : tout ce qui a été annoncé"
-lede: "Vingt-quatre annonces, triées par ce qui compte."
+title: "Gamescom 2026 : vingt-quatre annonces, deux qui comptent"
+lede: "Nord Sombre tient enfin une fenêtre ferme, et Northlight a montré sept minutes d'un jeu de survie coop sans lien avec Echo Divide."
 date: 2026-08-25T18:00:00+02:00
 author: nour-benali
 tags: [Gamescom, Industrie]

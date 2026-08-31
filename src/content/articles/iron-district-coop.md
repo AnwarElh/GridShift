@@ -1,7 +1,7 @@
 ---
 type: actu
-title: "Iron District aura bien un mode coop à quatre"
-lede: "Annoncé pour l'hiver, sans microtransactions selon le studio."
+title: "Iron District passe au coop à quatre, sans dire qui joue son tour"
+lede: "Ninefold s'engage par écrit : cet hiver, gratuit, sans monnaie premium. Le partage d'un tour, lui, n'a jamais été montré."
 date: 2026-08-27T12:05:00+02:00
 author: nour-benali
 game: iron-district

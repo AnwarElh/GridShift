@@ -1,7 +1,7 @@
 ---
 type: guide
-title: "Les meilleures escouades de la version 2.1"
-lede: "Quatre compositions qui exploitent la nouvelle couverture déterministe."
+title: "Iron District 2.1 : le volume de tirs ne gagne plus, le placement oui"
+lede: "La couverture déterministe reclasse toutes les compositions. Quatre qui en profitent, dont une de référence."
 date: 2026-08-25T11:00:00+02:00
 author: lina-morel
 game: iron-district

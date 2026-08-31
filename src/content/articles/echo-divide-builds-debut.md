@@ -1,7 +1,7 @@
 ---
 type: guide
-title: "Les meilleurs builds du début"
-lede: "Trois répartitions qui tiennent jusqu'au district trois, sans jeton de réattribution."
+title: "Echo Divide : trois builds qui tiennent jusqu'au district trois"
+lede: "Avant le district trois, aucun jeton de réattribution : un mauvais choix se paie en heures. Le sûr, le rapide, le rentable."
 date: 2026-08-19T10:00:00+02:00
 author: lina-morel
 game: echo-divide
