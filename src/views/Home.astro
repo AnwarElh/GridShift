@@ -48,6 +48,7 @@ const counts: Record<string, number> = {
 /* Les jeux couverts : la grille remonte juste sous la Une — sur un média de
    jeu en service, on navigue par jeu avant de naviguer par rubrique. */
 const covered = [...games].sort((a, b) => (b.data.followers ?? 0) - (a.data.followers ?? 0));
+const hasDeals = games.some((g) => g.data.offers.length > 0);
 const countFor = (id: string) => byGame(posts, id).length;
 
 /* Tendances : les articles des jeux les plus suivis. Le classement vient des
@@ -89,7 +90,7 @@ const jsonLd = {
         <h1 class="d2">{t('home.title')}</h1>
         <p class="sub">{t('home.sub')(weekCount)}</p>
       </div>
-      <a class="btn btn-quiet" href="#offers">{t('home.seeDeals')}</a>
+      {hasDeals && <a class="btn btn-quiet" href="#offers">{t('home.seeDeals')}</a>}
     </div>
 
     <CatBar counts={counts} />
@@ -135,7 +136,9 @@ const jsonLd = {
           </div>
         </section>
 
-        {i === 0 && (
+        {/* Le bloc d'offres ne s'affiche que si au moins un jeu en a une :
+            la plupart de nos jeux sont free-to-play et n'ont pas de prix. */}
+        {i === 0 && hasDeals && (
           <Fragment>
             <section class="cat-sec" id="offers">
               <div class="cat-head">

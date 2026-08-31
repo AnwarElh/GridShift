@@ -14,7 +14,6 @@ const items = [
   { label: t('nav.all'), href: home, n: undefined as number | undefined },
   ...sectionKeys.map((k) => ({ label: labels[k], href: sectionHref(lang, k), n: counts[k] })),
   { label: t('nav.games'), href: pageHref(lang, 'games'), n: counts.games },
-  { label: t('nav.deals'), href: `${home}#offers`, n: undefined },
 ];
 const on = (href: string) =>
   href.includes('#') ? false : href === home ? path === home : path.startsWith(href);
