@@ -3,11 +3,22 @@ import { filterIndex, groupResults } from '../lib/search.js';
 const $ = (s) => document.querySelector(s);
 const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
-/* thème — le thème clair est un vrai papier, pas un inverse mécanique */
-on($('#theme'), 'click', () => {
+/* thème — le thème clair est un vrai papier, pas un inverse mécanique.
+   `theme-color` suit le thème CHOISI : il était accroché à prefers-color-scheme
+   alors que le thème vient de data-theme, donc le chrome du navigateur
+   contredisait la page dès qu'on basculait. */
+const themeBtn = $('#theme');
+function paintTheme(t) {
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', t === 'papier' ? '#EDEFF3' : '#0E1016');
+  if (themeBtn) themeBtn.setAttribute('aria-label', t === 'papier' ? 'Passer au thème sombre' : 'Passer au thème clair');
+}
+paintTheme(document.documentElement.dataset.theme);
+on(themeBtn, 'click', () => {
   const r = document.documentElement;
   r.dataset.theme = r.dataset.theme === 'nuit' ? 'papier' : 'nuit';
   try { localStorage.setItem('gs_theme', r.dataset.theme); } catch {}
+  paintTheme(r.dataset.theme);
 });
 
 /* méga-menu */
@@ -23,11 +34,21 @@ if (mega && megaBtn) {
 const cmd = $('#cmd');
 if (cmd) {
   const input = $('#cmdInput'), res = $('#cmdRes');
-  let index = null, active = -1;
+  let index = null, active = -1, indexBroken = false;
 
   const load = async () => {
     if (index) return index;
-    index = await fetch('/search.json').then((r) => r.json()).catch(() => []);
+    try {
+      const r = await fetch('/search.json');
+      if (!r.ok) throw new Error(r.status);
+      index = await r.json();
+      indexBroken = false;
+    } catch {
+      /* dire que l'index n'a pas chargé, pas que la recherche n'a rien trouvé :
+         renvoyer « Aucun résultat » sur une panne réseau accuse la requête */
+      index = [];
+      indexBroken = true;
+    }
     return index;
   };
 
@@ -43,9 +64,11 @@ if (cmd) {
     active = -1;
     res.innerHTML = groups.length
       ? groups.map((g) => `<p class="cmd-grp">${g.label}</p>${g.items.map(row).join('')}`).join('')
-      : input.value.trim().length < 2
-        ? '<p class="cmd-grp">Tapez au moins deux lettres</p>'
-        : '<div class="empty"><h3>Aucun résultat</h3><p>Essayez le nom du jeu plutôt que celui du studio.</p></div>';
+      : indexBroken
+        ? '<div class="empty"><h3>Recherche indisponible</h3><p>L\'index n\'a pas pu être chargé. Vérifiez votre connexion et réessayez.</p></div>'
+        : input.value.trim().length < 2
+          ? '<p class="cmd-grp">Tapez au moins deux lettres</p>'
+          : '<div class="empty"><h3>Aucun résultat</h3><p>Essayez le nom du jeu plutôt que celui du studio.</p></div>';
   };
 
   const openCmd = async () => { cmd.showModal(); input.focus(); await load(); render(); };
@@ -74,16 +97,32 @@ if (hero) {
   const track = hero.querySelector('[data-hero-track]');
   const thumbs = [...hero.querySelectorAll('[data-hero-go]')];
   const slides = [...track.children];
-  thumbs.forEach((t) => on(t, 'click', () => {
-    const el = slides[Number(t.dataset.heroGo)];
-    track.scrollTo({ left: el.offsetLeft - track.offsetLeft, behavior: 'smooth' });
-  }));
+  const goTo = (i) => {
+    const el = slides[i];
+    if (el) track.scrollTo({ left: el.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+  };
+  /* le motif onglets : un seul arrêt de tabulation, aria-selected pour l'état */
+  const mark = (i) => thumbs.forEach((t, n) => {
+    t.setAttribute('aria-selected', String(n === i));
+    t.tabIndex = n === i ? 0 : -1;
+  });
+  thumbs.forEach((t, i) => on(t, 'click', () => { mark(i); goTo(i); }));
+
+  /* flèches, Origine et Fin — ce qu'un lecteur d'écran attend d'un tablist */
+  on(hero.querySelector('[role="tablist"]'), 'keydown', (e) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1, Home: 'first', End: 'last' };
+    if (!(e.key in step)) return;
+    const i = thumbs.indexOf(document.activeElement);
+    if (i < 0) return;
+    e.preventDefault();
+    const n = step[e.key] === 'first' ? 0
+      : step[e.key] === 'last' ? thumbs.length - 1
+      : (i + step[e.key] + thumbs.length) % thumbs.length;
+    mark(n); goTo(n); thumbs[n].focus();
+  });
+
   const io = new IntersectionObserver((entries) => {
-    entries.forEach((en) => {
-      if (!en.isIntersecting) return;
-      const i = slides.indexOf(en.target);
-      thumbs.forEach((t, n) => t.setAttribute('aria-current', String(n === i)));
-    });
+    entries.forEach((en) => { if (en.isIntersecting) mark(slides.indexOf(en.target)); });
   }, { root: track, threshold: 0.6 });
   slides.forEach((s) => io.observe(s));
 }

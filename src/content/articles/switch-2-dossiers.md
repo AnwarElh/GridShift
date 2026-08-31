@@ -1,7 +1,7 @@
 ---
 type: actu
-title: "Switch 2 : la mise à jour système ajoute les dossiers"
-lede: "Huit ans plus tard."
+title: "Switch 2 : les dossiers arrivent, huit ans après la première demande"
+lede: "La 21.0.0 autorise cent dossiers de seize jeux, ajoute le transfert de sauvegardes et corrige la latence Bluetooth."
 date: 2026-08-27T08:00:00+02:00
 author: nour-benali
 tags: [Switch 2, Plateformes]

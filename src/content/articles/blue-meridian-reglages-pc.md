@@ -1,7 +1,7 @@
 ---
 type: guide
-title: "Réglages PC recommandés"
-lede: "Ce qu'il faut baisser en premier, et les deux options qui ne servent à rien."
+title: "Blue Meridian sur PC : deux réglages rendent trente pour cent d'images"
+lede: "L'occlusion ambiante et les reflets font tout le travail. Le flou de mouvement et la tessellation n'en font aucun."
 date: 2026-08-12T10:00:00+02:00
 author: lina-morel
 game: blue-meridian

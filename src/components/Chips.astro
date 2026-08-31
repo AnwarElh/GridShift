@@ -3,10 +3,10 @@
    puis le jeu : ce sont les deux axes de navigation du site. */
 import { slugifyTag, type Post } from '../lib/articles';
 import { num } from '../lib/format';
-interface Props { post: Post; max?: number; class?: string; }
-const { post, max = 3, class: cls = '' } = Astro.props;
+interface Props { post: Post; max?: number; class?: string; showScore?: boolean; }
+const { post, max = 3, class: cls = '', showScore = true } = Astro.props;
 /* La note se lit sur la vignette : c'est le premier signal d'un test. */
-const score = post.data.score;
+const score = showScore ? post.data.score : undefined;
 const items = [
   ...(post.data.live ? [{ label: 'En direct', href: undefined, c: 'live' }] : []),
   { label: post.section.label, href: `/${post.section.slug}/`, c: post.data.type },

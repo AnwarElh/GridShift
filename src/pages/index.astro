@@ -20,12 +20,15 @@ const featured = posts.filter((p) => p.data.featured);
 const hero = [...featured, ...posts.filter((p) => !p.data.featured)].slice(0, 4);
 const wire = posts.slice(0, 5);
 
-/* Le corps de la page : un bloc par rubrique, comme un kiosque.
-   Six vignettes suffisent — au-delà, l'archive fait le travail. */
+/* Le corps de la page : un bloc par rubrique, comme un kiosque. */
+/* Chaque rubrique a sa propre maille, donc son propre compte : les actus
+   s'ouvrent sur une Une couchée suivie d'une ligne pleine, les tests tiennent
+   en cartes larges où la note porte, les guides remplissent une ligne. */
+const perBlock = { actu: 4, test: 3, guide: 3 } as const;
 const blocks = (Object.keys(sections) as (keyof typeof sections)[]).map((key) => ({
   key,
   meta: sections[key],
-  items: byType(posts, key).slice(0, 6),
+  items: byType(posts, key).slice(0, perBlock[key]),
 }));
 
 const counts = {
@@ -79,11 +82,25 @@ const jsonLd = {
             <h2 class="d3">{b.meta.title}</h2>
             <a class="more" href={`/${b.meta.slug}/`}>Tout voir →</a>
           </div>
-          <div class="pgrid">
-            {b.items.map((p) => (
-              <Card post={p} variant="sm" level={3} showVersion={b.key === 'guide'} />
-            ))}
-          </div>
+          {b.key === 'actu' ? (
+            /* L'actu s'ouvre sur sa Une : vignette couchée, chapeau visible.
+               Un portail se parcourt à l'œil — jamais une liste de titres. */
+            <div class="pgrid pgrid-lead">
+              {b.items.slice(0, 1).map((p) => <Card post={p} variant="wide" level={3} showLede />)}
+              {b.items.slice(1).map((p) => <Card post={p} variant="sm" level={3} />)}
+            </div>
+          ) : b.key === 'test' ? (
+            /* Un test se lit par sa note avant son titre. Elle est posée sur
+               la vignette à sa vraie taille : c'est le seul chiffre qu'on publie. */
+            <div class="pgrid">
+              {b.items.map((p) => <Card post={p} variant="verdict" level={3} />)}
+            </div>
+          ) : (
+            /* Un guide se choisit sur deux critères : pour qui, et à jour ou pas. */
+            <div class="pgrid">
+              {b.items.map((p) => <Card post={p} variant="sm" level={3} showLevel showVersion />)}
+            </div>
+          )}
           <div class="cat-foot">
             <a class="btn btn-quiet" href={`/${b.meta.slug}/`}>Voir tous les {b.meta.label.toLowerCase()}</a>
           </div>

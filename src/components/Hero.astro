@@ -5,14 +5,17 @@ import PostMeta from './PostMeta.astro';
 import type { Post } from '../lib/articles';
 
 /* Le carrousel de tête : la pile éditoriale du jour. Défilement natif
-   avec accroche, la colonne de droite sert de sommaire cliquable. */
+   avec accroche, la colonne de droite sert de sommaire cliquable.
+   Le motif est bien celui des onglets — il en tient donc le contrat complet :
+   aria-selected sur l'onglet, role="tabpanel" sur la diapo, un seul arrêt de
+   tabulation et les flèches pour circuler (voir site.js). */
 interface Props { posts: Post[]; }
 const { posts } = Astro.props;
 ---
 <section class="hero" data-hero aria-roledescription="carrousel" aria-label="À la une">
   <div class="hero-track" data-hero-track tabindex="0">
     {posts.map((p, i) => (
-      <article class="hero-slide" id={`slide-${i}`}>
+      <article class="hero-slide" id={`slide-${i}`} role="tabpanel" aria-labelledby={`slide-tab-${i}`}>
         <Fig src={p.data.cover} alt="" ratio="16-9"
              widths={[720, 1080, 1440]} sizes="(max-width:1180px) 100vw, 830px" priority={i === 0} />
         <div class="hero-body">
@@ -26,8 +29,9 @@ const { posts } = Astro.props;
 
   <div class="hero-nav" role="tablist" aria-label="Choisir un article à la une">
     {posts.map((p, i) => (
-      <button class="hero-thumb" type="button" role="tab" data-hero-go={i}
-              aria-current={i === 0 ? 'true' : 'false'} aria-controls={`slide-${i}`}>
+      <button class="hero-thumb" type="button" role="tab" id={`slide-tab-${i}`} data-hero-go={i}
+              aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`slide-${i}`}
+              tabindex={i === 0 ? 0 : -1}>
         <Fig src={p.data.cover} alt="" ratio="16-9" widths={[236]} sizes="118px" />
         <span>
           <b>{p.data.title}</b>
