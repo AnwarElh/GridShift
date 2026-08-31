@@ -19,7 +19,7 @@ import Credit from '../components/Credit.astro';
 import Offers from '../components/Offers.astro';
 import { site } from '../site';
 import { slugifyTag, type Post } from '../lib/articles';
-import { authorHref, articleHref, gameHref, sectionHref, otherLocale, htmlLang } from '../i18n/config';
+import { authorHref, articleHref, gameHref, sectionHref, tagHref, otherLocale, htmlLang } from '../i18n/config';
 import { useT } from '../i18n/ui';
 import GithubSlugger from 'github-slugger';
 
@@ -187,7 +187,7 @@ const jsonLd: Record<string, unknown> = {
 
           {data.tags.length > 0 && (
             <div class="chipbar" style="margin-top:32px">
-              {data.tags.map((t) => <a class="tag" href={`/tag/${slugifyTag(t)}/`}>{t}</a>)}
+              {data.tags.map((tag) => <a class="tag" href={tagHref(lang, slugifyTag(tag))}>{tag}</a>)}
             </div>
           )}
 
@@ -198,8 +198,8 @@ const jsonLd: Record<string, unknown> = {
           <section class="sec">
             <SectionHead
               title={game ? t('review.nextOn')(game.data.title) : t('review.readNext')}
-              sub={game ? `${siblings} article${siblings > 1 ? 's' : ''} sur ce jeu` : undefined}>
-              {game && <a class="btn btn-sm btn-quiet" href={`/jeux/${game.id}/`}>Voir la fiche</a>}
+              sub={game ? t('review.siblingCount')(siblings) : undefined}>
+              {game && <a class="btn btn-sm btn-quiet" href={gameHref(lang, game.id)}>{t('game.seePage')}</a>}
             </SectionHead>
             <div class="pgrid">
               {related.map((r) => <Card post={r} variant="sm" />)}
@@ -222,8 +222,8 @@ const jsonLd: Record<string, unknown> = {
         )}
 
         {game && (
-          <a class="card-framed" href={`/jeux/${game.id}/`} style="display:block">
-            <Kicker plain tone="mute">Le jeu</Kicker>
+          <a class="card-framed" href={gameHref(lang, game.id)} style="display:block">
+            <Kicker plain tone="mute">{t('review.theGame')}</Kicker>
             <div style="display:flex;gap:12px;margin-top:12px">
               <Fig src={game.data.cover} ratio="3-4" style="width:62px;border-radius:2px;flex:none" />
               <div>

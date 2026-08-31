@@ -7,7 +7,7 @@ import CmdPalette from '../components/CmdPalette.astro';
 import Consent from '../components/Consent.astro';
 import { site, siteCopy } from '../site';
 import {
-  langFromPath, otherLocale, htmlLang, ogLocale, defaultLocale, homeHref, feedHref,
+  langFromPath, otherLocale, htmlLang, ogLocale, defaultLocale, homeHref, feedHref, withBase,
 } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
@@ -32,7 +32,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.url).href;
-const ogImage = new URL(image ?? '/og-default.png', site.url).href;
+const ogImage = new URL(image ?? withBase('/og-default.png'), site.url).href;
 const fullTitle = title === site.name ? title : `${title} — ${site.name}`;
 
 /* hreflang : les deux versions se déclarent mutuellement, et x-default pointe
@@ -56,8 +56,8 @@ const alternates = altUrl
 <meta name="description" content={description}>
 <link rel="canonical" href={canonical}>
 {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml">
+<link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')}>
 <!-- une seule balise, sans `media` : le thème vient de data-theme, pas de la
      préférence système — accrochée à prefers-color-scheme, la couleur du chrome
      contredisait la page. -->
@@ -80,8 +80,8 @@ const alternates = altUrl
 <!-- polices auto-hébergées : @font-face vit dans gridshift.css.
      Les deux familles réellement rendues sont préchargées : Bricolage compose
      l'interface, Saira les titres — donc l'élément LCP. -->
-<link rel="preload" href="/fonts/bricolage-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/saira-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href={withBase('/fonts/bricolage-normal-latin.woff2')} as="font" type="font/woff2" crossorigin>
+<link rel="preload" href={withBase('/fonts/saira-normal-latin.woff2')} as="font" type="font/woff2" crossorigin>
 
 <!-- thème appliqué avant peinture : pas de flash blanc au chargement -->
 <script is:inline>

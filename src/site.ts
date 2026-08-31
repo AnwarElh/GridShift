@@ -1,10 +1,15 @@
 import { type Locale, pageHref, sectionHref, feedHref } from './i18n/config';
 import { useT } from './i18n/ui';
 
-/* Identité — le nom et le domaine n'ont pas de langue. */
+/* Identité — le nom et le domaine n'ont pas de langue.
+
+   `url` suit la valeur `site` d'astro.config : elle sert aux canonical, aux
+   hreflang, au JSON-LD et au plan de site. Codée en dur, elle annonçait
+   gridshift.fr alors que le build est publié sur github.io — des canonical
+   pointant vers un domaine qui ne sert pas ce contenu. */
 export const site = {
   name: 'Gridshift',
-  url: 'https://gridshift.fr',
+  url: import.meta.env.SITE ?? 'https://anwarelh.github.io',
   twitter: '@gridshift',
   email: 'redaction@gridshift.fr',
 };
