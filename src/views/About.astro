@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Kicker from '../components/Kicker.astro';
+import AuthorBox from '../components/AuthorBox.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { getCollection } from 'astro:content';
+import { getPosts } from '../lib/articles';
+import { site, siteCopy } from '../site';
+import { langFromPath, otherLocale, pageHref } from '../i18n/config';
+import { useT } from '../i18n/ui';
+
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
+const authors = await getCollection('authors');
+const posts = await getPosts(lang);
+const count = (id: string) => posts.filter((p) => p.author.id === id).length;
+
+/* L'échelle de notation, telle qu'elle est réellement appliquée. */
+const scale = {
+  en: [
+    { band: '9.0 – 10', tone: 'sc-90', label: 'Exceptional', text: 'A benchmark for its genre. We will still be talking about it in five years.' },
+    { band: '8.0 – 8.9', tone: 'sc-80', label: 'Very good', text: 'Worth full price if the genre speaks to you.' },
+    { band: '7.0 – 7.9', tone: 'sc-70', label: 'Good', text: 'Clear strengths, owned weaknesses. Worth a look on sale.' },
+    { band: '5.0 – 6.9', tone: 'sc-50', label: 'Uneven', text: 'A good idea served badly, or the other way round.' },
+    { band: '0 – 4.9', tone: 'sc-00', label: 'Failed', text: 'Broken, cynical, or both.' },
+  ],
+  fr: [
+    { band: '9,0 – 10', tone: 'sc-90', label: 'Exceptionnel', text: 'Une référence de son genre. Nous en reparlerons dans cinq ans.' },
+    { band: '8,0 – 8,9', tone: 'sc-80', label: 'Très bon', text: 'À acheter au prix fort si le genre vous parle.' },
+    { band: '7,0 – 7,9', tone: 'sc-70', label: 'Bon', text: 'Des qualités nettes, des défauts assumés. À voir en promo.' },
+    { band: '5,0 – 6,9', tone: 'sc-50', label: 'Inégal', text: 'Une bonne idée mal servie, ou l’inverse.' },
+    { band: '0 – 4,9', tone: 'sc-00', label: 'Raté', text: 'Cassé, cynique, ou les deux.' },
+  ],
+}[lang];
+
+const copy = {
+  en: {
+    title: 'Who we are',
+    desc: 'Our editorial charter, our scoring method and our transparency rules.',
+    heading: 'We review what we buy',
+    lede: `${site.name} is an independent games publication. No disguised sponsored content, no negotiated scores, and reviews revised when the games change.`,
+    charter: 'Editorial charter',
+    charter1: 'We buy the games we review. When a publisher provides a copy, it is written on the review, at the top, in the verdict plate — not in a footnote.',
+    charter2: 'No commercial partnership grants coverage, a publication date, or a read-through before release. Advertising and affiliate links are handled by people who do not write the reviews.',
+    scoring: 'How we score',
+    scoringSub: 'A score out of 10, to one decimal, and a tested version.',
+    scoresMove: 'Scores move',
+    scoresMoveBody: 'A game that gets fixed deserves a new score, and so does a game that degrades. Every revision is dated and justified on the review page.',
+    corrections: 'Corrections',
+    correctionsBody: 'Every article carries its own dated correction log, in the “Corrections” block at the end of the text. We never quietly edit a published piece.',
+    affiliate: 'Affiliate links and advertising',
+    affiliate1a: 'Links to shops are affiliate links: we earn a commission if you buy, with no effect on your price. They carry the attribute ',
+    affiliate1b: ' and are labelled on every game page.',
+    affiliate2: 'Advertising slots are reserved in the layout, labelled “Advertisement”, and never take the appearance of an article.',
+    privacy: 'Privacy and legal',
+    privacyBody: 'We set no tracker before consent. The Tuesday letter is used only to send the Tuesday letter.',
+    contact: 'Write to us: ',
+    team: 'The newsroom',
+    people: (n: number) => `${n} people`,
+  },
+  fr: {
+    title: 'Qui nous sommes',
+    desc: 'Notre charte éditoriale, notre méthode de notation et nos règles de transparence.',
+    heading: 'Nous testons ce que nous achetons',
+    lede: `${site.name} est un média indépendant sur le jeu vidéo. Pas de contenu sponsorisé déguisé, pas de note négociée, et des tests révisés quand les jeux changent.`,
+    charter: 'Charte éditoriale',
+    charter1: 'Nous achetons les jeux que nous testons. Quand un éditeur nous fournit un exemplaire, c’est écrit sur le test, en haut, dans la plaque de verdict — pas en note de bas de page.',
+    charter2: 'Aucun partenariat commercial n’ouvre droit à une couverture, à un calendrier de publication ou à une relecture avant parution. La publicité et les liens affiliés sont gérés par des personnes qui n’écrivent pas les tests.',
+    scoring: 'Comment nous notons',
+    scoringSub: 'Une note sur 10, avec une décimale, et une version testée.',
+    scoresMove: 'Les notes bougent',
+    scoresMoveBody: 'Un jeu qui se répare mérite d’être renoté, un jeu qui se dégrade aussi. Chaque révision est datée et justifiée sur la page du test.',
+    corrections: 'Corrections',
+    correctionsBody: 'Chaque article porte son propre journal de corrections, daté, dans le bloc « Corrections » en fin de texte. Nous ne modifions jamais un texte publié en silence.',
+    affiliate: 'Liens affiliés et publicité',
+    affiliate1a: 'Les liens vers les boutiques sont affiliés : une commission nous revient si vous achetez, sans effet sur votre prix. Ils portent l’attribut ',
+    affiliate1b: ' et sont étiquetés sur chaque fiche de jeu.',
+    affiliate2: 'Les emplacements publicitaires sont réservés dans la mise en page, étiquetés « Publicité », et ne prennent jamais l’apparence d’un article.',
+    privacy: 'Confidentialité et mentions légales',
+    privacyBody: 'Nous n’installons aucun traceur avant consentement. La lettre du mardi n’est utilisée que pour l’envoyer.',
+    contact: 'Nous écrire : ',
+    team: 'La rédaction',
+    people: (n: number) => `${n} personnes`,
+  },
+}[lang];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: site.url,
+  description: siteCopy[lang].description,
+  employee: authors.map((a) => ({ '@type': 'Person', name: a.data.name, jobTitle: a.data.role[lang] })),
+};
+---
+<Base title={copy.title} description={copy.desc} jsonLd={jsonLd} alt={pageHref(otherLocale(lang), 'about')}>
+  <div class="page" style="padding-top:40px">
+    <Crumbs trail={[{ label: copy.title }]} />
+    <div class="narrow" style="margin-top:24px">
+      <Kicker>{copy.team}</Kicker>
+      <h1 class="d2" style="margin:14px 0 16px">{copy.heading}</h1>
+      <p style="font-size:var(--ui-lg);color:var(--tx-2);line-height:1.55;max-width:60ch">{copy.lede}</p>
+    </div>
+
+    <div class="narrow" style="margin-top:48px">
+      <section id="charter">
+        <SectionHead title={copy.charter} style="margin-bottom:24px" />
+        <div class="read"><p>{copy.charter1}</p><p>{copy.charter2}</p></div>
+      </section>
+
+      <section id="scoring" class="sec">
+        <SectionHead title={copy.scoring} sub={copy.scoringSub} style="margin-bottom:24px" />
+        <div class="acc">
+          {scale.map((s) => (
+            <details>
+              <summary>
+                <span style={`color:var(--${s.tone});font-weight:800;min-width:88px;display:inline-block`}>{s.band}</span>
+                {s.label}
+                <span class="ind"></span>
+              </summary>
+              <div class="acc-body">{s.text}</div>
+            </details>
+          ))}
+        </div>
+        <div class="callout" style="margin-top:24px">
+          <b>{copy.scoresMove}</b>
+          {copy.scoresMoveBody}
+        </div>
+      </section>
+
+      <section id="corrections" class="sec">
+        <SectionHead title={copy.corrections} style="margin-bottom:24px" />
+        <div class="read"><p>{copy.correctionsBody}</p></div>
+      </section>
+
+      <section id="affiliate" class="sec">
+        <SectionHead title={copy.affiliate} style="margin-bottom:24px" />
+        <div class="read" id="advertising">
+          <p>{copy.affiliate1a}<code>rel="sponsored nofollow"</code>{copy.affiliate1b}</p>
+          <p>{copy.affiliate2}</p>
+        </div>
+      </section>
+
+      <section id="privacy" class="sec">
+        <SectionHead title={copy.privacy} style="margin-bottom:24px" />
+        <div class="read">
+          <p>{copy.privacyBody}</p>
+          <p id="contact">{copy.contact}<a href={`mailto:${site.email}`}>{site.email}</a></p>
+        </div>
+      </section>
+    </div>
+
+    <section class="sec" id="team">
+      <SectionHead title={copy.team} sub={copy.people(authors.length)} />
+      <div style="display:grid;gap:24px">
+        {authors.map((a) => <AuthorBox author={a} count={count(a.id)} />)}
+      </div>
+    </section>
+
+    <Newsletter />
+  </div>
+</Base>

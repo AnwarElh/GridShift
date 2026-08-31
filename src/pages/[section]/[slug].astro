@@ -7,17 +7,18 @@ import Spoiler from '../../components/prose/Spoiler.astro';
 import Alert from '../../components/prose/Alert.astro';
 import ProseAd from '../../components/prose/Ad.astro';
 import { getPosts, byGame, related, type Post } from '../../lib/articles';
+import { sectionSlugs } from '../../i18n/config';
 
 export async function getStaticPaths() {
-  const posts = await getPosts();
+  const posts = await getPosts('en');
   return posts.map((post) => ({
-    params: { section: post.section.slug, slug: post.id },
+    params: { section: sectionSlugs[post.section].en, slug: post.slug },
     props: { post },
   }));
 }
 
 const { post } = Astro.props as { post: Post };
-const posts = await getPosts();
+const posts = await getPosts('en');
 const { Content } = await render(post.entry);
 
 const siblings = post.game ? byGame(posts, post.game.id).length : 0;

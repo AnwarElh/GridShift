@@ -1,18 +1,25 @@
 ---
-import { sections } from '../site';
 /* La barre de rubriques : l'axe de navigation du portail. */
+import { langFromPath, homeHref, sectionHref, pageHref, sectionKeys } from '../i18n/config';
+import { useT } from '../i18n/ui';
 interface Props { counts?: Record<string, number>; }
 const { counts = {} } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
 const path = Astro.url.pathname;
+const home = homeHref(lang);
+
+const labels = { news: t('nav.news'), review: t('nav.reviews'), guide: t('nav.guides'), setup: t('nav.setup') };
 const items = [
-  { label: 'Tout', href: '/', n: undefined },
-  ...Object.entries(sections).map(([key, s]) => ({ label: s.label, href: `/${s.slug}/`, n: counts[key] })),
-  { label: 'Jeux', href: '/jeux/', n: counts.jeux },
-  { label: 'Bons plans', href: '/#offres', n: undefined },
+  { label: t('nav.all'), href: home, n: undefined as number | undefined },
+  ...sectionKeys.map((k) => ({ label: labels[k], href: sectionHref(lang, k), n: counts[k] })),
+  { label: t('nav.games'), href: pageHref(lang, 'games'), n: counts.games },
+  { label: t('nav.deals'), href: `${home}#offers`, n: undefined },
 ];
-const on = (href: string) => (href === '/' ? path === '/' : path.startsWith(href.replace(/#.*$/, '')) && href !== '/#offres');
+const on = (href: string) =>
+  href.includes('#') ? false : href === home ? path === home : path.startsWith(href);
 ---
-<nav class="catbar" aria-label="Rubriques">
+<nav class="catbar" aria-label={t('nav.sections')}>
   {items.map((i) => (
     <a href={i.href} aria-current={on(i.href) ? 'page' : undefined}>
       {i.label}{i.n !== undefined && <span class="n">{i.n}</span>}

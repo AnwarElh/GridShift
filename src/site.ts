@@ -1,45 +1,28 @@
-/* Configuration du site — un seul endroit à modifier. */
+import { type Locale, pageHref, sectionHref, feedHref } from './i18n/config';
+import { useT } from './i18n/ui';
+
+/* Identité — le nom et le domaine n'ont pas de langue. */
 export const site = {
   name: 'Gridshift',
-  tagline: 'Média indépendant sur le jeu vidéo',
-  description:
-    'Tests, guides et actus jeu vidéo. Nous testons ce que nous achetons et nous révisons nos notes quand les jeux changent.',
   url: 'https://gridshift.fr',
-  locale: 'fr_FR',
   twitter: '@gridshift',
+  email: 'redaction@gridshift.fr',
 };
 
-/* Les quatre rubriques. La clé est le `type` d'un article, `slug` le segment
-   d'URL, `noun` le mot employé dans les compteurs et les états vides.
-   Ajouter une rubrique ici suffit : les routes /<slug>/, /<slug>/page/<n>/ et
-   /<slug>/<article>/ sont générées à partir de cet objet.
-
-   Typé par une interface plutôt qu'en `as const` : avec quatre entrées, le
-   `as const` produisait une union de quatre types littéraux que le narrowing
-   de la page d'accueil faisait exploser — `astro check` tombait en OOM. */
-export type SectionKey = 'actu' | 'test' | 'guide' | 'config';
-
-export interface Section {
-  slug: string;
-  label: string;
-  title: string;
-  noun: string;
-  lede: string;
-}
-
-export const sections: Record<SectionKey, Section> = {
-  actu: { slug: 'actus', label: 'Actus', title: 'Actus', noun: 'actu',
-    lede: 'Le fil de la rédaction, mis à jour en continu.' },
-  test: { slug: 'tests', label: 'Tests', title: 'Tests', noun: 'test',
-    lede: 'Une note, une version testée, un historique de révisions.' },
-  guide: { slug: 'guides', label: 'Guides', title: 'Guides', noun: 'guide',
-    lede: 'Vérifiés à chaque patch majeur. La version testée est indiquée sur chaque guide.' },
-  config: { slug: 'configs', label: 'Configs', title: 'Configs', noun: 'config',
-    lede: 'Réglages, matériel et paramètres, mesurés sur nos machines. Le matériel de test est indiqué sur chaque fiche.' },
+/* Ce que le site dit de lui-même, dans chaque langue. Sert au <title>, à la
+   meta description et au bloc de marque du pied de page. */
+export const siteCopy: Record<Locale, { tagline: string; description: string }> = {
+  en: {
+    tagline: 'Independent games media',
+    description:
+      'Reviews, guides and news for live-service games. We buy what we review, and we revise our scores when the games change.',
+  },
+  fr: {
+    tagline: 'Média indépendant sur le jeu vidéo',
+    description:
+      'Tests, guides et actus jeu vidéo. Nous testons ce que nous achetons et nous révisons nos notes quand les jeux changent.',
+  },
 };
-
-export const sectionOf = (type: SectionKey) => sections[type];
-export const hrefOf = (type: SectionKey, id: string) => `/${sections[type].slug}/${id}/`;
 
 /* Réseaux du pied de page. Le `d` est le tracé SVG, viewBox 24×24. */
 export const socials = [
@@ -50,40 +33,50 @@ export const socials = [
   { name: 'RSS', href: '/rss.xml', d: 'M5 3v3a15 15 0 0 1 15 15h3A18 18 0 0 0 5 3Zm0 6v3a9 9 0 0 1 9 9h3A12 12 0 0 0 5 9Zm2.5 8a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z' },
 ];
 
-export const footerLinks = [
-  {
-    title: 'Contenu',
-    links: [
-      { label: 'Guides', href: '/guides/' },
-      { label: 'Actus', href: '/actus/' },
-      { label: 'Tests', href: '/tests/' },
-      { label: 'Configs', href: '/configs/' },
-      { label: 'Base de jeux', href: '/jeux/' },
-      { label: 'Flux RSS', href: '/rss.xml' },
-    ],
-  },
-  {
-    title: 'Le site',
-    links: [
-      { label: 'Qui nous sommes', href: '/a-propos/' },
-      { label: 'La rédaction', href: '/a-propos/#equipe' },
-      { label: 'Charte éditoriale', href: '/a-propos/#charte' },
-      { label: 'Comment nous notons', href: '/a-propos/#notation' },
-      { label: 'Nous écrire', href: '/a-propos/#contact' },
-    ],
-  },
-  {
-    title: 'Légal',
-    links: [
-      { label: 'Mentions légales', href: '/mentions-legales/' },
-      { label: 'Confidentialité', href: '/confidentialite/' },
-      { label: 'Cookies', href: '/cookies/' },
-      { label: 'Liens affiliés', href: '/a-propos/#affiliation' },
-      { label: 'Crédits photo', href: '/credits/' },
-    ],
-  },
-];
+/* Pied de page : trois colonnes, construites à partir des fabriques d'URL —
+   aucun chemin n'est écrit en dur, donc aucun ne peut pointer vers la
+   mauvaise langue. */
+export function footerLinks(lang: Locale) {
+  const t = useT(lang);
+  return [
+    {
+      title: t('foot.content'),
+      links: [
+        { label: t('nav.guides'), href: sectionHref(lang, 'guide') },
+        { label: t('nav.news'), href: sectionHref(lang, 'news') },
+        { label: t('nav.reviews'), href: sectionHref(lang, 'review') },
+        { label: t('nav.setup'), href: sectionHref(lang, 'setup') },
+        { label: t('nav.games'), href: pageHref(lang, 'games') },
+        { label: t('foot.rss'), href: feedHref(lang) },
+      ],
+    },
+    {
+      title: t('foot.site'),
+      links: [
+        { label: t('foot.about'), href: pageHref(lang, 'about') },
+        { label: t('foot.team'), href: `${pageHref(lang, 'about')}#team` },
+        { label: t('foot.charter'), href: `${pageHref(lang, 'about')}#charter` },
+        { label: t('foot.howWeScore'), href: `${pageHref(lang, 'about')}#scoring` },
+        { label: t('foot.contact'), href: `${pageHref(lang, 'about')}#contact` },
+      ],
+    },
+    {
+      title: t('foot.legal'),
+      links: [
+        { label: t('foot.legalNotice'), href: pageHref(lang, 'legal') },
+        { label: t('foot.privacy'), href: pageHref(lang, 'privacy') },
+        { label: t('foot.cookies'), href: pageHref(lang, 'cookies') },
+        { label: t('foot.affiliate'), href: `${pageHref(lang, 'about')}#affiliate` },
+        { label: t('foot.credits'), href: pageHref(lang, 'credits') },
+      ],
+    },
+  ];
+}
 
-/* Bandeau des plateformes et genres du méga-menu. */
+/* Une plateforme est un nom propre : elle ne se traduit pas. Un genre, si. */
 export const platforms = ['PC', 'PS5', 'Xbox Series', 'Switch 2', 'Steam Deck'];
-export const genres = ['Action-RPG', 'Coop', 'Stratégie', 'Roguelite', 'Simulation'];
+
+export const genres: Record<Locale, string[]> = {
+  en: ['Action RPG', 'Co-op', 'Strategy', 'Roguelite', 'Simulation'],
+  fr: ['Action-RPG', 'Coop', 'Stratégie', 'Roguelite', 'Simulation'],
+};

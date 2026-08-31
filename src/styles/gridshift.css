@@ -52,7 +52,7 @@
   --scrim:rgba(10,9,12,.72);
   /* couleurs de rubrique : jetons, pas des hex codés en dur — sans ça
      elles ne suivaient aucun thème et tombaient à 1,01:1 sur papier */
-  --c-guide:#4FB3E8; --c-actu:#8FD16A; --c-jeu:#C88CF0;
+  --c-guide:#4FB3E8; --c-news:#8FD16A; --c-setup:#4FD6C4; --c-game:#C88CF0;
 
   /* espace — échelle 4 */
   --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px;
@@ -101,7 +101,7 @@
   --ok:#20714C; --warn:#846009; --err:#A5352D;
   --sc-90:#20714C; --sc-80:#526D19; --sc-70:#846009; --sc-50:#95521F; --sc-00:#8C332B;
   --scrim:rgba(40,36,32,.5);
-  --c-guide:#156F9E; --c-actu:#417524; --c-jeu:#992AE3;
+  --c-guide:#156F9E; --c-news:#417524; --c-setup:#1B7569; --c-game:#992AE3;
   --sh-pop:0 8px 28px -6px rgba(60,50,40,.18),0 2px 6px rgba(60,50,40,.1);
   --sh-modal:0 32px 80px -12px rgba(60,50,40,.28);
 }
@@ -382,10 +382,11 @@ a:hover>.fig img,a:hover>.fig .ph,.card:hover .fig img,.card:hover .fig .ph{tran
   color:var(--tx);white-space:nowrap;transition:background var(--t-1),color var(--t-1)}
 a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-color:transparent}
 .chip[data-c]{color:var(--chip-c);border-color:color-mix(in srgb,var(--chip-c) 45%,transparent)}
-.chip[data-c="test"]{--chip-c:var(--brass)}
+.chip[data-c="review"]{--chip-c:var(--brass)}
 .chip[data-c="guide"]{--chip-c:var(--c-guide)}
-.chip[data-c="actu"]{--chip-c:var(--c-actu)}
-.chip[data-c="jeu"]{--chip-c:var(--c-jeu)}
+.chip[data-c="news"]{--chip-c:var(--c-news)}
+.chip[data-c="setup"]{--chip-c:var(--c-setup)}
+.chip[data-c="game"]{--chip-c:var(--c-game)}
 .chip[data-c="live"]{--chip-c:var(--live)}
 .chip-score{margin-left:auto;letter-spacing:0;font-size:11px;
   background:var(--brass);color:var(--on-brass);border-color:transparent}
@@ -673,7 +674,8 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .ad{position:relative;display:grid;place-items:center;overflow:hidden;margin-inline:auto;width:100%;
   background:var(--s1);border:1px solid var(--line);border-radius:var(--r-1);
   color:var(--tx-3);font:600 var(--ui-xs)/1.4 var(--f-ui);letter-spacing:.06em;text-align:center}
-.ad::before{content:"PUBLICITÉ";position:absolute;top:0;left:0;z-index:1;
+/* le mot vient de l'attribut : il change de langue avec la page */
+.ad::before{content:attr(data-label);position:absolute;top:0;left:0;z-index:1;
   padding:5px 9px;background:var(--s1);border-right:1px solid var(--line);
   border-bottom:1px solid var(--line);border-bottom-right-radius:var(--r-1);
   font:700 10px/1 var(--f-ui);font-stretch:80%;letter-spacing:.13em;color:var(--tx-2)}

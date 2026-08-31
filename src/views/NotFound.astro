@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import Card from '../components/Card.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { getPosts } from '../lib/articles';
+import { langFromPath, homeHref } from '../i18n/config';
+import { useT } from '../i18n/ui';
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
+const latest = (await getPosts(lang)).slice(0, 3);
+---
+<Base title={t('404.title')} noindex>
+  <div class="page" style="padding-top:80px">
+    <div class="empty">
+      <span class="glyph" aria-hidden="true">404</span>
+      <h3>{t('404.heading')}</h3>
+      <p>{t('404.body')}</p>
+      <div class="btn-row" style="margin-top:8px">
+        <a class="btn btn-primary" href={homeHref(lang)}>{t('404.home')}</a>
+        <button class="btn btn-quiet" data-search>{t('search.label')}</button>
+      </div>
+    </div>
+    <section class="sec">
+      <SectionHead title={t('404.latest')} />
+      <div class="pgrid">{latest.map((p) => <Card post={p} variant="sm" />)}</div>
+    </section>
+  </div>
+</Base>

@@ -1,14 +1,17 @@
 ---
 /* Barre de contexte : apparaît en lecture, dit où on est et où on en est. */
+import { langFromPath } from '../i18n/config';
+import { useT } from '../i18n/ui';
 interface Props { title: string; game?: string; }
 const { title, game } = Astro.props;
+const t = useT(langFromPath(Astro.url.pathname));
 ---
 <div class="ctxbar" id="ctxbar">
   <div class="ctxbar-in">
     {game && <span class="g">{game}</span>}
     <span class="t">{title}</span>
     <div class="btn-row">
-      <button class="btn btn-sm btn-quiet" data-share>Partager</button>
+      <button class="btn btn-sm btn-quiet" data-share>{t('review.share')}</button>
     </div>
   </div>
   <div class="readbar" id="readbar"></div>

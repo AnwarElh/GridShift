@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import GameCard from '../components/GameCard.astro';
+import Ad from '../components/Ad.astro';
+import Newsletter from '../components/Newsletter.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { getCollection } from 'astro:content';
+import { getPosts, byGame } from '../lib/articles';
+import { shortDate } from '../lib/format';
+import { langFromPath, otherLocale, pageHref, gameHref } from '../i18n/config';
+import { useT } from '../i18n/ui';
+
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
+const posts = await getPosts(lang);
+const games = await getCollection('games');
+const count = (id: string) => byGame(posts, id).length;
+const out = games.filter((g) => !g.data.releaseDate || g.data.releaseDate <= new Date())
+  .sort((a, b) => (b.data.score ?? 0) - (a.data.score ?? 0));
+const soon = games.filter((g) => g.data.releaseDate && g.data.releaseDate > new Date())
+  .sort((a, b) => a.data.releaseDate!.getTime() - b.data.releaseDate!.getTime());
+---
+<Base title={t('games.title')} description={t('games.desc')} alt={pageHref(otherLocale(lang), 'games')}>
+  <div class="page" style="padding-top:40px">
+    <Crumbs trail={[{ label: t('nav.games') }]} />
+    <h1 class="d2" style="margin:12px 0 8px">{t('games.title')}</h1>
+    <p style="color:var(--tx-2);max-width:56ch">{t('games.lede')(games.length)}</p>
+
+    {soon.length > 0 && (
+      <section class="sec">
+        <SectionHead title={t('mega.upcoming')} sub={t('games.upcomingSub')} />
+        <div class="cal">
+          {soon.map((g) => {
+            const [d, m] = shortDate(g.data.releaseDate!, lang).split(' ');
+            return (
+              <a class="cal-row" href={gameHref(lang, g.id)}>
+                <span class="date">{d}<small>{m}</small></span>
+                <b>{g.data.title}</b>
+                <span class="meta">{g.data.platforms.map((p) => p.name).join(' · ')}</span>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <section class="sec" style="padding-top:0">
+      <SectionHead title={t('games.allTitle')} sub={t('games.allSub')} />
+      <div class="pgrid">
+        {out.map((g) => <GameCard game={g} count={count(g.id)} />)}
+      </div>
+    </section>
+
+    <div style="margin-block:var(--s-7)"><Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} /></div>
+    <Newsletter />
+  </div>
+</Base>

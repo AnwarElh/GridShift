@@ -1,8 +1,10 @@
 ---
 import { scoreBucket, num } from '../lib/format';
+import { langFromPath } from '../i18n/config';
 interface Props { score: number; size?: 'sm' | 'md' | 'xl'; class?: string; }
 const { score, size = 'md', class: cls = '' } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
 ---
 <span class:list={['score', size === 'sm' && 'sc-sm', size === 'xl' && 'sc-xl', cls]} data-sc={scoreBucket(score)}>
-  <b>{num(score)}</b><span class="out">/10</span>
+  <b>{num(score, lang)}</b><span class="out">/10</span>
 </span>

@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { credits } from '../lib/credits';
+import { langFromPath, otherLocale, pageHref } from '../i18n/config';
+
+/* Toutes les images du site sont réutilisables : CC0, domaine public, CC BY
+   ou CC BY-SA, depuis Wikimedia Commons. Les licences BY et BY-SA imposent
+   de nommer l'auteur et la licence — cette page le fait pour l'ensemble. */
+const lang = langFromPath(Astro.url.pathname);
+const rows = Object.entries(credits).sort(([a], [b]) => a.localeCompare(b));
+const copy = {
+  en: {
+    title: 'Photo credits',
+    desc: 'Author, licence and source of every image used on Gridshift.',
+    lede: 'We use no screenshot or illustration under exclusive rights. Every image comes from Wikimedia Commons under CC0, public domain, CC BY or CC BY-SA. The author, the licence and the original file are listed below; the BY and BY-SA licences require it, the others do not — we do it for all of them.',
+  },
+  fr: {
+    title: 'Crédits photo',
+    desc: 'Auteur, licence et source de chaque image utilisée sur Gridshift.',
+    lede: 'Nous n’utilisons aucune capture ni illustration sous droits exclusifs. Toutes les images viennent de Wikimedia Commons sous CC0, domaine public, CC BY ou CC BY-SA. Le nom de l’auteur, la licence et le fichier d’origine sont listés ci-dessous ; les licences BY et BY-SA l’exigent, les autres non — nous le faisons pour toutes.',
+  },
+}[lang];
+---
+<Base title={copy.title} description={copy.desc} alt={pageHref(otherLocale(lang), 'credits')}>
+  <div class="page" style="padding-top:40px;padding-bottom:var(--s-9)">
+    <Crumbs trail={[{ label: copy.title }]} />
+    <h1 class="d2" style="margin:12px 0 8px">{copy.title}</h1>
+    <p style="color:var(--tx-2);max-width:62ch;line-height:1.6">{copy.lede}</p>
+
+    <div class="cal" style="margin-top:32px">
+      {rows.map(([key, c]) => (
+        <div class="cal-row credit-row">
+          <span class="date" style="width:auto">{key}</span>
+          <span>
+            <b style="display:block">{c.artist}</b>
+            <a class="meta" href={c.source} rel="noopener nofollow" target="_blank">{c.file}</a>
+          </span>
+          <span class="meta" style="white-space:nowrap">
+            {c.licenceUrl
+              ? <a href={c.licenceUrl} rel="license noopener nofollow" target="_blank">{c.licence}</a>
+              : c.licence}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</Base>

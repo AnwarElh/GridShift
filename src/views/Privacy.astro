@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { site } from '../site';
+import { langFromPath, otherLocale, pageHref } from '../i18n/config';
+const lang = langFromPath(Astro.url.pathname);
+const c = {
+  en: {
+    title: 'Privacy', desc: `What ${site.name} collects, why, and how to withdraw it.`,
+    lede: 'The site is static and creates no account. We collect only two things, and only if you give them.',
+    letter: 'The Tuesday letter',
+    letterBody: 'If you sign up, your email address is used to send you the letter, and nothing else. It is neither sold nor cross-referenced. Every issue carries an unsubscribe link that takes effect immediately.',
+    measure: 'Analytics and advertising',
+    measureBody1: 'No tracker is set before your consent. Until you accept, advertising scripts are not loaded. You can change your mind at any time from the ',
+    cookies: 'Cookies', measureBody2: ' page.',
+    never: 'What we do not do',
+    n1: 'No advertising profiling based on what you read.',
+    n2: 'No sale of data to a third party.',
+    n3: 'No account, so no password stored.',
+    rights: 'Your rights',
+    rightsBody1: 'You can ask for access to, correction of, or erasure of your data by writing to ',
+    rightsBody2: '. We answer within thirty days.',
+  },
+  fr: {
+    title: 'Confidentialité', desc: `Quelles données ${site.name} collecte, pourquoi, et comment les retirer.`,
+    lede: 'Le site est statique et ne crée pas de compte. Nous ne collectons que deux choses, et seulement si vous les donnez.',
+    letter: 'La lettre du mardi',
+    letterBody: 'Si vous vous inscrivez, votre adresse e-mail sert à vous envoyer la lettre, et à rien d’autre. Elle n’est ni revendue, ni recoupée. Chaque envoi porte un lien de désabonnement qui prend effet immédiatement.',
+    measure: 'Mesure d’audience et publicité',
+    measureBody1: 'Aucun traceur n’est déposé avant votre consentement. Tant que vous n’avez pas accepté, les scripts publicitaires ne sont pas chargés. Vous pouvez revenir sur votre choix à tout moment depuis la page ',
+    cookies: 'Cookies', measureBody2: '.',
+    never: 'Ce que nous ne faisons pas',
+    n1: 'Aucun profilage publicitaire à partir de votre lecture.',
+    n2: 'Aucune revente de données à un tiers.',
+    n3: 'Aucun compte, donc aucun mot de passe stocké.',
+    rights: 'Vos droits',
+    rightsBody1: 'Vous pouvez demander l’accès, la rectification ou l’effacement des données vous concernant en écrivant à ',
+    rightsBody2: '. Nous répondons sous trente jours.',
+  },
+}[lang];
+---
+<Base title={c.title} description={c.desc} alt={pageHref(otherLocale(lang), 'privacy')}>
+  <div class="page narrow" style="padding-top:40px;padding-bottom:var(--s-9)">
+    <Crumbs trail={[{ label: c.title }]} />
+    <h1 class="d2" style="margin:12px 0 8px">{c.title}</h1>
+    <p style="color:var(--tx-2);max-width:62ch;line-height:1.6;margin-bottom:8px">{c.lede}</p>
+    <div class="read">
+      <h2>{c.letter}</h2><p>{c.letterBody}</p>
+      <h2>{c.measure}</h2>
+      <p>{c.measureBody1}<a href={pageHref(lang, 'cookies')}>{c.cookies}</a>{c.measureBody2}</p>
+      <h2>{c.never}</h2>
+      <ul><li>{c.n1}</li><li>{c.n2}</li><li>{c.n3}</li></ul>
+      <h2>{c.rights}</h2>
+      <p>{c.rightsBody1}<a href={`mailto:${site.email}`}>{site.email}</a>{c.rightsBody2}</p>
+    </div>
+  </div>
+</Base>

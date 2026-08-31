@@ -1,26 +1,10 @@
 ---
-import Base from '../../layouts/Base.astro';
-import Archive from '../../components/Archive.astro';
-import { getPosts, byType, pageOf, allTags } from '../../lib/articles';
-import { sections, type SectionKey } from '../../site';
+import Section from '../../views/Section.astro';
+import { sectionKeys, sectionSlugs, sectionFromSlug } from '../../i18n/config';
 
 export function getStaticPaths() {
-  return Object.values(sections).map((s) => ({ params: { section: s.slug } }));
+  return sectionKeys.map((k) => ({ params: { section: sectionSlugs[k].en } }));
 }
-
-const { section } = Astro.params;
-const key = (Object.keys(sections) as SectionKey[]).find((k) => sections[k].slug === section)!;
-const meta = sections[key];
-const posts = byType(await getPosts(), key);
-const page = pageOf(posts, 1, 12, `/${meta.slug}/`);
-const filters = allTags(posts).slice(0, 6).map(([t]) => t);
+const section = sectionFromSlug('en', Astro.params.section!)!;
 ---
-<Base title={meta.title} description={meta.lede}>
-  <Archive
-    title={meta.title}
-    lede={meta.lede}
-    page={page}
-    filters={filters}
-    noun={meta.noun}
-    showVersion={key === 'guide' || key === 'config'} />
-</Base>
+<Section section={section} />

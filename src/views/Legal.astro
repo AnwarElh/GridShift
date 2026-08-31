@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { site } from '../site';
+import { langFromPath, otherLocale, pageHref } from '../i18n/config';
+
+/* Page légale autonome : une mention légale doit avoir sa propre URL, c'est
+   ce qu'un lecteur — et un service juridique — vient chercher. */
+const lang = langFromPath(Astro.url.pathname);
+const c = {
+  en: {
+    title: 'Legal notice', desc: `Publisher, host and liabilities of ${site.name}.`,
+    todo: 'To be completed before going live',
+    todoBody: 'The fields marked “to be provided” below are the publisher’s legal identity. We do not invent them: they must be filled in by you.',
+    publisher: 'Publisher', host: 'Host', ip: 'Intellectual property',
+    liability: 'Liability', affiliate: 'Affiliate links',
+    company: 'Legal name', form: 'Legal form and capital', address: 'Registered office',
+    reg: 'Company number', director: 'Publication director', contact: 'Contact',
+    provided: 'to be provided',
+    hostBody: 'Name, legal name and address of the host: ',
+    ipBody1: 'The texts published on ', ipBody2: ' belong to their authors. Images come from sources that are free to reuse; their author, licence and original file are listed on the ',
+    ipCredits: 'Photo credits', ipBody3: ' page.',
+    liabilityBody: 'Reviews, scores and guides reflect the state of a game at a given version, shown on every article. A live-service game changes: we revise our scores when it does, and the revision history is public on every review.',
+    affiliateBody1: 'Some links to shops earn us a commission, with no effect on your price or on our scores. The detail is on the ',
+    affiliateLink: 'Affiliate links and advertising', affiliateBody2: ' page.',
+  },
+  fr: {
+    title: 'Mentions légales', desc: `Éditeur, hébergeur et responsabilités du site ${site.name}.`,
+    todo: 'À compléter avant mise en ligne',
+    todoBody: 'Les champs marqués « à renseigner » ci-dessous relèvent de l’identité légale de l’éditeur. Nous ne les inventons pas : ils doivent être remplis par vos soins.',
+    publisher: 'Éditeur du site', host: 'Hébergeur', ip: 'Propriété intellectuelle',
+    liability: 'Responsabilité', affiliate: 'Liens affiliés',
+    company: 'Raison sociale', form: 'Forme juridique et capital', address: 'Siège social',
+    reg: 'SIRET / RCS', director: 'Directeur de la publication', contact: 'Contact',
+    provided: 'à renseigner',
+    hostBody: 'Nom, raison sociale et adresse de l’hébergeur : ',
+    ipBody1: 'Les textes publiés sur ', ipBody2: ' sont la propriété de leurs auteurs. Les images proviennent de sources libres de réutilisation ; leur auteur, leur licence et leur fichier d’origine sont listés sur la page ',
+    ipCredits: 'Crédits photo', ipBody3: '.',
+    liabilityBody: 'Les tests, notes et guides reflètent l’état d’un jeu à une version donnée, indiquée sur chaque article. Un jeu en service évolue : nous révisons nos notes quand il change, et l’historique des révisions est public sur chaque test.',
+    affiliateBody1: 'Certains liens vers les boutiques nous rapportent une commission, sans effet sur votre prix ni sur nos notes. Le détail est sur la page ',
+    affiliateLink: 'Liens affiliés et publicité', affiliateBody2: '.',
+  },
+}[lang];
+---
+<Base title={c.title} description={c.desc} alt={pageHref(otherLocale(lang), 'legal')}>
+  <div class="page narrow" style="padding-top:40px;padding-bottom:var(--s-9)">
+    <Crumbs trail={[{ label: c.title }]} />
+    <h1 class="d2" style="margin:12px 0 8px">{c.title}</h1>
+
+    <div class="alert a-warn" style="margin:24px 0">
+      <div><b>{c.todo}</b>{c.todoBody}</div>
+    </div>
+
+    <div class="read">
+      <h2>{c.publisher}</h2>
+      <p>
+        {site.name}<br>
+        {c.company} : <b>{c.provided}</b><br>
+        {c.form} : <b>{c.provided}</b><br>
+        {c.address} : <b>{c.provided}</b><br>
+        {c.reg} : <b>{c.provided}</b><br>
+        {c.director} : <b>{c.provided}</b><br>
+        {c.contact} : <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+
+      <h2>{c.host}</h2>
+      <p>{c.hostBody}<b>{c.provided}</b></p>
+
+      <h2>{c.ip}</h2>
+      <p>{c.ipBody1}{site.name}{c.ipBody2}<a href={pageHref(lang, 'credits')}>{c.ipCredits}</a>{c.ipBody3}</p>
+
+      <h2>{c.liability}</h2>
+      <p>{c.liabilityBody}</p>
+
+      <h2>{c.affiliate}</h2>
+      <p>{c.affiliateBody1}<a href={`${pageHref(lang, 'about')}#affiliate`}>{c.affiliateLink}</a>{c.affiliateBody2}</p>
+    </div>
+  </div>
+</Base>

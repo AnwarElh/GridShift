@@ -5,8 +5,13 @@ import type { Game } from '../lib/articles';
 /* Bloc « où acheter » — le moteur économique du site.
    Étiqueté, daté, jamais déguisé : la mention d'affiliation fait partie
    du bloc, pas d'une page de mentions légales que personne n'ouvre. */
+import { langFromPath } from '../i18n/config';
+import { useT } from '../i18n/ui';
+import { longDate } from '../lib/format';
 interface Props { game: Game; title?: string; class?: string; id?: string; }
-const { game, title = 'Où acheter', class: cls = '', id } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
+const { game, title = t('review.whereToBuy'), class: cls = '', id } = Astro.props;
 const d = game.data;
 ---
 {d.offers.length > 0 && (
@@ -17,13 +22,13 @@ const d = game.data;
         <a class="offer" data-tone={o.tone} href={o.url} rel="sponsored nofollow noopener" target="_blank">
           <span class="shop">{o.shop}</span>
           <span class="amount">{o.price}</span>
-          <span class:list={['btn', 'btn-sm', o.tone === 'brass' ? 'btn-primary' : 'btn-quiet']}>Voir l'offre</span>
+          <span class:list={['btn', 'btn-sm', o.tone === 'brass' ? 'btn-primary' : 'btn-quiet']}>{t('aff.seeOffer')}</span>
         </a>
       ))}
     </div>
     <p class="aff-note">
-      {d.pricesCheckedOn && `Prix relevés le ${d.pricesCheckedOn}. `}
-      Liens affiliés : nous pouvons toucher une commission, sans effet sur votre prix ni sur notre note.
+      {d.pricesCheckedOn && t('aff.pricesChecked')(longDate(d.pricesCheckedOn, lang))}
+      {t('aff.note')}
     </p>
   </div>
 )}

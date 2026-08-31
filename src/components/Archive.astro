@@ -6,6 +6,8 @@ import Pager from '../components/Pager.astro';
 import Ad from '../components/Ad.astro';
 import Newsletter from '../components/Newsletter.astro';
 import { slugifyTag, type Paged, type Post } from '../lib/articles';
+import { langFromPath } from '../i18n/config';
+import { useT } from '../i18n/ui';
 
 /* Une seule page d'archive pour les rubriques, les tags et les auteurs. */
 interface Props {
@@ -17,6 +19,8 @@ interface Props {
   noun?: string;
   showVersion?: boolean;
 }
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
 const { title, lede, page, filters = [], trail = [], noun = 'article', showVersion = false } = Astro.props;
 ---
 <div class="page" style="padding-top:40px">
@@ -31,7 +35,7 @@ const { title, lede, page, filters = [], trail = [], noun = 'article', showVersi
         {filters.map((f) => <button class="tag" aria-pressed="false" data-filter={slugifyTag(f)}>{f}</button>)}
       </div>
       <span class="grow"></span>
-      <span class="res-count"><b data-count>{page.items.length}</b> {noun}{page.items.length > 1 ? 's' : ''} sur cette page</span>
+      <span class="res-count"><b data-count>{page.items.length}</b> {t('archive.onThisPage')(page.items.length, noun)}</span>
     </div>
   )}
 
@@ -46,23 +50,23 @@ const { title, lede, page, filters = [], trail = [], noun = 'article', showVersi
   {page.items.length === 0 && (
     <div class="empty" style="margin-top:32px">
       <span class="glyph" aria-hidden="true">∅</span>
-      <h2>Rien ici pour le moment</h2>
-      <p>Aucun {noun} publié dans cette rubrique. La lettre du mardi vous préviendra.</p>
+      <h2>{t('archive.emptyTitle')}</h2>
+      <p>{t('archive.emptySection')(noun)}</p>
     </div>
   )}
 
   <!-- filtrage côté client jusqu'à zéro : une grille vide n'explique rien -->
   <div class="empty" id="noResults" style="margin-top:32px" hidden>
     <span class="glyph" aria-hidden="true">∅</span>
-    <h2>Aucun {noun} avec ces filtres</h2>
-    <p>Cette combinaison ne donne rien sur cette page. Retirez un filtre, ou parcourez toutes les pages.</p>
+    <h2>{t('archive.noneWithFilters')(noun)}</h2>
+    <p>{t('archive.emptyBody')}</p>
     <div class="btn-row" style="margin-top:8px">
-      <button class="btn btn-quiet" data-clear-filters>Effacer les filtres</button>
+      <button class="btn btn-quiet" data-clear-filters>{t('archive.clearFilters')}</button>
     </div>
   </div>
 
   <Pager page={page} />
 
   <div style="margin-block:var(--s-8)"><Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} /></div>
-  <Newsletter id="lettre" />
+  <Newsletter id="newsletter" />
 </div>

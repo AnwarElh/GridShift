@@ -4,6 +4,20 @@ import { site, platforms, genres } from '../site';
 import { getCollection } from 'astro:content';
 import { num, scoreBucket, shortDate } from '../lib/format';
 import { slugifyTag } from '../lib/articles';
+import {
+  langFromPath, otherLocale, localeNames, homeHref, sectionHref, pageHref, gameHref, tagHref,
+} from '../i18n/config';
+import { useT } from '../i18n/ui';
+
+/* La barre passe la langue courante à tout ce qu'elle rend, et offre le
+   basculement vers l'autre. `alt` est l'URL de CETTE page dans l'autre langue :
+   seule la page la connaît, elle la fait descendre par le gabarit. */
+interface Props { alt?: string }
+const { alt } = Astro.props;
+
+const lang = langFromPath(Astro.url.pathname);
+const other = otherLocale(lang);
+const t = useT(lang);
 
 const games = await getCollection('games');
 /* Le méga-menu n'est pas une liste de liens : c'est un chercheur de jeux. */
@@ -16,52 +30,61 @@ const upcoming = games
   .slice(0, 3);
 
 const path = Astro.url.pathname;
-const current = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const current = (href: string) => (href === homeHref(lang) ? path === href : path.startsWith(href));
+
+const links = [
+  { label: t('nav.home'), href: homeHref(lang) },
+  { label: t('nav.news'), href: sectionHref(lang, 'news') },
+  { label: t('nav.reviews'), href: sectionHref(lang, 'review') },
+  { label: t('nav.guides'), href: sectionHref(lang, 'guide') },
+  { label: t('nav.setup'), href: sectionHref(lang, 'setup') },
+];
 ---
 <header class="nav">
   <div class="nav-in">
-    <a class="mark" href="/"><i></i>{site.name}</a>
+    <a class="mark" href={homeHref(lang)}><i></i>{site.name}</a>
 
-    <nav class="nav-links" aria-label="Navigation principale">
-      <a class="nav-link" href="/" aria-current={current('/') ? 'page' : undefined}>Accueil</a>
-      <a class="nav-link" href="/actus/" aria-current={current('/actus') ? 'page' : undefined}>Actus</a>
+    <nav class="nav-links" aria-label={t('nav.main')}>
+      {links.slice(0, 2).map((l) => (
+        <a class="nav-link" href={l.href} aria-current={current(l.href) ? 'page' : undefined}>{l.label}</a>
+      ))}
       <div>
         <button class="nav-link" id="megaBtn" aria-expanded="false" aria-controls="mega">
-          Jeux <span class="chev">▼</span>
+          {t('nav.games')} <span class="chev" aria-hidden="true">▼</span>
         </button>
         <div class="mega" id="mega" hidden>
           <div class="mega-grid">
             <div class="mega-col">
-              <p class="mega-h">Jeux les plus suivis</p>
+              <p class="mega-h">{t('mega.mostFollowed')}</p>
               <div class="mega-list">
                 {followed.map((g) => (
-                  <a class="mega-item" href={`/jeux/${g.id}/`}>
+                  <a class="mega-item" href={gameHref(lang, g.id)}>
                     <Fig src={g.data.cover} ratio="3-4" class="cover" />
                     <span><b>{g.data.title}</b><span>{g.data.studio} · {g.data.released}</span></span>
                     <span class="sc" style={g.data.score !== undefined ? `color:var(--sc-${scoreBucket(g.data.score)})` : 'color:var(--tx-3)'}>
-                      {g.data.score !== undefined ? num(g.data.score) : 'à venir'}
+                      {g.data.score !== undefined ? num(g.data.score, lang) : t('mega.upcomingSoon')}
                     </span>
                   </a>
                 ))}
               </div>
             </div>
             <div class="mega-col">
-              <p class="mega-h">Par plateforme</p>
+              <p class="mega-h">{t('mega.byPlatform')}</p>
               <div class="chipbar">
-                {platforms.map((p) => <a class="tag" href={`/tag/${slugifyTag(p)}/`}>{p}</a>)}
+                {platforms.map((p) => <a class="tag" href={tagHref(lang, slugifyTag(p))}>{p}</a>)}
               </div>
-              <p class="mega-h" style="margin-top:24px">Par genre</p>
+              <p class="mega-h" style="margin-top:24px">{t('mega.byGenre')}</p>
               <div class="chipbar">
-                {genres.map((g) => <a class="tag" href={`/tag/${slugifyTag(g)}/`}>{g}</a>)}
+                {genres[lang].map((g) => <a class="tag" href={tagHref(lang, slugifyTag(g))}>{g}</a>)}
               </div>
             </div>
             <div class="mega-col">
-              <p class="mega-h">Prochaines sorties</p>
+              <p class="mega-h">{t('mega.upcoming')}</p>
               <div class="cal">
                 {upcoming.map((g) => {
-                  const [d, m] = shortDate(g.data.releaseDate!).split(' ');
+                  const [d, m] = shortDate(g.data.releaseDate!, lang).split(' ');
                   return (
-                    <a class="cal-row" href={`/jeux/${g.id}/`}>
+                    <a class="cal-row" href={gameHref(lang, g.id)}>
                       <span class="date">{d}<small>{m}</small></span>
                       <b>{g.data.title}</b>
                       <span class="meta">{g.data.platforms.map((p) => p.name).join(' · ')}</span>
@@ -71,25 +94,31 @@ const current = (href: string) => (href === '/' ? path === '/' : path.startsWith
               </div>
             </div>
             <div class="mega-foot">
-              <span class="meta">{games.length} jeux suivis · notes vérifiées à chaque patch majeur</span>
-              <a class="btn btn-sm btn-quiet" href="/jeux/">Parcourir la base →</a>
+              <span class="meta">{t('mega.gamesTracked')(games.length)}</span>
+              <a class="btn btn-sm btn-quiet" href={pageHref(lang, 'games')}>{t('mega.browse')}</a>
             </div>
           </div>
         </div>
       </div>
-      <a class="nav-link" href="/tests/" aria-current={current('/tests') ? 'page' : undefined}>Tests</a>
-      <a class="nav-link" href="/guides/" aria-current={current('/guides') ? 'page' : undefined}>Guides</a>
-      <a class="nav-link" href="/configs/" aria-current={current('/configs') ? 'page' : undefined}>Configs</a>
+      {links.slice(2).map((l) => (
+        <a class="nav-link" href={l.href} aria-current={current(l.href) ? 'page' : undefined}>{l.label}</a>
+      ))}
     </nav>
 
     <span class="nav-sp"></span>
     <!-- sous 860px le libellé et le raccourci passent en display:none : sans
-         aria-label le bouton n'avait plus aucun nom accessible au doigt -->
-    <button class="searchbar" data-search aria-label="Chercher un jeu, un test">
+         aria-label le bouton n'aurait plus aucun nom accessible au doigt -->
+    <button class="searchbar" data-search aria-label={t('search.open')}>
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <span>Chercher un jeu, un test…</span><kbd>⌘K</kbd>
+      <span>{t('search.placeholder')}</span><kbd>⌘&nbsp;K</kbd>
     </button>
-    <button class="btn btn-ico btn-quiet" id="theme" aria-label="Changer de thème" title="Thème clair / sombre">◐</button>
-    <a class="btn btn-primary btn-sm" href="/#newsletter">S'abonner</a>
+    <!-- le sélecteur de langue porte le nom de la langue cible dans SA langue,
+         jamais traduit — c'est ce qu'un lecteur cherche du regard -->
+    <a class="btn btn-sm btn-quiet lang-btn" href={alt ?? homeHref(other)}
+       hreflang={other} lang={other} aria-label={useT(other)('nav.language') + ' : ' + localeNames[other]}>
+      {other.toUpperCase()}
+    </a>
+    <button class="btn btn-ico btn-quiet" id="theme" aria-label={t('theme.toLight')}>◐</button>
+    <a class="btn btn-primary btn-sm" href={`${homeHref(lang)}#newsletter`}>{t('nav.subscribe')}</a>
   </div>
 </header>

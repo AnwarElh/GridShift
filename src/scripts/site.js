@@ -1,6 +1,9 @@
 import { filterIndex, groupResults } from '../lib/search.js';
 
 const $ = (s) => document.querySelector(s);
+/* Les libellés viennent du HTML rendu par Astro, qui seul connaît la langue
+   de la page : aucune chaîne visible n'est écrite dans ce fichier. */
+const S = document.body.dataset;
 const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
 /* thème — le thème clair est un vrai papier, pas un inverse mécanique.
@@ -11,7 +14,7 @@ const themeBtn = $('#theme');
 function paintTheme(t) {
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', t === 'papier' ? '#EDEFF3' : '#0E1016');
-  if (themeBtn) themeBtn.setAttribute('aria-label', t === 'papier' ? 'Passer au thème sombre' : 'Passer au thème clair');
+  if (themeBtn) themeBtn.setAttribute('aria-label', t === 'papier' ? S.themeDark : S.themeLight);
 }
 paintTheme(document.documentElement.dataset.theme);
 on(themeBtn, 'click', () => {
@@ -56,7 +59,8 @@ if (consent) {
    serait donné une fois pour toutes, ce qui n'en est pas un */
 on($('[data-consent-reset]'), 'click', () => {
   try { localStorage.removeItem(KEY); } catch {}
-  toast('Choix effacé', 'La bannière réapparaîtra au prochain chargement.');
+  const c = $('#consent');
+  toast(c?.dataset.resetTitle ?? '', c?.dataset.resetBody ?? '');
 });
 
 /* méga-menu */
@@ -77,7 +81,7 @@ if (cmd) {
   const load = async () => {
     if (index) return index;
     try {
-      const r = await fetch('/search.json');
+      const r = await fetch(cmd.dataset.index);
       if (!r.ok) throw new Error(r.status);
       index = await r.json();
       indexBroken = false;
@@ -97,16 +101,20 @@ if (cmd) {
       ${r.score ? `<span class="k" style="font-weight:800;color:var(--sc-${r.bucket})">${esc(r.score)}</span>` : ''}
     </a>`;
 
+  const groupLabels = {
+    game: cmd.dataset.grpGame, news: cmd.dataset.grpNews, review: cmd.dataset.grpReview,
+    guide: cmd.dataset.grpGuide, setup: cmd.dataset.grpSetup,
+  };
   const render = () => {
-    const groups = groupResults(filterIndex(index || [], input.value));
+    const groups = groupResults(filterIndex(index || [], input.value), groupLabels);
     active = -1;
     res.innerHTML = groups.length
       ? groups.map((g) => `<p class="cmd-grp">${g.label}</p>${g.items.map(row).join('')}`).join('')
       : indexBroken
-        ? '<div class="empty"><h3>Recherche indisponible</h3><p>L\'index n\'a pas pu être chargé. Vérifiez votre connexion et réessayez.</p></div>'
+        ? `<div class="empty"><h3>${esc(cmd.dataset.msgBrokenTitle)}</h3><p>${esc(cmd.dataset.msgBrokenBody)}</p></div>`
         : input.value.trim().length < 2
-          ? '<p class="cmd-grp">Tapez au moins deux lettres</p>'
-          : '<div class="empty"><h3>Aucun résultat</h3><p>Essayez le nom du jeu plutôt que celui du studio.</p></div>';
+          ? `<p class="cmd-grp">${esc(cmd.dataset.msgMin)}</p>`
+          : `<div class="empty"><h3>${esc(cmd.dataset.msgEmptyTitle)}</h3><p>${esc(cmd.dataset.msgEmptyBody)}</p></div>`;
   };
 
   const openCmd = async () => { cmd.showModal(); input.focus(); await load(); render(); };
@@ -255,7 +263,7 @@ document.querySelectorAll('[data-share]').forEach((btn) => {
   on(btn, 'click', async () => {
     const data = { title: document.title, url: location.href };
     if (navigator.share) { try { await navigator.share(data); } catch {} return; }
-    try { await navigator.clipboard.writeText(location.href); toast('Lien copié'); } catch {}
+    try { await navigator.clipboard.writeText(location.href); toast(S.shareCopied); } catch {}
   });
 });
 
@@ -310,22 +318,22 @@ document.querySelectorAll('.news-form').forEach((f) => {
     clearError();
     if (!input.value.trim()) {
       e.preventDefault();
-      setError('Entrez votre adresse e-mail.');
+      setError(S.newsEmpty);
       return;
     }
     if (!input.checkValidity()) {
       e.preventDefault();
-      setError('Cette adresse ne semble pas valide — vérifiez le @ et le domaine.');
+      setError(S.newsInvalid);
       return;
     }
     if (f.hasAttribute('data-newsletter')) {
       /* pas de fournisseur : on le dit, on ne fait pas semblant d'avoir inscrit */
       e.preventDefault();
-      toast('Inscription non configurée', 'Renseignez PUBLIC_NEWSLETTER_ACTION dans .env');
+      toast(S.newsUnconfigured, S.newsUnconfiguredBody);
       return;
     }
     /* la requête part : le bouton se verrouille et le dit */
-    if (btn) { btn.disabled = true; btn.textContent = 'Envoi…'; }
+    if (btn) { btn.disabled = true; btn.textContent = S.newsSending; }
   });
 });
 

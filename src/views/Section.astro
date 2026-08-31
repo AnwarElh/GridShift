@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Archive from '../components/Archive.astro';
+import { getPosts, byType, pageOf, allTags } from '../lib/articles';
+import {
+  langFromPath, otherLocale, sectionHref, type SectionKey,
+} from '../i18n/config';
+import { useT } from '../i18n/ui';
+
+interface Props { section: SectionKey; pageNum?: number }
+const { section, pageNum = 1 } = Astro.props;
+
+const lang = langFromPath(Astro.url.pathname);
+const other = otherLocale(lang);
+const t = useT(lang);
+
+const meta = {
+  news:   { title: t('section.news.title'),   lede: t('section.news.lede'),   noun: t('noun.news') },
+  review: { title: t('section.review.title'), lede: t('section.review.lede'), noun: t('noun.review') },
+  guide:  { title: t('section.guide.title'),  lede: t('section.guide.lede'),  noun: t('noun.guide') },
+  setup:  { title: t('section.setup.title'),  lede: t('section.setup.lede'),  noun: t('noun.setup') },
+}[section];
+
+const posts = byType(await getPosts(lang), section);
+const page = pageOf(posts, pageNum, 12, sectionHref(lang, section));
+const filters = allTags(posts).slice(0, 6).map(([tag]) => tag);
+---
+<Base title={meta.title} description={meta.lede} alt={sectionHref(other, section)}>
+  <Archive
+    title={meta.title}
+    lede={meta.lede}
+    page={page}
+    filters={filters}
+    noun={meta.noun}
+    showVersion={section === 'guide' || section === 'setup'} />
+</Base>

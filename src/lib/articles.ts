@@ -1,5 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { hrefOf, sectionOf } from '../site';
+import {
+  articleHref, type Locale, type SectionKey, defaultLocale,
+} from '../i18n/config';
 import { readingTime } from './format';
 
 export type Article = CollectionEntry<'articles'>;
@@ -9,20 +11,26 @@ export type Author = CollectionEntry<'authors'>;
 export interface Post {
   entry: Article;
   data: Article['data'];
+  /* `id` vaut « fr/echo-divide-test » ; `slug` est la partie qui va dans l'URL,
+     et sert aussi de clé de traduction : deux fichiers de même nom dans en/ et
+     fr/ sont la même histoire dans deux langues. */
   id: string;
+  slug: string;
+  lang: Locale;
   href: string;
-  section: ReturnType<typeof sectionOf>;
+  section: SectionKey;
   author: Author;
   game?: Game;
   minutes: number;
 }
 
-/* Une seule dénormalisation pour tout le site : les pages n'ont jamais à
-   résoudre une référence à la main. Astro met le résultat en cache au build. */
-let cache: Post[] | null = null;
+/* Un cache par langue : `getPosts('fr')` ne doit jamais voir un article anglais. */
+const cache = new Map<Locale, Post[]>();
 
-export async function getPosts(): Promise<Post[]> {
-  if (cache) return cache;
+export async function getPosts(lang: Locale = defaultLocale): Promise<Post[]> {
+  const hit = cache.get(lang);
+  if (hit) return hit;
+
   const [articles, games, authors] = await Promise.all([
     getCollection('articles', ({ data }) => import.meta.env.DEV || !data.draft),
     getCollection('games'),
@@ -31,22 +39,30 @@ export async function getPosts(): Promise<Post[]> {
   const gameById = new Map(games.map((g) => [g.id, g]));
   const authorById = new Map(authors.map((a) => [a.id, a]));
 
-  cache = articles
-    .map((entry) => ({
-      entry,
-      data: entry.data,
-      id: entry.id,
-      href: hrefOf(entry.data.type, entry.id),
-      section: sectionOf(entry.data.type),
-      author: authorById.get(entry.data.author.id)!,
-      game: entry.data.game ? gameById.get(entry.data.game.id) : undefined,
-      minutes: entry.data.readingMinutes ?? readingTime(entry.body),
-    }))
+  const posts = articles
+    .filter((entry) => entry.data.lang === lang)
+    .map((entry) => {
+      const slug = entry.id.split('/').pop()!;
+      return {
+        entry,
+        data: entry.data,
+        id: entry.id,
+        slug,
+        lang,
+        href: articleHref(lang, entry.data.type, slug),
+        section: entry.data.type,
+        author: authorById.get(entry.data.author.id)!,
+        game: entry.data.game ? gameById.get(entry.data.game.id) : undefined,
+        minutes: entry.data.readingMinutes ?? readingTime(entry.body, lang),
+      };
+    })
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-  return cache;
+
+  cache.set(lang, posts);
+  return posts;
 }
 
-export const byType = (posts: Post[], type: Article['data']['type']) =>
+export const byType = (posts: Post[], type: SectionKey) =>
   posts.filter((p) => p.data.type === type);
 
 export const byGame = (posts: Post[], gameId: string) =>
@@ -73,10 +89,10 @@ export const allTags = (posts: Post[]) => {
 };
 
 export const slugifyTag = (tag: string) =>
-  tag.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  tag.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-/* Pagination maison : la forme dont le composant Pager a besoin, sans dépendre
-   du helper d'Astro — les articles vivent sur /rubrique/<slug>/, les pages sur
+/* Pagination maison : les articles vivent sur /rubrique/<slug>/, les pages sur
    /rubrique/page/<n>/, donc les deux routes ne se marchent pas dessus. */
 export interface Paged<T> {
   items: T[];

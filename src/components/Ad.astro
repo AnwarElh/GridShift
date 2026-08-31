@@ -3,6 +3,8 @@
    Sans PUBLIC_ADSENSE_CLIENT dans .env, l'emplacement reste vide — la
    réservation d'espace évite le décalage de mise en page (CLS).
    `unit`, pas `slot` : `slot` est un attribut réservé côté Astro. */
+import { langFromPath } from '../i18n/config';
+import { useT } from '../i18n/ui';
 interface Props { h: '90' | '250' | '280' | '600'; unit?: string; inline?: boolean; class?: string; }
 const { h, unit, inline = false, class: cls = '' } = Astro.props;
 const client = import.meta.env.PUBLIC_ADSENSE_CLIENT;
@@ -14,8 +16,9 @@ const demo = import.meta.env.PUBLIC_AD_DEMO;
    réserve donc aucune place, ce qui décale la mise en page au chargement. */
 const box = { '90': [728, 90], '250': [300, 250], '280': [336, 280], '600': [300, 600] }[h];
 const label = `${box[0]} × ${box[1]}`;
+const t = useT(langFromPath(Astro.url.pathname));
 ---
-<div class:list={['ad', inline && 'ad-inline', cls]} data-h={h}>
+<div class:list={['ad', inline && 'ad-inline', cls]} data-h={h} data-label={t('ad.label')}>
   {client && unit ? (
     <Fragment>
       <ins class="adsbygoogle" style="display:block;width:100%;height:100%"

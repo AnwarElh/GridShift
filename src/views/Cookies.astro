@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { langFromPath, otherLocale, pageHref } from '../i18n/config';
+import { useT } from '../i18n/ui';
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
+const c = {
+  en: {
+    title: 'Cookies', desc: 'Which cookies Gridshift sets, what they do, and how to change your mind.',
+    without: 'What is set without consent',
+    withoutBody1: 'One thing, and it is not a cookie: your theme choice (light or dark) is kept in your browser’s local storage, under the key ',
+    withoutBody2: '. It never leaves your machine. Your answer to the banner is kept the same way, under ',
+    after: 'What is only set after you accept',
+    afterBody: 'Our ad network’s advertising cookies. They serve and measure the advertising that funds the newsroom. Until you accept, the network’s script is not loaded at all.',
+    change: 'Change your mind',
+    changeBody: 'Your choice is not final. The button below clears your answer: the banner will come back on the next page load and you can answer differently.',
+  },
+  fr: {
+    title: 'Cookies', desc: 'Quels cookies Gridshift dépose, à quoi ils servent, et comment changer d’avis.',
+    without: 'Ce qui est déposé sans consentement',
+    withoutBody1: 'Une seule chose, et ce n’est pas un cookie : votre choix de thème (clair ou sombre) est gardé dans le stockage local de votre navigateur, sous la clé ',
+    withoutBody2: '. Il ne quitte jamais votre machine. Votre réponse à la bannière est gardée de la même façon, sous ',
+    after: 'Ce qui n’est déposé qu’après acceptation',
+    afterBody: 'Les cookies publicitaires de notre régie. Ils servent à afficher et à mesurer les publicités qui financent la rédaction. Tant que vous n’avez pas accepté, le script de la régie n’est pas chargé du tout.',
+    change: 'Changer d’avis',
+    changeBody: 'Votre choix n’est pas définitif. Le bouton ci-dessous efface votre réponse : la bannière réapparaîtra au prochain chargement et vous pourrez répondre autrement.',
+  },
+}[lang];
+---
+<Base title={c.title} description={c.desc} alt={pageHref(otherLocale(lang), 'cookies')}>
+  <div class="page narrow" style="padding-top:40px;padding-bottom:var(--s-9)">
+    <Crumbs trail={[{ label: c.title }]} />
+    <h1 class="d2" style="margin:12px 0 8px">{c.title}</h1>
+    <div class="read">
+      <h2>{c.without}</h2>
+      <p>{c.withoutBody1}<code>gs_theme</code>{c.withoutBody2}<code>gs_consent</code>.</p>
+      <h2>{c.after}</h2><p>{c.afterBody}</p>
+      <h2>{c.change}</h2>
+      <p>{c.changeBody}</p>
+      <p><button class="btn btn-quiet" type="button" data-consent-reset>{t('consent.reset')}</button></p>
+    </div>
+  </div>
+</Base>

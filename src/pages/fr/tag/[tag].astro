@@ -1,0 +1,11 @@
+---
+import TagPage from '../../../views/TagPage.astro';
+import { getPosts, allTags, slugifyTag } from '../../../lib/articles';
+
+export async function getStaticPaths() {
+  const posts = await getPosts('fr');
+  return allTags(posts).map(([tag]) => ({ params: { tag: slugifyTag(tag) }, props: { tag } }));
+}
+const { tag } = Astro.props;
+---
+<TagPage tag={tag} />
