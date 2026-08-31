@@ -1,0 +1,21 @@
+---
+import { sections } from '../site';
+/* La barre de rubriques : l'axe de navigation du portail. */
+interface Props { counts?: Record<string, number>; }
+const { counts = {} } = Astro.props;
+const path = Astro.url.pathname;
+const items = [
+  { label: 'Tout', href: '/', n: undefined },
+  ...Object.entries(sections).map(([key, s]) => ({ label: s.label, href: `/${s.slug}/`, n: counts[key] })),
+  { label: 'Jeux', href: '/jeux/', n: counts.jeux },
+  { label: 'Bons plans', href: '/#offres', n: undefined },
+];
+const on = (href: string) => (href === '/' ? path === '/' : path.startsWith(href.replace(/#.*$/, '')) && href !== '/#offres');
+---
+<nav class="catbar" aria-label="Rubriques">
+  {items.map((i) => (
+    <a href={i.href} aria-current={on(i.href) ? 'page' : undefined}>
+      {i.label}{i.n !== undefined && <span class="n">{i.n}</span>}
+    </a>
+  ))}
+</nav>

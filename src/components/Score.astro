@@ -1,0 +1,8 @@
+---
+import { scoreBucket, num } from '../lib/format';
+interface Props { score: number; size?: 'sm' | 'md' | 'xl'; class?: string; }
+const { score, size = 'md', class: cls = '' } = Astro.props;
+---
+<span class:list={['score', size === 'sm' && 'sc-sm', size === 'xl' && 'sc-xl', cls]} data-sc={scoreBucket(score)}>
+  <b>{num(score)}</b><span class="out">/10</span>
+</span>

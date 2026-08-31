@@ -1,0 +1,7 @@
+---
+interface Props { title: string; tone?: 'ok' | 'warn' | 'err'; }
+const { title, tone = 'warn' } = Astro.props;
+---
+<div class:list={['alert', `a-${tone}`]} style="margin:2em 0">
+  <div><b>{title}</b><slot /></div>
+</div>

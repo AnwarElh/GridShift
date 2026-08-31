@@ -1,0 +1,24 @@
+---
+/* Étiquettes de rubrique posées sur la vignette. La rubrique d'abord,
+   puis le jeu : ce sont les deux axes de navigation du site. */
+import { slugifyTag, type Post } from '../lib/articles';
+import { num } from '../lib/format';
+interface Props { post: Post; max?: number; class?: string; }
+const { post, max = 3, class: cls = '' } = Astro.props;
+/* La note se lit sur la vignette : c'est le premier signal d'un test. */
+const score = post.data.score;
+const items = [
+  ...(post.data.live ? [{ label: 'En direct', href: undefined, c: 'live' }] : []),
+  { label: post.section.label, href: `/${post.section.slug}/`, c: post.data.type },
+  ...(post.game ? [{ label: post.game.data.title, href: `/jeux/${post.game.id}/`, c: 'jeu' }] : []),
+  ...post.data.tags.map((t) => ({ label: t, href: `/tag/${slugifyTag(t)}/`, c: undefined })),
+].slice(0, max);
+---
+<div class:list={['chips', cls]}>
+  {items.map((i) =>
+    i.href
+      ? <a class="chip" data-c={i.c} href={i.href}>{i.label}</a>
+      : <span class="chip" data-c={i.c}>{i.label}</span>
+  )}
+  {score !== undefined && <span class="chip chip-score">{num(score)}</span>}
+</div>

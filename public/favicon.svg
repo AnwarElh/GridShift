@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- le glyphe de la marque : carré laiton à l'angle entaillé -->
+  <rect width="32" height="32" rx="4" fill="#141317"/>
+  <path d="M7 7h18v11.7L18.7 25H7Z" fill="#D9A441"/>
+  <style>
+    @media (prefers-color-scheme: light) {
+      rect { fill: #E8E4DA }
+      path { fill: #865E0D }
+    }
+  </style>
+</svg>

@@ -1,0 +1,171 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import Fig from '../../components/Fig.astro';
+import Kicker from '../../components/Kicker.astro';
+import Platforms from '../../components/Platforms.astro';
+import Score from '../../components/Score.astro';
+import Consensus from '../../components/Consensus.astro';
+import Feed from '../../components/Feed.astro';
+import Card from '../../components/Card.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import Ad from '../../components/Ad.astro';
+import Offers from '../../components/Offers.astro';
+import GameCard from '../../components/GameCard.astro';
+import { getPosts, byGame, type Game } from '../../lib/articles';
+import { site } from '../../site';
+
+export async function getStaticPaths() {
+  const games = await getCollection('games');
+  return games.map((game) => ({ params: { slug: game.id }, props: { game } }));
+}
+
+const { game } = Astro.props as { game: Game };
+const d = game.data;
+const all = await getPosts();
+const posts = byGame(all, game.id);
+const { Content } = await render(game);
+/* La meilleure offre remonte en tête de fiche : c'est l'action que la page
+   sert. Le tableau complet reste dans la colonne, avec sa mention. */
+const best = d.offers.find((o) => o.tone === 'brass') ?? d.offers[0];
+
+/* Une fiche peu couverte laissait une colonne vide face à un pavé de 600 px.
+   On finit par où le lecteur va ensuite : les autres jeux suivis, le même
+   genre d'abord. */
+const allGames = await getCollection('games');
+const otherGames = [
+  ...allGames.filter((g) => g.id !== game.id && g.data.genre === d.genre),
+  ...allGames.filter((g) => g.id !== game.id && g.data.genre !== d.genre),
+].slice(0, 4);
+
+const scored = all.filter((p) => p.data.score !== undefined);
+const average = scored.length ? scored.reduce((s, p) => s + p.data.score!, 0) / scored.length : 7.4;
+const better = scored.filter((p) => (p.data.score ?? 0) > (d.score ?? 0)).length;
+const percentile = scored.length ? Math.max(1, Math.round((better / scored.length) * 100)) : 50;
+
+const tabs = [
+  { key: 'apercu', label: 'Aperçu' },
+  { key: 'test', label: 'Tests', n: posts.filter((p) => p.data.type === 'test').length },
+  { key: 'guide', label: 'Guides', n: posts.filter((p) => p.data.type === 'guide').length },
+  { key: 'actu', label: 'Actus', n: posts.filter((p) => p.data.type === 'actu').length },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: d.title,
+  publisher: d.studio,
+  genre: d.genre,
+  gamePlatform: d.platforms.map((p) => p.name),
+  url: new URL(`/jeux/${game.id}/`, site.url).href,
+  ...(d.score !== undefined
+    ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: d.score, bestRating: 10, ratingCount: Math.max(1, posts.length) } }
+    : {}),
+};
+---
+<Base title={d.title} description={`${d.title} — ${d.studio}. Notre note, la version suivie et toute notre couverture.`} jsonLd={jsonLd}>
+  <div class="hub">
+    <div class="hub-bg">{d.hero ? <Fig src={d.hero} ratio="21-9" /> : <span class="ph"></span>}</div>
+    <div class="hub-in">
+      <Fig src={d.cover} alt={d.title} ratio="3-4" class="hub-cover" />
+      <div class="hub-id">
+        <Crumbs trail={[{ label: 'Jeux', href: '/jeux/' }, { label: d.title }]} style="margin-bottom:12px" />
+        <h1>{d.title}</h1>
+        <p class="studio">{d.studio} · {d.genre} · {d.released}</p>
+        <Platforms platforms={d.platforms} style="margin-bottom:14px" />
+        <div class="hub-facts">
+          {d.facts.map((f) => <span><b>{f.label}</b> {f.value}</span>)}
+          {d.version && <span><b>Version suivie</b> {d.version}</span>}
+        </div>
+      </div>
+      <div class="hub-actions">
+        {d.score !== undefined && (
+          <span class="plate p-lg"><span class="plate-in" style="text-align:center;padding:16px 24px">
+            <Kicker plain tone="mute" style="display:block;margin-bottom:6px">Note Gridshift</Kicker>
+            <Score score={d.score} class="sc-center" />
+            <Consensus score={d.score} average={Number(average.toFixed(1))} percentile={percentile} />
+          </span></span>
+        )}
+        {best ? (
+          <a class="btn btn-primary btn-lg btn-block" href={best.url} rel="sponsored nofollow noopener" target="_blank">
+            Meilleur prix — {best.price}
+          </a>
+        ) : (
+          <a class="btn btn-primary btn-block" href="/#newsletter">Suivre ce jeu</a>
+        )}
+        {best && <span class="meta" style="text-align:center">chez {best.shop} · <a href="#offres">toutes les offres</a></span>}
+        {d.followers && <span class="meta" style="text-align:center">{d.followers.toLocaleString('fr-FR')} joueurs le suivent</span>}
+      </div>
+    </div>
+    <div class="page">
+      <div class="tabs" role="tablist">
+        {tabs.map((t, i) => (
+          <button
+            class="tab" role="tab" id={`tab-${t.key}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`panel-${t.key}`}
+            tabindex={i === 0 ? 0 : -1}
+            data-panel={t.key}>
+            {t.label}{t.n !== undefined && <span class="n">{t.n}</span>}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="page split" style="padding-top:40px">
+    <div>
+      <div data-tabpanel="apercu" id="panel-apercu" role="tabpanel" aria-labelledby="tab-apercu" tabindex="0">
+        {game.body?.trim() && <div class="read" style="margin-bottom:40px"><Content /></div>}
+        <SectionHead title="Toute notre couverture" sub="Du plus récent au plus ancien" />
+        <Feed posts={posts} side="version" />
+      </div>
+      {tabs.slice(1).map((t) => (
+        <div data-tabpanel={t.key} id={`panel-${t.key}`} role="tabpanel" aria-labelledby={`tab-${t.key}`} tabindex="0" hidden>
+          <SectionHead title={t.label} sub={`${t.n} article${(t.n ?? 0) > 1 ? 's' : ''} sur ${d.title}`} />
+          {t.n ? (
+            <div class="pgrid" style="margin-top:24px">
+              {posts.filter((p) => p.data.type === t.key).map((p) => <Card post={p} variant="sm" showVersion />)}
+            </div>
+          ) : (
+            <div class="empty"><span class="glyph" aria-hidden="true">∅</span><h3>Rien encore</h3>
+              <p>Nous n'avons pas publié de {t.label.toLowerCase()} sur ce jeu.</p></div>
+          )}
+        </div>
+      ))}
+
+      {otherGames.length > 0 && (
+        <section class="sec">
+          <SectionHead title="À suivre aussi" sub="Les autres jeux que nous couvrons">
+            <a class="btn btn-sm btn-quiet" href="/jeux/">Toute la base</a>
+          </SectionHead>
+          <div class="grid-2">
+            {otherGames.map((g) => <GameCard game={g} count={byGame(all, g.id).length} />)}
+          </div>
+        </section>
+      )}
+    </div>
+
+    <aside class="sticky">
+      <Offers game={game} id="offres" />
+
+      {d.userScore !== undefined && (
+        <div class="card-framed">
+          <Kicker plain tone="mute">Note des joueurs</Kicker>
+          <div style="display:flex;align-items:baseline;gap:12px;margin-top:10px">
+            <Score score={d.userScore} size="sm" />
+            {d.userVotes && <span class="meta">{d.userVotes.toLocaleString('fr-FR')} votes</span>}
+          </div>
+          {d.completion !== undefined && (
+            <div class="rarity" style="margin-top:12px">
+              <span>Terminé par</span><span class="bar"><i style={`width:${d.completion}%`}></i></span><span>{d.completion} %</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      <Ad h={posts.length > 2 ? '600' : '250'} unit={import.meta.env.PUBLIC_AD_SIDEBAR} />
+    </aside>
+  </div>
+</Base>

@@ -1,0 +1,83 @@
+---
+import '../styles/gridshift.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import TabBar from '../components/TabBar.astro';
+import CmdPalette from '../components/CmdPalette.astro';
+import { site } from '../site';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+  image?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+const { title, description = site.description, ogType = 'website', image, noindex = false, jsonLd } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL(image ?? '/og-default.png', site.url).href;
+const fullTitle = title === site.name ? title : `${title} — ${site.name}`;
+const adsense = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+---
+<!doctype html>
+<html lang="fr" data-theme="nuit">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{fullTitle}</title>
+<meta name="description" content={description}>
+<link rel="canonical" href={canonical}>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#141317" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#E8E4DA" media="(prefers-color-scheme: light)">
+{noindex && <meta name="robots" content="noindex,follow">}
+
+<meta property="og:site_name" content={site.name}>
+<meta property="og:type" content={ogType}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={canonical}>
+<meta property="og:image" content={ogImage}>
+<meta property="og:locale" content={site.locale}>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content={site.twitter}>
+
+<link rel="alternate" type="application/rss+xml" title={`${site.name} — tous les articles`} href="/rss.xml">
+
+<!-- polices auto-hébergées : @font-face vit dans gridshift.css.
+     Seule la police d'interface est préchargée — c'est elle qui compose
+     le titre, donc l'élément LCP. Literata ne sert que dans le corps
+     d'article et se charge sans bloquer. -->
+<link rel="preload" href="/fonts/bricolage-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/saira-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+<!-- thème appliqué avant peinture : pas de flash blanc au chargement -->
+<script is:inline>
+  try { const t = localStorage.getItem('gs_theme'); if (t) document.documentElement.dataset.theme = t; } catch {}
+</script>
+
+{jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
+{adsense && (
+  <script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsense}`} crossorigin="anonymous"></script>
+)}
+</head>
+<body>
+<a class="skip" href="#main">Aller au contenu</a>
+
+<Nav />
+<slot name="ctxbar" />
+
+<main id="main">
+  <slot />
+</main>
+
+<Footer />
+<TabBar />
+<CmdPalette />
+<div class="toast-stack" id="toasts" aria-live="polite"></div>
+
+<script src="../scripts/site.js"></script>
+</body>
+</html>

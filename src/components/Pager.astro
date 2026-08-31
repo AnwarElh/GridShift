@@ -1,0 +1,23 @@
+---
+import { pageHref, type Paged } from '../lib/articles';
+interface Props { page: Paged<unknown>; }
+const { page } = Astro.props;
+/* Fenêtre glissante : 1 … n-1 n n+1 … dernier */
+const nums = [...new Set([1, page.current - 1, page.current, page.current + 1, page.last])]
+  .filter((n) => n >= 1 && n <= page.last)
+  .sort((a, b) => a - b);
+---
+{page.last > 1 && (
+  <nav class="pager" style="margin-top:40px" aria-label="Pagination">
+    {page.prev ? <a href={page.prev} rel="prev" aria-label="Page précédente">‹</a>
+               : <span aria-disabled="true" style="opacity:.4">‹</span>}
+    {nums.map((n, i) => (
+      <Fragment>
+        {i > 0 && n - nums[i - 1] > 1 && <span class="gap">…</span>}
+        <a href={pageHref(page, n)} aria-current={n === page.current ? 'page' : undefined}>{n}</a>
+      </Fragment>
+    ))}
+    {page.next ? <a href={page.next} rel="next" aria-label="Page suivante">›</a>
+               : <span aria-disabled="true" style="opacity:.4">›</span>}
+  </nav>
+)}

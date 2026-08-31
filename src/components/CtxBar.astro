@@ -1,0 +1,15 @@
+---
+/* Barre de contexte : apparaît en lecture, dit où on est et où on en est. */
+interface Props { title: string; game?: string; }
+const { title, game } = Astro.props;
+---
+<div class="ctxbar" id="ctxbar">
+  <div class="ctxbar-in">
+    {game && <span class="g">{game}</span>}
+    <span class="t">{title}</span>
+    <div class="btn-row">
+      <button class="btn btn-sm btn-quiet" data-share>Partager</button>
+    </div>
+  </div>
+  <div class="readbar" id="readbar"></div>
+</div>

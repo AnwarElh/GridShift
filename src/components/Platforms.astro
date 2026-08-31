@@ -1,0 +1,11 @@
+---
+interface Props { platforms: { name: string; best?: boolean; unavailable?: boolean }[]; style?: string; }
+const { platforms, style } = Astro.props;
+---
+{platforms.length > 0 && (
+  <span class="plats" style={style}>
+    {platforms.map((p) => (
+      <span class="plat" data-best={p.best ? '' : undefined} aria-disabled={p.unavailable ? 'true' : undefined}>{p.name}</span>
+    ))}
+  </span>
+)}

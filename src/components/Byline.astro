@@ -1,0 +1,25 @@
+---
+import Version from './Version.astro';
+import { longDate } from '../lib/format';
+import type { Post } from '../lib/articles';
+interface Props { post: Post; compact?: boolean; }
+const { post, compact = false } = Astro.props;
+const { data } = post;
+const a = post.author.data;
+---
+<div class="byline" style={compact ? 'border-bottom:0' : undefined}>
+  <span class="avatar av-sm" aria-hidden="true">{a.initials}</span>
+  <span class="who">
+    <b><a href={`/auteur/${post.author.id}/`}>{a.name}</a></b>
+    <span>{a.role}</span>
+  </span>
+  <span class="sp"></span>
+  <Version version={data.testedOn} stale={data.stale} prefix="Testé sur " />
+  <span class="meta">
+    <b>{post.minutes} min</b> de lecture
+    <span class="dot">·</span>
+    <time datetime={(data.updated ?? data.date).toISOString()}>
+      {data.updated ? `Mis à jour le ${longDate(data.updated)}` : longDate(data.date)}
+    </time>
+  </span>
+</div>

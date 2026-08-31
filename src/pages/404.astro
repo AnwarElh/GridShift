@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Card from '../components/Card.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { getPosts } from '../lib/articles';
+const latest = (await getPosts()).slice(0, 3);
+---
+<Base title="Page introuvable" noindex>
+  <div class="page" style="padding-top:80px">
+    <div class="empty">
+      <span class="glyph" aria-hidden="true">404</span>
+      <h3>Cette page n'existe plus</h3>
+      <p>Elle a peut-être été fusionnée avec un guide plus récent, ou le jeu a changé de fiche.</p>
+      <div class="btn-row" style="margin-top:8px">
+        <a class="btn btn-primary" href="/">Retour à l'accueil</a>
+        <button class="btn btn-quiet" data-search>Chercher</button>
+      </div>
+    </div>
+    <section class="sec">
+      <SectionHead title="Nos derniers articles" />
+      <div class="pgrid">{latest.map((p) => <Card post={p} variant="sm" />)}</div>
+    </section>
+  </div>
+</Base>

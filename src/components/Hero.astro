@@ -1,0 +1,39 @@
+---
+import Fig from './Fig.astro';
+import Chips from './Chips.astro';
+import PostMeta from './PostMeta.astro';
+import type { Post } from '../lib/articles';
+
+/* Le carrousel de tête : la pile éditoriale du jour. Défilement natif
+   avec accroche, la colonne de droite sert de sommaire cliquable. */
+interface Props { posts: Post[]; }
+const { posts } = Astro.props;
+---
+<section class="hero" data-hero aria-roledescription="carrousel" aria-label="À la une">
+  <div class="hero-track" data-hero-track tabindex="0">
+    {posts.map((p, i) => (
+      <article class="hero-slide" id={`slide-${i}`}>
+        <Fig src={p.data.cover} alt="" ratio="16-9"
+             widths={[720, 1080, 1440]} sizes="(max-width:1180px) 100vw, 830px" priority={i === 0} />
+        <div class="hero-body">
+          <Chips post={p} max={3} />
+          <h2><a href={p.href}>{p.data.title}</a></h2>
+          <PostMeta date={p.data.date} minutes={p.minutes} />
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="hero-nav" role="tablist" aria-label="Choisir un article à la une">
+    {posts.map((p, i) => (
+      <button class="hero-thumb" type="button" role="tab" data-hero-go={i}
+              aria-current={i === 0 ? 'true' : 'false'} aria-controls={`slide-${i}`}>
+        <Fig src={p.data.cover} alt="" ratio="16-9" widths={[236]} sizes="118px" />
+        <span>
+          <b>{p.data.title}</b>
+          <PostMeta date={p.data.date} minutes={p.minutes} />
+        </span>
+      </button>
+    ))}
+  </div>
+</section>

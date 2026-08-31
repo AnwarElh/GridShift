@@ -1,0 +1,27 @@
+---
+import Fig from './Fig.astro';
+import Chips from './Chips.astro';
+import { feedStamp } from '../lib/format';
+import { slugifyTag, type Post } from '../lib/articles';
+interface Props { posts: Post[]; side?: 'game' | 'version' | 'type'; }
+const { posts, side = 'game' } = Astro.props;
+const aside = (p: Post) =>
+  side === 'version' ? (p.data.testedOn ?? '—') : side === 'type' ? p.section.label : (p.game?.data.title ?? p.section.label);
+---
+<div class="feed">
+  {posts.map((p) => (
+    <article class="feed-item" data-live={p.data.live ? '' : undefined}
+             data-tags={[...p.data.tags, p.data.level, p.game?.data.title].filter(Boolean).map((t) => slugifyTag(t as string)).join('|')}>
+      <Fig src={p.data.cover} alt="" ratio="16-9" widths={[148, 296]} sizes="148px" />
+      <div>
+        <div class="feed-head">
+          <Chips post={p} max={2} class="chips-inline" />
+          <time class="feed-time" datetime={p.data.date.toISOString()}>{feedStamp(p.data.date)}</time>
+          <span class="feed-time">{p.minutes} min</span>
+        </div>
+        <h3><a href={p.href}>{p.data.title}</a></h3>
+      </div>
+      <span class="side">{aside(p)}</span>
+    </article>
+  ))}
+</div>

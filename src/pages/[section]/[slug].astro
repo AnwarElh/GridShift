@@ -1,0 +1,39 @@
+---
+import { render } from 'astro:content';
+import ArticleLayout from '../../layouts/Article.astro';
+import Tldr from '../../components/prose/Tldr.astro';
+import Callout from '../../components/prose/Callout.astro';
+import Spoiler from '../../components/prose/Spoiler.astro';
+import Alert from '../../components/prose/Alert.astro';
+import ProseAd from '../../components/prose/Ad.astro';
+import { getPosts, byGame, related, type Post } from '../../lib/articles';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { section: post.section.slug, slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props as { post: Post };
+const posts = await getPosts();
+const { Content } = await render(post.entry);
+
+const siblings = post.game ? byGame(posts, post.game.id).length : 0;
+const scored = posts.filter((p) => p.data.score !== undefined);
+const average = scored.length ? scored.reduce((s, p) => s + p.data.score!, 0) / scored.length : 7.4;
+const authorCount = posts.filter((p) => p.author.id === post.author.id).length;
+/* percentile : la place de la note dans nos tests, pas dans le marché */
+const better = scored.filter((p) => (p.data.score ?? 0) > (post.data.score ?? 0)).length;
+const percentile = scored.length ? Math.max(1, Math.round((better / scored.length) * 100)) : 50;
+---
+<ArticleLayout
+  post={post}
+  related={related(posts, post)}
+  siblings={siblings}
+  percentile={percentile}
+  average={Number(average.toFixed(1))}
+  authorCount={authorCount}>
+  <Content components={{ Tldr, Callout, Spoiler, Alert, Ad: ProseAd }} />
+</ArticleLayout>

@@ -1,0 +1,20 @@
+---
+import Fig from './Fig.astro';
+import Platforms from './Platforms.astro';
+import { num } from '../lib/format';
+import type { Game } from '../lib/articles';
+interface Props { game: Game; count?: number; }
+const { game, count } = Astro.props;
+const d = game.data;
+---
+<a class="card-game" href={`/jeux/${game.id}/`}>
+  <Fig src={d.cover} alt="" ratio="3-4" />
+  <span>
+    <b>{d.title}</b><span class="studio">{d.studio} · {d.genre}</span>
+    <Platforms platforms={d.platforms} style="margin-top:8px" />
+    <span class="meta" style="display:block;margin-top:8px">
+      {d.score !== undefined ? <><b>{num(d.score)}</b> · </> : <>Sortie {d.released} · </>}
+      {count ?? 0} article{(count ?? 0) > 1 ? 's' : ''}
+    </span>
+  </span>
+</a>

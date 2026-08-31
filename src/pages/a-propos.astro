@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Kicker from '../components/Kicker.astro';
+import AuthorBox from '../components/AuthorBox.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { getCollection } from 'astro:content';
+import { getPosts } from '../lib/articles';
+import { site } from '../site';
+
+const authors = await getCollection('authors');
+const posts = await getPosts();
+const count = (id: string) => posts.filter((p) => p.author.id === id).length;
+
+/* L'échelle de notation, telle qu'elle est réellement appliquée. */
+const scale = [
+  { band: '9,0 – 10', tone: 'sc-90', label: 'Exceptionnel', text: 'Une référence de son genre. Nous en reparlerons dans cinq ans.' },
+  { band: '8,0 – 8,9', tone: 'sc-80', label: 'Très bon', text: 'À acheter au prix fort si le genre vous parle.' },
+  { band: '7,0 – 7,9', tone: 'sc-70', label: 'Bon', text: 'Des qualités nettes, des défauts assumés. À voir en promo.' },
+  { band: '5,0 – 6,9', tone: 'sc-50', label: 'Inégal', text: 'Une bonne idée mal servie, ou l’inverse.' },
+  { band: '0 – 4,9', tone: 'sc-00', label: 'Raté', text: 'Cassé, cynique, ou les deux.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: site.url,
+  description: site.description,
+  employee: authors.map((a) => ({ '@type': 'Person', name: a.data.name, jobTitle: a.data.role })),
+};
+---
+<Base title="Qui nous sommes" description="Notre charte éditoriale, notre méthode de notation et nos règles de transparence." jsonLd={jsonLd}>
+  <div class="page" style="padding-top:40px">
+    <Crumbs trail={[{ label: 'Qui nous sommes' }]} />
+    <div class="narrow" style="margin-top:24px">
+      <Kicker>La rédaction</Kicker>
+      <h1 class="d2" style="margin:14px 0 16px">Nous testons ce que nous achetons</h1>
+      <p style="font-size:var(--ui-lg);color:var(--tx-2);line-height:1.55;max-width:60ch">
+        {site.name} est un média indépendant sur le jeu vidéo. Pas de contenu sponsorisé déguisé,
+        pas de note négociée, et des tests révisés quand les jeux changent.
+      </p>
+    </div>
+
+    <div class="narrow" style="margin-top:48px">
+      <section id="charte">
+        <SectionHead title="Charte éditoriale" style="margin-bottom:24px" />
+        <div class="read">
+          <p>Nous achetons les jeux que nous testons. Quand un éditeur nous fournit un exemplaire, c'est écrit sur le test, en haut, dans la plaque de verdict — pas en note de bas de page.</p>
+          <p>Aucun partenariat commercial n'ouvre droit à une couverture, à un calendrier de publication ou à une relecture avant parution. La publicité et les liens affiliés sont gérés par des personnes qui n'écrivent pas les tests.</p>
+        </div>
+      </section>
+
+      <section id="notation" class="sec">
+        <SectionHead title="Comment nous notons" sub="Une note sur 10, avec une décimale, et une version testée." style="margin-bottom:24px" />
+        <div class="acc">
+          {scale.map((s) => (
+            <details>
+              <summary>
+                <span style={`color:var(--${s.tone});font-weight:800;min-width:88px;display:inline-block`}>{s.band}</span>
+                {s.label}
+                <span class="ind"></span>
+              </summary>
+              <div class="acc-body">{s.text}</div>
+            </details>
+          ))}
+        </div>
+        <div class="callout" style="margin-top:24px">
+          <b>Les notes bougent</b>
+          Un jeu qui se répare mérite d'être renoté, un jeu qui se dégrade aussi. Chaque révision est datée
+          et justifiée sur la page du test.
+        </div>
+      </section>
+
+      <section id="corrections" class="sec">
+        <SectionHead title="Corrections" style="margin-bottom:24px" />
+        <div class="read">
+          <p>Chaque article porte son propre journal de corrections, daté, dans le bloc « Corrections » en fin de texte. Nous ne modifions jamais un texte publié en silence.</p>
+        </div>
+      </section>
+
+      <section id="affiliation" class="sec">
+        <SectionHead title="Liens affiliés et publicité" style="margin-bottom:24px" />
+        <div class="read" id="publicite">
+          <p>Les liens vers les boutiques sont affiliés : une commission nous revient si vous achetez, sans effet sur votre prix. Ils portent l'attribut <code>rel="sponsored nofollow"</code> et sont étiquetés sur chaque fiche de jeu.</p>
+          <p>Les emplacements publicitaires sont réservés dans la mise en page, étiquetés « Publicité », et ne prennent jamais l'apparence d'un article.</p>
+        </div>
+      </section>
+
+      <section id="confidentialite" class="sec">
+        <SectionHead title="Confidentialité et mentions légales" style="margin-bottom:24px" />
+        <div class="read" id="mentions">
+          <p>Nous n'installons aucun traceur avant consentement. La lettre du mardi n'est utilisée que pour l'envoyer.</p>
+          <p id="contact">Nous écrire : <a href="mailto:redaction@gridshift.fr">redaction@gridshift.fr</a></p>
+        </div>
+      </section>
+    </div>
+
+    <section class="sec">
+      <SectionHead title="La rédaction" sub={`${authors.length} personnes`} />
+      <div style="display:grid;gap:24px">
+        {authors.map((a) => <AuthorBox author={a} count={count(a.id)} />)}
+      </div>
+    </section>
+
+    <Newsletter id="lettre" />
+  </div>
+</Base>

@@ -1,0 +1,50 @@
+---
+import Fig from './Fig.astro';
+import Chips from './Chips.astro';
+import PostMeta from './PostMeta.astro';
+import Version from './Version.astro';
+import Score from './Score.astro';
+import type { Post } from '../lib/articles';
+
+interface Props {
+  post: Post;
+  variant?: 'lead' | 'md' | 'sm' | 'xs' | 'review';
+  ratio?: '16-9' | '3-2' | '4-3' | '1-1' | '3-4';
+  showLede?: boolean;
+  showVersion?: boolean;
+  /* la ligne de service est la norme ; `meta="none"` la retire */
+  meta?: 'service' | 'none';
+  /* niveau de titre : le contexte de la page décide, pas la carte */
+  level?: 1 | 2 | 3;
+}
+const { post, variant = 'md', ratio, showLede = false, showVersion = false, meta = 'service', level } = Astro.props;
+const { data } = post;
+const H = `h${level ?? (variant === 'lead' ? 1 : 3)}` as 'h1' | 'h2' | 'h3';
+const r = ratio ?? (variant === 'lead' ? '16-9' : variant === 'xs' ? '1-1' : '3-2');
+---
+{variant === 'review' ? (
+  <a class="card card-review" href={post.href}>
+    <Fig src={data.cover} alt={data.title} ratio={r} />
+    {data.score !== undefined && (
+      <span class="plate"><span class="plate-in"><Score score={data.score} size="sm" /></span></span>
+    )}
+  </a>
+) : (
+  <article
+    class:list={[
+      'card',
+      variant === 'lead' && 'card-lead',
+      (variant === 'sm' || variant === 'xs') && 'card-sm',
+      variant === 'xs' && 'card-xs',
+    ]}>
+    <Fig src={data.cover} alt="" ratio={r} />
+    {variant !== 'xs' && <Chips post={post} max={variant === 'lead' ? 3 : 2} />}
+    <div class="card-body">
+      {variant === 'xs' && <Chips post={post} max={1} />}
+      {meta !== 'none' && <PostMeta date={data.date} minutes={post.minutes} />}
+      <H><a href={post.href}>{data.title}</a></H>
+      {showLede && data.lede && <p>{data.lede}</p>}
+      {showVersion && <Version version={data.testedOn} stale={data.stale} />}
+    </div>
+  </article>
+)}

@@ -1,0 +1,7 @@
+---
+interface Props { tone?: 'brass' | 'live' | 'mute'; plain?: boolean; class?: string; style?: string; }
+const { tone = 'brass', plain = false, class: cls = '', style } = Astro.props;
+---
+<span
+  class:list={['kicker', tone === 'live' && 'k-live', tone === 'mute' && 'k-mute', plain && 'k-plain', cls]}
+  style={style}><slot /></span>

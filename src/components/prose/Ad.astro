@@ -1,0 +1,7 @@
+---
+import Ad from '../Ad.astro';
+/* Pavé publicitaire au fil du texte — l'auteur choisit où il tombe. */
+interface Props { unit?: string; }
+const { unit } = Astro.props;
+---
+<Ad h="280" unit={unit} inline />

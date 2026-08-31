@@ -1,0 +1,14 @@
+---
+import { num } from '../lib/format';
+/* Où se situe la note dans notre distribution : le contexte fait la crédibilité. */
+interface Props { score: number; average: number; percentile?: number; style?: string; }
+const { score, average, percentile, style } = Astro.props;
+const rank = percentile !== undefined ? `Top ${percentile} % de nos tests` : '';
+---
+<div class="consensus" style={style}>
+  <div class="track">
+    <i class="fill" style={`transform:scaleX(${(score / 10).toFixed(2)})`}></i>
+    <i class="avg" style={`left:${(average * 10).toFixed(0)}%`}></i>
+  </div>
+  <div class="lbl"><span>Notre moyenne&nbsp;: {num(average)}</span><span>{rank}</span></div>
+</div>

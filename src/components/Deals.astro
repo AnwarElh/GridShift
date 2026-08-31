@@ -1,0 +1,29 @@
+---
+import Fig from './Fig.astro';
+import type { Game } from '../lib/articles';
+
+/* Les bons plans : la meilleure offre relevée pour chaque jeu suivi.
+   Un bloc éditorial à part entière — c'est ce qui finance la rédaction. */
+interface Props { games: Game[]; }
+const { games } = Astro.props;
+const best = games
+  .filter((g) => g.data.offers.length > 0)
+  .map((g) => ({ game: g, offer: g.data.offers.find((o) => o.tone === 'brass') ?? g.data.offers[0] }));
+---
+{best.length > 0 && (
+  <div class="deals">
+    {best.map(({ game, offer }) => (
+      <article class="deal">
+        <Fig src={game.data.cover} alt="" ratio="3-4" widths={[148]} sizes="74px" />
+        <div>
+          <b>{game.data.title}</b>
+          <span class="shop">{offer.shop}</span>
+          <span class="price"><b>{offer.price}</b></span>
+          <a class="btn btn-sm btn-primary go" href={offer.url} rel="sponsored nofollow noopener" target="_blank">
+            Voir l'offre
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+)}

@@ -1,0 +1,19 @@
+---
+import type { Author } from '../lib/articles';
+interface Props { author: Author; count?: number; style?: string; }
+const { author, count, style } = Astro.props;
+const a = author.data;
+---
+<div class="author" style={style}>
+  <span class="avatar">{a.initials}</span>
+  <div>
+    <b style="font-size:var(--ui-lg)">{a.name}</b>
+    <p class="role">{a.role}{a.since && ` · à Gridshift depuis ${a.since}`}</p>
+    <p class="bio">{a.bio}</p>
+    <div class="creds">
+      {count !== undefined && <span class="tag">{count} article{count > 1 ? 's' : ''} publié{count > 1 ? 's' : ''}</span>}
+      {a.creds.map((c) => <span class="tag">{c}</span>)}
+      <a class="tag" href={`/auteur/${author.id}/`}>Tous ses articles →</a>
+    </div>
+  </div>
+</div>

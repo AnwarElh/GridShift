@@ -1,0 +1,16 @@
+---
+/* Attribution d'une image libre. CC BY et CC BY-SA l'exigent, CC0 et le
+   domaine public non — on la pose quand même, c'est la moindre des choses. */
+import { creditFor } from '../lib/credits';
+interface Props { img?: { src: string }; class?: string; }
+const { img, class: cls = '' } = Astro.props;
+const c = creditFor(img);
+---
+{c && (
+  <span class:list={['credit', cls]}>
+    <a href={c.source} rel="noopener nofollow" target="_blank">{c.artist}</a>
+    {c.licenceUrl
+      ? <> · <a href={c.licenceUrl} rel="license noopener nofollow" target="_blank">{c.licence}</a></>
+      : <> · {c.licence}</>}
+  </span>
+)}

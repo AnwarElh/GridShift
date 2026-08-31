@@ -1,0 +1,11 @@
+---
+interface Props { title: string; sub?: string; level?: 'd3' | 'd4'; style?: string; }
+const { title, sub, level = 'd3', style } = Astro.props;
+---
+<div class="sec-head" style={style}>
+  <div>
+    <h2 class={level}>{title}</h2>
+    {sub && <p class="sub">{sub}</p>}
+  </div>
+  <slot />
+</div>

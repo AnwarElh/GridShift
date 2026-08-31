@@ -1,0 +1,10 @@
+---
+/* La ligne de version : le contenu gaming est versionné, et se périme. */
+interface Props { version?: string; stale?: boolean; prefix?: string; }
+const { version, stale = false, prefix = '' } = Astro.props;
+---
+{version && (
+  <span class:list={['version', stale && 'v-old']}>
+    <i></i>{prefix}{version}{stale && ' · à vérifier'}
+  </span>
+)}

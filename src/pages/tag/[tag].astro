@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import Archive from '../../components/Archive.astro';
+import { getPosts, allTags, slugifyTag, pageOf, type Post } from '../../lib/articles';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return allTags(posts).map(([tag]) => ({
+    params: { tag: slugifyTag(tag) },
+    props: { tag, posts: posts.filter((p) => p.data.tags.includes(tag)) },
+  }));
+}
+
+const { tag, posts } = Astro.props as { tag: string; posts: Post[] };
+const page = pageOf(posts, 1, 24, `/tag/${slugifyTag(tag)}/`);
+---
+<Base title={tag} description={`Tous nos articles sur ${tag} : tests, guides et actus.`}>
+  <Archive
+    title={tag}
+    lede={`${posts.length} article${posts.length > 1 ? 's' : ''} classé${posts.length > 1 ? 's' : ''} sous « ${tag} ».`}
+    page={page}
+    trail={[{ label: 'Sujets' }]} />
+</Base>

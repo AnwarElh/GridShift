@@ -1,0 +1,9 @@
+---
+/* L'essentiel : les lecteurs gaming cherchent une réponse, pas une introduction. */
+interface Props { title?: string; }
+const { title = "L'essentiel" } = Astro.props;
+---
+<div class="tldr">
+  <h2>{title}</h2>
+  <slot />
+</div>

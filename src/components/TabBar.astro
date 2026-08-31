@@ -1,0 +1,13 @@
+---
+const path = Astro.url.pathname;
+const on = (href: string) => (href === '/' ? path === '/' : path.startsWith(href)) ? 'page' : undefined;
+---
+<nav class="tabbar" aria-label="Navigation mobile">
+  <ul>
+    <li><a href="/" aria-current={on('/')}><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Accueil</a></li>
+    <li><a href="/actus/" aria-current={on('/actus')}><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg>Actus</a></li>
+    <li><a href="/jeux/" aria-current={on('/jeux')}><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 4v16"/></svg>Jeux</a></li>
+    <li><a href="#" data-search><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Chercher</a></li>
+    <li><a href="/tests/" aria-current={on('/tests')}><svg viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"/></svg>Tests</a></li>
+  </ul>
+</nav>

@@ -1,0 +1,92 @@
+---
+import Fig from './Fig.astro';
+import { site, platforms, genres } from '../site';
+import { getCollection } from 'astro:content';
+import { num, scoreBucket, shortDate } from '../lib/format';
+import { slugifyTag } from '../lib/articles';
+
+const games = await getCollection('games');
+/* Le méga-menu n'est pas une liste de liens : c'est un chercheur de jeux. */
+const followed = [...games]
+  .sort((a, b) => (b.data.followers ?? 0) - (a.data.followers ?? 0))
+  .slice(0, 4);
+const upcoming = games
+  .filter((g) => g.data.releaseDate && g.data.releaseDate > new Date())
+  .sort((a, b) => a.data.releaseDate!.getTime() - b.data.releaseDate!.getTime())
+  .slice(0, 3);
+
+const path = Astro.url.pathname;
+const current = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="nav">
+  <div class="nav-in">
+    <a class="mark" href="/"><i></i>{site.name}</a>
+
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a class="nav-link" href="/" aria-current={current('/') ? 'page' : undefined}>Accueil</a>
+      <a class="nav-link" href="/actus/" aria-current={current('/actus') ? 'page' : undefined}>Actus</a>
+      <div>
+        <button class="nav-link" id="megaBtn" aria-expanded="false" aria-controls="mega">
+          Jeux <span class="chev">▼</span>
+        </button>
+        <div class="mega" id="mega" hidden>
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>Jeux les plus suivis</h4>
+              <div class="mega-list">
+                {followed.map((g) => (
+                  <a class="mega-item" href={`/jeux/${g.id}/`}>
+                    <Fig src={g.data.cover} ratio="3-4" class="cover" />
+                    <span><b>{g.data.title}</b><span>{g.data.studio} · {g.data.released}</span></span>
+                    <span class="sc" style={g.data.score !== undefined ? `color:var(--sc-${scoreBucket(g.data.score)})` : 'color:var(--tx-3)'}>
+                      {g.data.score !== undefined ? num(g.data.score) : 'à venir'}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div class="mega-col">
+              <h4>Par plateforme</h4>
+              <div class="chipbar">
+                {platforms.map((p) => <a class="tag" href={`/tag/${slugifyTag(p)}/`}>{p}</a>)}
+              </div>
+              <h4 style="margin-top:24px">Par genre</h4>
+              <div class="chipbar">
+                {genres.map((g) => <a class="tag" href={`/tag/${slugifyTag(g)}/`}>{g}</a>)}
+              </div>
+            </div>
+            <div class="mega-col">
+              <h4>Prochaines sorties</h4>
+              <div class="cal">
+                {upcoming.map((g) => {
+                  const [d, m] = shortDate(g.data.releaseDate!).split(' ');
+                  return (
+                    <a class="cal-row" href={`/jeux/${g.id}/`}>
+                      <span class="date">{d}<small>{m}</small></span>
+                      <b>{g.data.title}</b>
+                      <span class="meta">{g.data.platforms.map((p) => p.name).join(' · ')}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+            <div class="mega-foot">
+              <span class="meta">{games.length} jeux suivis · notes vérifiées à chaque patch majeur</span>
+              <a class="btn btn-sm btn-quiet" href="/jeux/">Parcourir la base →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="nav-link" href="/tests/" aria-current={current('/tests') ? 'page' : undefined}>Tests</a>
+      <a class="nav-link" href="/guides/" aria-current={current('/guides') ? 'page' : undefined}>Guides</a>
+    </nav>
+
+    <span class="nav-sp"></span>
+    <button class="searchbar" data-search>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span>Chercher un jeu, un test…</span><kbd>⌘K</kbd>
+    </button>
+    <button class="btn btn-ico btn-quiet" id="theme" aria-label="Changer de thème" title="Thème clair / sombre">◐</button>
+    <a class="btn btn-primary btn-sm" href="/#newsletter">S'abonner</a>
+  </div>
+</header>

@@ -1,0 +1,25 @@
+---
+/* Publicité : réservée, étiquetée, jamais déguisée.
+   Sans PUBLIC_ADSENSE_CLIENT dans .env, l'emplacement reste vide — la
+   réservation d'espace évite le décalage de mise en page (CLS).
+   `unit`, pas `slot` : `slot` est un attribut réservé côté Astro. */
+interface Props { h: '90' | '250' | '280' | '600'; unit?: string; inline?: boolean; class?: string; }
+const { h, unit, inline = false, class: cls = '' } = Astro.props;
+const client = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+/* PUBLIC_AD_DEMO=1 : une créa factice à la place de la plaque vide, pour
+   visualiser la page chargée. Retirer la variable et tout revient à zéro. */
+const demo = import.meta.env.PUBLIC_AD_DEMO;
+const label = { '90': '728 × 90', '250': '300 × 250', '280': '336 × 280', '600': '300 × 600' }[h];
+---
+<div class:list={['ad', inline && 'ad-inline', cls]} data-h={h}>
+  {client && unit ? (
+    <Fragment>
+      <ins class="adsbygoogle" style="display:block;width:100%;height:100%"
+           data-ad-client={client} data-ad-slot={unit} data-full-width-responsive="false"></ins>
+      <script is:inline>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </Fragment>
+  ) : demo ? (
+    <img src={`/ads/${h}.jpg`} alt="" width="100%" height="100%"
+         style="width:100%;height:100%;object-fit:cover" />
+  ) : label}
+</div>

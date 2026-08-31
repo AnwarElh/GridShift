@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import Archive from '../../components/Archive.astro';
+import { getPosts, byType, pageOf, allTags } from '../../lib/articles';
+import { sections, type SectionKey } from '../../site';
+
+export function getStaticPaths() {
+  return Object.values(sections).map((s) => ({ params: { section: s.slug } }));
+}
+
+const { section } = Astro.params;
+const key = (Object.keys(sections) as SectionKey[]).find((k) => sections[k].slug === section)!;
+const meta = sections[key];
+const posts = byType(await getPosts(), key);
+const page = pageOf(posts, 1, 12, `/${meta.slug}/`);
+const filters = allTags(posts).slice(0, 6).map(([t]) => t);
+---
+<Base title={meta.title} description={meta.lede}>
+  <Archive
+    title={meta.title}
+    lede={meta.lede}
+    page={page}
+    filters={filters}
+    noun={key === 'guide' ? 'guide' : key === 'test' ? 'test' : 'actu'}
+    showVersion={key === 'guide'} />
+</Base>

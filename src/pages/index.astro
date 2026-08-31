@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+import Card from '../components/Card.astro';
+import GameCard from '../components/GameCard.astro';
+import Hero from '../components/Hero.astro';
+import CatBar from '../components/CatBar.astro';
+import Deals from '../components/Deals.astro';
+import Newsletter from '../components/Newsletter.astro';
+import Ad from '../components/Ad.astro';
+import { getCollection } from 'astro:content';
+import { getPosts, byType, byGame } from '../lib/articles';
+import { time } from '../lib/format';
+import { sections, site } from '../site';
+
+const posts = await getPosts();
+const games = await getCollection('games');
+
+/* Le carrousel de tête : la sélection maison, la plus récente à défaut. */
+const featured = posts.filter((p) => p.data.featured);
+const hero = [...featured, ...posts.filter((p) => !p.data.featured)].slice(0, 4);
+const wire = posts.slice(0, 5);
+
+/* Le corps de la page : un bloc par rubrique, comme un kiosque.
+   Six vignettes suffisent — au-delà, l'archive fait le travail. */
+const blocks = (Object.keys(sections) as (keyof typeof sections)[]).map((key) => ({
+  key,
+  meta: sections[key],
+  items: byType(posts, key).slice(0, 6),
+}));
+
+const counts = {
+  ...Object.fromEntries((Object.keys(sections) as (keyof typeof sections)[]).map((k) => [k, byType(posts, k).length])),
+  jeux: games.length,
+};
+
+const trending = [...games]
+  .sort((a, b) => (b.data.followers ?? 0) - (a.data.followers ?? 0))
+  .slice(0, 6);
+const countFor = (id: string) => byGame(posts, id).length;
+const weekCount = posts.filter((p) => Date.now() - p.data.date.getTime() < 7 * 864e5).length;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: site.url,
+  description: site.description,
+};
+---
+<Base title={site.name} jsonLd={jsonLd}>
+  <!-- Le Fil : la pulsation. Un média se lit à l'heure. -->
+  <div class="fil">
+    <div class="fil-in">
+      <span class="fil-lbl"><i class="pulse"></i>Le fil</span>
+      <div class="fil-track">
+        {wire.map((p) => (
+          <a href={p.href}><time datetime={p.data.date.toISOString()}>{time(p.data.date)}</time>{p.data.title}</a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="masthead">
+      <div>
+        <h1 class="d2">Le blog {site.name}</h1>
+        <p class="sub">Tests, guides et bons plans — {weekCount} article{weekCount > 1 ? 's' : ''} cette semaine.</p>
+      </div>
+      <a class="btn btn-quiet" href="#offres">Voir les bons plans</a>
+    </div>
+
+    <CatBar counts={counts} />
+    <Hero posts={hero} />
+
+    {blocks.map((b, i) => (
+      <Fragment>
+        <section class="cat-sec" id={b.meta.slug}>
+          <div class="cat-head">
+            <h2 class="d3">{b.meta.title}</h2>
+            <a class="more" href={`/${b.meta.slug}/`}>Tout voir →</a>
+          </div>
+          <div class="pgrid">
+            {b.items.map((p) => (
+              <Card post={p} variant="sm" level={3} showVersion={b.key === 'guide'} />
+            ))}
+          </div>
+          <div class="cat-foot">
+            <a class="btn btn-quiet" href={`/${b.meta.slug}/`}>Voir tous les {b.meta.label.toLowerCase()}</a>
+          </div>
+        </section>
+
+        {i === 0 && (
+          <section class="cat-sec" id="offres">
+            <div class="cat-head">
+              <h2 class="d3">Bons plans du moment</h2>
+              <a class="more" href="/jeux/">Tous les jeux suivis →</a>
+            </div>
+            <Deals games={games} />
+            <p class="aff-note" style="text-align:center">
+              Liens affiliés : nous pouvons toucher une commission, sans effet sur votre prix ni sur nos notes.
+            </p>
+          </section>
+        )}
+
+        {i === 1 && (
+          <section class="cat-sec">
+            <div class="promo">
+              <div>
+                <h2 class="d3">Un prix baisse, vous le saurez</h2>
+                <p>
+                  La lettre du mardi : les sorties qui valent le coup, les patchs qui changent un jeu,
+                  et les offres que nous avons vérifiées nous-mêmes.
+                </p>
+              </div>
+              <a class="btn btn-primary btn-lg" href="#newsletter">Recevoir la lettre</a>
+            </div>
+          </section>
+        )}
+      </Fragment>
+    ))}
+
+    <!-- On navigue par jeu. C'est le vrai axe d'un média gaming. -->
+    <section class="cat-sec">
+      <div class="cat-head">
+        <h2 class="d3">Jeux du moment</h2>
+        <a class="more" href="/jeux/">Base de jeux →</a>
+      </div>
+      <div class="rail">
+        {trending.map((g) => <GameCard game={g} count={countFor(g.id)} />)}
+      </div>
+    </section>
+
+    <div style="margin-block:var(--s-6)">
+      <Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} />
+    </div>
+
+    <Newsletter />
+  </div>
+</Base>

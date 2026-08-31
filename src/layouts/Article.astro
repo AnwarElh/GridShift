@@ -1,0 +1,240 @@
+---
+import Base from './Base.astro';
+import CtxBar from '../components/CtxBar.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Kicker from '../components/Kicker.astro';
+import Chips from '../components/Chips.astro';
+import PostMeta from '../components/PostMeta.astro';
+import Byline from '../components/Byline.astro';
+import AuthorBox from '../components/AuthorBox.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Card from '../components/Card.astro';
+import Fig from '../components/Fig.astro';
+import Ad from '../components/Ad.astro';
+import Score from '../components/Score.astro';
+import Consensus from '../components/Consensus.astro';
+import Platforms from '../components/Platforms.astro';
+import Version from '../components/Version.astro';
+import Credit from '../components/Credit.astro';
+import Offers from '../components/Offers.astro';
+import { site } from '../site';
+import { slugifyTag, type Post } from '../lib/articles';
+import GithubSlugger from 'github-slugger';
+
+interface Props { post: Post; related: Post[]; siblings: number; percentile: number; average: number; authorCount: number; }
+const { post, related, siblings, percentile, average, authorCount } = Astro.props;
+const { data } = post;
+const game = post.game;
+const isTest = data.type === 'test';
+const cover = data.cover?.src ?? undefined;
+/* L'ouverture est une image, pas un chapeau : la photo de l'article porte
+   le titre en grand, et le visuel d'ambiance du jeu redescend dans le corps. */
+const artImg = data.cover ?? game?.data.hero;
+const bodyShot = data.cover && game?.data.hero ? game.data.hero : undefined;
+const bodyShotCaption = data.cover ? game?.data.title : data.coverCaption;
+/* mêmes ancres que les titres du Markdown — Astro les génère avec github-slugger */
+const slugger = new GithubSlugger();
+const stepAnchors = data.steps.map((s) => slugger.slug(s));
+
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': isTest ? 'Review' : 'Article',
+  headline: data.title,
+  description: data.lede,
+  datePublished: data.date.toISOString(),
+  dateModified: (data.updated ?? data.date).toISOString(),
+  author: { '@type': 'Person', name: post.author.data.name, url: new URL(`/auteur/${post.author.id}/`, site.url).href },
+  publisher: { '@type': 'Organization', name: site.name },
+  mainEntityOfPage: new URL(post.href, site.url).href,
+  ...(cover ? { image: new URL(cover, site.url).href } : {}),
+  ...(isTest && data.score !== undefined && game
+    ? {
+        itemReviewed: { '@type': 'VideoGame', name: game.data.title, publisher: game.data.studio, genre: game.data.genre },
+        reviewRating: { '@type': 'Rating', ratingValue: data.score, bestRating: 10, worstRating: 0 },
+        reviewBody: data.verdict,
+      }
+    : {}),
+};
+---
+<Base title={data.title} description={data.lede} ogType="article" image={cover} jsonLd={jsonLd}>
+  <CtxBar slot="ctxbar" title={data.title} game={game?.data.title} />
+
+  <header class="ahero">
+    <div class="page ahero-in">
+      <Crumbs trail={[
+        ...(game ? [{ label: game.data.title, href: `/jeux/${game.id}/` }] : []),
+        { label: post.section.label, href: `/${post.section.slug}/` },
+        { label: data.title },
+      ]} />
+
+      <div class="ahero-cover">
+        {artImg && (
+          <Fig src={artImg} alt={data.coverCaption ?? data.title} ratio="21-9"
+               widths={[900, 1440, 1920]} sizes="100vw" priority />
+        )}
+        <div class="ahero-body">
+          <Chips post={post} max={3} />
+          <h1>{data.title}</h1>
+          <PostMeta date={data.date} minutes={post.minutes} />
+        </div>
+      </div>
+
+      <p class="lede">{data.lede}</p>
+      <Byline post={post} />
+      {artImg && (
+        <p class="meta">
+          {data.coverCaption}
+          <Credit img={artImg} />
+        </p>
+      )}
+    </div>
+  </header>
+
+  <div class="page">
+    <div class="split" style="margin-top:40px">
+      <div>
+        <div class="narrow" style="margin:0" id="article-body">
+
+          {isTest && data.score !== undefined && (
+            <div class="plate p-lg" style="margin-bottom:32px">
+              <div class="plate-in verdict">
+                <div>
+                  <Kicker tone="mute" plain style="display:block;margin-bottom:8px">Verdict</Kicker>
+                  <Score score={data.score} size="xl" />
+                </div>
+                <div>
+                  {data.verdict && (
+                    <p style="font-size:1.0625rem;line-height:1.6;color:var(--tx);margin-bottom:16px">{data.verdict}</p>
+                  )}
+                  <Consensus score={data.score} average={average} percentile={percentile} />
+                  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
+                    <Version version={data.testedOn} stale={data.stale} prefix="Testé sur " />
+                    {data.playtime && <span class="tag">{data.playtime}</span>}
+                    {data.reviewNotes.map((n) => <span class="tag">{n}</span>)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isTest && (data.pros.length > 0 || data.cons.length > 0) && (
+            <div class="grid-2" style="gap:16px;margin-bottom:32px">
+              <div class="card-framed">
+                <Kicker plain style="color:var(--ok)">Ce qui marche</Kicker>
+                <ul style="margin:12px 0 0;padding-left:1.1em;font-size:var(--ui-md);color:var(--tx-2);line-height:1.6">
+                  {data.pros.map((p) => <li>{p}</li>)}
+                </ul>
+              </div>
+              <div class="card-framed">
+                <Kicker plain style="color:var(--err)">Ce qui coince</Kicker>
+                <ul style="margin:12px 0 0;padding-left:1.1em;font-size:var(--ui-md);color:var(--tx-2);line-height:1.6">
+                  {data.cons.map((c) => <li>{c}</li>)}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          <div class="read">
+            {bodyShot && (
+              <figure class="shot">
+                <Fig src={bodyShot} alt="" ratio="21-9" as="span" style="display:block;border-radius:var(--r-1)" widths={[600, 920, 1200]} sizes="(max-width:1180px) 100vw, 920px" />
+                <figcaption>{bodyShotCaption}<Credit img={bodyShot} /></figcaption>
+              </figure>
+            )}
+            <slot />
+          </div>
+
+          {data.scoreRevision && (
+            <div class="alert a-warn" style="margin-top:32px">
+              <div><b>Note révisée</b>{data.scoreRevision}</div>
+            </div>
+          )}
+
+          {(data.method || data.sources || data.corrections.length > 0) && (
+            <div class="acc" style="margin-top:48px">
+              {data.method && (
+                <details open>
+                  <summary>Comment nous avons testé <span class="ind"></span></summary>
+                  <div class="acc-body">{data.method}</div>
+                </details>
+              )}
+              {data.corrections.length > 0 && (
+                <details>
+                  <summary>Corrections <span class="ind"></span></summary>
+                  <div class="acc-body">
+                    {data.corrections.map((c) => <p><b>{c.date}</b> — {c.text}</p>)}
+                  </div>
+                </details>
+              )}
+              {data.sources && (
+                <details>
+                  <summary>Sources <span class="ind"></span></summary>
+                  <div class="acc-body">{data.sources}</div>
+                </details>
+              )}
+            </div>
+          )}
+
+          {data.tags.length > 0 && (
+            <div class="chipbar" style="margin-top:32px">
+              {data.tags.map((t) => <a class="tag" href={`/tag/${slugifyTag(t)}/`}>{t}</a>)}
+            </div>
+          )}
+
+          <AuthorBox author={post.author} count={authorCount} style="margin-top:32px" />
+        </div>
+
+        {related.length > 0 && (
+          <section class="sec">
+            <SectionHead
+              title={game ? `La suite sur ${game.data.title}` : 'À lire ensuite'}
+              sub={game ? `${siblings} article${siblings > 1 ? 's' : ''} sur ce jeu` : undefined}>
+              {game && <a class="btn btn-sm btn-quiet" href={`/jeux/${game.id}/`}>Voir la fiche</a>}
+            </SectionHead>
+            <div class="pgrid">
+              {related.map((r) => <Card post={r} variant="sm" />)}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <aside class="sticky">
+        {data.steps.length > 0 && (
+          <div class="card-framed">
+            <Kicker plain tone="mute">Dans ce guide</Kicker>
+            <nav class="steps" style="margin:12px 0 0">
+              {data.steps.map((s, i) => (
+                <a href={`#${stepAnchors[i]}`}
+                   aria-current={i === 0 ? 'true' : undefined}>{s}</a>
+              ))}
+            </nav>
+          </div>
+        )}
+
+        {game && (
+          <a class="card-framed" href={`/jeux/${game.id}/`} style="display:block">
+            <Kicker plain tone="mute">Le jeu</Kicker>
+            <div style="display:flex;gap:12px;margin-top:12px">
+              <Fig src={game.data.cover} ratio="3-4" style="width:62px;border-radius:2px;flex:none" />
+              <div>
+                <b style="display:block;font-size:var(--ui-md)">{game.data.title}</b>
+                <span class="meta">{game.data.studio} · {game.data.released}</span>
+                <Platforms platforms={game.data.platforms} style="margin-top:8px" />
+              </div>
+            </div>
+            {game.data.score !== undefined && (
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)">
+                <Score score={game.data.score} size="sm" />
+                <span class="btn btn-sm btn-quiet">Fiche complète →</span>
+              </div>
+            )}
+          </a>
+        )}
+
+        {game && <Offers game={game} title={`Acheter ${game.data.title}`} />}
+
+        <Ad h="600" unit={import.meta.env.PUBLIC_AD_SIDEBAR} />
+      </aside>
+    </div>
+  </div>
+</Base>
