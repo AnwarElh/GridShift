@@ -13,13 +13,22 @@ genre:
 facts:
   en:
     - { label: Model, value: "Free-to-play" }
-    - { label: Shape, value: "MOBA lanes over a Three Kingdoms roster" }
+    - { label: Battle size, value: "100 versus 100" }
+    - { label: Map, value: "Left, middle and right lanes" }
+    - { label: Squads, value: "Civilian, warrior, hero" }
   fr:
     - { label: Modèle, value: "Free-to-play" }
-    - { label: Forme, value: "Voies de MOBA sur un roster des Trois Royaumes" }
+    - { label: Taille des batailles, value: "100 contre 100" }
+    - { label: Carte, value: "Voies gauche, centre et droite" }
+    - { label: Escouades, value: "Civils, guerriers, héros" }
 summary:
   en: >-
-    A Three Kingdoms take on the MOBA, blending lane combat with army command. Note: several unrelated games ship under near-identical names — this is the Welove Games title.
+    A real-time strategy game that borrows the MOBA's three-lane map and scales it to
+    100-versus-100. You do not pilot a single champion: you train civilian, warrior and
+    hero squads, push a lane, and capture cities that then send helper forces of their own.
   fr: >-
-    Une relecture des Trois Royaumes en MOBA, mêlant combat de voies et commandement d’armée. À noter : plusieurs jeux sans rapport portent des noms presque identiques — il s’agit ici du titre de Welove Games.
+    Un jeu de stratégie en temps réel qui emprunte la carte à trois voies du MOBA et la
+    porte à 100 contre 100. On n'y pilote pas un champion unique : on entraîne des
+    escouades de civils, de guerriers et de héros, on pousse une voie, et on capture des
+    villes qui envoient à leur tour leurs propres renforts.
 ---
