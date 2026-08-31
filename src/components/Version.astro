@@ -1,10 +1,13 @@
 ---
 /* La ligne de version : le contenu gaming est versionné, et se périme. */
+import { langFromPath } from '../i18n/config';
+import { useT } from '../i18n/ui';
 interface Props { version?: string; stale?: boolean; prefix?: string; }
 const { version, stale = false, prefix = '' } = Astro.props;
+const t = useT(langFromPath(Astro.url.pathname));
 ---
 {version && (
   <span class:list={['version', stale && 'v-old']}>
-    <i></i>{prefix}{version}{stale && ' · à vérifier'}
+    <i></i>{prefix}{version}{stale && ` · ${t('card.toCheck')}`}
   </span>
 )}

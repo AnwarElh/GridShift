@@ -1,0 +1,192 @@
+---
+import Base from '../layouts/Base.astro';
+import Card from '../components/Card.astro';
+import GameCard from '../components/GameCard.astro';
+import Hero from '../components/Hero.astro';
+import CatBar from '../components/CatBar.astro';
+import Deals from '../components/Deals.astro';
+import Newsletter from '../components/Newsletter.astro';
+import Ad from '../components/Ad.astro';
+import Fig from '../components/Fig.astro';
+import { getCollection } from 'astro:content';
+import { getPosts, byType, byGame } from '../lib/articles';
+import { time } from '../lib/format';
+import { site, siteCopy } from '../site';
+import {
+  langFromPath, otherLocale, homeHref, sectionHref, pageHref,
+  type SectionKey, sectionKeys,
+} from '../i18n/config';
+import { useT } from '../i18n/ui';
+
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
+const posts = await getPosts(lang);
+const games = await getCollection('games');
+
+/* Le carrousel de tête : la sélection maison, la plus récente à défaut. */
+const featured = posts.filter((p) => p.data.featured);
+const hero = [...featured, ...posts.filter((p) => !p.data.featured)].slice(0, 4);
+const wire = posts.slice(0, 5);
+
+/* L'ordre des blocs suit la colonne vertébrale du portail : la Une, puis les
+   jeux couverts, puis les rubriques — guides d'abord, l'entrée la plus
+   cherchée sur un média de jeu en service. Chaque rubrique garde sa maille. */
+const order: SectionKey[] = ['guide', 'news', 'review', 'setup'];
+const perBlock: Record<SectionKey, number> = { guide: 3, news: 4, review: 3, setup: 3 };
+const labels: Record<SectionKey, string> = {
+  news: t('nav.news'), review: t('nav.reviews'), guide: t('nav.guides'), setup: t('nav.setup'),
+};
+const blocks = order
+  .map((key) => ({ key, label: labels[key], items: byType(posts, key).slice(0, perBlock[key]) }))
+  .filter((b) => b.items.length > 0);
+
+const counts: Record<string, number> = {
+  ...Object.fromEntries(sectionKeys.map((k) => [k, byType(posts, k).length])),
+  games: games.length,
+};
+
+/* Les jeux couverts : la grille remonte juste sous la Une — sur un média de
+   jeu en service, on navigue par jeu avant de naviguer par rubrique. */
+const covered = [...games].sort((a, b) => (b.data.followers ?? 0) - (a.data.followers ?? 0));
+const countFor = (id: string) => byGame(posts, id).length;
+
+/* Tendances : les articles des jeux les plus suivis. Le classement vient des
+   données du site (`followers`), pas d'un compteur de vues qu'on n'a pas. */
+const rank = new Map(games.map((g) => [g.id, g.data.followers ?? 0]));
+const trending = [...posts]
+  .filter((p) => p.game)
+  .sort((a, b) => (rank.get(b.game!.id) ?? 0) - (rank.get(a.game!.id) ?? 0)
+    || b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 4);
+
+const weekCount = posts.filter((p) => Date.now() - p.data.date.getTime() < 7 * 864e5).length;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: site.url,
+  inLanguage: lang,
+  description: siteCopy[lang].description,
+};
+---
+<Base title={site.name} jsonLd={jsonLd} alt={homeHref(otherLocale(lang))}>
+  <!-- Le Fil : la pulsation. Un média se lit à l'heure. -->
+  <div class="fil">
+    <div class="fil-in">
+      <span class="fil-lbl"><i class="pulse"></i>{t('home.wire')}</span>
+      <div class="fil-track">
+        {wire.map((p) => (
+          <a href={p.href}><time datetime={p.data.date.toISOString()}>{time(p.data.date, lang)}</time>{p.data.title}</a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="masthead">
+      <div>
+        <h1 class="d2">{t('home.title')}</h1>
+        <p class="sub">{t('home.sub')(weekCount)}</p>
+      </div>
+      <a class="btn btn-quiet" href="#offers">{t('home.seeDeals')}</a>
+    </div>
+
+    <CatBar counts={counts} />
+
+    <!-- 1. À la une -->
+    <Hero posts={hero} />
+
+    <!-- 2. Les jeux couverts -->
+    <section class="cat-sec" id="games">
+      <div class="cat-head">
+        <h2 class="d3">{t('home.gamesCovered')}</h2>
+        <a class="more" href={pageHref(lang, 'games')}>{t('home.allGames')}</a>
+      </div>
+      <div class="ggrid">
+        {covered.map((g) => <GameCard game={g} count={countFor(g.id)} />)}
+      </div>
+    </section>
+
+    <!-- 3+. Une rubrique par bloc, chacune avec sa maille -->
+    {blocks.map((b, i) => (
+      <Fragment>
+        <section class="cat-sec" id={b.key}>
+          <div class="cat-head">
+            <h2 class="d3">{b.label}</h2>
+            <a class="more" href={sectionHref(lang, b.key)}>{t('home.seeAll')}</a>
+          </div>
+          {b.key === 'news' ? (
+            <div class="pgrid pgrid-lead">
+              {b.items.slice(0, 1).map((p) => <Card post={p} variant="wide" level={3} showLede />)}
+              {b.items.slice(1).map((p) => <Card post={p} variant="sm" level={3} />)}
+            </div>
+          ) : b.key === 'review' ? (
+            <div class="pgrid">
+              {b.items.map((p) => <Card post={p} variant="verdict" level={3} />)}
+            </div>
+          ) : (
+            <div class="pgrid">
+              {b.items.map((p) => <Card post={p} variant="sm" level={3} showLevel showVersion />)}
+            </div>
+          )}
+          <div class="cat-foot">
+            <a class="btn btn-quiet" href={sectionHref(lang, b.key)}>{t('home.seeAllOf')(b.label)}</a>
+          </div>
+        </section>
+
+        {i === 0 && (
+          <Fragment>
+            <section class="cat-sec" id="offers">
+              <div class="cat-head">
+                <h2 class="d3">{t('home.deals')}</h2>
+                <a class="more" href={pageHref(lang, 'games')}>{t('home.allTrackedGames')}</a>
+              </div>
+              <Deals games={games} />
+              <p class="aff-note" style="text-align:center">{t('aff.note')}</p>
+            </section>
+            <div style="margin-block:var(--s-6)">
+              <Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} />
+            </div>
+          </Fragment>
+        )}
+
+        {i === 1 && (
+          <section class="cat-sec">
+            <div class="promo">
+              <div>
+                <h2 class="d3">{t('home.promoTitle')}</h2>
+                <p>{t('home.promoBody')}</p>
+              </div>
+              <a class="btn btn-primary btn-lg" href="#newsletter">{t('home.promoCta')}</a>
+            </div>
+          </section>
+        )}
+      </Fragment>
+    ))}
+
+    <!-- Avant-dernier bloc : le classement des jeux les plus suivis -->
+    <section class="cat-sec">
+      <div class="cat-head">
+        <h2 class="d3">{t('home.trending')}</h2>
+        <a class="more" href={pageHref(lang, 'games')}>{t('home.gameDatabase')}</a>
+      </div>
+      <ol class="trend">
+        {trending.map((p, i) => (
+          <li>
+            <span class="trend-n" aria-hidden="true">{i + 1}</span>
+            <article class="card card-sm card-xs">
+              <Fig src={p.data.cover} alt="" ratio="1-1" widths={[164]} sizes="82px" />
+              <div class="card-body">
+                <h3><a href={p.href}>{p.data.title}</a></h3>
+                <p class="card-meta"><span>{labels[p.section]}</span></p>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <Newsletter />
+  </div>
+</Base>

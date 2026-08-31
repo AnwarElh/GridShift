@@ -1,14 +1,18 @@
 ---
 import { num } from '../lib/format';
+import { langFromPath } from '../i18n/config';
+import { useT } from '../i18n/ui';
 /* Où se situe la note dans notre distribution : le contexte fait la crédibilité. */
 interface Props { score: number; average: number; percentile?: number; style?: string; }
 const { score, average, percentile, style } = Astro.props;
-const rank = percentile !== undefined ? `Top ${percentile} % de nos tests` : '';
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
+const rank = percentile !== undefined ? t('review.topPercent')(percentile) : '';
 ---
 <div class="consensus" style={style}>
   <div class="track">
     <i class="fill" style={`transform:scaleX(${(score / 10).toFixed(2)})`}></i>
     <i class="avg" style={`left:${(average * 10).toFixed(0)}%`}></i>
   </div>
-  <div class="lbl"><span>Notre moyenne&nbsp;: {num(average)}</span><span>{rank}</span></div>
+  <div class="lbl"><span>{t('review.ourAverage')}&nbsp;: {num(average, lang)}</span><span>{rank}</span></div>
 </div>

@@ -1,21 +1,26 @@
 ---
-import { site, footerLinks, socials } from '../site';
+import { site, siteCopy, footerLinks, socials } from '../site';
+import { langFromPath, homeHref, feedHref } from '../i18n/config';
+import { useT } from '../i18n/ui';
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
 const year = new Date().getFullYear();
+const cols = footerLinks(lang);
 ---
 <footer class="foot">
   <div class="foot-in">
     <div class="foot-brand">
-      <a class="mark" href="/"><i></i>{site.name}</a>
-      <p>{site.description}</p>
+      <a class="mark" href={homeHref(lang)}><i></i>{site.name}</a>
+      <p>{siteCopy[lang].description}</p>
       <div class="socials">
         {socials.map((s) => (
-          <a href={s.href} rel="noopener" aria-label={s.name} title={s.name}>
+          <a href={s.name === 'RSS' ? feedHref(lang) : s.href} rel="noopener" aria-label={s.name} title={s.name}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d={s.d} /></svg>
           </a>
         ))}
       </div>
     </div>
-    {footerLinks.map((col) => (
+    {cols.map((col) => (
       <div>
         <h2>{col.title}</h2>
         <ul>{col.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
@@ -23,10 +28,7 @@ const year = new Date().getFullYear();
     ))}
   </div>
   <div class="foot-bar"><div>
-    <span>© {year} {site.name} — {site.tagline}</span>
-    <span>
-      <b>Liens affiliés :</b> certaines offres nous rapportent une commission.
-      Elle ne change ni votre prix, ni nos notes.
-    </span>
+    <span>© {year} {site.name} — {siteCopy[lang].tagline}</span>
+    <span><b>{t('foot.affiliateNote')}</b> {t('foot.affiliateBody')}</span>
   </div></div>
 </footer>

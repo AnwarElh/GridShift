@@ -1,11 +1,22 @@
 ---
-interface Props { platforms: { name: string; best?: boolean; unavailable?: boolean }[]; style?: string; }
-const { platforms, style } = Astro.props;
+/* Matrice plateformes — neutre par principe, aucune couleur de marque.
+   Le nom d'une plateforme est un nom propre ; la mention « recommandé » est
+   dérivée de `best` et traduite ici, elle ne vit plus dans le contenu. */
+import { langFromPath } from '../i18n/config';
+import { useT } from '../i18n/ui';
+interface Props {
+  platforms: { name: string; best?: boolean; unavailable?: boolean }[];
+  style?: string;
+  class?: string;
+}
+const { platforms, style, class: cls = '' } = Astro.props;
+const t = useT(langFromPath(Astro.url.pathname));
 ---
-{platforms.length > 0 && (
-  <span class="plats" style={style}>
-    {platforms.map((p) => (
-      <span class="plat" data-best={p.best ? '' : undefined} aria-disabled={p.unavailable ? 'true' : undefined}>{p.name}</span>
-    ))}
-  </span>
-)}
+<div class:list={['plats', cls]} style={style}>
+  {platforms.map((p) => (
+    <span class="plat" data-best={p.best ? '' : undefined}
+          aria-disabled={p.unavailable ? 'true' : undefined}>
+      {p.name}{p.best && ` — ${t('card.recommended')}`}
+    </span>
+  ))}
+</div>

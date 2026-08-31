@@ -1,0 +1,18 @@
+---
+import Section from '../../../../views/Section.astro';
+import { sectionKeys, sectionSlugs, sectionFromSlug } from '../../../../i18n/config';
+import { getPosts, byType } from '../../../../lib/articles';
+
+export async function getStaticPaths() {
+  const posts = await getPosts('fr');
+  return sectionKeys.flatMap((k) => {
+    const last = Math.max(1, Math.ceil(byType(posts, k).length / 12));
+    /* la page 1 est déjà servie par /<rubrique>/ : on ne la duplique pas */
+    return Array.from({ length: last - 1 }, (_, i) => ({
+      params: { section: sectionSlugs[k].fr, page: String(i + 2) },
+    }));
+  });
+}
+const section = sectionFromSlug('fr', Astro.params.section!)!;
+---
+<Section section={section} pageNum={Number(Astro.params.page)} />

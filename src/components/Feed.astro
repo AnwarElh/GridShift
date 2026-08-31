@@ -3,10 +3,15 @@ import Fig from './Fig.astro';
 import Chips from './Chips.astro';
 import { feedStamp } from '../lib/format';
 import { slugifyTag, type Post } from '../lib/articles';
+import { useT } from '../i18n/ui';
 interface Props { posts: Post[]; side?: 'game' | 'version' | 'type'; }
 const { posts, side = 'game' } = Astro.props;
+const label = (p: Post) => {
+  const t = useT(p.lang);
+  return { news: t('nav.news'), review: t('nav.reviews'), guide: t('nav.guides'), setup: t('nav.setup') }[p.section];
+};
 const aside = (p: Post) =>
-  side === 'version' ? (p.data.testedOn ?? '—') : side === 'type' ? p.section.label : (p.game?.data.title ?? p.section.label);
+  side === 'version' ? (p.data.testedOn ?? '—') : side === 'type' ? label(p) : (p.game?.data.title ?? label(p));
 ---
 <div class="feed">
   {posts.map((p) => (
@@ -16,8 +21,8 @@ const aside = (p: Post) =>
       <div>
         <div class="feed-head">
           <Chips post={p} max={2} class="chips-inline" />
-          <time class="feed-time" datetime={p.data.date.toISOString()}>{feedStamp(p.data.date)}</time>
-          <span class="feed-time">{p.minutes} min</span>
+          <time class="feed-time" datetime={p.data.date.toISOString()}>{feedStamp(p.data.date, p.lang)}</time>
+          <span class="feed-time">{p.minutes} {useT(p.lang)('card.min')}</span>
         </div>
         <h3><a href={p.href}>{p.data.title}</a></h3>
       </div>

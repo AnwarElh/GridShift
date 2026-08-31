@@ -1,7 +1,6 @@
 ---
 title: Blue Meridian
 studio: Atlas Bay
-genre: Aventure
 cover: ../../assets/g-blue-meridian.jpg
 hero: ../../assets/h-blue-meridian.jpg
 released: "2026"
@@ -13,12 +12,23 @@ followers: 940
 completion: 58
 version: "1.0"
 platforms:
-  - { name: "PC — recommandé", best: true }
+  - { name: PC, best: true }
   - { name: PS5 }
+genre:
+  en: Adventure
+  fr: Aventure
 facts:
-  - { label: Durée, value: "14 h" }
-  - { label: Coop, value: Non }
+  en:
+    - { label: Length, value: "14 h" }
+    - { label: Co-op, value: "No" }
+  fr:
+    - { label: Durée, value: "14 h" }
+    - { label: Coop, value: Non }
+summary:
+  en: >-
+    Ambitious, talkative, uneven. Blue Meridian has things to say and takes far too long
+    to say them.
+  fr: >-
+    Ambitieux, bavard, inégal. Blue Meridian a des choses à dire et met trop de temps
+    à les dire.
 ---
-
-Ambitieux, bavard, inégal. Blue Meridian a des choses à dire et met trop de temps
-à les dire.

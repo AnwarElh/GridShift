@@ -1,0 +1,10 @@
+---
+import Section from '../../../views/Section.astro';
+import { sectionKeys, sectionSlugs, sectionFromSlug } from '../../../i18n/config';
+
+export function getStaticPaths() {
+  return sectionKeys.map((k) => ({ params: { section: sectionSlugs[k].fr } }));
+}
+const section = sectionFromSlug('fr', Astro.params.section!)!;
+---
+<Section section={section} />

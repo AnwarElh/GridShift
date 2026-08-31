@@ -1,35 +1,18 @@
 ---
-import Base from '../../../layouts/Base.astro';
-import Archive from '../../../components/Archive.astro';
-import { getPosts, byType, pageOf, allTags } from '../../../lib/articles';
-import { sections, type SectionKey } from '../../../site';
+import Section from '../../../views/Section.astro';
+import { sectionKeys, sectionSlugs, sectionFromSlug } from '../../../i18n/config';
+import { getPosts, byType } from '../../../lib/articles';
 
 export async function getStaticPaths() {
-  const PER = 12;
-  const posts = await getPosts();
-  return (Object.keys(sections) as SectionKey[]).flatMap((key) => {
-    const list = byType(posts, key);
-    const last = Math.ceil(list.length / PER);
-    /* la page 1 vit sur /rubrique/, on ne la duplique pas ici */
-    return Array.from({ length: Math.max(0, last - 1) }, (_, i) => ({
-      params: { section: sections[key].slug, page: String(i + 2) },
-      props: { key },
+  const posts = await getPosts('en');
+  return sectionKeys.flatMap((k) => {
+    const last = Math.max(1, Math.ceil(byType(posts, k).length / 12));
+    /* la page 1 est déjà servie par /<rubrique>/ : on ne la duplique pas */
+    return Array.from({ length: last - 1 }, (_, i) => ({
+      params: { section: sectionSlugs[k].en, page: String(i + 2) },
     }));
   });
 }
-
-const { key } = Astro.props as { key: SectionKey };
-const meta = sections[key];
-const posts = byType(await getPosts(), key);
-const page = pageOf(posts, Number(Astro.params.page), 12, `/${meta.slug}/`);
-const filters = allTags(posts).slice(0, 6).map(([t]) => t);
+const section = sectionFromSlug('en', Astro.params.section!)!;
 ---
-<Base title={`${meta.title} — page ${page.current}`} description={meta.lede} noindex>
-  <Archive
-    title={meta.title}
-    lede={meta.lede}
-    page={page}
-    filters={filters}
-    noun={key === 'guide' ? 'guide' : key === 'test' ? 'test' : 'actu'}
-    showVersion={key === 'guide'} />
-</Base>
+<Section section={section} pageNum={Number(Astro.params.page)} />

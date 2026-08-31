@@ -3,15 +3,24 @@
    puis le jeu : ce sont les deux axes de navigation du site. */
 import { slugifyTag, type Post } from '../lib/articles';
 import { num } from '../lib/format';
+import { sectionHref, gameHref, tagHref } from '../i18n/config';
+import { useT } from '../i18n/ui';
 interface Props { post: Post; max?: number; class?: string; showScore?: boolean; }
 const { post, max = 3, class: cls = '', showScore = true } = Astro.props;
+const lang = post.lang;
+const t = useT(lang);
 /* La note se lit sur la vignette : c'est le premier signal d'un test. */
 const score = showScore ? post.data.score : undefined;
+
+const sectionLabel = {
+  news: t('nav.news'), review: t('nav.reviews'), guide: t('nav.guides'), setup: t('nav.setup'),
+}[post.section];
+
 const items = [
-  ...(post.data.live ? [{ label: 'En direct', href: undefined, c: 'live' }] : []),
-  { label: post.section.label, href: `/${post.section.slug}/`, c: post.data.type },
-  ...(post.game ? [{ label: post.game.data.title, href: `/jeux/${post.game.id}/`, c: 'jeu' }] : []),
-  ...post.data.tags.map((t) => ({ label: t, href: `/tag/${slugifyTag(t)}/`, c: undefined })),
+  ...(post.data.live ? [{ label: t('card.live'), href: undefined, c: 'live' }] : []),
+  { label: sectionLabel, href: sectionHref(lang, post.section), c: post.section },
+  ...(post.game ? [{ label: post.game.data.title, href: gameHref(lang, post.game.id), c: 'game' }] : []),
+  ...post.data.tags.map((tag) => ({ label: tag, href: tagHref(lang, slugifyTag(tag)), c: undefined })),
 ].slice(0, max);
 ---
 <div class:list={['chips', cls]}>
@@ -20,5 +29,5 @@ const items = [
       ? <a class="chip" data-c={i.c} href={i.href}>{i.label}</a>
       : <span class="chip" data-c={i.c}>{i.label}</span>
   )}
-  {score !== undefined && <span class="chip chip-score">{num(score)}</span>}
+  {score !== undefined && <span class="chip chip-score">{num(score, lang)}</span>}
 </div>

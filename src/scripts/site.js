@@ -1,6 +1,9 @@
 import { filterIndex, groupResults } from '../lib/search.js';
 
 const $ = (s) => document.querySelector(s);
+/* Les libellés viennent du HTML rendu par Astro, qui seul connaît la langue
+   de la page : aucune chaîne visible n'est écrite dans ce fichier. */
+const S = document.body.dataset;
 const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
 /* thème — le thème clair est un vrai papier, pas un inverse mécanique.
@@ -11,7 +14,7 @@ const themeBtn = $('#theme');
 function paintTheme(t) {
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', t === 'papier' ? '#EDEFF3' : '#0E1016');
-  if (themeBtn) themeBtn.setAttribute('aria-label', t === 'papier' ? 'Passer au thème sombre' : 'Passer au thème clair');
+  if (themeBtn) themeBtn.setAttribute('aria-label', t === 'papier' ? S.themeDark : S.themeLight);
 }
 paintTheme(document.documentElement.dataset.theme);
 on(themeBtn, 'click', () => {
@@ -19,6 +22,45 @@ on(themeBtn, 'click', () => {
   r.dataset.theme = r.dataset.theme === 'nuit' ? 'papier' : 'nuit';
   try { localStorage.setItem('gs_theme', r.dataset.theme); } catch {}
   paintTheme(r.dataset.theme);
+});
+
+/* consentement — rien de la régie n'est chargé avant un « oui » explicite.
+   Le choix vit dans localStorage : le site est statique, il n'y a pas de
+   serveur pour le retenir, et il n'a pas à quitter la machine du lecteur. */
+const KEY = 'gs_consent';
+const readConsent = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
+
+function loadAds(client) {
+  if (!client || document.getElementById('gs-ads')) return;
+  const sc = document.createElement('script');
+  sc.id = 'gs-ads';
+  sc.async = true;
+  sc.crossOrigin = 'anonymous';
+  sc.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(client);
+  document.head.append(sc);
+}
+
+const consent = $('#consent');
+if (consent) {
+  const client = consent.dataset.adsense;
+  const answer = readConsent();
+  if (answer === 'yes') loadAds(client);
+  else if (answer !== 'no') consent.hidden = false;
+
+  consent.querySelectorAll('[data-consent]').forEach((b) => on(b, 'click', () => {
+    const value = b.dataset.consent;
+    try { localStorage.setItem(KEY, value); } catch {}
+    consent.hidden = true;
+    if (value === 'yes') loadAds(client);
+  }));
+}
+
+/* la page Cookies permet de revenir sur le choix — sinon le consentement
+   serait donné une fois pour toutes, ce qui n'en est pas un */
+on($('[data-consent-reset]'), 'click', () => {
+  try { localStorage.removeItem(KEY); } catch {}
+  const c = $('#consent');
+  toast(c?.dataset.resetTitle ?? '', c?.dataset.resetBody ?? '');
 });
 
 /* méga-menu */
@@ -39,7 +81,7 @@ if (cmd) {
   const load = async () => {
     if (index) return index;
     try {
-      const r = await fetch('/search.json');
+      const r = await fetch(cmd.dataset.index);
       if (!r.ok) throw new Error(r.status);
       index = await r.json();
       indexBroken = false;
@@ -59,16 +101,20 @@ if (cmd) {
       ${r.score ? `<span class="k" style="font-weight:800;color:var(--sc-${r.bucket})">${esc(r.score)}</span>` : ''}
     </a>`;
 
+  const groupLabels = {
+    game: cmd.dataset.grpGame, news: cmd.dataset.grpNews, review: cmd.dataset.grpReview,
+    guide: cmd.dataset.grpGuide, setup: cmd.dataset.grpSetup,
+  };
   const render = () => {
-    const groups = groupResults(filterIndex(index || [], input.value));
+    const groups = groupResults(filterIndex(index || [], input.value), groupLabels);
     active = -1;
     res.innerHTML = groups.length
       ? groups.map((g) => `<p class="cmd-grp">${g.label}</p>${g.items.map(row).join('')}`).join('')
       : indexBroken
-        ? '<div class="empty"><h3>Recherche indisponible</h3><p>L\'index n\'a pas pu être chargé. Vérifiez votre connexion et réessayez.</p></div>'
+        ? `<div class="empty"><h3>${esc(cmd.dataset.msgBrokenTitle)}</h3><p>${esc(cmd.dataset.msgBrokenBody)}</p></div>`
         : input.value.trim().length < 2
-          ? '<p class="cmd-grp">Tapez au moins deux lettres</p>'
-          : '<div class="empty"><h3>Aucun résultat</h3><p>Essayez le nom du jeu plutôt que celui du studio.</p></div>';
+          ? `<p class="cmd-grp">${esc(cmd.dataset.msgMin)}</p>`
+          : `<div class="empty"><h3>${esc(cmd.dataset.msgEmptyTitle)}</h3><p>${esc(cmd.dataset.msgEmptyBody)}</p></div>`;
   };
 
   const openCmd = async () => { cmd.showModal(); input.focus(); await load(); render(); };
@@ -217,7 +263,7 @@ document.querySelectorAll('[data-share]').forEach((btn) => {
   on(btn, 'click', async () => {
     const data = { title: document.title, url: location.href };
     if (navigator.share) { try { await navigator.share(data); } catch {} return; }
-    try { await navigator.clipboard.writeText(location.href); toast('Lien copié'); } catch {}
+    try { await navigator.clipboard.writeText(location.href); toast(S.shareCopied); } catch {}
   });
 });
 
@@ -247,11 +293,47 @@ function toast(title, detail = '') {
   if (stack.children.length > 3) stack.firstElementChild?.remove();
 }
 
-/* newsletter sans fournisseur configuré : on le dit, on ne fait pas semblant */
-document.querySelectorAll('form[data-newsletter]').forEach((f) => {
+/* Lettre : un seul gestionnaire pour la validation, l'état d'envoi et le cas
+   « fournisseur non configuré ». En deux gestionnaires, une adresse invalide
+   déclenchait AUSSI le message de configuration — deux réponses pour une
+   seule erreur. Le formulaire porte `novalidate` : le message va sous le
+   champ, pas dans une bulle native qui saute au premier clic. */
+document.querySelectorAll('.news-form').forEach((f) => {
+  const input = f.querySelector('input[type="email"]');
+  const btn = f.querySelector('button[type="submit"]');
+  const msg = document.getElementById(input?.getAttribute('aria-describedby') ?? '');
+
+  const setError = (text) => {
+    if (msg) { msg.textContent = text; msg.hidden = false; }
+    input?.setAttribute('aria-invalid', 'true');
+    input?.focus();
+  };
+  const clearError = () => {
+    if (msg) { msg.hidden = true; msg.textContent = ''; }
+    input?.removeAttribute('aria-invalid');
+  };
+  on(input, 'input', clearError);
+
   on(f, 'submit', (e) => {
-    e.preventDefault();
-    toast('Inscription non configurée', 'Renseignez PUBLIC_NEWSLETTER_ACTION dans .env');
+    clearError();
+    if (!input.value.trim()) {
+      e.preventDefault();
+      setError(S.newsEmpty);
+      return;
+    }
+    if (!input.checkValidity()) {
+      e.preventDefault();
+      setError(S.newsInvalid);
+      return;
+    }
+    if (f.hasAttribute('data-newsletter')) {
+      /* pas de fournisseur : on le dit, on ne fait pas semblant d'avoir inscrit */
+      e.preventDefault();
+      toast(S.newsUnconfigured, S.newsUnconfiguredBody);
+      return;
+    }
+    /* la requête part : le bouton se verrouille et le dit */
+    if (btn) { btn.disabled = true; btn.textContent = S.newsSending; }
   });
 });
 

@@ -1,10 +1,14 @@
 ---
+import { langFromPath, homeHref } from '../i18n/config';
+import { useT } from '../i18n/ui';
 interface Props { trail: { label: string; href?: string }[]; style?: string; }
 const { trail, style } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
 ---
-<nav class="crumbs" aria-label="Fil d'ariane" style={style}>
+<nav class="crumbs" aria-label={t('nav.breadcrumb')} style={style}>
   <ol>
-    <li><a href="/">Accueil</a></li>
+    <li><a href={homeHref(lang)}>{t('nav.home')}</a></li>
     {trail.map((c, i) =>
       c.href && i < trail.length - 1
         ? <li><a href={c.href}>{c.label}</a></li>

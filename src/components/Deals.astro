@@ -1,11 +1,14 @@
 ---
 import Fig from './Fig.astro';
 import type { Game } from '../lib/articles';
+import { langFromPath } from '../i18n/config';
+import { useT } from '../i18n/ui';
 
 /* Les bons plans : la meilleure offre relevée pour chaque jeu suivi.
    Un bloc éditorial à part entière — c'est ce qui finance la rédaction. */
 interface Props { games: Game[]; }
 const { games } = Astro.props;
+const t = useT(langFromPath(Astro.url.pathname));
 const best = games
   .filter((g) => g.data.offers.length > 0)
   .map((g) => ({ game: g, offer: g.data.offers.find((o) => o.tone === 'brass') ?? g.data.offers[0] }));
@@ -20,7 +23,7 @@ const best = games
           <span class="shop">{offer.shop}</span>
           <span class="price"><b>{offer.price}</b></span>
           <a class="btn btn-sm btn-primary go" href={offer.url} rel="sponsored nofollow noopener" target="_blank">
-            Voir l'offre
+            {t('aff.seeOffer')}<span class="sr">{t('aff.atShopNewTab')(offer.shop)}</span>
           </a>
         </div>
       </article>

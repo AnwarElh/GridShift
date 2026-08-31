@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import Archive from '../components/Archive.astro';
+import { getPosts, slugifyTag, pageOf } from '../lib/articles';
+import { langFromPath, tagHref } from '../i18n/config';
+import { useT } from '../i18n/ui';
+
+interface Props { tag: string }
+const { tag } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
+const posts = (await getPosts(lang)).filter((p) => p.data.tags.includes(tag));
+const page = pageOf(posts, 1, 24, tagHref(lang, slugifyTag(tag)));
+---
+<Base title={tag} description={t('tag.desc')(tag)}>
+  <Archive
+    title={tag}
+    lede={t('tag.lede')(posts.length, tag)}
+    page={page}
+    trail={[{ label: t('tag.topics') }]} />
+</Base>
