@@ -9,7 +9,11 @@ const client = import.meta.env.PUBLIC_ADSENSE_CLIENT;
 /* PUBLIC_AD_DEMO=1 : une créa factice à la place de la plaque vide, pour
    visualiser la page chargée. Retirer la variable et tout revient à zéro. */
 const demo = import.meta.env.PUBLIC_AD_DEMO;
-const label = { '90': '728 × 90', '250': '300 × 250', '280': '336 × 280', '600': '300 × 600' }[h];
+/* Le gabarit réel du format : les attributs `width` et `height` d'une image
+   attendent des entiers en pixels — « 100% » n'est pas une dimension et ne
+   réserve donc aucune place, ce qui décale la mise en page au chargement. */
+const box = { '90': [728, 90], '250': [300, 250], '280': [336, 280], '600': [300, 600] }[h];
+const label = `${box[0]} × ${box[1]}`;
 ---
 <div class:list={['ad', inline && 'ad-inline', cls]} data-h={h}>
   {client && unit ? (
@@ -19,7 +23,7 @@ const label = { '90': '728 × 90', '250': '300 × 250', '280': '336 × 280', '60
       <script is:inline>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>
     </Fragment>
   ) : demo ? (
-    <img src={`/ads/${h}.jpg`} alt="" width="100%" height="100%"
+    <img src={`/ads/${h}.jpg`} alt="" width={box[0]} height={box[1]}
          style="width:100%;height:100%;object-fit:cover" />
   ) : label}
 </div>

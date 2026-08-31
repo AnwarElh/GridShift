@@ -5,7 +5,7 @@ export const norm = (s) =>
   (s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 /* Un jeu pèse plus qu'un article : sur un média gaming, on cherche d'abord une entité. */
-const KIND_BOOST = { jeu: 3, test: 1, guide: 1, actu: 0 };
+const KIND_BOOST = { jeu: 3, test: 1, guide: 1, config: 1, actu: 0 };
 
 export function scoreEntry(entry, q) {
   const title = norm(entry.title);
@@ -30,9 +30,9 @@ export function filterIndex(index, query, limit = 8) {
     .map(({ entry }) => entry);
 }
 
-/* Regroupé par nature, dans l'ordre du menu : jeux, tests, guides, actus. */
-const ORDER = ['jeu', 'test', 'guide', 'actu'];
-const GROUP_LABEL = { jeu: 'Jeux', test: 'Tests', guide: 'Guides', actu: 'Actus' };
+/* Regroupé par nature, dans l'ordre du menu : jeux, tests, guides, configs, actus. */
+const ORDER = ['jeu', 'test', 'guide', 'config', 'actu'];
+const GROUP_LABEL = { jeu: 'Jeux', test: 'Tests', guide: 'Guides', config: 'Configs', actu: 'Actus' };
 
 export function groupResults(results) {
   return ORDER

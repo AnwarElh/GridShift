@@ -21,6 +21,6 @@ const filters = allTags(posts).slice(0, 6).map(([t]) => t);
     lede={meta.lede}
     page={page}
     filters={filters}
-    noun={key === 'guide' ? 'guide' : key === 'test' ? 'test' : 'actu'}
-    showVersion={key === 'guide'} />
+    noun={meta.noun}
+    showVersion={key === 'guide' || key === 'config'} />
 </Base>

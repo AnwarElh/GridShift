@@ -21,6 +21,44 @@ on(themeBtn, 'click', () => {
   paintTheme(r.dataset.theme);
 });
 
+/* consentement — rien de la régie n'est chargé avant un « oui » explicite.
+   Le choix vit dans localStorage : le site est statique, il n'y a pas de
+   serveur pour le retenir, et il n'a pas à quitter la machine du lecteur. */
+const KEY = 'gs_consent';
+const readConsent = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
+
+function loadAds(client) {
+  if (!client || document.getElementById('gs-ads')) return;
+  const sc = document.createElement('script');
+  sc.id = 'gs-ads';
+  sc.async = true;
+  sc.crossOrigin = 'anonymous';
+  sc.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(client);
+  document.head.append(sc);
+}
+
+const consent = $('#consent');
+if (consent) {
+  const client = consent.dataset.adsense;
+  const answer = readConsent();
+  if (answer === 'yes') loadAds(client);
+  else if (answer !== 'no') consent.hidden = false;
+
+  consent.querySelectorAll('[data-consent]').forEach((b) => on(b, 'click', () => {
+    const value = b.dataset.consent;
+    try { localStorage.setItem(KEY, value); } catch {}
+    consent.hidden = true;
+    if (value === 'yes') loadAds(client);
+  }));
+}
+
+/* la page Cookies permet de revenir sur le choix — sinon le consentement
+   serait donné une fois pour toutes, ce qui n'en est pas un */
+on($('[data-consent-reset]'), 'click', () => {
+  try { localStorage.removeItem(KEY); } catch {}
+  toast('Choix effacé', 'La bannière réapparaîtra au prochain chargement.');
+});
+
 /* méga-menu */
 const mega = $('#mega'), megaBtn = $('#megaBtn');
 if (mega && megaBtn) {
@@ -247,11 +285,47 @@ function toast(title, detail = '') {
   if (stack.children.length > 3) stack.firstElementChild?.remove();
 }
 
-/* newsletter sans fournisseur configuré : on le dit, on ne fait pas semblant */
-document.querySelectorAll('form[data-newsletter]').forEach((f) => {
+/* Lettre : un seul gestionnaire pour la validation, l'état d'envoi et le cas
+   « fournisseur non configuré ». En deux gestionnaires, une adresse invalide
+   déclenchait AUSSI le message de configuration — deux réponses pour une
+   seule erreur. Le formulaire porte `novalidate` : le message va sous le
+   champ, pas dans une bulle native qui saute au premier clic. */
+document.querySelectorAll('.news-form').forEach((f) => {
+  const input = f.querySelector('input[type="email"]');
+  const btn = f.querySelector('button[type="submit"]');
+  const msg = document.getElementById(input?.getAttribute('aria-describedby') ?? '');
+
+  const setError = (text) => {
+    if (msg) { msg.textContent = text; msg.hidden = false; }
+    input?.setAttribute('aria-invalid', 'true');
+    input?.focus();
+  };
+  const clearError = () => {
+    if (msg) { msg.hidden = true; msg.textContent = ''; }
+    input?.removeAttribute('aria-invalid');
+  };
+  on(input, 'input', clearError);
+
   on(f, 'submit', (e) => {
-    e.preventDefault();
-    toast('Inscription non configurée', 'Renseignez PUBLIC_NEWSLETTER_ACTION dans .env');
+    clearError();
+    if (!input.value.trim()) {
+      e.preventDefault();
+      setError('Entrez votre adresse e-mail.');
+      return;
+    }
+    if (!input.checkValidity()) {
+      e.preventDefault();
+      setError('Cette adresse ne semble pas valide — vérifiez le @ et le domaine.');
+      return;
+    }
+    if (f.hasAttribute('data-newsletter')) {
+      /* pas de fournisseur : on le dit, on ne fait pas semblant d'avoir inscrit */
+      e.preventDefault();
+      toast('Inscription non configurée', 'Renseignez PUBLIC_NEWSLETTER_ACTION dans .env');
+      return;
+    }
+    /* la requête part : le bouton se verrouille et le dit */
+    if (btn) { btn.disabled = true; btn.textContent = 'Envoi…'; }
   });
 });
 

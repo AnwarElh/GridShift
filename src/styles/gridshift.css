@@ -82,10 +82,14 @@
   --t-1:120ms; --t-2:180ms; --t-3:300ms;
   --ease:cubic-bezier(.2,.9,.3,1); --ease-io:cubic-bezier(.65,0,.35,1);
 
-  --z-nav:40; --z-bar:45; --z-pop:60; --z-modal:80; --z-toast:90;
+  --z-nav:40; --z-bar:45; --z-pop:60; --z-consent:70; --z-modal:80; --z-toast:90;
   --nav-h:62px;
+  /* barres de défilement, contrôles natifs et champs suivent le thème :
+     sans ça, un <select> ou une scrollbar restaient clairs en thème nuit */
+  color-scheme:dark;
 }
 [data-theme="papier"]{
+  color-scheme:light;
   /* en clair, --s3 est un creux (piste, kbd, jeton) : il descend sous la
      surface au lieu de s'écraser sur le blanc de --s2 */
   --bg:#EDEFF3; --s1:#F6F7FA; --s2:#FFFFFF; --s3:#E4E8EE;
@@ -110,6 +114,9 @@ body{
   font:400 var(--ui-md)/1.55 var(--f-ui);
   font-variant-numeric:tabular-nums;
   transition:background var(--t-3),color var(--t-3);
+  /* pas de délai de 300 ms au doigt, et un halo de tap choisi plutôt que subi */
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:color-mix(in srgb,var(--brass) 22%,transparent);
 }
 img,svg{display:block;max-width:100%}
 /* `hidden` doit gagner : toute règle `display:` de composant le battait,
@@ -127,6 +134,10 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 .skip{position:fixed;top:0;left:0;z-index:200;transform:translateY(-110%);
   padding:12px 20px;background:var(--brass);color:var(--on-brass);font-weight:700}
 .skip:focus{transform:translateY(0)}
+
+/* l'en-tête est collant : une ancre doit s'arrêter SOUS lui, sinon la cible
+   arrive cachée derrière la barre. :where() garde la spécificité à zéro. */
+:where(h1,h2,h3,h4,[id]){scroll-margin-top:calc(var(--nav-h) + var(--s-4))}
 
 .page{max-width:var(--page);margin:0 auto;padding-inline:var(--pad)}
 .narrow{max-width:920px;margin:0 auto}
@@ -315,7 +326,7 @@ a.tag:hover{border-color:var(--brass);color:var(--brass)}
   padding-bottom:env(safe-area-inset-bottom);
   background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(14px);
   border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.tabbar ul{display:grid;grid-template-columns:repeat(5,1fr);margin:0;padding:0;list-style:none}
+.tabbar ul{display:grid;grid-template-columns:repeat(6,1fr);margin:0;padding:0;list-style:none}
 .tabbar a,.tabbar button{display:grid;justify-items:center;gap:3px;width:100%;padding:9px 2px 8px;
   color:var(--tx-3);font:600 10px/1.3 var(--f-ui);font-stretch:88%}
 .tabbar svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7}
@@ -527,6 +538,10 @@ a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-
   background:var(--s1);border:1px solid var(--line);border-radius:var(--r-1)}
 .news-form{display:flex;gap:var(--s-2);flex-wrap:wrap}
 .news-form .input{flex:1;min-width:210px}
+/* le message d'erreur vit sous le champ, dans le flux : une bulle native
+   disparaît au premier clic et n'est jamais relue par un lecteur d'écran */
+.news-box .msg{margin-top:var(--s-2);font-size:var(--ui-sm);line-height:1.5;color:var(--err)}
+.input[aria-invalid="true"]{border-color:var(--err)}
 
 /* ── 11. SURCOUCHES ───────────────────────────────────────── */
 .pop{position:absolute;z-index:var(--z-pop);min-width:210px;padding:var(--s-2);
@@ -549,6 +564,7 @@ a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-
 .tip:hover .tip-body,.tip:focus-within .tip-body{opacity:1;translate:-50% 0}
 
 dialog.modal{max-width:520px;width:calc(100% - 2 * var(--pad));padding:0;border:1px solid var(--line-2);
+  overscroll-behavior:contain;
   border-radius:var(--r-2);background:var(--s1);color:var(--tx);box-shadow:var(--sh-modal)}
 dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s-4);
@@ -566,6 +582,19 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .toast.t-ok{border-color:var(--ok)} .toast.t-err{border-color:var(--err)}
 .toast b{display:block;font-size:var(--ui-sm)} .toast span{color:var(--tx-3);font-size:var(--ui-xs)}
 @keyframes toastIn{from{opacity:0;transform:translateY(10px)}}
+
+/* Bandeau de consentement : posé au-dessus de la barre à pouce, jamais
+   au-dessus d'une boîte de dialogue. Refuser et accepter ont le même poids
+   visuel de cible — seul le remplissage les distingue. */
+.consent{position:fixed;inset:auto 0 0 0;z-index:var(--z-consent);
+  background:var(--s1);border-top:1px solid var(--line-2);box-shadow:var(--sh-pop)}
+.consent-in{max-width:var(--page);margin:0 auto;padding:var(--s-4) var(--pad);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s-5);flex-wrap:wrap}
+.consent p{font-size:var(--ui-sm);line-height:1.55;color:var(--tx-2);max-width:74ch}
+.consent p b{color:var(--tx);display:block}
+.consent a{color:var(--tx);text-decoration:underline;text-decoration-color:var(--brass);
+  text-underline-offset:2px}
+.consent .btn{min-height:44px}
 
 .alert{display:flex;gap:var(--s-3);padding:var(--s-3) var(--s-4);border-radius:var(--r-1);
   border:1px solid var(--line-2);background:var(--s1);font-size:var(--ui-sm);line-height:1.5}
@@ -614,9 +643,13 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .pager .gap{border:0}
 
 /* ── 13. ÉTATS SYSTÈME ────────────────────────────────────── */
-.skel{background:linear-gradient(90deg,var(--s2) 8%,var(--s3) 20%,var(--s2) 32%);
-  background-size:900px 100%;border-radius:var(--r-1);animation:shimmer 1.5s linear infinite}
-@keyframes shimmer{to{background-position:900px 0}}
+.skel{position:relative;overflow:hidden;background:var(--s2);border-radius:var(--r-1)}
+/* balayage porté par un transform : background-position repeignait la boîte
+   entière à chaque image */
+.skel::after{content:"";position:absolute;inset:0;transform:translateX(-100%);
+  background:linear-gradient(90deg,transparent,var(--s3),transparent);
+  animation:shimmer 1.5s linear infinite}
+@keyframes shimmer{to{transform:translateX(100%)}}
 .skel-line{height:11px;margin-bottom:9px}
 .skel-line:last-child{width:62%}
 
@@ -784,7 +817,7 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 /* Le bandeau de tête : titre de la maison + recherche, comme un kiosque. */
 .masthead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
   gap:var(--s-4);padding-block:var(--s-6) var(--s-4)}
-.masthead h1{font-size:var(--d2);font-stretch:90%}
+.masthead h1{font-size:var(--d2);font-stretch:90%;text-wrap:balance}
 .masthead .sub{margin-top:6px;color:var(--tx-3);font-size:var(--ui-sm)}
 .masthead .btn{border-radius:var(--r-pill);min-height:44px;padding-inline:var(--s-5)}
 
@@ -846,7 +879,7 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .cat-sec{padding-block:var(--s-6)}
 .cat-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);
   margin-bottom:var(--s-5)}
-.cat-head h2{display:flex;align-items:center;gap:var(--s-3);font-size:var(--d3)}
+.cat-head h2{display:flex;align-items:center;gap:var(--s-3);font-size:var(--d3);text-wrap:balance}
 .cat-head h2::before{content:"";width:5px;height:1.05em;border-radius:var(--r-pill);
   background:var(--grad)}
 .cat-head .more{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
@@ -904,6 +937,20 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .promo h2{font-size:var(--d3);margin-bottom:var(--s-2);max-width:22ch}
 .promo p{color:var(--tx-2);font-size:var(--ui-md);max-width:56ch}
 
+/* Les jeux couverts : grille, et non plus rail. Remontée sous la Une, elle
+   doit montrer TOUT le catalogue d'un coup d'œil — un rail en cache la moitié
+   hors écran. Même maille auto-fit que les offres, aucun nouveau gabarit. */
+.ggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--s-3)}
+
+/* Tendances : un classement, donc une <ol>. Le rang est une vraie donnée
+   (les jeux les plus suivis), pas une numérotation décorative de section. */
+.trend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4) var(--s-5);
+  margin:0;padding:0;list-style:none}
+.trend li{display:flex;align-items:center;gap:var(--s-4);min-width:0}
+.trend-n{flex:none;width:1.4ch;font:800 var(--d4)/1 var(--f-display);font-stretch:88%;
+  letter-spacing:-.04em;color:var(--tx-3);text-align:right}
+.trend .card-xs{flex:1;min-width:0}
+
 /* rail d'entités : on navigue par jeu, pas par rubrique */
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:var(--s-3);
   overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:var(--s-2);scrollbar-width:thin}
@@ -959,14 +1006,19 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 
 /* ── 19. PALETTE DE RECHERCHE ─────────────────────────────── */
 dialog.cmd{width:min(660px,calc(100% - 2 * var(--pad)));padding:0;margin-top:9vh;
+  overscroll-behavior:contain;
   border:1px solid var(--line-2);border-radius:var(--r-2);background:var(--s1);
   color:var(--tx);box-shadow:var(--sh-modal)}
 dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .cmd-top{display:flex;align-items:center;gap:var(--s-3);padding:var(--s-4) var(--s-5);
   border-bottom:1px solid var(--line)}
-.cmd-top input{flex:1;background:none;border:0;outline:none;font-size:var(--ui-lg);color:var(--tx)}
+/* `outline:none` sans remplacement supprimait toute cible de focus visible ;
+   la palette s'ouvre au clavier, ce champ EST son premier arrêt */
+.cmd-top input{flex:1;background:none;border:0;font-size:var(--ui-lg);color:var(--tx)}
+.cmd-top input:focus{outline:none}
+.cmd-top:focus-within{outline:2px solid var(--brass);outline-offset:-2px;border-radius:var(--r-1)}
 .cmd-top input::placeholder{color:var(--tx-3)}
-.cmd-res{max-height:min(430px,54vh);overflow-y:auto;padding:var(--s-2)}
+.cmd-res{max-height:min(430px,54vh);overflow-y:auto;overscroll-behavior:contain;padding:var(--s-2)}
 .cmd-grp{padding:var(--s-3) var(--s-3) var(--s-2);font:700 var(--ui-xs)/1 var(--f-ui);font-stretch:80%;
   letter-spacing:.11em;text-transform:uppercase;color:var(--tx-3)}
 .cmd-foot{display:flex;gap:var(--s-4);padding:10px var(--s-5);border-top:1px solid var(--line);
@@ -1104,6 +1156,7 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   /* « Voir l'offre » finance le site : ce n'est pas un bouton secondaire */
   .deal .go{min-height:44px}
   .grid-3,.grid-2,.pgrid,.pgrid-4{grid-template-columns:1fr}
+  .trend{grid-template-columns:1fr}
   .masthead{padding-block:var(--s-5) var(--s-3)}
   .masthead .btn{width:100%}
   .hero-slide{min-height:270px}
@@ -1128,6 +1181,9 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   .mega-col{border-right:0;border-bottom:1px solid var(--line)}
   .split>.sticky{grid-auto-flow:row;grid-template-columns:1fr}
   .toast-stack{right:var(--pad);left:var(--pad);bottom:78px;width:auto}
+  .consent{bottom:calc(66px + env(safe-area-inset-bottom))}
+  .consent-in{gap:var(--s-3)}
+  .consent .btn{flex:1}
 
   /* La plaque vide est une belle valeur par défaut au curseur, où elle
      occupe un tiers de colonne. À pleine largeur au pouce elle coûte

@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import TabBar from '../components/TabBar.astro';
 import CmdPalette from '../components/CmdPalette.astro';
+import Consent from '../components/Consent.astro';
 import { site } from '../site';
 
 interface Props {
@@ -18,7 +19,6 @@ const { title, description = site.description, ogType = 'website', image, noinde
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const ogImage = new URL(image ?? '/og-default.png', site.url).href;
 const fullTitle = title === site.name ? title : `${title} — ${site.name}`;
-const adsense = import.meta.env.PUBLIC_ADSENSE_CLIENT;
 ---
 <!doctype html>
 <html lang="fr" data-theme="nuit">
@@ -67,9 +67,7 @@ const adsense = import.meta.env.PUBLIC_ADSENSE_CLIENT;
 </script>
 
 {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
-{adsense && (
-  <script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsense}`} crossorigin="anonymous"></script>
-)}
+
 </head>
 <body>
 <a class="skip" href="#main">Aller au contenu</a>
@@ -84,6 +82,7 @@ const adsense = import.meta.env.PUBLIC_ADSENSE_CLIENT;
 <Footer />
 <TabBar />
 <CmdPalette />
+<Consent />
 <div class="toast-stack" id="toasts" aria-live="polite"></div>
 
 <script src="../scripts/site.js"></script>

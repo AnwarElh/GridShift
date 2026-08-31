@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { site } from '../site';
+
+/* Page légale autonome, comme /legal-notice sur la structure de référence.
+   Elle vivait jusqu'ici en ancre dans /a-propos : une mention légale doit
+   avoir sa propre URL, c'est ce qu'un lecteur — et un service juridique —
+   vient chercher. */
+---
+<Base
+  title="Mentions légales"
+  description={`Éditeur, hébergeur et responsabilités du site ${site.name}.`}>
+  <div class="page narrow" style="padding-top:40px;padding-bottom:var(--s-9)">
+    <Crumbs trail={[{ label: 'Mentions légales' }]} />
+    <h1 class="d2" style="margin:12px 0 8px">Mentions légales</h1>
+
+    <div class="alert a-warn" style="margin:24px 0">
+      <div>
+        <b>À compléter avant mise en ligne</b>
+        Les champs marqués « à renseigner » ci-dessous relèvent de l'identité légale de
+        l'éditeur. Nous ne les inventons pas : ils doivent être remplis par vos soins.
+      </div>
+    </div>
+
+    <div class="read">
+      <h2>Éditeur du site</h2>
+      <p>
+        {site.name} — {site.tagline}.<br>
+        Raison sociale : <b>à renseigner</b><br>
+        Forme juridique et capital : <b>à renseigner</b><br>
+        Siège social : <b>à renseigner</b><br>
+        SIRET / RCS : <b>à renseigner</b><br>
+        Directeur de la publication : <b>à renseigner</b><br>
+        Contact : <a href="mailto:redaction@gridshift.fr">redaction@gridshift.fr</a>
+      </p>
+
+      <h2>Hébergeur</h2>
+      <p>Nom, raison sociale et adresse de l'hébergeur : <b>à renseigner</b></p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        Les textes publiés sur {site.name} sont la propriété de leurs auteurs. Les images
+        proviennent de sources libres de réutilisation ; leur auteur, leur licence et leur
+        fichier d'origine sont listés sur la page <a href="/credits/">Crédits photo</a>.
+      </p>
+
+      <h2>Responsabilité</h2>
+      <p>
+        Les tests, notes et guides reflètent l'état d'un jeu à une version donnée, indiquée sur
+        chaque article. Un jeu en service évolue : nous révisons nos notes quand il change, et
+        l'historique des révisions est public sur chaque test.
+      </p>
+
+      <h2>Liens affiliés</h2>
+      <p>
+        Certains liens vers les boutiques nous rapportent une commission, sans effet sur votre
+        prix ni sur nos notes. Le détail est sur la page
+        <a href="/a-propos/#affiliation">Liens affiliés et publicité</a>.
+      </p>
+    </div>
+  </div>
+</Base>

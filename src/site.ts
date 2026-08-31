@@ -9,14 +9,34 @@ export const site = {
   twitter: '@gridshift',
 };
 
-/* Les trois rubriques. La clé est le `type` d'un article, `slug` le segment d'URL. */
-export const sections = {
-  actu: { slug: 'actus', label: 'Actus', title: 'Actus', lede: 'Le fil de la rédaction, mis à jour en continu.' },
-  test: { slug: 'tests', label: 'Tests', title: 'Tests', lede: 'Une note, une version testée, un historique de révisions.' },
-  guide: { slug: 'guides', label: 'Guides', title: 'Guides', lede: 'Vérifiés à chaque patch majeur. La version testée est indiquée sur chaque guide.' },
-} as const;
+/* Les quatre rubriques. La clé est le `type` d'un article, `slug` le segment
+   d'URL, `noun` le mot employé dans les compteurs et les états vides.
+   Ajouter une rubrique ici suffit : les routes /<slug>/, /<slug>/page/<n>/ et
+   /<slug>/<article>/ sont générées à partir de cet objet.
 
-export type SectionKey = keyof typeof sections;
+   Typé par une interface plutôt qu'en `as const` : avec quatre entrées, le
+   `as const` produisait une union de quatre types littéraux que le narrowing
+   de la page d'accueil faisait exploser — `astro check` tombait en OOM. */
+export type SectionKey = 'actu' | 'test' | 'guide' | 'config';
+
+export interface Section {
+  slug: string;
+  label: string;
+  title: string;
+  noun: string;
+  lede: string;
+}
+
+export const sections: Record<SectionKey, Section> = {
+  actu: { slug: 'actus', label: 'Actus', title: 'Actus', noun: 'actu',
+    lede: 'Le fil de la rédaction, mis à jour en continu.' },
+  test: { slug: 'tests', label: 'Tests', title: 'Tests', noun: 'test',
+    lede: 'Une note, une version testée, un historique de révisions.' },
+  guide: { slug: 'guides', label: 'Guides', title: 'Guides', noun: 'guide',
+    lede: 'Vérifiés à chaque patch majeur. La version testée est indiquée sur chaque guide.' },
+  config: { slug: 'configs', label: 'Configs', title: 'Configs', noun: 'config',
+    lede: 'Réglages, matériel et paramètres, mesurés sur nos machines. Le matériel de test est indiqué sur chaque fiche.' },
+};
 
 export const sectionOf = (type: SectionKey) => sections[type];
 export const hrefOf = (type: SectionKey, id: string) => `/${sections[type].slug}/${id}/`;
@@ -32,33 +52,34 @@ export const socials = [
 
 export const footerLinks = [
   {
-    title: 'Rubriques',
+    title: 'Contenu',
     links: [
+      { label: 'Guides', href: '/guides/' },
       { label: 'Actus', href: '/actus/' },
       { label: 'Tests', href: '/tests/' },
-      { label: 'Guides', href: '/guides/' },
+      { label: 'Configs', href: '/configs/' },
       { label: 'Base de jeux', href: '/jeux/' },
       { label: 'Flux RSS', href: '/rss.xml' },
     ],
   },
   {
-    title: 'La rédaction',
+    title: 'Le site',
     links: [
       { label: 'Qui nous sommes', href: '/a-propos/' },
+      { label: 'La rédaction', href: '/a-propos/#equipe' },
       { label: 'Charte éditoriale', href: '/a-propos/#charte' },
       { label: 'Comment nous notons', href: '/a-propos/#notation' },
-      { label: 'Corrections', href: '/a-propos/#corrections' },
       { label: 'Nous écrire', href: '/a-propos/#contact' },
     ],
   },
   {
-    title: 'Transparence',
+    title: 'Légal',
     links: [
+      { label: 'Mentions légales', href: '/mentions-legales/' },
+      { label: 'Confidentialité', href: '/confidentialite/' },
+      { label: 'Cookies', href: '/cookies/' },
       { label: 'Liens affiliés', href: '/a-propos/#affiliation' },
-      { label: 'Publicité', href: '/a-propos/#publicite' },
       { label: 'Crédits photo', href: '/credits/' },
-      { label: 'Confidentialité', href: '/a-propos/#confidentialite' },
-      { label: 'Mentions légales', href: '/a-propos/#mentions' },
     ],
   },
 ];

@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+---
+<Base
+  title="Cookies"
+  description="Quels cookies Gridshift dépose, à quoi ils servent, et comment changer d'avis.">
+  <div class="page narrow" style="padding-top:40px;padding-bottom:var(--s-9)">
+    <Crumbs trail={[{ label: 'Cookies' }]} />
+    <h1 class="d2" style="margin:12px 0 8px">Cookies</h1>
+
+    <div class="read">
+      <h2>Ce qui est déposé sans consentement</h2>
+      <p>
+        Une seule chose, et ce n'est pas un cookie : votre choix de thème (clair ou sombre) est
+        gardé dans le stockage local de votre navigateur, sous la clé <code>gs_theme</code>.
+        Il ne quitte jamais votre machine. Votre réponse à la bannière est gardée de la même
+        façon, sous <code>gs_consent</code>.
+      </p>
+
+      <h2>Ce qui n'est déposé qu'après acceptation</h2>
+      <p>
+        Les cookies publicitaires de notre régie. Ils servent à afficher et à mesurer les
+        publicités qui financent la rédaction. Tant que vous n'avez pas accepté, le script de
+        la régie n'est pas chargé du tout.
+      </p>
+
+      <h2>Changer d'avis</h2>
+      <p>
+        Votre choix n'est pas définitif. Le bouton ci-dessous efface votre réponse : la bannière
+        réapparaîtra au prochain chargement et vous pourrez répondre autrement.
+      </p>
+      <p><button class="btn btn-quiet" type="button" data-consent-reset>Revenir sur mon choix</button></p>
+    </div>
+  </div>
+</Base>

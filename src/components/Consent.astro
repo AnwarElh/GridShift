@@ -1,0 +1,20 @@
+---
+/* Bandeau de consentement. Refuser coûte exactement un clic, comme accepter :
+   un « refuser » caché derrière un sous-menu n'est pas un consentement libre.
+   Tant que rien n'a été choisi, aucun script de régie n'est chargé — c'est
+   `site.js` qui l'injecte, et seulement après acceptation. */
+const adsense = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+---
+<div class="consent" id="consent" data-adsense={adsense} hidden>
+  <div class="consent-in">
+    <p>
+      <b>Nous utilisons des cookies publicitaires.</b>
+      Ils financent la rédaction et ne servent qu'à ça. Aucun n'est déposé tant que vous
+      n'avez pas accepté. <a href="/cookies/">En savoir plus</a>.
+    </p>
+    <div class="btn-row">
+      <button class="btn btn-quiet" type="button" data-consent="no">Refuser</button>
+      <button class="btn btn-primary" type="button" data-consent="yes">Accepter</button>
+    </div>
+  </div>
+</div>

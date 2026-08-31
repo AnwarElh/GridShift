@@ -7,8 +7,10 @@ export const scoreBucket = (score: number): '90' | '80' | '70' | '50' | '0' => {
   return '0';
 };
 
-/* 9.1 → « 9,1 » : le système est francophone, la virgule est décimale. */
-export const num = (n: number) => n.toFixed(1).replace('.', ',');
+/* 9.1 → « 9,1 ». Passe par Intl : la virgule décimale est une règle de locale,
+   pas un remplacement de caractère à faire à la main. */
+const NF = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+export const num = (n: number) => NF.format(n);
 
 const DF = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 const DF_SHORT = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short' });

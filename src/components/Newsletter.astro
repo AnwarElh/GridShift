@@ -15,11 +15,16 @@ const action = import.meta.env.PUBLIC_NEWSLETTER_ACTION;
         les tests que nous révisons. Pas de liste de liens.
       </p>
     </div>
-    <form class="news-form" action={action} method="post" data-newsletter={action ? undefined : ''}>
+    <form class="news-form" action={action} method="post" novalidate
+          data-newsletter={action ? undefined : ''}>
       <label class="sr" for="nl">Adresse e-mail</label>
-      <input class="input" id="nl" name="email" type="email" placeholder="vous@exemple.fr" required>
+      <input class="input" id="nl" name="email" type="email" inputmode="email"
+             autocomplete="email" spellcheck="false" autocapitalize="off"
+             placeholder="vous@exemple.fr" required
+             aria-describedby="nl-msg">
       <button class="btn btn-primary btn-lg" type="submit">Recevoir la lettre</button>
     </form>
+    <p class="msg" id="nl-msg" role="alert" hidden></p>
     <p class="meta">Un envoi par semaine. Désabonnement en un clic.</p>
   </div>
 </section>

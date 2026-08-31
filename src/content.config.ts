@@ -6,7 +6,7 @@ import { glob } from 'astro/loaders';
 const articles = defineCollection({
   loader: glob({ base: './src/content/articles', pattern: '**/*.{md,mdx}' }),
   schema: ({ image }) => z.object({
-    type: z.enum(['actu', 'test', 'guide']),
+    type: z.enum(['actu', 'test', 'guide', 'config']),
     title: z.string(),
     lede: z.string(),
     date: z.coerce.date(),

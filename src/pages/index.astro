@@ -7,10 +7,11 @@ import CatBar from '../components/CatBar.astro';
 import Deals from '../components/Deals.astro';
 import Newsletter from '../components/Newsletter.astro';
 import Ad from '../components/Ad.astro';
+import Fig from '../components/Fig.astro';
 import { getCollection } from 'astro:content';
 import { getPosts, byType, byGame } from '../lib/articles';
 import { time } from '../lib/format';
-import { sections, site } from '../site';
+import { sections, site, type SectionKey } from '../site';
 
 const posts = await getPosts();
 const games = await getCollection('games');
@@ -20,26 +21,36 @@ const featured = posts.filter((p) => p.data.featured);
 const hero = [...featured, ...posts.filter((p) => !p.data.featured)].slice(0, 4);
 const wire = posts.slice(0, 5);
 
-/* Le corps de la page : un bloc par rubrique, comme un kiosque. */
-/* Chaque rubrique a sa propre maille, donc son propre compte : les actus
-   s'ouvrent sur une Une couchée suivie d'une ligne pleine, les tests tiennent
-   en cartes larges où la note porte, les guides remplissent une ligne. */
-const perBlock = { actu: 4, test: 3, guide: 3 } as const;
-const blocks = (Object.keys(sections) as (keyof typeof sections)[]).map((key) => ({
+/* L'ordre des blocs suit la colonne vertébrale du portail : la Une, puis les
+   jeux couverts, puis les rubriques — guides d'abord, l'entrée la plus
+   cherchée sur un média de jeu en service. Chaque rubrique garde sa maille. */
+const order: SectionKey[] = ['guide', 'actu', 'test', 'config'];
+const perBlock: Record<SectionKey, number> = { guide: 3, actu: 4, test: 3, config: 3 };
+const blocks = order.map((key) => ({
   key,
   meta: sections[key],
   items: byType(posts, key).slice(0, perBlock[key]),
-}));
+})).filter((b) => b.items.length > 0);
 
 const counts = {
-  ...Object.fromEntries((Object.keys(sections) as (keyof typeof sections)[]).map((k) => [k, byType(posts, k).length])),
+  ...Object.fromEntries((Object.keys(sections) as SectionKey[]).map((k) => [k, byType(posts, k).length])),
   jeux: games.length,
 };
 
-const trending = [...games]
-  .sort((a, b) => (b.data.followers ?? 0) - (a.data.followers ?? 0))
-  .slice(0, 6);
+/* Les jeux couverts : la grille remonte juste sous la Une — sur un média de
+   jeu en service, on navigue par jeu avant de naviguer par rubrique. */
+const covered = [...games].sort((a, b) => (b.data.followers ?? 0) - (a.data.followers ?? 0));
 const countFor = (id: string) => byGame(posts, id).length;
+
+/* Tendances : les articles des jeux les plus suivis. Le classement vient des
+   données du site (`followers`), pas d'un compteur de vues qu'on n'a pas. */
+const rank = new Map(games.map((g) => [g.id, g.data.followers ?? 0]));
+const trending = [...posts]
+  .filter((p) => p.game)
+  .sort((a, b) => (rank.get(b.game!.id) ?? 0) - (rank.get(a.game!.id) ?? 0)
+    || b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 4);
+
 const weekCount = posts.filter((p) => Date.now() - p.data.date.getTime() < 7 * 864e5).length;
 
 const jsonLd = {
@@ -73,8 +84,22 @@ const jsonLd = {
     </div>
 
     <CatBar counts={counts} />
+
+    <!-- 1. À la une -->
     <Hero posts={hero} />
 
+    <!-- 2. Les jeux couverts -->
+    <section class="cat-sec" id="jeux">
+      <div class="cat-head">
+        <h2 class="d3">Jeux couverts</h2>
+        <a class="more" href="/jeux/">Tous les jeux →</a>
+      </div>
+      <div class="ggrid">
+        {covered.map((g) => <GameCard game={g} count={countFor(g.id)} />)}
+      </div>
+    </section>
+
+    <!-- 3+. Une rubrique par bloc, chacune avec sa maille -->
     {blocks.map((b, i) => (
       <Fragment>
         <section class="cat-sec" id={b.meta.slug}>
@@ -83,22 +108,22 @@ const jsonLd = {
             <a class="more" href={`/${b.meta.slug}/`}>Tout voir →</a>
           </div>
           {b.key === 'actu' ? (
-            /* L'actu s'ouvre sur sa Une : vignette couchée, chapeau visible.
-               Un portail se parcourt à l'œil — jamais une liste de titres. */
+            /* L'actu s'ouvre sur sa Une : vignette couchée, chapeau visible. */
             <div class="pgrid pgrid-lead">
               {b.items.slice(0, 1).map((p) => <Card post={p} variant="wide" level={3} showLede />)}
               {b.items.slice(1).map((p) => <Card post={p} variant="sm" level={3} />)}
             </div>
           ) : b.key === 'test' ? (
-            /* Un test se lit par sa note avant son titre. Elle est posée sur
-               la vignette à sa vraie taille : c'est le seul chiffre qu'on publie. */
+            /* Un test se lit par sa note avant son titre. */
             <div class="pgrid">
               {b.items.map((p) => <Card post={p} variant="verdict" level={3} />)}
             </div>
           ) : (
-            /* Un guide se choisit sur deux critères : pour qui, et à jour ou pas. */
+            /* Guides et configs : pour qui, et à jour ou pas. */
             <div class="pgrid">
-              {b.items.map((p) => <Card post={p} variant="sm" level={3} showLevel showVersion />)}
+              {b.items.map((p) => (
+                <Card post={p} variant="sm" level={3} showLevel showVersion />
+              ))}
             </div>
           )}
           <div class="cat-foot">
@@ -106,17 +131,24 @@ const jsonLd = {
           </div>
         </section>
 
+        {/* Le bloc d'offres et l'encart prennent la place du bloc natif en
+            milieu de flux : c'est ce qui finance la rédaction. */}
         {i === 0 && (
-          <section class="cat-sec" id="offres">
-            <div class="cat-head">
-              <h2 class="d3">Bons plans du moment</h2>
-              <a class="more" href="/jeux/">Tous les jeux suivis →</a>
+          <Fragment>
+            <section class="cat-sec" id="offres">
+              <div class="cat-head">
+                <h2 class="d3">Bons plans du moment</h2>
+                <a class="more" href="/jeux/">Tous les jeux suivis →</a>
+              </div>
+              <Deals games={games} />
+              <p class="aff-note" style="text-align:center">
+                Liens affiliés : nous pouvons toucher une commission, sans effet sur votre prix ni sur nos notes.
+              </p>
+            </section>
+            <div style="margin-block:var(--s-6)">
+              <Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} />
             </div>
-            <Deals games={games} />
-            <p class="aff-note" style="text-align:center">
-              Liens affiliés : nous pouvons toucher une commission, sans effet sur votre prix ni sur nos notes.
-            </p>
-          </section>
+          </Fragment>
         )}
 
         {i === 1 && (
@@ -136,20 +168,27 @@ const jsonLd = {
       </Fragment>
     ))}
 
-    <!-- On navigue par jeu. C'est le vrai axe d'un média gaming. -->
+    <!-- Avant-dernier bloc : le classement des jeux les plus suivis -->
     <section class="cat-sec">
       <div class="cat-head">
-        <h2 class="d3">Jeux du moment</h2>
+        <h2 class="d3">Tendances</h2>
         <a class="more" href="/jeux/">Base de jeux →</a>
       </div>
-      <div class="rail">
-        {trending.map((g) => <GameCard game={g} count={countFor(g.id)} />)}
-      </div>
+      <ol class="trend">
+        {trending.map((p, i) => (
+          <li>
+            <span class="trend-n" aria-hidden="true">{i + 1}</span>
+            <article class="card card-sm card-xs">
+              <Fig src={p.data.cover} alt="" ratio="1-1" widths={[164]} sizes="82px" />
+              <div class="card-body">
+                <h3><a href={p.href}>{p.data.title}</a></h3>
+                <p class="card-meta"><span>{p.section.label}</span></p>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ol>
     </section>
-
-    <div style="margin-block:var(--s-6)">
-      <Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} />
-    </div>
 
     <Newsletter />
   </div>
