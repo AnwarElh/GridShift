@@ -23,9 +23,10 @@ const t = useT(lang);
 const posts = await getPosts(lang);
 const games = await getCollection('games');
 
-/* Le carrousel de tête : la sélection maison, la plus récente à défaut. */
+/* La mosaïque de tête : la sélection maison, la plus récente à défaut.
+   Six sujets — un pavé maître, deux de côté, trois en bande. */
 const featured = posts.filter((p) => p.data.featured);
-const hero = [...featured, ...posts.filter((p) => !p.data.featured)].slice(0, 4);
+const hero = [...featured, ...posts.filter((p) => !p.data.featured)].slice(0, 6);
 const wire = posts.slice(0, 5);
 
 /* L'ordre des blocs suit la colonne vertébrale du portail : la Une, puis les

@@ -993,48 +993,48 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .catbar a[aria-current]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
 .catbar a .n{font-size:var(--ui-xs);opacity:.65;font-weight:600}
 
-/* Le carrousel de tête : une histoire en grand, quatre en attente à droite.
-   Défilement natif avec accroche — pas de dépendance carrousel. */
-.hero{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);
+/* La mosaïque de tête : six sujets, six vignettes. Un pavé maître sur
+   neuf colonnes, deux sujets empilés sur les six restantes, trois en bande
+   dessous — une grille de quinze colonnes est le plus petit dénominateur
+   qui donne à la fois 60/40 et trois tiers exacts.
+   Rien n'est posé à côté d'une image : le texte est DANS la vignette, sur
+   son voile. C'est ce qui fait qu'une Une se lit d'un coup d'œil. */
+.hero{display:grid;grid-template-columns:repeat(15,minmax(0,1fr));
+  grid-template-rows:1fr 1fr auto;
   gap:var(--s-4);padding-bottom:var(--s-7)}
-.hero-track{display:grid;grid-auto-flow:column;grid-auto-columns:100%;
-  gap:var(--s-4);overflow-x:auto;scroll-snap-type:x mandatory;
-  scrollbar-width:none;border-radius:var(--r-card)}
-.hero-track::-webkit-scrollbar{display:none}
-.hero-slide{position:relative;scroll-snap-align:center;display:block;
+
+.htile{position:relative;display:block;overflow:hidden;isolation:isolate;
   border-radius:var(--r-card);
   --n:var(--notch);
-  clip-path:polygon(var(--n) 0,100% 0,100% 100%,0 100%,0 var(--n));
-  overflow:hidden;isolation:isolate;
-  min-height:clamp(320px,33vw,500px)}
-.hero-slide .fig{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto}
-.hero-slide .fig img{width:100%;height:100%;object-fit:cover;transition:transform 900ms var(--ease)}
-.hero-slide:hover .fig img{transform:scale(1.04)}
-.hero-slide .fig::after{content:"";position:absolute;inset:0;z-index:1;
-  background:linear-gradient(to top,rgba(6,7,10,.92) 4%,rgba(6,7,10,.55) 42%,rgba(6,7,10,.1) 78%)}
-.hero-body h2 a::after{content:"";position:absolute;inset:0;z-index:2}
-/* le corps couvre la diapo : le lien du titre devient la surface entière */
-.hero-body{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
-  align-items:flex-start;gap:var(--s-3);justify-content:flex-end;
-  padding:var(--s-6);color:#fff}
-.hero-body h2{font-size:clamp(1.6rem,2.9vw,2.6rem);font-stretch:92%;letter-spacing:-.024em;
-  max-width:22ch;text-wrap:balance}
-.hero-body .card-meta{color:rgba(255,255,255,.72)}
-.hero-slide .chips{position:relative;z-index:4;margin-bottom:2px}
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
+  transition:transform var(--t-2) var(--ease)}
+.htile:hover{transform:translateY(-3px)}
+.htile>.fig{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto}
+.htile>.fig img{width:100%;height:100%;object-fit:cover;transition:transform 900ms var(--ease)}
+.htile:hover>.fig img{transform:scale(1.05)}
+/* le voile : dense sous le titre, transparent au-dessus. Sans lui, un titre
+   blanc sur un ciel clair devient illisible — et nos jaquettes sont claires. */
+.htile>.fig::after{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(to top,rgba(6,7,10,.94) 6%,rgba(6,7,10,.6) 46%,rgba(6,7,10,.08) 82%)}
+.htile-body{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+  align-items:flex-start;justify-content:flex-end;gap:var(--s-2);
+  padding:var(--s-5);color:#fff}
+.htile-body h2,.htile-body h3{text-wrap:balance;color:#fff}
+/* le titre couvre la vignette entière : toute la tuile devient la cible */
+.htile-body :is(h2,h3) a::after{content:"";position:absolute;inset:0;z-index:3}
+.htile-body .card-meta{color:rgba(255,255,255,.72)}
+.htile .chips{position:relative;z-index:4;top:auto;left:auto;right:auto;margin-bottom:2px}
 
-.hero-nav{display:grid;gap:var(--s-2);grid-auto-rows:1fr}
-.hero-thumb{display:grid;grid-template-columns:118px 1fr;gap:var(--s-3);align-items:stretch;
-  padding:var(--s-2);border:1px solid transparent;border-radius:var(--r-2);
-  background:var(--s1);text-align:left;width:100%;
-  transition:border-color var(--t-1),background var(--t-1)}
-.hero-thumb .fig{border-radius:var(--r-1);border:0;aspect-ratio:auto;min-height:66px}
-.hero-thumb>span{align-self:center}
-.hero-thumb b{display:block;font:700 var(--ui-sm)/1.35 var(--f-ui);color:var(--tx-2);
-  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.hero-thumb .card-meta{margin-top:5px}
-.hero-thumb:hover{background:var(--s2);border-color:var(--line)}
-.hero-thumb[aria-selected="true"]{background:var(--s2);border-color:var(--brass)}
-.hero-thumb[aria-selected="true"] b{color:var(--tx)}
+.htile-lead{grid-column:span 9;grid-row:span 2;min-height:clamp(340px,38vw,560px)}
+.htile-lead .htile-body{padding:var(--s-6)}
+.htile-lead h2{font-size:clamp(1.6rem,2.9vw,2.6rem);letter-spacing:-.024em;max-width:22ch}
+
+.htile-side{grid-column:span 6;min-height:clamp(170px,18vw,270px)}
+.htile-side h3{font-size:clamp(1.05rem,1.5vw,1.35rem);letter-spacing:-.014em;max-width:26ch}
+
+.htile-strip{grid-column:span 5;min-height:clamp(190px,15vw,240px)}
+.htile-strip h3{font-size:clamp(1rem,1.3vw,1.2rem);letter-spacing:-.012em;max-width:26ch}
 
 /* Le bloc de rubrique : en-tête, grille de vignettes, sortie vers l'archive.
    C'est la répétition de ce bloc qui fait la page d'accueil. */
@@ -1286,13 +1286,13 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 
 /* ── 23. RESPONSIVE ───────────────────────────────────────── */
 @media(max-width:1180px){
-  .hero{grid-template-columns:1fr;gap:var(--s-3)}
-  .hero-nav{grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);
-    overflow-x:auto;scrollbar-width:none}
-  .hero-nav::-webkit-scrollbar{display:none}
-  .hero-thumb{grid-template-columns:92px 1fr}
-  /* au pouce, la vignette de sommaire n'a de place que pour son titre */
-  .hero-thumb .card-meta{display:none}
+  /* la mosaïque se replie en six colonnes : le pavé maître prend la
+     largeur, les deux sujets de côté se mettent côte à côte, et la bande
+     du bas passe de trois à deux + un pleine largeur */
+  .hero{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:auto;gap:var(--s-3)}
+  .htile-lead{grid-column:span 6;grid-row:auto;min-height:clamp(300px,42vw,420px)}
+  .htile-side{grid-column:span 3}
+  .htile-strip{grid-column:span 2}
   .deals{grid-template-columns:repeat(2,minmax(0,1fr))}
   .split{grid-template-columns:1fr;gap:var(--s-6)}
   .split>.sticky{position:static;grid-template-columns:repeat(2,1fr);grid-auto-flow:column;align-items:start}
@@ -1335,8 +1335,13 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   .trend{grid-template-columns:1fr}
   .masthead{padding-block:var(--s-5) var(--s-3)}
   .masthead .btn{width:100%}
-  .hero-slide{min-height:270px}
-  .hero-body{padding:var(--s-4)}
+  /* au doigt, la mosaïque devient une pile : une image par sujet, pleine
+     largeur. Trois tuiles côte à côte à 375 px ne sont plus des vignettes. */
+  .hero{grid-template-columns:1fr}
+  .htile-lead,.htile-side,.htile-strip{grid-column:1/-1;min-height:230px}
+  .htile-lead{min-height:280px}
+  .htile-body{padding:var(--s-4)}
+  .htile-lead .htile-body{padding:var(--s-4)}
   .card-lead h3{font-size:clamp(1.7rem,6.5vw,2.4rem)}
   /* la carte couchée se relève : au pouce, l'image passe au-dessus du titre */
   .card-wide{grid-template-columns:1fr}

@@ -136,43 +136,6 @@ if (cmd) {
   });
 }
 
-/* carrousel de tête : le défilement natif fait le travail, le script ne
-   sert qu'à relier les vignettes de droite et à marquer la diapo lue */
-const hero = $('[data-hero]');
-if (hero) {
-  const track = hero.querySelector('[data-hero-track]');
-  const thumbs = [...hero.querySelectorAll('[data-hero-go]')];
-  const slides = [...track.children];
-  const goTo = (i) => {
-    const el = slides[i];
-    if (el) track.scrollTo({ left: el.offsetLeft - track.offsetLeft, behavior: 'smooth' });
-  };
-  /* le motif onglets : un seul arrêt de tabulation, aria-selected pour l'état */
-  const mark = (i) => thumbs.forEach((t, n) => {
-    t.setAttribute('aria-selected', String(n === i));
-    t.tabIndex = n === i ? 0 : -1;
-  });
-  thumbs.forEach((t, i) => on(t, 'click', () => { mark(i); goTo(i); }));
-
-  /* flèches, Origine et Fin — ce qu'un lecteur d'écran attend d'un tablist */
-  on(hero.querySelector('[role="tablist"]'), 'keydown', (e) => {
-    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1, Home: 'first', End: 'last' };
-    if (!(e.key in step)) return;
-    const i = thumbs.indexOf(document.activeElement);
-    if (i < 0) return;
-    e.preventDefault();
-    const n = step[e.key] === 'first' ? 0
-      : step[e.key] === 'last' ? thumbs.length - 1
-      : (i + step[e.key] + thumbs.length) % thumbs.length;
-    mark(n); goTo(n); thumbs[n].focus();
-  });
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((en) => { if (en.isIntersecting) mark(slides.indexOf(en.target)); });
-  }, { root: track, threshold: 0.6 });
-  slides.forEach((s) => io.observe(s));
-}
-
 /* onglets, segments, filtres : un seul gestionnaire pour trois motifs */
 document.querySelectorAll('.tabs, .seg, .chipbar').forEach((group) => {
   on(group, 'click', (e) => {

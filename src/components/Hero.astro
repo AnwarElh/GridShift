@@ -4,40 +4,48 @@ import Chips from './Chips.astro';
 import PostMeta from './PostMeta.astro';
 import type { Post } from '../lib/articles';
 
-/* Le carrousel de tête : la pile éditoriale du jour. Défilement natif
-   avec accroche, la colonne de droite sert de sommaire cliquable.
-   Le motif est bien celui des onglets — il en tient donc le contrat complet :
-   aria-selected sur l'onglet, role="tabpanel" sur la diapo, un seul arrêt de
-   tabulation et les flèches pour circuler (voir site.js). */
+/* La mosaïque de tête : six sujets, six vignettes, aucun texte hors image.
+   Un pavé maître, deux sujets en colonne à sa droite, trois en bande
+   dessous. Plus de carrousel : la Une d'un média se lit d'un coup d'œil,
+   pas en faisant défiler. Ce qui n'est pas visible n'est pas à la une. */
 interface Props { posts: Post[]; }
 const { posts } = Astro.props;
+const [lead, ...rest] = posts;
+const side = rest.slice(0, 2);
+const strip = rest.slice(2, 5);
 ---
-<section class="hero" data-hero aria-roledescription="carrousel" aria-label="À la une">
-  <div class="hero-track" data-hero-track tabindex="0">
-    {posts.map((p, i) => (
-      <article class="hero-slide" id={`slide-${i}`} role="tabpanel" aria-labelledby={`slide-tab-${i}`}>
-        <Fig src={p.data.cover} alt="" ratio="16-9"
-             widths={[720, 1080, 1440]} sizes="(max-width:1180px) 100vw, 830px" priority={i === 0} />
-        <div class="hero-body">
-          <Chips post={p} max={3} />
-          <h2><a href={p.href}>{p.data.title}</a></h2>
-          <PostMeta date={p.data.date} minutes={p.minutes} />
-        </div>
-      </article>
-    ))}
-  </div>
+<section class="hero" aria-label="À la une">
+  {lead && (
+    <article class="htile htile-lead">
+      <Fig src={lead.data.cover} alt="" ratio="16-9"
+           widths={[720, 1080, 1440]} sizes="(max-width:1024px) 100vw, 830px" priority />
+      <div class="htile-body">
+        <Chips post={lead} max={3} />
+        <h2><a href={lead.href}>{lead.data.title}</a></h2>
+        <PostMeta date={lead.data.date} minutes={lead.minutes} />
+      </div>
+    </article>
+  )}
 
-  <div class="hero-nav" role="tablist" aria-label="Choisir un article à la une">
-    {posts.map((p, i) => (
-      <button class="hero-thumb" type="button" role="tab" id={`slide-tab-${i}`} data-hero-go={i}
-              aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`slide-${i}`}
-              tabindex={i === 0 ? 0 : -1}>
-        <Fig src={p.data.cover} alt="" ratio="16-9" widths={[236]} sizes="118px" />
-        <span>
-          <b>{p.data.title}</b>
-          <PostMeta date={p.data.date} minutes={p.minutes} />
-        </span>
-      </button>
-    ))}
-  </div>
+  {side.map((p) => (
+    <article class="htile htile-side">
+      <Fig src={p.data.cover} alt="" ratio="16-9" widths={[560, 840]} sizes="(max-width:1024px) 100vw, 430px" />
+      <div class="htile-body">
+        <Chips post={p} max={2} />
+        <h3><a href={p.href}>{p.data.title}</a></h3>
+        <PostMeta date={p.data.date} minutes={p.minutes} />
+      </div>
+    </article>
+  ))}
+
+  {strip.map((p) => (
+    <article class="htile htile-strip">
+      <Fig src={p.data.cover} alt="" ratio="16-9" widths={[480, 720]} sizes="(max-width:1024px) 100vw, 400px" />
+      <div class="htile-body">
+        <Chips post={p} max={2} />
+        <h3><a href={p.href}>{p.data.title}</a></h3>
+        <PostMeta date={p.data.date} minutes={p.minutes} />
+      </div>
+    </article>
+  ))}
 </section>
