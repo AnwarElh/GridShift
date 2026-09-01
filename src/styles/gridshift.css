@@ -1299,6 +1299,17 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   .mega-grid{grid-template-columns:1fr 1fr}
   .mega-col:nth-child(2){border-right:0}
 }
+/* Entre le bandeau complet et le bandeau au pouce, une bande où les liens
+   tiennent encore mais pas le champ de recherche : à 900 px la barre
+   réclamait 1 190 px et poussait toute la page en défilement horizontal.
+   La loupe remplace le champ — ⌘K continue de l'ouvrir — et les écarts
+   se resserrent. En dessous de 860 px, l'autre règle prend le relais. */
+@media(min-width:861px) and (max-width:1100px){
+  .nav-in{gap:var(--s-3)}
+  .nav-link{padding:0 var(--s-2)}
+  .searchbar{min-width:0;width:40px;padding:0;justify-content:center;flex:none}
+  .searchbar span,.searchbar kbd{display:none}
+}
 @media(max-width:1024px){
   :root{--pad:20px}
   .grid-4,.pgrid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1326,9 +1337,11 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
      rubrique, la pagination, le réseau social. Au curseur ils restent denses. */
   .tag,.catbar a{min-height:44px}
   .pager a,.pager span,.socials a{min-width:44px;height:44px}
+  /* « Tout voir » d'un titre de rubrique : 12 px de haut au doigt, c'est
+     une cible qu'on rate. Elle passe à 44 sans bouger la ligne. */
+  .cat-head .more,.sec-head .more{min-height:44px}
   /* « Voir l'offre » finance le site : ce n'est pas un bouton secondaire */
   .deal .go{min-height:44px}
-  .grid-3,.grid-2,.pgrid,.pgrid-4{grid-template-columns:1fr}
   /* au doigt, les affiches de jeu restent deux par ligne : à une seule,
      la tuile 3/4 mangeait un écran entier pour un nom et un compteur */
   .ggrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-3)}
@@ -1393,7 +1406,24 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 }
 @media(max-width:560px){
   :root{--pad:16px}
-  .grid-4{grid-template-columns:1fr}
+  /* une seule colonne à partir d'ici, pas avant : entre 560 et 860 px —
+     grand téléphone à plat, tablette en portrait — deux vignettes tiennent
+     encore largement, et une pleine largeur gâchait la moitié de l'écran */
+  .grid-4,.grid-3,.grid-2,.pgrid,.pgrid-4{grid-template-columns:1fr}
+
+  /* Le bandeau ne tient plus à 375 px : marque, loupe, langue, thème et
+     l'abonnement débordaient de 53 px, et la page partait en défilement
+     horizontal. La loupe s'en va — la barre à pouce porte déjà
+     « Chercher » — la marque descend d'un cran, les écarts se resserrent.
+     L'abonnement reste : c'est la seule action qui rapporte. */
+  .nav .searchbar{display:none}
+  .nav-in{gap:var(--s-2)}
+  .mark{font-size:1.125rem}
+  .mark i{width:17px;height:17px}
+
+  /* la mosaïque empilée coûtait 1 540 px avant la première rubrique :
+     les cinq tuiles secondaires se resserrent, la maîtresse garde sa taille */
+  .htile-side,.htile-strip{min-height:186px}
   .card-xs>.fig{width:82px}
   .hub-in{grid-template-columns:96px 1fr;padding-block:var(--s-5) var(--s-4)}
   /* la rangée d'actions repasse en colonne : plaque + bouton + mention
