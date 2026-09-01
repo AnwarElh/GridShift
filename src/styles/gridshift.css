@@ -4,25 +4,52 @@
    sur mobile, DNS + TLS + aller-retour avant le moindre glyphe).
    Sous-ensembles latin et latin-ext seulement — le site est
    francophone, le cyrillique / grec / vietnamien était mort-né.
+
+   Trois familles, trois rôles : Chakra Petch taille les titres et
+   les boutons (les diagonales du HUD), Inter compose le texte
+   d'interface, JetBrains Mono porte les étiquettes techniques —
+   rubrique, durée, date, numéro d'article.
+   Chakra Petch n'existe qu'en statique : deux graisses, 600 et 700,
+   pas une de plus. Inter et JetBrains Mono sont variables.
    ── */
 @font-face{
-  font-family:'Bricolage Grotesque';font-style:normal;font-weight:400 800;
-  font-display:swap;src:url('/fonts/bricolage-normal-latin.woff2') format('woff2');
+  font-family:'Chakra Petch';font-style:normal;font-weight:600;
+  font-display:swap;src:url('/fonts/chakra-600-latin.woff2') format('woff2');
   unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face{
-  font-family:'Bricolage Grotesque';font-style:normal;font-weight:400 800;
-  font-display:swap;src:url('/fonts/bricolage-normal-latin-ext.woff2') format('woff2');
+  font-family:'Chakra Petch';font-style:normal;font-weight:600;
+  font-display:swap;src:url('/fonts/chakra-600-latin-ext.woff2') format('woff2');
   unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face{
-  font-family:'Saira';font-style:normal;font-weight:400 800;font-stretch:50% 125%;
-  font-display:swap;src:url('/fonts/saira-normal-latin.woff2') format('woff2');
+  font-family:'Chakra Petch';font-style:normal;font-weight:700;
+  font-display:swap;src:url('/fonts/chakra-700-latin.woff2') format('woff2');
   unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face{
-  font-family:'Saira';font-style:normal;font-weight:400 800;font-stretch:50% 125%;
-  font-display:swap;src:url('/fonts/saira-normal-latin-ext.woff2') format('woff2');
+  font-family:'Chakra Petch';font-style:normal;font-weight:700;
+  font-display:swap;src:url('/fonts/chakra-700-latin-ext.woff2') format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'Inter';font-style:normal;font-weight:400 700;
+  font-display:swap;src:url('/fonts/inter-normal-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Inter';font-style:normal;font-weight:400 700;
+  font-display:swap;src:url('/fonts/inter-normal-latin-ext.woff2') format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'JetBrains Mono';font-style:normal;font-weight:400 600;
+  font-display:swap;src:url('/fonts/jetbrains-normal-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'JetBrains Mono';font-style:normal;font-weight:400 600;
+  font-display:swap;src:url('/fonts/jetbrains-normal-latin-ext.woff2') format('woff2');
   unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
@@ -59,15 +86,28 @@
   --s-6:32px; --s-7:48px; --s-8:64px; --s-9:96px; --s-10:128px;
 
   /* rayon — la vignette porte le site : carte généreuse, chrome discret */
-  --r-1:4px; --r-2:10px; --r-card:16px; --r-pill:999px;
+  /* le HUD est anguleux : l'encoche remplace l'arrondi. Les rayons
+     tombent à l'épaisseur d'un trait — un coin coupé et un coin rond
+     sur le même cadre, c'est deux langages qui se contredisent. */
+  --r-1:2px; --r-2:3px; --r-card:4px; --r-pill:999px;
+  /* l'encoche : le coin coupé qui signe tous les cadres et les boutons.
+     Un seul jeton — changer ici change la géométrie de tout le site. */
+  --notch:10px; --notch-sm:6px;
+  /* le halo des surfaces actives : couleur de marque, opacité fixe */
+  --glow:0 6px 26px -4px color-mix(in srgb,var(--brass) 45%,transparent);
+  /* le quadrillage de fond, dérivé du texte : il suit donc le thème */
+  --grid-line:color-mix(in srgb,var(--tx) 5%,transparent);
 
   /* élévation — deux ombres, pas plus */
   --sh-pop:0 8px 28px -6px rgba(0,0,0,.55),0 2px 6px rgba(0,0,0,.35);
   --sh-modal:0 32px 80px -12px rgba(0,0,0,.7);
 
   /* type */
-  --f-ui:'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
-  --f-display:Saira,'Bricolage Grotesque',ui-sans-serif,system-ui,sans-serif;
+  --f-ui:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --f-display:'Chakra Petch',Inter,ui-sans-serif,system-ui,sans-serif;
+  /* la police technique : rubriques, durées, dates, numéros d'article.
+     C'est elle qui donne au chrome son air d'instrument, pas la couleur. */
+  --f-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
   --d1:clamp(2.6rem,6.2vw,5.25rem);
   --d2:clamp(1.9rem,3.8vw,3.1rem);
   --d3:clamp(1.45rem,2.5vw,2.05rem);
@@ -118,6 +158,19 @@ body{
   touch-action:manipulation;
   -webkit-tap-highlight-color:color-mix(in srgb,var(--brass) 22%,transparent);
 }
+/* le quadrillage : la trame d'un poste de pilotage, posée derrière tout
+   le document et masquée en dégradé vers le bas pour qu'elle n'entre
+   jamais en concurrence avec une vignette. Dérivée de --tx, donc elle
+   s'éclaircit d'elle-même en thème papier. */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:46px 46px;
+  -webkit-mask-image:radial-gradient(90% 60% at 50% -5%,#000 30%,transparent 75%);
+  mask-image:radial-gradient(90% 60% at 50% -5%,#000 30%,transparent 75%);
+}
 img,svg{display:block;max-width:100%}
 /* `hidden` doit gagner : toute règle `display:` de composant le battait,
    et le panneau « aucun résultat » restait affiché sur chaque archive */
@@ -151,15 +204,15 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 /* le kicker : condensé, capitales, c'est la signalétique du site */
 .kicker{
   display:inline-flex;align-items:center;gap:7px;
-  font:700 var(--ui-xs)/1 var(--f-ui);font-stretch:80%;
-  letter-spacing:.11em;text-transform:uppercase;color:var(--brass);
+  font:600 var(--ui-xs)/1 var(--f-mono);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--brass);
 }
 .kicker::before{content:"";width:11px;height:2px;background:currentColor}
 .kicker.k-live{color:var(--live)}
 .kicker.k-mute{color:var(--tx-3)}
 .kicker.k-plain::before{display:none}
 
-.meta{font-size:var(--ui-xs);color:var(--tx-3);font-stretch:88%;letter-spacing:.02em}
+.meta{font-family:var(--f-mono);font-size:11.5px;color:var(--tx-3);letter-spacing:.04em}
 .meta b{color:var(--tx-2);font-weight:600}
 .dot{display:inline-block;margin:0 7px;opacity:.45}
 
@@ -214,27 +267,67 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 .rarity .bar{flex:1;height:3px;background:var(--s3);border-radius:var(--r-pill);overflow:hidden}
 .rarity .bar i{display:block;height:100%;background:var(--brass-dim)}
 
+/* ── 4b. L'ENCOCHE — la primitive du HUD ───────────────────
+   Un coin coupé en haut à gauche et en bas à droite : c'est la seule
+   forme du site. Boutons, cadres, étiquettes, vignettes de jeu — tous
+   la partagent, tous la tiennent du même jeton (--notch).
+   La bordure est coupée avec le reste, exactement comme sur la
+   référence : le cadre garde sa diagonale nue, ce qui n'est lisible
+   que si la surface a un fond franc. D'où la règle : rien de
+   transparent ne porte l'encoche. */
+.cut{
+  --n:var(--notch);
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
+}
+/* la variante d'angle : une seule encoche, en haut à gauche. Pour les
+   cadres hauts (cartes, tuiles) où deux coupes alourdiraient. */
+.cut-1{
+  --n:var(--notch);
+  clip-path:polygon(var(--n) 0,100% 0,100% 100%,0 100%,0 var(--n));
+}
+/* les équerres : deux angles de visée posés sur une vignette. */
+.brackets{position:relative}
+.brackets::before,.brackets::after{
+  content:"";position:absolute;z-index:3;width:13px;height:13px;
+  border:2px solid var(--brass);pointer-events:none;
+  opacity:0;transition:opacity var(--t-2) var(--ease);
+}
+.brackets::before{top:8px;left:8px;border-right:0;border-bottom:0}
+.brackets::after{right:8px;bottom:8px;border-left:0;border-top:0}
+.brackets:hover::before,.brackets:hover::after{opacity:1}
+
 /* ── 5. BOUTONS ───────────────────────────────────────────── */
 .btn{
   --bg-b:var(--s2);--bd-b:var(--line-2);--fg-b:var(--tx);
   display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);
   min-height:40px;padding:0 var(--s-4);
   background:var(--bg-b);border:1px solid var(--bd-b);color:var(--fg-b);
-  border-radius:var(--r-1);
-  font:700 var(--ui-sm)/1 var(--f-ui);font-stretch:92%;letter-spacing:.01em;white-space:nowrap;
-  transition:background var(--t-1),border-color var(--t-1),color var(--t-1),transform var(--t-1);
+  --n:var(--notch-sm);
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
+  font:700 var(--ui-sm)/1 var(--f-display);letter-spacing:.045em;text-transform:uppercase;
+  white-space:nowrap;
+  transition:background var(--t-1),border-color var(--t-1),color var(--t-1),
+    transform var(--t-1),box-shadow var(--t-2);
 }
 .btn:hover{--bg-b:var(--s3);--bd-b:var(--tx-3)}
 .btn:active{transform:translateY(1px)}
 .btn[disabled],.btn[aria-disabled="true"]{opacity:.4;pointer-events:none}
-.btn-primary{--bg-b:var(--brass);--bd-b:var(--brass);--fg-b:var(--on-brass)}
-.btn-primary:hover{--bg-b:var(--brass-2);--bd-b:var(--brass-2)}
+.btn-primary{--bg-b:var(--brass);--bd-b:var(--brass);--fg-b:var(--on-brass);background:var(--grad)}
+.btn-primary:hover{--bg-b:var(--brass-2);--bd-b:var(--brass-2);box-shadow:var(--glow)}
 .btn-live{--bg-b:var(--live-fill);--bd-b:var(--live);--fg-b:var(--on-live)}
-.btn-ghost{--bg-b:transparent;--bd-b:transparent;--fg-b:var(--tx-2)}
+/* le fantôme ne porte pas d'encoche : sans fond, la coupe n'aurait rien
+   à découper et le coin partirait dans le vide */
+.btn-ghost{--bg-b:transparent;--bd-b:transparent;--fg-b:var(--tx-2);clip-path:none}
 .btn-ghost:hover{--bg-b:var(--s2);--bd-b:var(--line);--fg-b:var(--tx)}
-.btn-quiet{--bg-b:transparent;--bd-b:var(--line)}
+/* le bouton « discret » garde un fond : il porte l'encoche, il lui faut
+   une matière à couper. Sa marque, c'est le filet vertical à gauche. */
+.btn-quiet{--bg-b:var(--s1);--bd-b:var(--line);padding-left:calc(var(--s-4) + 3px);
+  background-image:linear-gradient(var(--brass),var(--brass));
+  background-size:3px 100%;background-repeat:no-repeat;background-position:left center}
+.btn-quiet:hover{--bg-b:var(--s2);--bd-b:var(--line-2)}
 .btn-sm{min-height:32px;padding:0 var(--s-3);font-size:var(--ui-xs)}
-.nav .btn{border-radius:var(--r-pill)}
 .btn-lg{min-height:50px;padding:0 var(--s-6);font-size:var(--ui-md)}
 .btn-ico{width:40px;min-height:40px;padding:0}
 .btn-ico.btn-sm{width:32px;min-height:32px}
@@ -243,15 +336,18 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 
 /* ── 6. JETONS, TAGS, BADGES ──────────────────────────────── */
 .tag{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;
-  background:var(--s2);border:1px solid var(--line);border-radius:var(--r-pill);
-  font:600 var(--ui-xs)/1.3 var(--f-ui);color:var(--tx-2);
+  background:var(--s2);border:1px solid var(--line);border-radius:var(--r-1);
+  font:500 var(--ui-xs)/1.3 var(--f-mono);color:var(--tx-2);
   transition:border-color var(--t-1),color var(--t-1)}
 a.tag:hover{border-color:var(--brass);color:var(--brass)}
 .tag[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
 .tag .x{opacity:.6;font-weight:700}
 
-.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:var(--r-1);
-  font:700 var(--ui-xs)/1.4 var(--f-ui);font-stretch:82%;letter-spacing:.08em;text-transform:uppercase}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;
+  --n:5px;
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
+  font:600 11px/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
 .b-live{background:var(--live-fill);color:var(--on-live)}
 .b-brass{background:var(--brass);color:var(--on-brass)}
 .b-out{border:1px solid var(--line-2);color:var(--tx-2)}
@@ -278,12 +374,19 @@ a.tag:hover{border-color:var(--brass);color:var(--brass)}
 .nav .mark{height:100%}
 .nav-links{display:flex;align-items:center;gap:var(--s-1);margin-left:calc(var(--s-2) * -1)}
 .nav-links>*{position:relative}
+/* la rubrique courante ne se marque plus par une pastille pleine mais par
+   un trait lumineux sous le mot : dans un chrome anguleux, la pilule était
+   la dernière forme ronde du bandeau. */
 .nav-link{display:flex;align-items:center;gap:5px;height:36px;padding:0 var(--s-3);
-  border-radius:var(--r-pill);
-  font:600 var(--ui-md)/1 var(--f-ui);color:var(--tx-2);
+  border-radius:var(--r-1);
+  font:500 var(--ui-sm)/1 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;
+  color:var(--tx-3);
   transition:color var(--t-1),background var(--t-1)}
 .nav-link:hover,.nav-link[aria-expanded="true"]{color:var(--tx);background:var(--s2)}
-.nav-link[aria-current]{color:var(--on-brass);background:var(--brass)}
+.nav-link[aria-current]{color:var(--brass)}
+.nav-link[aria-current]::after{content:"";position:absolute;left:var(--s-3);right:var(--s-3);
+  bottom:2px;height:2px;background:var(--brass);
+  box-shadow:0 0 10px color-mix(in srgb,var(--brass) 55%,transparent)}
 .nav-link .chev{font-size:9px;opacity:.6;transition:transform var(--t-2)}
 .nav-link[aria-expanded="true"] .chev{transform:rotate(180deg)}
 .nav-sp{flex:1}
@@ -355,14 +458,23 @@ a:hover>.fig img,a:hover>.fig .ph,.card:hover .fig img,.card:hover .fig .ph{tran
    l'image, titre en bas. C'est la maille de toute la maison. */
 .card{position:relative;display:flex;flex-direction:column;
   background:var(--s1);border:1px solid var(--line);border-radius:var(--r-card);
+  --n:var(--notch);
+  clip-path:polygon(var(--n) 0,100% 0,100% 100%,0 100%,0 var(--n));
   overflow:hidden;isolation:isolate;
   transition:border-color var(--t-2),transform var(--t-2) var(--ease),box-shadow var(--t-2)}
-.card:hover{border-color:var(--line-2);transform:translateY(-3px);box-shadow:var(--sh-pop)}
+.card:hover{border-color:var(--brass-dim);transform:translateY(-4px);box-shadow:var(--sh-pop)}
 .card>.fig{border:0;border-radius:0}
 .card .fig img{transition:transform 620ms var(--ease)}
 .card:hover .fig img{transform:scale(1.05)}
 .card-body{display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-2);
   padding:var(--s-4);flex:1}
+/* le numéro d'ordre — « // 003 ». Il vient d'un compteur CSS porté par la
+   grille : la carte ne connaît pas son rang, et n'a pas à le connaître. */
+.pgrid,.ggrid{counter-reset:idx}
+.pgrid>*,.ggrid>*{counter-increment:idx}
+.pgrid>.card>.card-body::before{
+  content:"// 0" counter(idx,decimal-leading-zero);
+  font:500 11px/1 var(--f-mono);letter-spacing:.1em;color:var(--tx-3);opacity:.75}
 .card h3{font-size:var(--d4);line-height:1.2;letter-spacing:-.018em;text-wrap:balance}
 .card h3 a::after{content:"";position:absolute;inset:0;z-index:3}
 .card:hover h3{color:var(--brass)}
@@ -375,10 +487,13 @@ a:hover>.fig img,a:hover>.fig .ph,.card:hover .fig img,.card:hover .fig .ph{tran
 /* Le voile fait la lisibilité, pas le flou : `backdrop-filter` coûtait un
    instantané d'arrière-plan et un contexte d'empilement par pastille — 40 sur
    la seule page d'accueil, sur les éléments qui bougent au défilement. */
-.chip{display:inline-flex;align-items:center;padding:4px 9px;border-radius:var(--r-pill);
+.chip{display:inline-flex;align-items:center;padding:4px 9px;
+  --n:5px;
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
   background:color-mix(in srgb,var(--bg) 90%,transparent);
   border:1px solid color-mix(in srgb,var(--tx) 16%,transparent);
-  font:700 10px/1.4 var(--f-ui);font-stretch:86%;letter-spacing:.09em;text-transform:uppercase;
+  font:600 10px/1.4 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;
   color:var(--tx);white-space:nowrap;transition:background var(--t-1),color var(--t-1)}
 a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-color:transparent}
 .chip[data-c]{color:var(--chip-c);border-color:color-mix(in srgb,var(--chip-c) 45%,transparent)}
@@ -394,7 +509,8 @@ a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-
 
 /* la ligne de service : date, durée de lecture — ce que le lecteur scanne */
 .card-meta{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-3);
-  font:600 var(--ui-xs)/1.4 var(--f-ui);color:var(--tx-3)}
+  font:500 11.5px/1.4 var(--f-mono);letter-spacing:.045em;text-transform:uppercase;
+  color:var(--tx-3)}
 .card-meta i{display:inline-flex;margin-right:5px;opacity:.7}
 .card-meta span{display:inline-flex;align-items:center}
 
@@ -470,6 +586,38 @@ a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-
 .card-game b{display:block;font-size:var(--ui-md);font-weight:700;letter-spacing:-.01em;line-height:1.2}
 .card-game .studio{font-size:var(--ui-xs);color:var(--tx-3)}
 
+/* Sur l'accueil, la grille des jeux couverts se lit comme un présentoir :
+   la jaquette occupe toute la tuile, le nom et le compte se posent dessus.
+   Le studio, la plateforme et la note restent sur la fiche du jeu — ici
+   ils feraient du bruit sur une image. */
+.ggrid .card-game{display:block;position:relative;aspect-ratio:3/4;padding:var(--s-4);
+  border-radius:var(--r-card);overflow:hidden;isolation:isolate;
+  --n:var(--notch);
+  clip-path:polygon(var(--n) 0,100% 0,100% 100%,0 100%,0 var(--n));
+  transition:border-color var(--t-2),transform var(--t-2) var(--ease)}
+.ggrid .card-game:hover{transform:translateY(-4px);border-color:var(--brass-dim);background:var(--s1)}
+.ggrid .card-game .fig{position:absolute;inset:0;z-index:0;aspect-ratio:auto;border-radius:0}
+.ggrid .card-game .fig img{width:100%;height:100%;object-fit:cover;
+  transition:transform 620ms var(--ease)}
+.ggrid .card-game:hover .fig img{transform:scale(1.05)}
+.ggrid .card-game::after{content:"";position:absolute;inset:0;z-index:1;
+  /* la jaquette est une image chargée : sans un voile franc, le nom du jeu
+     se perdait dans un ciel clair ou un logo blanc */
+  background:linear-gradient(transparent 34%,
+    color-mix(in srgb,#05060a 62%,transparent) 62%,#05060a 98%)}
+.ggrid .card-game>span{position:absolute;z-index:2;inset:auto var(--s-4) var(--s-4);
+  display:flex;flex-direction:column;gap:3px}
+.ggrid .card-game b{font-family:var(--f-display);font-size:var(--ui-md);color:#fff;
+  line-height:1.15;text-shadow:0 1px 10px rgba(0,0,0,.7)}
+.ggrid .card-game .studio,.ggrid .card-game .plats{display:none}
+/* la tuile est toujours sur fond sombre — un voile posé sur une jaquette,
+   pas une surface de thème. Le compteur garde donc l'or de nuit dans les
+   deux thèmes, comme `.hero-body` garde son blanc : en papier, --brass-2
+   vaut #674600 et serait illisible ici. */
+.ggrid .card-game .meta{margin-top:0!important;color:#FFC635;font-size:11px;
+  letter-spacing:.07em;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.7)}
+.ggrid .card-game .meta b{font-size:11px;color:inherit;text-shadow:inherit}
+
 /* liste dense — la couverture complète d'un jeu, du plus récent au plus
    ancien. Même vocabulaire que la carte, densité d'un sommaire. */
 .feed{display:grid;gap:var(--s-2)}
@@ -536,7 +684,12 @@ a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-
 
 /* newsletter — proposition claire, pas un mur */
 .news-box{display:grid;gap:var(--s-4);padding:var(--s-6);
-  background:var(--s1);border:1px solid var(--line);border-radius:var(--r-1)}
+  --n:var(--notch);
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
+  border:1px solid var(--brass-dim);border-radius:var(--r-1);
+  background:linear-gradient(135deg,
+    color-mix(in srgb,var(--brass) 13%,var(--s1)),var(--s1) 58%)}
 .news-form{display:flex;gap:var(--s-2);flex-wrap:wrap}
 .news-form .input{flex:1;min-width:210px}
 /* le message d'erreur vit sous le champ, dans le flux : une bulle native
@@ -821,16 +974,20 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   gap:var(--s-4);padding-block:var(--s-6) var(--s-4)}
 .masthead h1{font-size:var(--d2);font-stretch:90%;text-wrap:balance}
 .masthead .sub{margin-top:6px;color:var(--tx-3);font-size:var(--ui-sm)}
-.masthead .btn{border-radius:var(--r-pill);min-height:44px;padding-inline:var(--s-5)}
+.masthead .btn{min-height:44px;padding-inline:var(--s-5)}
 
 /* La barre de rubriques : l'axe de navigation du portail, toujours visible. */
 .catbar{display:flex;gap:var(--s-2);overflow-x:auto;scrollbar-width:none;
   padding-bottom:var(--s-2);margin-bottom:var(--s-5)}
 .catbar::-webkit-scrollbar{display:none}
 .catbar a{flex:none;display:inline-flex;align-items:center;gap:7px;
-  min-height:38px;padding:0 var(--s-4);border-radius:var(--r-pill);
+  min-height:38px;padding:0 var(--s-4);
+  --n:6px;
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
   background:var(--s1);border:1px solid var(--line);
-  font:700 var(--ui-sm)/1 var(--f-ui);color:var(--tx-2);white-space:nowrap;
+  font:600 var(--ui-sm)/1 var(--f-display);letter-spacing:.04em;text-transform:uppercase;
+  color:var(--tx-2);white-space:nowrap;
   transition:background var(--t-1),border-color var(--t-1),color var(--t-1)}
 .catbar a:hover{border-color:var(--line-2);color:var(--tx)}
 .catbar a[aria-current]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
@@ -845,7 +1002,10 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   scrollbar-width:none;border-radius:var(--r-card)}
 .hero-track::-webkit-scrollbar{display:none}
 .hero-slide{position:relative;scroll-snap-align:center;display:block;
-  border-radius:var(--r-card);overflow:hidden;isolation:isolate;
+  border-radius:var(--r-card);
+  --n:var(--notch);
+  clip-path:polygon(var(--n) 0,100% 0,100% 100%,0 100%,0 var(--n));
+  overflow:hidden;isolation:isolate;
   min-height:clamp(320px,33vw,500px)}
 .hero-slide .fig{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto}
 .hero-slide .fig img{width:100%;height:100%;object-fit:cover;transition:transform 900ms var(--ease)}
@@ -880,13 +1040,15 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
    C'est la répétition de ce bloc qui fait la page d'accueil. */
 .cat-sec{padding-block:var(--s-6)}
 .cat-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);
-  margin-bottom:var(--s-5)}
-.cat-head h2{display:flex;align-items:center;gap:var(--s-3);font-size:var(--d3);text-wrap:balance}
-.cat-head h2::before{content:"";width:5px;height:1.05em;border-radius:var(--r-pill);
-  background:var(--grad)}
+  margin-bottom:var(--s-5);padding-bottom:var(--s-3);border-bottom:1px solid var(--line)}
+.cat-head h2{display:flex;align-items:center;gap:var(--s-3);font-size:var(--d3);
+  text-transform:uppercase;letter-spacing:-.005em;text-wrap:balance}
+.cat-head h2::before{content:"";width:4px;height:1em;background:var(--grad);
+  box-shadow:0 0 12px color-mix(in srgb,var(--brass) 40%,transparent)}
 .cat-head .more{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
-  font:700 var(--ui-sm)/1 var(--f-ui);color:var(--tx-3);transition:color var(--t-1)}
-.cat-head .more:hover{color:var(--brass)}
+  font:600 var(--ui-xs)/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;
+  color:var(--brass);transition:color var(--t-1)}
+.cat-head .more:hover{color:var(--tx)}
 
 .pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s-5)}
 .pgrid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -932,6 +1094,9 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 /* la bannière d'offre pleine largeur, entre deux rubriques */
 .promo{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--s-5);
   padding:var(--s-6);border-radius:var(--r-card);border:1px solid var(--line);
+  --n:var(--notch);
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
   background:
     radial-gradient(120% 180% at 100% 0%,color-mix(in srgb,var(--live) 22%,transparent),transparent 62%),
     radial-gradient(90% 160% at 0% 100%,color-mix(in srgb,var(--brass) 20%,transparent),transparent 60%),
@@ -942,15 +1107,21 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 /* Les jeux couverts : grille, et non plus rail. Remontée sous la Une, elle
    doit montrer TOUT le catalogue d'un coup d'œil — un rail en cache la moitié
    hors écran. Même maille auto-fit que les offres, aucun nouveau gabarit. */
-.ggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--s-3)}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:var(--s-4)}
 
 /* Tendances : un classement, donc une <ol>. Le rang est une vraie donnée
    (les jeux les plus suivis), pas une numérotation décorative de section. */
 .trend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4) var(--s-5);
   margin:0;padding:0;list-style:none}
+/* en colonne latérale : une pile, un filet entre les rangs, les trois
+   premiers rangs à la couleur de marque — c'est un palmarès, il se lit vite */
+.sticky .trend{grid-template-columns:1fr;gap:0}
+.sticky .trend li{padding-block:var(--s-3);border-bottom:1px solid var(--line)}
+.sticky .trend li:last-child{border-bottom:0}
+.sticky .trend li:nth-child(-n+3) .trend-n{color:var(--brass)}
 .trend li{display:flex;align-items:center;gap:var(--s-4);min-width:0}
-.trend-n{flex:none;width:1.4ch;font:800 var(--d4)/1 var(--f-display);font-stretch:88%;
-  letter-spacing:-.04em;color:var(--tx-3);text-align:right}
+.trend-n{flex:none;width:1.4ch;font:700 var(--d4)/1 var(--f-display);
+  letter-spacing:-.02em;color:var(--tx-3);text-align:right}
 .trend .card-xs{flex:1;min-width:0}
 
 /* rail d'entités : on navigue par jeu, pas par rubrique */
@@ -1158,6 +1329,9 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   /* « Voir l'offre » finance le site : ce n'est pas un bouton secondaire */
   .deal .go{min-height:44px}
   .grid-3,.grid-2,.pgrid,.pgrid-4{grid-template-columns:1fr}
+  /* au doigt, les affiches de jeu restent deux par ligne : à une seule,
+     la tuile 3/4 mangeait un écran entier pour un nom et un compteur */
+  .ggrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-3)}
   .trend{grid-template-columns:1fr}
   .masthead{padding-block:var(--s-5) var(--s-3)}
   .masthead .btn{width:100%}

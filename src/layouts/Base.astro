@@ -78,10 +78,12 @@ const alternates = altUrl
 <link rel="alternate" type="application/rss+xml" title={`${site.name} — ${siteCopy[lang].tagline}`} href={feedHref(lang)}>
 
 <!-- polices auto-hébergées : @font-face vit dans gridshift.css.
-     Les deux familles réellement rendues sont préchargées : Bricolage compose
-     l'interface, Saira les titres — donc l'élément LCP. -->
-<link rel="preload" href={withBase('/fonts/bricolage-normal-latin.woff2')} as="font" type="font/woff2" crossorigin>
-<link rel="preload" href={withBase('/fonts/saira-normal-latin.woff2')} as="font" type="font/woff2" crossorigin>
+     Les trois familles du premier écran sont préchargées : Inter compose
+     l'interface, Chakra Petch les titres — donc l'élément LCP — et
+     JetBrains Mono toutes les étiquettes de rubrique, visibles dès le Fil. -->
+<link rel="preload" href={withBase('/fonts/inter-normal-latin.woff2')} as="font" type="font/woff2" crossorigin>
+<link rel="preload" href={withBase('/fonts/chakra-700-latin.woff2')} as="font" type="font/woff2" crossorigin>
+<link rel="preload" href={withBase('/fonts/jetbrains-normal-latin.woff2')} as="font" type="font/woff2" crossorigin>
 
 <!-- thème appliqué avant peinture : pas de flash blanc au chargement -->
 <script is:inline>

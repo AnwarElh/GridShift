@@ -109,85 +109,92 @@ const jsonLd = {
       </div>
     </section>
 
-    <!-- 3+. Une rubrique par bloc, chacune avec sa maille -->
-    {blocks.map((b, i) => (
-      <Fragment>
-        <section class="cat-sec" id={b.key}>
-          <div class="cat-head">
-            <h2 class="d3">{b.label}</h2>
-            <a class="more" href={sectionHref(lang, b.key)}>{t('home.seeAll')}</a>
-          </div>
-          {b.key === 'news' ? (
-            <div class="pgrid pgrid-lead">
-              {b.items.slice(0, 1).map((p) => <Card post={p} variant="wide" level={3} showLede />)}
-              {b.items.slice(1).map((p) => <Card post={p} variant="sm" level={3} />)}
-            </div>
-          ) : b.key === 'review' ? (
-            <div class="pgrid">
-              {b.items.map((p) => <Card post={p} variant="verdict" level={3} />)}
-            </div>
-          ) : (
-            <div class="pgrid">
-              {b.items.map((p) => <Card post={p} variant="sm" level={3} showLevel showVersion />)}
-            </div>
-          )}
-          <div class="cat-foot">
-            <a class="btn btn-quiet" href={sectionHref(lang, b.key)}>{t('home.seeAllOf')(b.label)}</a>
-          </div>
-        </section>
+    <!-- 3. Les offres : le moteur économique, en pleine largeur -->
+    {hasDeals && (
+      <section class="cat-sec" id="offers">
+        <div class="cat-head">
+          <h2 class="d3">{t('home.deals')}</h2>
+          <a class="more" href={pageHref(lang, 'games')}>{t('home.allTrackedGames')}</a>
+        </div>
+        <Deals games={games} />
+        <p class="aff-note" style="text-align:center">{t('aff.note')}</p>
+      </section>
+    )}
 
-        {/* Le bloc d'offres ne s'affiche que si au moins un jeu en a une :
-            la plupart de nos jeux sont free-to-play et n'ont pas de prix. */}
-        {i === 0 && hasDeals && (
+    <!-- 4. Le corps du kiosque : les rubriques à gauche, la colonne de
+         service à droite (pavé publicitaire + palmarès), collante tant
+         qu'elle tient dans la fenêtre. C'est la charpente de la référence. -->
+    <div class="split">
+      <div>
+        {blocks.map((b, i) => (
           <Fragment>
-            <section class="cat-sec" id="offers">
+            <section class="cat-sec" id={b.key}>
               <div class="cat-head">
-                <h2 class="d3">{t('home.deals')}</h2>
-                <a class="more" href={pageHref(lang, 'games')}>{t('home.allTrackedGames')}</a>
+                <h2 class="d3">{b.label}</h2>
+                <a class="more" href={sectionHref(lang, b.key)}>{t('home.seeAll')}</a>
               </div>
-              <Deals games={games} />
-              <p class="aff-note" style="text-align:center">{t('aff.note')}</p>
+              {b.key === 'news' ? (
+                <div class="pgrid pgrid-lead">
+                  {b.items.slice(0, 1).map((p) => <Card post={p} variant="wide" level={3} showLede />)}
+                  {b.items.slice(1).map((p) => <Card post={p} variant="sm" level={3} />)}
+                </div>
+              ) : b.key === 'review' ? (
+                <div class="pgrid">
+                  {b.items.map((p) => <Card post={p} variant="verdict" level={3} />)}
+                </div>
+              ) : (
+                <div class="pgrid">
+                  {b.items.map((p) => <Card post={p} variant="sm" level={3} showLevel showVersion />)}
+                </div>
+              )}
+              <div class="cat-foot">
+                <a class="btn btn-quiet" href={sectionHref(lang, b.key)}>{t('home.seeAllOf')(b.label)}</a>
+              </div>
             </section>
-            <div style="margin-block:var(--s-6)">
-              <Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} />
-            </div>
+
+            {i === 0 && (
+              <div style="margin-block:var(--s-6)">
+                <Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} />
+              </div>
+            )}
           </Fragment>
-        )}
-
-        {i === 1 && (
-          <section class="cat-sec">
-            <div class="promo">
-              <div>
-                <h2 class="d3">{t('home.promoTitle')}</h2>
-                <p>{t('home.promoBody')}</p>
-              </div>
-              <a class="btn btn-primary btn-lg" href="#newsletter">{t('home.promoCta')}</a>
-            </div>
-          </section>
-        )}
-      </Fragment>
-    ))}
-
-    <!-- Avant-dernier bloc : le classement des jeux les plus suivis -->
-    <section class="cat-sec">
-      <div class="cat-head">
-        <h2 class="d3">{t('home.trending')}</h2>
-        <a class="more" href={pageHref(lang, 'games')}>{t('home.gameDatabase')}</a>
-      </div>
-      <ol class="trend">
-        {trending.map((p, i) => (
-          <li>
-            <span class="trend-n" aria-hidden="true">{i + 1}</span>
-            <article class="card card-sm card-xs">
-              <Fig src={p.data.cover} alt="" ratio="1-1" widths={[164]} sizes="82px" />
-              <div class="card-body">
-                <h3><a href={p.href}>{p.data.title}</a></h3>
-                <p class="card-meta"><span>{labels[p.section]}</span></p>
-              </div>
-            </article>
-          </li>
         ))}
-      </ol>
+      </div>
+
+      <aside class="sticky">
+        <Ad h="250" unit={import.meta.env.PUBLIC_AD_SIDEBAR} />
+        <div>
+          <div class="cat-head">
+            <h2 class="d4">{t('home.trending')}</h2>
+            <a class="more" href={pageHref(lang, 'games')}>{t('home.gameDatabase')}</a>
+          </div>
+          <ol class="trend">
+            {trending.map((p, i) => (
+              <li>
+                <span class="trend-n" aria-hidden="true">{i + 1}</span>
+                <article class="card card-sm card-xs">
+                  <Fig src={p.data.cover} alt="" ratio="1-1" widths={[164]} sizes="82px" />
+                  <div class="card-body">
+                    <h3><a href={p.href}>{p.data.title}</a></h3>
+                    <p class="card-meta"><span>{labels[p.section]}</span></p>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 5. L'appel : pleine largeur, juste avant l'inscription -->
+    <section class="cat-sec">
+      <div class="promo">
+        <div>
+          <h2 class="d3">{t('home.promoTitle')}</h2>
+          <p>{t('home.promoBody')}</p>
+        </div>
+        <a class="btn btn-primary btn-lg" href="#newsletter">{t('home.promoCta')}</a>
+      </div>
     </section>
 
     <Newsletter />
