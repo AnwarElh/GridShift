@@ -3,6 +3,7 @@ title: "Once Human"
 studio: Starry Studio
 released: "2024"
 releaseDate: 2024-07-09
+score: 7.8
 cover: ../../assets/g-once-human.jpg
 hero: ../../assets/h-once-human.jpg
 platforms:

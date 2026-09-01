@@ -3,6 +3,7 @@ title: "Zenless Zone Zero"
 studio: HoYoverse
 released: "2024"
 releaseDate: 2024-07-04
+score: 8.0
 version: "3.1"
 cover: ../../assets/g-zenless-zone-zero.jpg
 hero: ../../assets/h-zenless-zone-zero.jpg

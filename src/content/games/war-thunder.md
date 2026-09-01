@@ -3,6 +3,7 @@ title: "War Thunder"
 studio: Gaijin Entertainment
 released: "2013"
 releaseDate: 2013-08-15
+score: 7.5
 cover: ../../assets/g-war-thunder.jpg
 hero: ../../assets/h-war-thunder.jpg
 platforms:

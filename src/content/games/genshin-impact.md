@@ -3,6 +3,7 @@ title: "Genshin Impact"
 studio: HoYoverse
 released: "2020"
 releaseDate: 2020-09-28
+score: 8.2
 version: "6.x"
 cover: ../../assets/g-genshin-impact.jpg
 hero: ../../assets/h-genshin-impact.jpg

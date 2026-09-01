@@ -35,7 +35,10 @@ const cover = data.cover?.src ?? undefined;
 /* L'ouverture est une image, pas un chapeau : la photo de l'article porte
    le titre en grand, et le visuel d'ambiance du jeu redescend dans le corps. */
 const artImg = data.cover ?? game?.data.hero;
-const bodyShot = data.cover && game?.data.hero ? game.data.hero : undefined;
+/* …sauf quand l'article reprend justement le visuel du jeu : la même image
+   deux fois n'est pas une respiration, c'est un doublon. */
+const bodyShot = data.cover && game?.data.hero && data.cover.src !== game.data.hero.src
+  ? game.data.hero : undefined;
 const bodyShotCaption = data.cover ? game?.data.title : data.coverCaption;
 /* mêmes ancres que les titres du Markdown — Astro les génère avec github-slugger */
 const slugger = new GithubSlugger();

@@ -3,6 +3,7 @@ title: "World of Tanks: HEAT"
 studio: Wargaming
 released: "2026"
 releaseDate: 2026-05-26
+score: 7.2
 cover: ../../assets/g-world-of-tanks-heat.jpg
 hero: ../../assets/h-world-of-tanks-heat.jpg
 platforms:
