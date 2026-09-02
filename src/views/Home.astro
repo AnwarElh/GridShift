@@ -9,7 +9,7 @@ import Newsletter from '../components/Newsletter.astro';
 import Ad from '../components/Ad.astro';
 import Fig from '../components/Fig.astro';
 import { getCollection } from 'astro:content';
-import { getPosts, byType, byGame } from '../lib/articles';
+import { getPosts, byType, byGame, spreadByGame } from '../lib/articles';
 import { time } from '../lib/format';
 import { site, siteCopy } from '../site';
 import {
@@ -24,10 +24,18 @@ const posts = await getPosts(lang);
 const games = await getCollection('games');
 
 /* La mosaïque de tête : la sélection maison, la plus récente à défaut.
-   Six sujets — un pavé maître, deux de côté, trois en bande. */
+   Six sujets — un pavé maître, deux de côté, trois en bande.
+
+   Le tour de table est ce qui empêche la Une d'être monographique : cinq
+   articles publiés coup sur coup sur le même jeu la remplissaient
+   entièrement, et le site avait l'air de ne couvrir que lui. La priorité
+   reste la sélection maison, puis la date — le tour de table ne fait que
+   décider qui passe avant qui à priorité égale. */
 const featured = posts.filter((p) => p.data.featured);
-const hero = [...featured, ...posts.filter((p) => !p.data.featured)].slice(0, 6);
-const wire = posts.slice(0, 5);
+const hero = spreadByGame([...featured, ...posts.filter((p) => !p.data.featured)], 6);
+/* Le Fil garde son heure sur chaque entrée, mais pas cinq fois le même jeu :
+   c'est la dernière nouvelle de chacun, pas les cinq dernières tout court. */
+const wire = spreadByGame(posts, 5);
 
 /* L'ordre des blocs suit la colonne vertébrale du portail : la Une, puis les
    jeux couverts, puis les rubriques — guides d'abord, l'entrée la plus
@@ -37,8 +45,11 @@ const perBlock: Record<SectionKey, number> = { guide: 3, news: 4, review: 3, set
 const labels: Record<SectionKey, string> = {
   news: t('nav.news'), review: t('nav.reviews'), guide: t('nav.guides'), setup: t('nav.setup'),
 };
+/* Chaque rubrique passe par le même tour de table : sans lui, « Guides »
+   ouvrait sur deux articles du même jeu à la suite. Une rubrique reste
+   classée par date — le tour de table ne décide que des ex æquo. */
 const blocks = order
-  .map((key) => ({ key, label: labels[key], items: byType(posts, key).slice(0, perBlock[key]) }))
+  .map((key) => ({ key, label: labels[key], items: spreadByGame(byType(posts, key), perBlock[key]) }))
   .filter((b) => b.items.length > 0);
 
 const counts: Record<string, number> = {
@@ -55,11 +66,17 @@ const countFor = (id: string) => byGame(posts, id).length;
 /* Tendances : les articles des jeux les plus suivis. Le classement vient des
    données du site (`followers`), pas d'un compteur de vues qu'on n'a pas. */
 const rank = new Map(games.map((g) => [g.id, g.data.followers ?? 0]));
-const trending = [...posts]
-  .filter((p) => p.game)
-  .sort((a, b) => (rank.get(b.game!.id) ?? 0) - (rank.get(a.game!.id) ?? 0)
-    || b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 4);
+/* Le classement suivait les abonnés puis la date : les quatre places
+   revenaient donc au seul jeu le plus suivi. Le tour de table en fait ce
+   qu'un palmarès doit être — le meilleur sujet de chacun, dans l'ordre des
+   jeux les plus suivis. */
+const trending = spreadByGame(
+  [...posts]
+    .filter((p) => p.game)
+    .sort((a, b) => (rank.get(b.game!.id) ?? 0) - (rank.get(a.game!.id) ?? 0)
+      || b.data.date.getTime() - a.data.date.getTime()),
+  4,
+);
 
 const weekCount = posts.filter((p) => Date.now() - p.data.date.getTime() < 7 * 864e5).length;
 

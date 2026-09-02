@@ -68,6 +68,41 @@ export const byType = (posts: Post[], type: SectionKey) =>
 export const byGame = (posts: Post[], gameId: string) =>
   posts.filter((p) => p.game?.id === gameId);
 
+/* Une sélection qui ne parle pas que d'un jeu.
+
+   La Une, le Fil et les Tendances prenaient tous les N premiers d'une liste
+   déjà triée — par date pour les deux premiers, par nombre d'abonnés pour le
+   troisième. Sur un site qui couvre cinq jeux et publie par salves, ça donne
+   cinq articles du même jeu en haut de l'accueil : un lecteur qui arrive croit
+   qu'on ne parle que de ça.
+
+   Le tour de table règle ça sans rien casser : on prend le premier article de
+   chaque jeu, puis le deuxième de chaque, et ainsi de suite. L'ordre d'entrée
+   décide des priorités — la fonction ne trie rien elle-même — et un jeu ne
+   repasse jamais avant que tous les autres aient eu leur tour. Les articles
+   sans jeu forment leur propre file plutôt que d'être écartés. */
+export function spreadByGame(posts: Post[], limit: number): Post[] {
+  const queues = new Map<string, Post[]>();
+  for (const p of posts) {
+    const key = p.game?.id ?? `—${p.id}`;
+    const q = queues.get(key);
+    if (q) q.push(p); else queues.set(key, [p]);
+  }
+  const lists = [...queues.values()];
+  const out: Post[] = [];
+  for (let round = 0; out.length < limit; round++) {
+    const before = out.length;
+    for (const list of lists) {
+      if (!list[round]) continue;
+      out.push(list[round]);
+      if (out.length === limit) return out;
+    }
+    /* plus rien à distribuer : toutes les files sont épuisées */
+    if (out.length === before) break;
+  }
+  return out;
+}
+
 /* Suite de lecture : le même jeu d'abord, les mêmes tags ensuite. */
 export function related(posts: Post[], post: Post, limit = 3): Post[] {
   const score = (p: Post) =>
