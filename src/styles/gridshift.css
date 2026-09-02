@@ -972,8 +972,7 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 /* Le bandeau de tête : titre de la maison + recherche, comme un kiosque. */
 .masthead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
   gap:var(--s-4);padding-block:var(--s-6) var(--s-4)}
-.masthead h1{font-size:var(--d2);font-stretch:90%;text-wrap:balance}
-.masthead .sub{margin-top:6px;color:var(--tx-3);font-size:var(--ui-sm)}
+.masthead .ad{flex:1 1 320px;min-width:0}
 .masthead .btn{min-height:44px;padding-inline:var(--s-5)}
 
 /* La barre de rubriques : l'axe de navigation du portail, toujours visible. */

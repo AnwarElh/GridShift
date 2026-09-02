@@ -78,8 +78,6 @@ const trending = spreadByGame(
   4,
 );
 
-const weekCount = posts.filter((p) => Date.now() - p.data.date.getTime() < 7 * 864e5).length;
-
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -103,11 +101,10 @@ const jsonLd = {
   </div>
 
   <div class="page">
+    <!-- Le bandeau de tête est vendu : plus de titre de maison, la place
+         entière passe à la réclame. -->
     <div class="masthead">
-      <div>
-        <h1 class="d2">{t('home.title')}</h1>
-        <p class="sub">{t('home.sub')(weekCount)}</p>
-      </div>
+      <Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} />
       {hasDeals && <a class="btn btn-quiet" href="#offers">{t('home.seeDeals')}</a>}
     </div>
 
