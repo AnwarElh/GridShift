@@ -4,7 +4,7 @@ const $ = (s) => document.querySelector(s);
 /* Les libellés viennent du HTML rendu par Astro, qui seul connaît la langue
    de la page : aucune chaîne visible n'est écrite dans ce fichier. */
 const S = document.body.dataset;
-const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
+const on = (el, ev, fn, opt) => el && el.addEventListener(ev, fn, opt);
 
 /* thème — le thème clair est un vrai papier, pas un inverse mécanique.
    `theme-color` suit le thème CHOISI : il était accroché à prefers-color-scheme
@@ -134,6 +134,94 @@ if (cmd) {
     items.forEach((el, i) => el.setAttribute('aria-selected', String(i === active)));
     items[active].scrollIntoView({ block: 'nearest' });
   });
+}
+
+/* La Une au pouce : un cadre, une histoire, qui tourne toute seule.
+   Le défilement et l'accroche sont natifs — le script ne fait que pousser
+   le conteneur d'une vignette toutes les cinq secondes et tenir les points
+   à jour. Rien de tout cela n'existe au curseur : la mosaïque y montre les
+   trois sujets d'un coup, il n'y a ni à faire défiler ni à mettre en pause. */
+const slider = $('[data-slider]');
+const dotbar = $('[data-dots]');
+if (slider && dotbar) {
+  const slides = [...slider.children];
+  const dots = [...dotbar.querySelectorAll('[data-go]')];
+  const pauseBtn = dotbar.querySelector('[data-pause]');
+  const phone = matchMedia('(max-width:860px)');
+  /* qui a demandé moins d'animation ne veut pas d'un cadre qui bouge seul */
+  const calm = matchMedia('(prefers-reduced-motion: reduce)');
+  const DELAY = 5000;
+
+  let timer = null, stopped = false, held = false;
+
+  const posOf = (i) => slides[i].offsetLeft - slider.offsetLeft;
+  const current = () => {
+    const x = slider.scrollLeft;
+    let best = 0, gap = Infinity;
+    slides.forEach((_, i) => { const d = Math.abs(posOf(i) - x); if (d < gap) { gap = d; best = i; } });
+    return best;
+  };
+  const markAt = (i) => dots.forEach((d, n) => d.setAttribute('aria-current', String(n === i)));
+  /* au doigt c'est le défilement qui fait foi ; au clic, on marque tout de
+     suite — attendre l'événement de défilement laissait le point en retard */
+  const mark = () => markAt(current());
+  const goTo = (i, smooth = true) => {
+    const to = posOf(i);
+    markAt(i);
+    slider.scrollTo({ left: to, behavior: smooth && !calm.matches ? 'smooth' : 'auto' });
+    /* un défilement fluide est parfois refusé sans rien dire — onglet occulté,
+       réglage du système. Sans ce filet, le carrousel s'arrêterait en silence
+       sur la diapo courante et on chercherait longtemps pourquoi. */
+    if (smooth) setTimeout(() => {
+      if (Math.abs(slider.scrollLeft - to) > 4) slider.scrollTo({ left: to, behavior: 'auto' });
+    }, 700);
+  };
+
+  const tick = () => goTo((current() + 1) % slides.length);
+  const halt = () => { clearInterval(timer); timer = null; };
+  const run = () => {
+    halt();
+    /* un seul point de décision : hors du pouce, en pause, sous le doigt,
+       onglet caché ou mouvement réduit, le minuteur ne tourne pas */
+    if (!phone.matches || stopped || held || document.hidden || calm.matches || slides.length < 2) return;
+    timer = setInterval(tick, DELAY);
+  };
+
+  const setPaused = (p) => {
+    stopped = p;
+    pauseBtn.setAttribute('aria-label', p ? pauseBtn.dataset.labelPlay : pauseBtn.dataset.labelPause);
+    pauseBtn.querySelectorAll('.i-pause').forEach((el) => { el.hidden = p; });
+    pauseBtn.querySelector('.i-play').hidden = !p;
+    run();
+  };
+
+  dots.forEach((d, i) => on(d, 'click', () => { goTo(i); setPaused(true); }));
+  on(pauseBtn, 'click', () => setPaused(!stopped));
+
+  /* le doigt et le clavier passent avant le minuteur */
+  ['pointerdown', 'touchstart'].forEach((ev) => on(slider, ev, () => { held = true; halt(); }, { passive: true }));
+  ['pointerup', 'pointercancel', 'touchend'].forEach((ev) => on(slider, ev, () => { held = false; run(); }));
+  on(slider, 'focusin', () => { held = true; halt(); });
+  on(slider, 'focusout', () => { held = false; run(); });
+
+  let idle;
+  on(slider, 'scroll', () => { clearTimeout(idle); idle = setTimeout(mark, 90); }, { passive: true });
+
+  /* rien ne tourne dans un onglet qu'on ne regarde pas. Un
+     IntersectionObserver aurait été plus fin, mais sa racine implicite est
+     la fenêtre de premier niveau : dans un cadre, il annonçait la diapo
+     hors écran et tuait le minuteur dès la première mesure. */
+  on(document, 'visibilitychange', run);
+  phone.addEventListener('change', () => {
+    dotbar.hidden = !phone.matches;
+    if (!phone.matches) goTo(0, false);
+    run();
+  });
+  calm.addEventListener('change', run);
+
+  dotbar.hidden = !phone.matches;
+  mark();
+  run();
 }
 
 /* onglets, segments, filtres : un seul gestionnaire pour trois motifs */

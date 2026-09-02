@@ -57,6 +57,10 @@ const en = {
 
   /* accueil */
   'home.wire': 'The wire',
+  'home.headlines': 'Top stories',
+  'home.goToStory': (n: number) => `Story ${n}`,
+  'home.pauseStories': 'Pause the top stories',
+  'home.playStories': 'Resume the top stories',
   'home.title': 'The Gridshift blog',
   'home.sub': (n: number) => `Reviews, guides and deals — ${n} article${n > 1 ? 's' : ''} this week.`,
   'home.seeDeals': 'See the deals',
@@ -288,6 +292,10 @@ const fr: Dict = {
   'mega.upcomingSoon': 'À venir',
 
   'home.wire': 'Le fil',
+  'home.headlines': 'À la une',
+  'home.goToStory': (n: number) => `Sujet ${n}`,
+  'home.pauseStories': 'Mettre la Une en pause',
+  'home.playStories': 'Reprendre la Une',
   'home.title': 'Le blog Gridshift',
   'home.sub': (n: number) => `Tests, guides et bons plans — ${n} article${n > 1 ? 's' : ''} cette semaine.`,
   'home.seeDeals': 'Voir les bons plans',

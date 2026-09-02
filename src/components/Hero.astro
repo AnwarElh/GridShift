@@ -3,49 +3,89 @@ import Fig from './Fig.astro';
 import Chips from './Chips.astro';
 import PostMeta from './PostMeta.astro';
 import type { Post } from '../lib/articles';
+import { langFromPath } from '../i18n/config';
+import { useT } from '../i18n/ui';
 
-/* La mosaïque de tête : six sujets, six vignettes, aucun texte hors image.
-   Un pavé maître, deux sujets en colonne à sa droite, trois en bande
-   dessous. Plus de carrousel : la Une d'un média se lit d'un coup d'œil,
-   pas en faisant défiler. Ce qui n'est pas visible n'est pas à la une. */
+/* La Une : six sujets, six vignettes, aucun texte hors image.
+
+   Au curseur, une mosaïque — un pavé maître, deux sujets à sa droite,
+   trois en bande dessous.
+
+   Au pouce, la même liste devient un cadre unique qui tourne tout seul :
+   les trois sujets importants passent en carrousel plein écran, les trois
+   autres se rangent dessous en lignes compactes. Un téléphone n'a pas la
+   place d'une mosaïque, et six vignettes empilées se lisent comme un
+   couloir. C'est le motif de Push Square, et c'est le bon.
+
+   Les deux enveloppes sont en `display:contents` au curseur : la grille
+   voit toujours ses six tuiles, personne ne paie une boîte pour rien. */
 interface Props { posts: Post[]; }
 const { posts } = Astro.props;
+const t = useT(langFromPath(Astro.url.pathname));
+
 const [lead, ...rest] = posts;
 const side = rest.slice(0, 2);
 const strip = rest.slice(2, 5);
+const slides = lead ? [lead, ...side] : side;
 ---
-<section class="hero" aria-label="À la une">
-  {lead && (
-    <article class="htile htile-lead">
-      <Fig src={lead.data.cover} alt="" ratio="16-9"
-           widths={[720, 1080, 1440]} sizes="(max-width:1024px) 100vw, 830px" priority />
-      <div class="htile-body">
-        <Chips post={lead} max={3} />
-        <h2><a href={lead.href}>{lead.data.title}</a></h2>
-        <PostMeta date={lead.data.date} minutes={lead.minutes} />
-      </div>
-    </article>
+<section class="hero" aria-label={t('home.headlines')}>
+  <div class="hero-main" data-slider>
+    {lead && (
+      <article class="htile htile-lead">
+        <Fig src={lead.data.cover} alt="" ratio="16-9"
+             widths={[720, 1080, 1440]} sizes="(max-width:1024px) 100vw, 830px" priority />
+        <div class="htile-body">
+          <Chips post={lead} max={3} />
+          <h2><a href={lead.href}>{lead.data.title}</a></h2>
+          <PostMeta date={lead.data.date} minutes={lead.minutes} />
+        </div>
+      </article>
+    )}
+
+    {side.map((p) => (
+      <article class="htile htile-side">
+        <Fig src={p.data.cover} alt="" ratio="16-9" widths={[560, 840]} sizes="(max-width:1024px) 100vw, 430px" />
+        <div class="htile-body">
+          <Chips post={p} max={2} />
+          <h3><a href={p.href}>{p.data.title}</a></h3>
+          <PostMeta date={p.data.date} minutes={p.minutes} />
+        </div>
+      </article>
+    ))}
+  </div>
+
+  {/* Les commandes n'existent qu'au pouce : au curseur les trois sujets
+      sont tous visibles, il n'y a rien à faire défiler ni à mettre en pause. */}
+  {slides.length > 1 && (
+    <div class="hero-dots" data-dots hidden>
+      {slides.map((_, i) => (
+        <button type="button" data-go={i} aria-label={t('home.goToStory')(i + 1)}
+                aria-current={i === 0 ? 'true' : 'false'}></button>
+      ))}
+      {/* WCAG 2.2.2 : ce qui bouge tout seul plus de cinq secondes doit
+          pouvoir être arrêté. Les points ne sont pas une pause. */}
+      <button type="button" class="hero-pause" data-pause
+              data-label-pause={t('home.pauseStories')} data-label-play={t('home.playStories')}
+              aria-label={t('home.pauseStories')}>
+        <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
+          <rect class="i-pause" x="4" y="3" width="3" height="10" rx="1"></rect>
+          <rect class="i-pause" x="9" y="3" width="3" height="10" rx="1"></rect>
+          <path class="i-play" d="M5 3.5v9l8-4.5z" hidden></path>
+        </svg>
+      </button>
+    </div>
   )}
 
-  {side.map((p) => (
-    <article class="htile htile-side">
-      <Fig src={p.data.cover} alt="" ratio="16-9" widths={[560, 840]} sizes="(max-width:1024px) 100vw, 430px" />
-      <div class="htile-body">
-        <Chips post={p} max={2} />
-        <h3><a href={p.href}>{p.data.title}</a></h3>
-        <PostMeta date={p.data.date} minutes={p.minutes} />
-      </div>
-    </article>
-  ))}
-
-  {strip.map((p) => (
-    <article class="htile htile-strip">
-      <Fig src={p.data.cover} alt="" ratio="16-9" widths={[480, 720]} sizes="(max-width:1024px) 100vw, 400px" />
-      <div class="htile-body">
-        <Chips post={p} max={2} />
-        <h3><a href={p.href}>{p.data.title}</a></h3>
-        <PostMeta date={p.data.date} minutes={p.minutes} />
-      </div>
-    </article>
-  ))}
+  <div class="hero-rest">
+    {strip.map((p) => (
+      <article class="htile htile-strip">
+        <Fig src={p.data.cover} alt="" ratio="16-9" widths={[480, 720]} sizes="(max-width:1024px) 100vw, 400px" />
+        <div class="htile-body">
+          <Chips post={p} max={2} />
+          <h3><a href={p.href}>{p.data.title}</a></h3>
+          <PostMeta date={p.data.date} minutes={p.minutes} />
+        </div>
+      </article>
+    ))}
+  </div>
 </section>
