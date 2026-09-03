@@ -11,7 +11,7 @@ import Fig from '../components/Fig.astro';
 import { getCollection } from 'astro:content';
 import { getPosts, byType, byGame, spreadByGame } from '../lib/articles';
 import { time } from '../lib/format';
-import { site, siteCopy } from '../site';
+import { site, siteCopy, siteHome } from '../site';
 import {
   langFromPath, otherLocale, homeHref, sectionHref, pageHref,
   type SectionKey, sectionKeys,
@@ -82,12 +82,12 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: site.name,
-  url: site.url,
+  url: siteHome,
   inLanguage: lang,
   description: siteCopy[lang].description,
 };
 ---
-<Base title={site.name} jsonLd={jsonLd} alt={homeHref(otherLocale(lang))}>
+<Base title={t('home.title')} jsonLd={jsonLd} alt={homeHref(otherLocale(lang))}>
   <!-- Le Fil : la pulsation. Un média se lit à l'heure. -->
   <div class="fil">
     <div class="fil-in">
@@ -108,7 +108,14 @@ const jsonLd = {
       {hasDeals && <a class="btn btn-quiet" href="#offers">{t('home.seeDeals')}</a>}
     </div>
 
-    <CatBar counts={counts} />
+    <!-- Le titre de la page prend la place qu'occupait la barre de rubriques :
+         celles-ci vivent maintenant dans le bandeau, en boutons. L'accueil
+         gagne le <h1> qui lui manquait, sans repousser la réclame d'un pixel.
+         Sous 860px le bandeau cache ses liens : la barre reparaît alors, sinon
+         « Configs » ne serait plus atteignable depuis le haut de l'accueil. -->
+    <h1 class="home-h1">{t('home.h1')}</h1>
+
+    <div class="catbar-m"><CatBar counts={counts} /></div>
 
     <!-- 1. À la une -->
     <Hero posts={hero} />

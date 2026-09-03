@@ -1,6 +1,5 @@
 ---
 import Crumbs from '../components/Crumbs.astro';
-import CatBar from '../components/CatBar.astro';
 import Card from '../components/Card.astro';
 import Pager from '../components/Pager.astro';
 import Ad from '../components/Ad.astro';
@@ -27,7 +26,6 @@ const { title, lede, page, filters = [], trail = [], noun = 'article', showVersi
   <Crumbs trail={[...trail, { label: title }]} />
   <h1 class="d2" style="margin:12px 0 8px">{title}</h1>
   {lede && <p style="color:var(--tx-2);max-width:56ch;margin-bottom:24px">{lede}</p>}
-  <CatBar />
 
   {filters.length > 0 && (
     <div class="filters" style="margin-top:24px">

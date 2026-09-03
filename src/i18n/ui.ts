@@ -56,6 +56,14 @@ const en = {
   'mega.upcomingSoon': 'Coming soon',
 
   /* accueil */
+  /* Le titre de l'accueil ne répète pas la marque : elle est déjà dans le
+     bandeau, dans le <title> et dans le JSON-LD. Il dit le sujet — c'est le
+     seul endroit de la page qui en a la charge. */
+  /* Le <title> de l'accueil : « Gridshift » seul ne visait qu'une requête —
+     le nom de la maison, que personne ne cherche encore. Le gabarit ajoute
+     « — Gridshift », la marque reste donc en fin de ligne. */
+  'home.title': 'Live-service game reviews and guides',
+  'home.h1': 'Independent reviews, guides and news for live-service games',
   'home.wire': 'The wire',
   'home.headlines': 'Top stories',
   'home.goToStory': (n: number) => `Story ${n}`,
@@ -289,6 +297,8 @@ const fr: Dict = {
   'mega.gamesTracked': (n: number) => `${n} jeux suivis · notes vérifiées à chaque patch majeur`,
   'mega.upcomingSoon': 'À venir',
 
+  'home.title': 'Tests et guides des jeux live-service',
+  'home.h1': 'Tests, guides et actus indépendants sur les jeux live-service',
   'home.wire': 'Le fil',
   'home.headlines': 'À la une',
   'home.goToStory': (n: number) => `Sujet ${n}`,

@@ -372,21 +372,25 @@ a.tag:hover{border-color:var(--brass);color:var(--brass)}
 .mark span{color:var(--tx-3);font-weight:400}
 
 .nav .mark{height:100%}
-.nav-links{display:flex;align-items:center;gap:var(--s-1);margin-left:calc(var(--s-2) * -1)}
+.nav-links{display:flex;align-items:center;gap:var(--s-2)}
 .nav-links>*{position:relative}
 /* la rubrique courante ne se marque plus par une pastille pleine mais par
    un trait lumineux sous le mot : dans un chrome anguleux, la pilule était
    la dernière forme ronde du bandeau. */
-.nav-link{display:flex;align-items:center;gap:5px;height:36px;padding:0 var(--s-3);
-  border-radius:var(--r-1);
-  font:500 var(--ui-sm)/1 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;
-  color:var(--tx-3);
-  transition:color var(--t-1),background var(--t-1)}
-.nav-link:hover,.nav-link[aria-expanded="true"]{color:var(--tx);background:var(--s2)}
-.nav-link[aria-current]{color:var(--brass)}
-.nav-link[aria-current]::after{content:"";position:absolute;left:var(--s-3);right:var(--s-3);
-  bottom:2px;height:2px;background:var(--brass);
-  box-shadow:0 0 10px color-mix(in srgb,var(--brass) 55%,transparent)}
+/* les rubriques portent le cadre cranté de l'ancienne barre de rubriques :
+   une seule forme pour une seule fonction, et le coin coupé répond au reste
+   du chrome. Le trait lumineux cède au remplissage laiton — dans un bandeau
+   devenu anguleux, la pastille pleine n'est plus la forme ronde de trop. */
+.nav-link{display:flex;align-items:center;gap:5px;min-height:36px;padding:0 var(--s-3);
+  --n:6px;
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
+  background:var(--s1);border:1px solid var(--line);
+  font:600 var(--ui-sm)/1 var(--f-display);letter-spacing:.04em;text-transform:uppercase;
+  color:var(--tx-2);white-space:nowrap;
+  transition:background var(--t-1),border-color var(--t-1),color var(--t-1)}
+.nav-link:hover,.nav-link[aria-expanded="true"]{border-color:var(--line-2);color:var(--tx)}
+.nav-link[aria-current]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
 .nav-link .chev{font-size:9px;opacity:.6;transition:transform var(--t-2)}
 .nav-link[aria-expanded="true"] .chev{transform:rotate(180deg)}
 .nav-sp{flex:1}
@@ -976,6 +980,19 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .masthead .btn{min-height:44px;padding-inline:var(--s-5)}
 
 /* La barre de rubriques : l'axe de navigation du portail, toujours visible. */
+/* Le titre de l'accueil : il occupe la place laissée par la barre de
+   rubriques, donc la réclame ne bouge pas. Il nomme le sujet et non la
+   maison — le nom est déjà dans le bandeau, le <title> et le JSON-LD. */
+.home-h1{font-family:var(--f-display);font-size:var(--d4);font-stretch:96%;
+  letter-spacing:-.012em;line-height:1.18;color:var(--tx);
+  /* 34ch coupait « live-service » en deux au trait d'union. On laisse la
+     ligne respirer et `balance` répartit les deux lignes à parts égales. */
+  max-width:52ch;text-wrap:balance;margin:0 0 var(--s-5)}
+
+/* La barre de rubriques ne sert plus que là où le bandeau cache ses liens. */
+.catbar-m{display:none}
+@media(max-width:860px){.catbar-m{display:block}}
+
 .catbar{display:flex;gap:var(--s-2);overflow-x:auto;scrollbar-width:none;
   padding-bottom:var(--s-2);margin-bottom:var(--s-5)}
 .catbar::-webkit-scrollbar{display:none}
