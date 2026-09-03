@@ -1,4 +1,4 @@
-import { type Locale, pageHref, sectionHref, feedHref } from './i18n/config';
+import { type Locale, pageHref, sectionHref, feedHref, withBase } from './i18n/config';
 import { useT } from './i18n/ui';
 
 /* Identité — le nom et le domaine n'ont pas de langue.
@@ -13,6 +13,13 @@ export const site = {
   twitter: '@gridshift',
   email: 'redaction@gridshift.fr',
 };
+
+/* `site.url` est le domaine, pas le site : en projet GitHub Pages, le site vit
+   sous /GridShift. Comme base d'un `new URL(chemin, site.url)` c'est correct —
+   le chemin porte déjà la base. Employée seule, dans un JSON-LD, elle annonçait
+   une adresse qui ne sert pas ce site. D'où cette constante, à utiliser partout
+   où l'on nomme le site lui-même. */
+export const siteHome = new URL(withBase('/'), site.url).href;
 
 /* Ce que le site dit de lui-même, dans chaque langue. Sert au <title>, à la
    meta description et au bloc de marque du pied de page. */

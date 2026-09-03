@@ -12,7 +12,12 @@ const t = useT(lang);
 const posts = (await getPosts(lang)).filter((p) => p.data.tags.includes(tag));
 const page = pageOf(posts, 1, 24, tagHref(lang, slugifyTag(tag)));
 ---
-<Base title={tag} description={t('tag.desc')(tag)}>
+<!-- Les pages d'étiquette listent ; elles n'écrivent pas. Quatre-vingt-dix
+     mots de liens, et le même titre que la fiche de jeu du même nom : indexées,
+     elles concurrencent /games/<jeu>/ sans rien apporter de plus. Elles restent
+     crawlables — `follow` laisse passer le jus vers les articles — mais sortent
+     de l'index et du plan de site. -->
+<Base title={tag} description={t('tag.desc')(tag)} noindex>
   <Archive
     title={tag}
     lede={t('tag.lede')(posts.length, tag)}

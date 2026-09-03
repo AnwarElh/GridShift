@@ -31,7 +31,15 @@ const {
   image, noindex = false, jsonLd, alt,
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, site.url).href;
+/* `trailingSlash: 'ignore'` laisse la racine du site sans barre finale :
+   Astro.url.pathname y vaut « /GridShift », que GitHub Pages redirige en 301
+   vers « /GridShift/ ». Un canonical, un og:url et un hreflang qui désignent
+   l'étape avant la redirection plutôt que la page servie. Toutes les autres
+   pages sont déjà des dossiers ; on normalise donc pour tout le monde. */
+const canonicalPath = /\.[^/]+$/.test(Astro.url.pathname) || Astro.url.pathname.endsWith('/')
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
+const canonical = new URL(canonicalPath, site.url).href;
 const ogImage = new URL(image ?? withBase('/og-default.png'), site.url).href;
 const fullTitle = title === site.name ? title : `${title} — ${site.name}`;
 
