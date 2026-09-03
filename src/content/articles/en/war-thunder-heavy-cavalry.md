@@ -2,6 +2,7 @@
 type: news
 lang: en
 title: "War Thunder's Heavy Cavalry update brings newer Abrams and the USS North Carolina"
+seoTitle: "War Thunder Heavy Cavalry: Abrams and a cruiser"
 lede: "June's major update was one of the game's largest content drops. Thirteen years in, the economy remains the argument."
 date: 2026-08-10T10:00:00+02:00
 author: nour-benali

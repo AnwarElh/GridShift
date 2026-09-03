@@ -2,6 +2,7 @@
 type: guide
 lang: en
 title: "Genshin's resin economy: the only budget in the game that actually binds"
+seoTitle: "Genshin resin explained: how to spend it"
 lede: "Two hundred a day, one every eight minutes. Where you spend it decides how fast your account grows — and most players spend it in the wrong order."
 date: 2026-08-14T09:00:00+02:00
 author: lina-morel

@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "Vos dix premières heures dans HEAT, si vous venez de World of Tanks"
+seoTitle: "World of Tanks HEAT : vos 10 premières heures"
 lede: "Vingt ans d'habitudes, dont la moitié sont désormais fausses. Voici lesquelles garder, lesquelles abandonner, et ce que le jeu ne vous dit jamais avoir changé."
 date: 2026-08-26T09:00:00+02:00
 author: lina-morel

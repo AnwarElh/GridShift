@@ -2,6 +2,7 @@
 type: news
 lang: fr
 title: "Le croisement avec Honkai: Star Rail arrive cet hiver dans ZZZ — et HoYoverse ne dit toujours pas à quelle échelle"
+seoTitle: "ZZZ x Honkai Star Rail : le croisement cet hiver"
 lede: "Confirmé pour l'hiver 2026, sans date ni périmètre. Pour un studio qui croise rarement ses propres jeux, la question intéressante est la forme que cela prendra."
 date: 2026-08-20T10:00:00+02:00
 author: nour-benali

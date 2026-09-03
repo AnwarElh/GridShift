@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "L'économie de la résine dans Genshin : le seul budget qui contraigne vraiment"
+seoTitle: "Genshin Impact : bien dépenser sa résine"
 lede: "Deux cents par jour, une toutes les huit minutes. L'ordre dans lequel on la dépense décide de la vitesse d'un compte — et la plupart des joueurs se trompent d'ordre."
 date: 2026-08-14T09:00:00+02:00
 author: lina-morel

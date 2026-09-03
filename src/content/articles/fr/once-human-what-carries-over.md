@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "La réinitialisation de saison dans Once Human : ce qu'on garde, ce qu'on perd, et quoi faire la dernière semaine"
+seoTitle: "Once Human : ce que la saison efface ou garde"
 lede: "Votre base est temporaire. Vos plans ne le sont pas. Savoir lequel est lequel avant la fermeture du scénario fait la différence entre recommencer et repartir en avance."
 date: 2026-08-27T09:00:00+02:00
 author: lina-morel

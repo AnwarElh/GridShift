@@ -69,7 +69,7 @@ const jsonLd: Record<string, unknown> = {
     : {}),
 };
 ---
-<Base title={data.title} description={data.lede} ogType="article" image={cover} jsonLd={jsonLd} alt={alt}>
+<Base title={data.seoTitle ?? data.title} description={data.lede} ogType="article" image={cover} jsonLd={jsonLd} alt={alt}>
   <CtxBar slot="ctxbar" title={data.title} game={game?.data.title} />
 
   <header class="ahero">

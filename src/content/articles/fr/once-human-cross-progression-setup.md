@@ -2,6 +2,7 @@
 type: setup
 lang: fr
 title: "Once Human sur cinq plateformes : ce que la progression croisée emporte, et ce qu'elle laisse"
+seoTitle: "Once Human : la progression croisée en clair"
 lede: "PC, mobile, PS5 et Xbox Series partagent désormais la progression. Le basculement de vue reste un réglage par appareil ; le compte, non."
 date: 2026-08-30T09:00:00+02:00
 author: sacha-vidal

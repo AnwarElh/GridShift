@@ -2,6 +2,7 @@
 type: setup
 lang: en
 title: "War Thunder settings that actually change outcomes — and the ones that only change frame rate"
+seoTitle: "War Thunder best settings: what actually wins"
 lede: "Two graphics options decide whether you see a tank before it sees you. Most of the rest is taste. Here is the short list, and the control setup nobody does until match fifty."
 date: 2026-08-23T09:00:00+02:00
 author: sacha-vidal

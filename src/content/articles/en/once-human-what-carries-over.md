@@ -2,6 +2,7 @@
 type: guide
 lang: en
 title: "Once Human's season reset: what you keep, what you lose, and what to do in the last week"
+seoTitle: "Once Human season reset: what carries over"
 lede: "Your base is temporary. Your blueprints are not. Knowing which is which before the scenario closes is the difference between starting again and starting ahead."
 date: 2026-08-27T09:00:00+02:00
 author: lina-morel

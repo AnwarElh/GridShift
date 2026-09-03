@@ -2,6 +2,7 @@
 type: review
 lang: fr
 title: "Test de World of Tanks: HEAT — Wargaming a enfin coupé la farm, et laissé le roster trop court"
+seoTitle: "Test de World of Tanks HEAT : la farm en moins"
 lede: "Un nouveau moteur, pas d'arbre technologique, trois rôles et huit agents. La chose la plus assurée que Wargaming ait publiée en dix ans, et la plus mince."
 date: 2026-08-09T09:00:00+02:00
 author: sacha-vidal

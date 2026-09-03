@@ -2,6 +2,7 @@
 type: news
 lang: en
 title: "Once Human reaches PS5 and Xbox with a first-person view, and an ocean to come"
+seoTitle: "Once Human on PS5 and Xbox: first-person view"
 lede: "Two years after PC, the console launch adds a perspective toggle and cross-progression. The Isles of Abyss expansion follows in October."
 date: 2026-08-28T11:00:00+02:00
 author: nour-benali

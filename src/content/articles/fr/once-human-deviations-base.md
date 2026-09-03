@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "Les déviations : les créatures qui font tourner votre base, et celles à capturer en premier"
+seoTitle: "Once Human : les déviations à capturer d'abord"
 lede: "La construction de base dans Once Human n'est pas de la décoration avec un coffre. C'est une petite main-d'œuvre avec des besoins — et mal choisir coûte des heures que vous ne récupérerez pas cette saison."
 date: 2026-08-31T09:00:00+02:00
 author: lina-morel

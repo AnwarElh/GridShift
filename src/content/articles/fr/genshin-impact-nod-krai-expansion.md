@@ -2,6 +2,7 @@
 type: news
 lang: fr
 title: "Le cycle 6.x de Genshin continue d'agrandir Nod-Krai au lieu de passer à autre chose"
+seoTitle: "Genshin 6.x : Nod-Krai s'agrandit encore"
 lede: "La région a ouvert en 6.0 et les versions suivantes ont continué d'ajouter à sa carte — un rythme plus lent que celui d'une région par cycle auquel les joueurs s'étaient habitués."
 date: 2026-08-18T10:00:00+02:00
 author: nour-benali

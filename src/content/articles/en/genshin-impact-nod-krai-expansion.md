@@ -2,6 +2,7 @@
 type: news
 lang: en
 title: "Genshin's 6.x cycle keeps expanding Nod-Krai rather than moving on"
+seoTitle: "Genshin 6.x keeps expanding Nod-Krai"
 lede: "The region opened in 6.0 and the versions since have kept adding to its map — a slower pattern than the one-region-per-cycle rhythm players learned to expect."
 date: 2026-08-18T10:00:00+02:00
 author: nour-benali

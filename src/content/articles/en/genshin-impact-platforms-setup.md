@@ -2,6 +2,7 @@
 type: setup
 lang: en
 title: "Genshin on PC, PlayStation and mobile: what cross-save carries, and the Steam Deck problem"
+seoTitle: "Genshin cross-save: PC, PS5, mobile, Steam Deck"
 lede: "One account across three platforms, with one linking step you cannot undo — and one handheld the game will not run on."
 date: 2026-08-16T09:00:00+02:00
 author: sacha-vidal

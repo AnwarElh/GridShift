@@ -2,6 +2,7 @@
 type: setup
 lang: en
 title: "Once Human across five platforms: what cross-progression carries, and what it does not"
+seoTitle: "Once Human cross-progression explained"
 lede: "PC, mobile, PS5 and Xbox Series now share progress. The perspective toggle is per-platform preference; the account is not."
 date: 2026-08-30T09:00:00+02:00
 author: sacha-vidal

@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "Genshin Impact en 2026 : ce qu'un joueur de retour doit savoir sur Nod-Krai"
+seoTitle: "Genshin Impact 2026 : le guide du retour"
 lede: "Cinq ans et six cycles de versions plus tard, la destination actuelle est une région autonome du sud de Snezhnaya — et le premier vrai regard sur la nation Cryo."
 date: 2026-08-24T09:00:00+02:00
 author: lina-morel

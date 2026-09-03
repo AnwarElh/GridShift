@@ -2,6 +2,7 @@
 type: review
 lang: en
 title: "World of Tanks: HEAT review — Wargaming finally cut the grind, and left the roster short"
+seoTitle: "World of Tanks HEAT review: grind cut short"
 lede: "A new engine, no tech tree, three roles and eight Agents. The most confident thing Wargaming has shipped in a decade, and the thinnest."
 date: 2026-08-09T09:00:00+02:00
 author: sacha-vidal

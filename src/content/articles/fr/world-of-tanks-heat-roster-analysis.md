@@ -3,6 +3,7 @@ type: news
 lang: fr
 kicker: Analyse
 title: "Trois mois de HEAT : le plafond, c'est le roster, pas le moteur"
+seoTitle: "World of Tanks HEAT : le roster fait plafond"
 lede: "Le pari technique de Wargaming est gagné. Le pari de design — huit agents pour tenir un shooter à rôles — est celui qui reste à l'épreuve."
 date: 2026-08-19T10:00:00+02:00
 author: nour-benali

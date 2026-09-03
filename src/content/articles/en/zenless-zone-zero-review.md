@@ -2,6 +2,7 @@
 type: review
 lang: en
 title: "Zenless Zone Zero review: the best action combat HoYoverse has written, in the smallest world"
+seoTitle: "Zenless Zone Zero review: combat first"
 lede: "Two years and three major versions in, ZZZ has cut away almost everything that made its launch divisive. What is left is sharp, fast, and noticeably short of places to go."
 date: 2026-08-13T09:00:00+02:00
 author: sacha-vidal

@@ -2,6 +2,7 @@
 type: review
 lang: fr
 title: "Test de Genshin Impact : six ans après, le monde reste ce que HoYoverse a fait de mieux"
+seoTitle: "Test de Genshin Impact : six ans après"
 lede: "Six régions, six cycles de version, et un système de combat que personne n'a vraiment copié. Le mur, lui, n'a pas bougé depuis 2020 : deux cents résines par jour."
 date: 2026-08-12T09:00:00+02:00
 author: sacha-vidal

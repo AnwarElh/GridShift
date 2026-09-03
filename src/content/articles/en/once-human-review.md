@@ -2,6 +2,7 @@
 type: review
 lang: en
 title: "Once Human review: a survival game that deletes your base on purpose, and is better for it"
+seoTitle: "Once Human review: the base that resets"
 lede: "Two years, five platforms and a structure most survival games would never risk — the world ends on a schedule and you start again. What you keep is the interesting part."
 date: 2026-08-29T09:00:00+02:00
 author: sacha-vidal

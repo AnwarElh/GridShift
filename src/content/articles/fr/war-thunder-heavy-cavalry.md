@@ -2,6 +2,7 @@
 type: news
 lang: fr
 title: "La mise à jour Heavy Cavalry de War Thunder apporte de nouveaux Abrams et l'USS North Carolina"
+seoTitle: "War Thunder Heavy Cavalry : Abrams et croiseur"
 lede: "La grosse mise à jour de juin est l'une des plus fournies du jeu. Treize ans après, c'est toujours l'économie qui fait débat."
 date: 2026-08-10T10:00:00+02:00
 author: nour-benali

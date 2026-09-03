@@ -3,6 +3,7 @@ type: news
 lang: en
 kicker: Analysis
 title: "Three months of HEAT: the roster is the ceiling, not the engine"
+seoTitle: "World of Tanks HEAT: the roster is the ceiling"
 lede: "Wargaming's technical gamble paid off. The design gamble — eight Agents holding up a role-based shooter — is the one still being tested."
 date: 2026-08-19T10:00:00+02:00
 author: nour-benali

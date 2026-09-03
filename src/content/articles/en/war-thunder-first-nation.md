@@ -2,6 +2,7 @@
 type: guide
 lang: en
 title: "Which nation to start in War Thunder — and why the honest answer is a lineup, not a tank"
+seoTitle: "War Thunder: which nation to start with"
 lede: "Ten trees, thousands of vehicles, and a first choice that decides your next hundred hours. The question to ask is not which tank is best."
 date: 2026-08-15T09:00:00+02:00
 author: lina-morel

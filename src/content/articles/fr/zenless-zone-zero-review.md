@@ -2,6 +2,7 @@
 type: review
 lang: fr
 title: "Test de Zenless Zone Zero : le meilleur combat écrit par HoYoverse, dans le plus petit monde"
+seoTitle: "Test de Zenless Zone Zero : le combat, d'abord"
 lede: "Deux ans et trois versions majeures plus tard, ZZZ a supprimé presque tout ce qui divisait à son lancement. Reste quelque chose de tranchant, de rapide — et de nettement à court d'endroits où aller."
 date: 2026-08-13T09:00:00+02:00
 author: sacha-vidal

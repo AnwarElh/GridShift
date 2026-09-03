@@ -2,6 +2,7 @@
 type: guide
 lang: en
 title: "Deviations: the creatures that run your base, and the ones to catch first"
+seoTitle: "Once Human Deviations: which to catch first"
 lede: "Once Human's base building is not decoration with a storage box. It is a small workforce with needs — and choosing badly costs you hours you will not get back this season."
 date: 2026-08-31T09:00:00+02:00
 author: lina-morel

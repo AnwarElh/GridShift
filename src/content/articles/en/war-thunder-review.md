@@ -2,6 +2,7 @@
 type: review
 lang: en
 title: "War Thunder review: thirteen years of the best vehicle simulation nobody can recommend without a caveat"
+seoTitle: "War Thunder review: thirteen years on"
 lede: "Air, ground and sea in one matchmaker, modelled to a standard no competitor approaches. And an economy that has been the subject of an organised player revolt."
 date: 2026-08-11T09:00:00+02:00
 author: sacha-vidal

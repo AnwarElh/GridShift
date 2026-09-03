@@ -2,6 +2,7 @@
 type: setup
 lang: fr
 title: "Genshin sur PC, PlayStation et mobile : ce que la sauvegarde partagée emporte, et le problème Steam Deck"
+seoTitle: "Genshin Impact : PC, PS5, mobile et Steam Deck"
 lede: "Un compte pour trois plateformes, avec une liaison qu'on ne peut pas défaire — et une console portable sur laquelle le jeu ne tournera pas."
 date: 2026-08-16T09:00:00+02:00
 author: sacha-vidal

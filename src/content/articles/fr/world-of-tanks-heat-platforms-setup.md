@@ -2,6 +2,7 @@
 type: setup
 lang: fr
 title: "World of Tanks: HEAT — progression multiplateforme, et la place de GeForce NOW"
+seoTitle: "World of Tanks HEAT : plateformes et GeForce NOW"
 lede: "PC, Steam Deck, PS5, Xbox Series et cloud, tous sur un même compte. La plateforme d'installation compte moins qu'avant."
 date: 2026-08-25T09:00:00+02:00
 author: sacha-vidal

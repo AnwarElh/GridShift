@@ -2,6 +2,7 @@
 type: review
 lang: fr
 title: "Test de Once Human : un jeu de survie qui efface votre base exprès, et s'en trouve meilleur"
+seoTitle: "Test de Once Human : la survie qui s'efface"
 lede: "Deux ans, cinq plateformes et une structure que la plupart des jeux de survie n'oseraient pas — le monde se termine à date fixe et on recommence. Ce qu'on garde est la partie intéressante."
 date: 2026-08-29T09:00:00+02:00
 author: sacha-vidal

@@ -2,6 +2,7 @@
 type: guide
 lang: en
 title: "Zenless Zone Zero combat: stop rotating your team and start answering it"
+seoTitle: "ZZZ combat guide: Assist, Counter, Chain"
 lede: "Defensive Assist, Dodge Counter, Chain Attack. Three interrupts that turn character swapping from a cooldown into a reaction — and the reason your damage stalls at the third difficulty tier."
 date: 2026-08-19T09:00:00+02:00
 author: lina-morel

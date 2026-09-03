@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "Par quelle nation commencer dans War Thunder — et pourquoi la vraie réponse est une composition, pas un char"
+seoTitle: "War Thunder : par quelle nation commencer ?"
 lede: "Dix arbres, des milliers de véhicules, et un premier choix qui engage vos cent prochaines heures. La question à poser n'est pas quel char est le meilleur."
 date: 2026-08-15T09:00:00+02:00
 author: lina-morel

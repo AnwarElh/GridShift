@@ -2,6 +2,7 @@
 type: setup
 lang: fr
 title: "Les réglages de War Thunder qui changent l'issue d'un match — et ceux qui ne changent que la fréquence d'images"
+seoTitle: "War Thunder : les réglages qui font gagner"
 lede: "Deux options graphiques décident si vous voyez un char avant qu'il ne vous voie. Le reste est affaire de goût. Voici la liste courte, et la configuration des touches que personne ne fait avant le cinquantième match."
 date: 2026-08-23T09:00:00+02:00
 author: sacha-vidal

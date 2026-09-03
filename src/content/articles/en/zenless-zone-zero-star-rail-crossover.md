@@ -2,6 +2,7 @@
 type: news
 lang: en
 title: "The Honkai: Star Rail crossover lands in ZZZ this winter — and HoYoverse is still not saying how big"
+seoTitle: "ZZZ x Honkai Star Rail crossover set for winter"
 lede: "Confirmed for winter 2026, with no date and no scope. For a studio that rarely crosses its own titles over, the interesting question is what form it takes."
 date: 2026-08-20T10:00:00+02:00
 author: nour-benali

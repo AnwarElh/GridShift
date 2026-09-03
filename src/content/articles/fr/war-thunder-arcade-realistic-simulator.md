@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "Arcade, réaliste, simulation : choisissez le mode avant le véhicule"
+seoTitle: "War Thunder : arcade, réaliste ou simulation ?"
 lede: "Le même char dans trois modes, ce sont trois jeux différents avec trois économies différentes. La plupart des joueurs choisissent par accident, puis s'étonnent que le jeu leur semble faux."
 date: 2026-08-17T09:00:00+02:00
 author: lina-morel

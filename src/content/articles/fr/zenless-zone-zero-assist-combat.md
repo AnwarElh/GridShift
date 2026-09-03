@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "Combat de Zenless Zone Zero : arrêtez de faire tourner votre équipe, commencez à répondre"
+seoTitle: "ZZZ : maîtriser l'assistance et le contre"
 lede: "Assistance défensive, contre à l'esquive, attaque en chaîne. Trois interruptions qui font du changement de personnage une réaction et non un temps de recharge — et la raison pour laquelle vos dégâts calent au troisième palier."
 date: 2026-08-19T09:00:00+02:00
 author: lina-morel

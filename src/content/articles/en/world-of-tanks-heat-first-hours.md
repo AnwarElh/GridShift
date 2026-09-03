@@ -2,6 +2,7 @@
 type: guide
 lang: en
 title: "Your first ten hours in HEAT, if you have played World of Tanks"
+seoTitle: "World of Tanks HEAT: your first ten hours"
 lede: "Twenty years of habits, and about half of them are now wrong. Here is which ones to keep, which to drop, and what the game never tells you it changed."
 date: 2026-08-26T09:00:00+02:00
 author: lina-morel

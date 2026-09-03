@@ -2,6 +2,7 @@
 type: guide
 lang: en
 title: "Arcade, Realistic, Simulator: choose the mode before the vehicle"
+seoTitle: "War Thunder modes: Arcade, Realistic or Sim?"
 lede: "The same tank in three modes is three different games with three different economies. Most players pick by accident and then wonder why the game feels wrong."
 date: 2026-08-17T09:00:00+02:00
 author: lina-morel

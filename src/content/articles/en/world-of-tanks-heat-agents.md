@@ -2,6 +2,7 @@
 type: guide
 lang: en
 title: "World of Tanks: HEAT — you pick an Agent first, and that changes everything"
+seoTitle: "World of Tanks HEAT: which Agent to pick"
 lede: "Three roles, three starter Agents, and no tech tree to grind. What HEAT asks of you is different from what World of Tanks asked."
 date: 2026-08-22T09:00:00+02:00
 author: lina-morel

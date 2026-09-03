@@ -2,6 +2,7 @@
 type: setup
 lang: fr
 title: "Zenless Zone Zero sur cinq plateformes : le compte voyage, la sensation non"
+seoTitle: "Zenless Zone Zero : où jouer, et à quel prix"
 lede: "PC, iOS, Android, PS5 et Xbox Series partagent une sauvegarde. Choisir où jouer est une question de latence et de batterie, pas d'engagement."
 date: 2026-08-21T09:00:00+02:00
 author: sacha-vidal

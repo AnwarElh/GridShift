@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "World of Tanks: HEAT — on choisit un agent d'abord, et tout change"
+seoTitle: "World of Tanks HEAT : quel agent choisir ?"
 lede: "Trois rôles, trois agents de départ, et aucun arbre technologique à gravir. HEAT ne demande pas la même chose que World of Tanks."
 date: 2026-08-22T09:00:00+02:00
 author: lina-morel

@@ -2,6 +2,7 @@
 type: setup
 lang: en
 title: "World of Tanks: HEAT — cross-platform progression, and where GeForce NOW fits"
+seoTitle: "World of Tanks HEAT: platforms and GeForce NOW"
 lede: "PC, Steam Deck, PS5, Xbox Series and cloud, all sharing one account. Which you install first matters less than it used to."
 date: 2026-08-25T09:00:00+02:00
 author: sacha-vidal

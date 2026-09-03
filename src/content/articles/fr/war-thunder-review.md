@@ -2,6 +2,7 @@
 type: review
 lang: fr
 title: "Test de War Thunder : treize ans de la meilleure simulation de véhicules qu'on ne peut pas recommander sans réserve"
+seoTitle: "War Thunder : le test, treize ans après"
 lede: "L'air, la terre et la mer dans un seul matchmaking, modélisés à un niveau qu'aucun concurrent n'approche. Et une économie qui a provoqué une révolte organisée des joueurs."
 date: 2026-08-11T09:00:00+02:00
 author: sacha-vidal

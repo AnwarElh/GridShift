@@ -2,6 +2,7 @@
 type: review
 lang: en
 title: "Genshin Impact review: six years on, the world is still the best thing HoYoverse has built"
+seoTitle: "Genshin Impact review: six years on"
 lede: "Six regions, six version cycles, and a combat system nothing has properly copied. The wall is still the same one it was in 2020 — two hundred resin a day."
 date: 2026-08-12T09:00:00+02:00
 author: sacha-vidal

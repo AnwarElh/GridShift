@@ -2,6 +2,7 @@
 type: guide
 lang: fr
 title: "Zenless Zone Zero en 3.1 : l'anniversaire a ajouté un mode permanent, pas saisonnier"
+seoTitle: "Zenless Zone Zero 3.1 : bien débuter"
 lede: "Enigma of the Labyrinth reste. Si vous débutez ou revenez, c'est le contenu qui sera encore là au patch suivant."
 date: 2026-08-26T09:00:00+02:00
 author: lina-morel

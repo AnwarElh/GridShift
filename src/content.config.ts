@@ -25,6 +25,13 @@ const articles = defineCollection({
     type: z.enum(['news', 'review', 'guide', 'setup']),
     lang: z.enum(LANGS),
     title: z.string(),
+    /* Le titre de la page et le titre du référencement ne portent pas la même
+       charge. Le premier est éditorial : il peut tenir la phrase entière, il
+       est lu une fois la page ouverte. Le second est lu dans une liste de dix
+       résultats et Google le coupe vers 60 signes, marque comprise — au-delà,
+       la fin de la phrase n'existe pas. Sans ce champ, raccourcir l'un
+       raccourcissait l'autre. Facultatif : à défaut, `title` sert aux deux. */
+    seoTitle: z.string().optional(),
     lede: z.string(),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),

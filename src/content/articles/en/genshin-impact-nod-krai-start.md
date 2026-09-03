@@ -2,6 +2,7 @@
 type: guide
 lang: en
 title: "Genshin Impact in 2026: what a returning player needs to know about Nod-Krai"
+seoTitle: "Genshin Impact 2026: returning player guide"
 lede: "Five years and six version cycles in, the current destination is an autonomous region of southern Snezhnaya — and the first real look at the Cryo nation."
 date: 2026-08-24T09:00:00+02:00
 author: lina-morel

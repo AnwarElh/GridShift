@@ -2,6 +2,7 @@
 type: setup
 lang: en
 title: "Zenless Zone Zero on five platforms: the account travels, the input does not"
+seoTitle: "Zenless Zone Zero: which platform to play on"
 lede: "PC, iOS, Android, PS5 and Xbox Series share one save. Choosing where to play is a question about latency and battery, not about commitment."
 date: 2026-08-21T09:00:00+02:00
 author: sacha-vidal
