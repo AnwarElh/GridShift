@@ -19,20 +19,20 @@ export interface Credit {
 }
 
 export const credits: Record<string, Credit> = {
-  'g-genshin-impact': { artist: 'HoYoverse', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.epicgames.com/en-US/p/genshin-impact', file: 'Epic Games Store product art' },
-  'g-once-human': { artist: 'Starry Studio / NetEase Games', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/2139460/', file: 'Steam store page' },
-  'g-war-thunder': { artist: 'Gaijin Entertainment', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/236390/', file: 'Steam store page' },
-  'g-world-of-tanks-heat': { artist: 'Wargaming', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/2100280/', file: 'Steam store page' },
-  'g-zenless-zone-zero': { artist: 'HoYoverse', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://apps.apple.com/us/app/zenless-zone-zero-anniv/id1606356401?uo=4', file: 'Apple App Store key visual, cropped' },
-  'h-genshin-impact': { artist: 'HoYoverse', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.epicgames.com/en-US/p/genshin-impact', file: 'Epic Games Store key art' },
-  'h-once-human': { artist: 'Starry Studio / NetEase Games', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/2139460/', file: 'Steam store page' },
-  'h-war-thunder': { artist: 'Gaijin Entertainment', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/236390/', file: 'Steam store page' },
-  'h-world-of-tanks-heat': { artist: 'Wargaming', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/2100280/', file: 'Steam store page' },
-  'h-zenless-zone-zero': { artist: 'HoYoverse', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://apps.apple.com/us/app/zenless-zone-zero-anniv/id1606356401?uo=4', file: 'Apple App Store key visual, cropped' },
+  'g-grand-theft-auto-vi': { artist: 'Rockstar Games', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://www.rockstargames.com/VI', file: 'Rockstar Games key art, cropped' },
+  'g-clair-obscur-expedition-33': { artist: 'Sandfall Interactive / Kepler Interactive', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/1903340/', file: 'Steam store page' },
+  'g-star-wars-kotor-remake': { artist: 'Saber Interactive / Lucasfilm Games', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://blog.playstation.com/2021/09/09/star-wars-knights-of-the-old-republic-remake-is-the-legendary-tale-remade-on-playstation-5/', file: 'PlayStation Blog key visual, cropped' },
+  'g-onimusha-way-of-the-sword': { artist: 'Capcom', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/2638890/', file: 'Steam store page' },
+  'g-the-blood-of-dawnwalker': { artist: 'Rebel Wolves / Bandai Namco Entertainment', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://www.gog.com/en/game/the_blood_of_dawnwalker', file: 'GOG store page' },
+  'h-grand-theft-auto-vi': { artist: 'Rockstar Games', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://www.rockstargames.com/VI', file: 'Rockstar Games key art, cropped' },
+  'h-clair-obscur-expedition-33': { artist: 'Sandfall Interactive / Kepler Interactive', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/1903340/', file: 'Steam library hero' },
+  'h-star-wars-kotor-remake': { artist: 'Saber Interactive / Lucasfilm Games', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://blog.playstation.com/2021/09/09/star-wars-knights-of-the-old-republic-remake-is-the-legendary-tale-remade-on-playstation-5/', file: 'PlayStation Blog key visual' },
+  'h-onimusha-way-of-the-sword': { artist: 'Capcom', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://store.steampowered.com/app/2638890/', file: 'Steam library hero' },
+  'h-the-blood-of-dawnwalker': { artist: 'Rebel Wolves / Bandai Namco Entertainment', licence: 'Éditeur — usage éditorial', licenceUrl: '', source: 'https://www.gog.com/en/game/the_blood_of_dawnwalker', file: 'GOG store key art' },
 };
 
 /* Astro conserve le nom du fichier source dans l'URL générée
-   (« g-genshin-impact.abc123_xyz.webp ») : on remonte à la clé de la table. */
+   (« g-onimusha-way-of-the-sword.abc123_xyz.webp ») : on remonte à la clé de la table. */
 const nameOf = (src: string) => (src.split('/').pop() ?? '').split('.')[0];
 
 export const creditFor = (img?: { src: string }): Credit | undefined =>
