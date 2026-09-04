@@ -8,3 +8,9 @@ All-in-one Gaming Blog_ News & Articles by Hellcase_files/
 RigPeak.html
 *_files/
 .impeccable/
+
+.wrangler/
+db/seed.sql
+db/r2-uploads.json
+build/
+db/variants.sql

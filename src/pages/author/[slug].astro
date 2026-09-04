@@ -1,11 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import AuthorPage from '../../views/AuthorPage.astro';
+import { getAuthor } from '../../lib/content';
 
-export async function getStaticPaths() {
-  const authors = await getCollection('authors');
-  return authors.map((author) => ({ params: { slug: author.id }, props: { author } }));
-}
-const { author } = Astro.props;
+const author = await getAuthor(Astro.locals, 'en', Astro.params.slug!);
+if (!author) return Astro.rewrite('/404');
 ---
 <AuthorPage author={author} />

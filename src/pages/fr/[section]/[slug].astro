@@ -1,25 +1,17 @@
 ---
-import { render } from 'astro:content';
 import ArticleLayout from '../../../layouts/Article.astro';
-import Tldr from '../../../components/prose/Tldr.astro';
-import Callout from '../../../components/prose/Callout.astro';
-import Spoiler from '../../../components/prose/Spoiler.astro';
-import Alert from '../../../components/prose/Alert.astro';
-import ProseAd from '../../../components/prose/Ad.astro';
-import { getPosts, byGame, related, type Post } from '../../../lib/articles';
-import { sectionSlugs } from '../../../i18n/config';
+import { getPosts, related, byGame } from '../../../lib/content';
+import { sectionFromSlug } from '../../../i18n/config';
 
-export async function getStaticPaths() {
-  const posts = await getPosts('fr');
-  return posts.map((post) => ({
-    params: { section: sectionSlugs[post.section].fr, slug: post.slug },
-    props: { post },
-  }));
-}
-
-const { post } = Astro.props as { post: Post };
-const posts = await getPosts('fr');
-const { Content } = await render(post.entry);
+/* En rendu serveur, les paramètres viennent de l'URL : plus de getStaticPaths,
+   plus de props posées au build. La page cherche l'article et rend 404 si elle
+   ne le trouve pas — ce que la version figée obtenait en n'existant pas. */
+const section = sectionFromSlug('fr', Astro.params.section!);
+const posts = await getPosts(Astro.locals, 'fr');
+const post = section
+  ? posts.find((p) => p.slug === Astro.params.slug && p.section === section)
+  : undefined;
+if (!post) return Astro.rewrite('/fr/404');
 
 const siblings = post.game ? byGame(posts, post.game.id).length : 0;
 const scored = posts.filter((p) => p.data.score !== undefined);
@@ -36,5 +28,7 @@ const percentile = scored.length ? Math.max(1, Math.round((better / scored.lengt
   percentile={percentile}
   average={Number(average.toFixed(1))}
   authorCount={authorCount}>
-  <Content components={{ Tldr, Callout, Spoiler, Alert, Ad: ProseAd }} />
+  <!-- Le corps est rendu à la publication et stocké dans D1 : le worker
+       n'exécute aucune chaîne Markdown, il pose du HTML déjà fabriqué. -->
+  <Fragment set:html={post.body_html} />
 </ArticleLayout>

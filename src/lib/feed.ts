@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
-import { getPosts } from './articles';
+import { getPosts } from './content.ts';
 import { site, siteCopy } from '../site';
 import { type Locale, htmlLang } from '../i18n/config';
 import { useT } from '../i18n/ui';
@@ -8,7 +8,7 @@ import { useT } from '../i18n/ui';
 /* Un flux par langue : un lecteur RSS francophone n'a rien à faire d'un
    article anglais, et `<language>` doit dire la vérité. */
 export async function feed(context: APIContext, lang: Locale) {
-  const posts = await getPosts(lang);
+  const posts = await getPosts(context.locals, lang);
   const t = useT(lang);
   const label = { news: t('nav.news'), review: t('nav.reviews'), guide: t('nav.guides'), setup: t('nav.setup') };
   return rss({

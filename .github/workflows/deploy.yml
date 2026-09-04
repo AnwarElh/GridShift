@@ -1,25 +1,21 @@
-name: Deploy Astro site to GitHub Pages
+name: Deploy to Cloudflare Workers
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# Jeton minimal : lecture du dépôt, écriture sur Pages, et l'OIDC exigé par
-# actions/deploy-pages.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # Un déploiement à la fois. On ne coupe pas celui en cours : une mise en ligne
 # à moitié faite est pire qu'une mise en ligne en retard.
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,21 +30,42 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Le contenu avant le code : si l'export refuse de passer — un auteur
+      # inconnu, une traduction manquante, un visuel sans crédit — le
+      # déploiement s'arrête ici plutôt que de publier une base incohérente.
+      - name: Check content
+        run: npm run content:check
+
+      - name: Test
+        run: npm test
+
       - name: Build
         run: npm run build
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          SITE_BASE: ${{ vars.SITE_BASE }}
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
+      # Le contenu et les médias sont poussés avant le worker : une page servie
+      # par le nouveau code doit trouver ses données et ses images en place, pas
+      # l'inverse.
+      - name: Migrate and seed D1
+        run: |
+          npx wrangler d1 migrations apply gridshift-content --remote
+          npm run db:seed:remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Push media to R2
+        run: |
+          npm run media:push:remote
+          node scripts/media-build.mjs --push --remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Deploy worker
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

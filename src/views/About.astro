@@ -5,16 +5,15 @@ import Kicker from '../components/Kicker.astro';
 import AuthorBox from '../components/AuthorBox.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Newsletter from '../components/Newsletter.astro';
-import { getCollection } from 'astro:content';
-import { getPosts } from '../lib/articles';
+import { getPosts, getAuthors } from '../lib/content';
 import { site, siteCopy, siteHome } from '../site';
 import { langFromPath, otherLocale, pageHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
 const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
-const authors = await getCollection('authors');
-const posts = await getPosts(lang);
+const authors = await getAuthors(Astro.locals, lang);
+const posts = await getPosts(Astro.locals, lang);
 const count = (id: string) => posts.filter((p) => p.author.id === id).length;
 
 /* L'échelle de notation, telle qu'elle est réellement appliquée. */
@@ -92,7 +91,7 @@ const jsonLd = {
   name: site.name,
   url: siteHome,
   description: siteCopy[lang].description,
-  employee: authors.map((a) => ({ '@type': 'Person', name: a.data.name, jobTitle: a.data.role[lang] })),
+  employee: authors.map((a) => ({ '@type': 'Person', name: a.data.name, jobTitle: a.data.role })),
 };
 ---
 <Base title={copy.title} description={copy.desc} jsonLd={jsonLd} alt={pageHref(otherLocale(lang), 'about')}>

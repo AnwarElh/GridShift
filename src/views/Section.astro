@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Archive from '../components/Archive.astro';
-import { getPosts, byType, pageOf, allTags } from '../lib/articles';
+import { getPosts, byType, pageOf, allTags } from '../lib/content';
 import {
   langFromPath, otherLocale, sectionHref, type SectionKey,
 } from '../i18n/config';
@@ -21,7 +21,7 @@ const meta = {
   setup:  { title: t('section.setup.title'),  lede: t('section.setup.lede'),  noun: t('noun.setup') },
 }[section];
 
-const posts = byType(await getPosts(lang), section);
+const posts = byType(await getPosts(Astro.locals, lang), section);
 const page = pageOf(posts, pageNum, 12, sectionHref(lang, section));
 const filters = allTags(posts).slice(0, 6).map(([tag]) => tag);
 ---

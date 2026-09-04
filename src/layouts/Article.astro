@@ -18,7 +18,7 @@ import Version from '../components/Version.astro';
 import Credit from '../components/Credit.astro';
 import Offers from '../components/Offers.astro';
 import { site } from '../site';
-import { slugifyTag, type Post } from '../lib/articles';
+import { slugifyTag, type Post } from '../lib/content';
 import { authorHref, articleHref, gameHref, sectionHref, tagHref, otherLocale, htmlLang } from '../i18n/config';
 import { useT } from '../i18n/ui';
 import GithubSlugger from 'github-slugger';
@@ -62,7 +62,7 @@ const jsonLd: Record<string, unknown> = {
   ...(cover ? { image: new URL(cover, site.url).href } : {}),
   ...(isTest && data.score !== undefined && game
     ? {
-        itemReviewed: { '@type': 'VideoGame', name: game.data.title, publisher: game.data.studio, genre: game.data.genre[lang] },
+        itemReviewed: { '@type': 'VideoGame', name: game.data.title, publisher: game.data.studio, genre: game.data.genre },
         reviewRating: { '@type': 'Rating', ratingValue: data.score, bestRating: 10, worstRating: 0 },
         reviewBody: data.verdict,
       }

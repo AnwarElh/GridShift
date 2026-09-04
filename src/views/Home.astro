@@ -5,11 +5,9 @@ import GameCard from '../components/GameCard.astro';
 import Hero from '../components/Hero.astro';
 import CatBar from '../components/CatBar.astro';
 import Deals from '../components/Deals.astro';
-import Newsletter from '../components/Newsletter.astro';
 import Ad from '../components/Ad.astro';
 import Fig from '../components/Fig.astro';
-import { getCollection } from 'astro:content';
-import { getPosts, byType, byGame, spreadByGame } from '../lib/articles';
+import { getPosts, getGames, byType, byGame, spreadByGame } from '../lib/content';
 import { time } from '../lib/format';
 import { site, siteCopy, siteHome } from '../site';
 import {
@@ -19,9 +17,12 @@ import {
 import { useT } from '../i18n/ui';
 
 const lang = langFromPath(Astro.url.pathname);
+/* Le formulaire poste vers le fournisseur défini dans .env. Sans lui, il ne
+   fait rien et le dit plutôt que de faire semblant d'avoir inscrit. */
+const newsletterAction = import.meta.env.PUBLIC_NEWSLETTER_ACTION;
 const t = useT(lang);
-const posts = await getPosts(lang);
-const games = await getCollection('games');
+const posts = await getPosts(Astro.locals, lang);
+const games = await getGames(Astro.locals, lang);
 
 /* La mosaïque de tête : la sélection maison, la plus récente à défaut.
    Six sujets — un pavé maître, deux de côté, trois en bande.
@@ -208,17 +209,32 @@ const jsonLd = {
       </aside>
     </div>
 
-    <!-- 5. L'appel : pleine largeur, juste avant l'inscription -->
-    <section class="cat-sec">
+    <!-- 5. L'appel : le panneau et le formulaire ne font plus qu'un.
+         Il y avait deux appels à la lettre à quatre cents pixels d'écart : le
+         premier ne savait que renvoyer au second. Un lecteur convaincu par le
+         premier devait donc scroller pour faire ce qu'il venait de décider.
+         Le champ remonte ici, et l'ancre #newsletter reste sur ce bloc — c'est
+         elle que visent « S'abonner » du bandeau et « Suivre » d'une fiche. -->
+    <section class="cat-sec" id="newsletter">
       <div class="promo">
         <div>
           <h2 class="d3">{t('home.promoTitle')}</h2>
           <p>{t('home.promoBody')}</p>
         </div>
-        <a class="btn btn-primary btn-lg" href="#newsletter">{t('home.promoCta')}</a>
+        <div class="promo-signup">
+          <form class="news-form" action={newsletterAction} method="post" novalidate
+                data-newsletter={newsletterAction ? undefined : ''}>
+            <label class="sr" for="nl">{t('news.email')}</label>
+            <input class="input" id="nl" name="email" type="email" inputmode="email"
+                   autocomplete="email" spellcheck="false" autocapitalize="off"
+                   placeholder={t('news.placeholder')} required
+                   aria-describedby="nl-msg">
+            <button class="btn btn-primary btn-lg" type="submit">{t('news.cta')}</button>
+          </form>
+          <p class="msg" id="nl-msg" role="alert" hidden></p>
+          <p class="meta">{t('news.terms')}</p>
+        </div>
       </div>
     </section>
-
-    <Newsletter />
   </div>
 </Base>

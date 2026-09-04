@@ -5,16 +5,15 @@ import GameCard from '../components/GameCard.astro';
 import Ad from '../components/Ad.astro';
 import Newsletter from '../components/Newsletter.astro';
 import SectionHead from '../components/SectionHead.astro';
-import { getCollection } from 'astro:content';
-import { getPosts, byGame } from '../lib/articles';
+import { getPosts, getGames, byGame } from '../lib/content';
 import { shortDate } from '../lib/format';
 import { langFromPath, otherLocale, pageHref, gameHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
 const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
-const posts = await getPosts(lang);
-const games = await getCollection('games');
+const posts = await getPosts(Astro.locals, lang);
+const games = await getGames(Astro.locals, lang);
 const count = (id: string) => byGame(posts, id).length;
 const out = games.filter((g) => !g.data.releaseDate || g.data.releaseDate <= new Date())
   .sort((a, b) => (b.data.score ?? 0) - (a.data.score ?? 0));

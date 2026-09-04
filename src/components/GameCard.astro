@@ -2,7 +2,7 @@
 import Fig from './Fig.astro';
 import Platforms from './Platforms.astro';
 import { num } from '../lib/format';
-import type { Game } from '../lib/articles';
+import type { Game } from '../lib/content';
 import { langFromPath, gameHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 interface Props { game: Game; count?: number; }
@@ -14,7 +14,7 @@ const t = useT(lang);
 <a class="card-game" href={gameHref(lang, game.id)}>
   <Fig src={d.cover} alt="" ratio="3-4" />
   <span>
-    <b>{d.title}</b><span class="studio">{d.studio} · {d.genre[lang]}</span>
+    <b>{d.title}</b><span class="studio">{d.studio} · {d.genre}</span>
     <Platforms platforms={d.platforms} style="margin-top:8px" />
     <span class="meta" style="display:block;margin-top:8px">
       {d.score !== undefined

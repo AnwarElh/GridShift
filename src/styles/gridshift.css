@@ -698,7 +698,7 @@ a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-
 .news-form .input{flex:1;min-width:210px}
 /* le message d'erreur vit sous le champ, dans le flux : une bulle native
    disparaît au premier clic et n'est jamais relue par un lecteur d'écran */
-.news-box .msg{margin-top:var(--s-2);font-size:var(--ui-sm);line-height:1.5;color:var(--err)}
+.news-box .msg,.promo .msg{margin-top:var(--s-2);font-size:var(--ui-sm);line-height:1.5;color:var(--err)}
 .input[aria-invalid="true"]{border-color:var(--err)}
 
 /* ── 11. SURCOUCHES ───────────────────────────────────────── */
@@ -1113,7 +1113,7 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .aff-note{margin-top:var(--s-3);font-size:var(--ui-xs);line-height:1.5;color:var(--tx-3)}
 
 /* la bannière d'offre pleine largeur, entre deux rubriques */
-.promo{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--s-5);
+.promo{display:grid;grid-template-columns:1fr;gap:var(--s-5);
   padding:var(--s-6);border-radius:var(--r-card);border:1px solid var(--line);
   --n:var(--notch);
   clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
@@ -1128,6 +1128,12 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
    si une traduction plus longue doit malgré tout passer à la ligne. */
 .promo h2{font-size:var(--d3);margin-bottom:var(--s-2);max-width:36ch;text-wrap:balance}
 .promo p{color:var(--tx-2);font-size:var(--ui-md);max-width:56ch}
+/* L'inscription prend toute la largeur du panneau, comme le formulaire qu'elle
+   remplace : le champ était large, et un champ large dit qu'on attend une
+   adresse, pas un mot-clé. `flex:1` sur .input lui donne tout l'espace que le
+   bouton ne prend pas, et `flex-wrap` les empile quand il n'y en a plus. */
+.promo-signup{width:100%}
+.promo-signup .meta{margin-top:var(--s-2)}
 
 /* Les jeux couverts : grille, et non plus rail. Remontée sous la Une, elle
    doit montrer TOUT le catalogue d'un coup d'œil — un rail en cache la moitié
@@ -1433,7 +1439,7 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   .card-wide .card-body{padding:var(--s-4)}
   .card-wide .chips{max-width:calc(100% - 2 * var(--s-3))}
   .card-note{margin:var(--s-4)}
-  .promo{grid-template-columns:1fr;gap:var(--s-4);padding:var(--s-5)}
+  .promo{gap:var(--s-4);padding:var(--s-5)}
   .feed-item{grid-template-columns:104px 1fr;gap:var(--s-3)}
   .feed-item .side{display:none}
   .feed-item h3{font-size:var(--ui-lg)}

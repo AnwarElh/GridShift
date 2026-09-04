@@ -1,11 +1,9 @@
 ---
 import TagPage from '../../../views/TagPage.astro';
-import { getPosts, allTags, slugifyTag } from '../../../lib/articles';
+import { getPosts, allTags, slugifyTag } from '../../../lib/content';
 
-export async function getStaticPaths() {
-  const posts = await getPosts('fr');
-  return allTags(posts).map(([tag]) => ({ params: { tag: slugifyTag(tag) }, props: { tag } }));
-}
-const { tag } = Astro.props;
+const posts = await getPosts(Astro.locals, 'fr');
+const match = allTags(posts).find(([t]) => slugifyTag(t) === Astro.params.tag);
+if (!match) return Astro.rewrite('/fr/404');
 ---
-<TagPage tag={tag} />
+<TagPage tag={match[0]} />

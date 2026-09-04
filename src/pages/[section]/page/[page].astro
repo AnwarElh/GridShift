@@ -1,18 +1,11 @@
 ---
 import Section from '../../../views/Section.astro';
-import { sectionKeys, sectionSlugs, sectionFromSlug } from '../../../i18n/config';
-import { getPosts, byType } from '../../../lib/articles';
+import { sectionFromSlug } from '../../../i18n/config';
 
-export async function getStaticPaths() {
-  const posts = await getPosts('en');
-  return sectionKeys.flatMap((k) => {
-    const last = Math.max(1, Math.ceil(byType(posts, k).length / 12));
-    /* la page 1 est déjà servie par /<rubrique>/ : on ne la duplique pas */
-    return Array.from({ length: last - 1 }, (_, i) => ({
-      params: { section: sectionSlugs[k].en, page: String(i + 2) },
-    }));
-  });
-}
-const section = sectionFromSlug('en', Astro.params.section!)!;
+const section = sectionFromSlug('en', Astro.params.section!);
+const page = Number(Astro.params.page);
+/* La page 1 vit sur /<rubrique>/ : la servir ici aussi dupliquerait l'adresse
+   d'un même contenu, ce que les moteurs comptent comme deux pages. */
+if (!section || !Number.isInteger(page) || page < 2) return Astro.rewrite('/404');
 ---
-<Section section={section} pageNum={Number(Astro.params.page)} />
+<Section section={section} pageNum={page} />

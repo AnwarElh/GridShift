@@ -1,7 +1,7 @@
 ---
 import Version from './Version.astro';
 import { longDate } from '../lib/format';
-import type { Post } from '../lib/articles';
+import type { Post } from '../lib/content';
 import { authorHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 interface Props { post: Post; compact?: boolean; }
@@ -15,7 +15,7 @@ const t = useT(lang);
   <span class="avatar av-sm" aria-hidden="true">{a.initials}</span>
   <span class="who">
     <b><a href={authorHref(lang, post.author.id)}>{a.name}</a></b>
-    <span>{a.role[lang]}</span>
+    <span>{a.role}</span>
   </span>
   <span class="sp"></span>
   <Version version={data.testedOn} stale={data.stale} prefix={t('review.testedOn')} />

@@ -1,8 +1,19 @@
 ---
-import { Image } from 'astro:assets';
-/* Figure du système : image réelle si elle existe, plaque vide sinon. */
+import type { Media, Variant } from '../lib/content';
+/* Figure du système : image réelle si elle existe, plaque vide sinon.
+ *
+ * L'image ne vient plus du build mais de R2, et les variantes ont été
+ * fabriquées à la publication (scripts/media-build.mjs). Ce composant ne
+ * transforme donc rien : il choisit, dans l'échelle déjà présente, les largeurs
+ * que cet emplacement demande, et laisse le navigateur prendre la plus petite
+ * qui convienne.
+ *
+ * `width`/`height` sont toujours écrits. Sans eux, le navigateur ne connaît pas
+ * le rapport de l'image avant de l'avoir chargée : la page se réagence au
+ * chargement, et c'est exactement ce que la réservation d'espace évite.
+ */
 export interface Props {
-  src?: ImageMetadata;
+  src?: Media;
   alt?: string;
   ratio?: '16-9' | '3-2' | '4-3' | '1-1' | '3-4' | '21-9';
   class?: string;
@@ -13,10 +24,38 @@ export interface Props {
   /* image d'ouverture : chargée tout de suite, jamais lazy */
   priority?: boolean;
 }
-const { src, alt = '', ratio = '16-9', class: cls = '', style, as: Tag = 'span', widths, sizes, priority = false } = Astro.props;
+const {
+  src, alt = '', ratio = '16-9', class: cls = '', style, as: Tag = 'span',
+  widths, sizes, priority = false,
+} = Astro.props;
+
+/* Les variantes retenues : celles que l'emplacement demande, ou l'échelle
+   entière à défaut de consigne. On garde toujours au moins une variante —
+   servir l'original de 1920px dans une vignette de 82px est la régression que
+   tout ce dispositif existe pour empêcher. */
+const webp: Variant[] = (src?.variants ?? []).filter((v: Variant) => v.format === 'webp');
+const chosen = widths?.length
+  ? webp.filter((v: Variant) => widths.includes(v.width))
+  : webp;
+const scale: Variant[] = (chosen.length ? chosen : webp).slice()
+  .sort((a: Variant, b: Variant) => a.width - b.width);
+
+const srcset = scale.map((v: Variant) => `${v.src} ${v.width}w`).join(', ');
+/* Le `src` de repli : la plus grande variante retenue plutôt que l'original,
+   pour qu'un navigateur sans srcset ne télécharge pas 1920px non plus. */
+const fallback = scale.at(-1) ?? src;
 ---
 <Tag class:list={['fig', `r-${ratio}`, cls]} style={style}>
-  {src
-    ? <Image src={src} alt={alt} widths={widths} sizes={sizes} loading={priority ? 'eager' : 'lazy'} fetchpriority={priority ? 'high' : undefined} decoding="async" />
+  {src && fallback
+    ? <img
+        src={fallback.src}
+        srcset={srcset || undefined}
+        sizes={srcset ? (sizes ?? '100vw') : undefined}
+        width={fallback.width}
+        height={fallback.height}
+        alt={alt}
+        loading={priority ? 'eager' : 'lazy'}
+        fetchpriority={priority ? 'high' : undefined}
+        decoding="async" />
     : <span class="ph" aria-hidden="true"></span>}
 </Tag>

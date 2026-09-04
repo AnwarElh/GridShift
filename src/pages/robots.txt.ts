@@ -6,6 +6,6 @@ const base = (import.meta.env.BASE_URL ?? '/').replace(/\/+$/, '');
 
 export const GET: APIRoute = () =>
   new Response(
-    `User-agent: *\nAllow: /\n\nSitemap: ${site.url}${base}/sitemap-index.xml\n`,
+    `User-agent: *\nAllow: /\n\nSitemap: ${site.url}${base}/sitemap.xml\n`,
     { headers: { 'content-type': 'text/plain; charset=utf-8' } },
   );

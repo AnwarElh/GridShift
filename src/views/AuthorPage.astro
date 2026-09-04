@@ -5,7 +5,7 @@ import AuthorBox from '../components/AuthorBox.astro';
 import Card from '../components/Card.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Ad from '../components/Ad.astro';
-import { getPosts, type Author } from '../lib/articles';
+import { getPosts, type Author } from '../lib/content';
 import { site } from '../site';
 import { langFromPath, otherLocale, authorHref, pageHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
@@ -14,20 +14,20 @@ interface Props { author: Author }
 const { author } = Astro.props;
 const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
-const posts = (await getPosts(lang)).filter((p) => p.author.id === author.id);
+const posts = (await getPosts(Astro.locals, lang)).filter((p) => p.author.id === author.id);
 const a = author.data;
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: a.name,
-  jobTitle: a.role[lang],
-  description: a.bio[lang],
+  jobTitle: a.role,
+  description: a.bio,
   url: new URL(authorHref(lang, author.id), site.url).href,
   worksFor: { '@type': 'Organization', name: site.name },
 };
 ---
-<Base title={a.name} description={a.bio[lang]} jsonLd={jsonLd} alt={authorHref(otherLocale(lang), author.id)}>
+<Base title={a.name} description={a.bio} jsonLd={jsonLd} alt={authorHref(otherLocale(lang), author.id)}>
   <div class="page" style="padding-top:40px">
     <Crumbs trail={[{ label: t('foot.team'), href: pageHref(lang, 'about') }, { label: a.name }]} />
     <h1 class="d2" style="margin:12px 0 24px">{a.name}</h1>

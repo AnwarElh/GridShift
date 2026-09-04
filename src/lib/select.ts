@@ -1,78 +1,34 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
-import {
-  articleHref, type Locale, type SectionKey, defaultLocale,
-} from '../i18n/config';
-import { readingTime } from './format';
+/* Trier, répartir, paginer.
+ *
+ * Ces fonctions ne savent pas d'où vient le contenu — collection Astro hier,
+ * D1 aujourd'hui. Elles n'exigent que la forme minimale dont elles se servent,
+ * d'où les génériques : le même `spreadByGame` sert les deux représentations
+ * sans qu'aucune ne doive se déguiser en l'autre.
+ *
+ * Elles vivaient dans lib/articles.ts, qui importait `astro:content`. Les
+ * laisser là aurait tiré tout le moteur de collections dans le bundle du
+ * worker, pour cinq tris qui ne touchent jamais au stockage.
+ */
+import type { SectionKey } from '../i18n/config.ts';
 
-export type Article = CollectionEntry<'articles'>;
-export type Game = CollectionEntry<'games'>;
-export type Author = CollectionEntry<'authors'>;
-
-export interface Post {
-  entry: Article;
-  data: Article['data'];
-  /* `id` vaut « fr/echo-divide-test » ; `slug` est la partie qui va dans l'URL,
-     et sert aussi de clé de traduction : deux fichiers de même nom dans en/ et
-     fr/ sont la même histoire dans deux langues. */
+/* La forme minimale : ce que ces fonctions lisent réellement d'un article. */
+export interface Sortable {
   id: string;
-  slug: string;
-  lang: Locale;
-  href: string;
-  section: SectionKey;
-  author: Author;
-  game?: Game;
-  minutes: number;
+  game?: { id: string };
+  data: { type: SectionKey; tags: string[]; date: Date };
 }
 
-/* Un cache par langue : `getPosts('fr')` ne doit jamais voir un article anglais. */
-const cache = new Map<Locale, Post[]>();
-
-export async function getPosts(lang: Locale = defaultLocale): Promise<Post[]> {
-  const hit = cache.get(lang);
-  if (hit) return hit;
-
-  const [articles, games, authors] = await Promise.all([
-    getCollection('articles', ({ data }) => import.meta.env.DEV || !data.draft),
-    getCollection('games'),
-    getCollection('authors'),
-  ]);
-  const gameById = new Map(games.map((g) => [g.id, g]));
-  const authorById = new Map(authors.map((a) => [a.id, a]));
-
-  const posts = articles
-    .filter((entry) => entry.data.lang === lang)
-    .map((entry) => {
-      const slug = entry.id.split('/').pop()!;
-      return {
-        entry,
-        data: entry.data,
-        id: entry.id,
-        slug,
-        lang,
-        href: articleHref(lang, entry.data.type, slug),
-        section: entry.data.type,
-        author: authorById.get(entry.data.author.id)!,
-        game: entry.data.game ? gameById.get(entry.data.game.id) : undefined,
-        minutes: entry.data.readingMinutes ?? readingTime(entry.body, lang),
-      };
-    })
-    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-
-  cache.set(lang, posts);
-  return posts;
-}
-
-export const byType = (posts: Post[], type: SectionKey) =>
+export const byType = <T extends Sortable>(posts: T[], type: SectionKey): T[] =>
   posts.filter((p) => p.data.type === type);
 
-export const byGame = (posts: Post[], gameId: string) =>
+export const byGame = <T extends Sortable>(posts: T[], gameId: string): T[] =>
   posts.filter((p) => p.game?.id === gameId);
 
 /* Une sélection qui ne parle pas que d'un jeu.
 
    La Une, le Fil et les Tendances prenaient tous les N premiers d'une liste
    déjà triée — par date pour les deux premiers, par nombre d'abonnés pour le
-   troisième. Sur un site qui couvre cinq jeux et publie par salves, ça donne
+   troisième. Sur un site qui couvre sept jeux et publie par salves, ça donne
    cinq articles du même jeu en haut de l'accueil : un lecteur qui arrive croit
    qu'on ne parle que de ça.
 
@@ -81,15 +37,15 @@ export const byGame = (posts: Post[], gameId: string) =>
    décide des priorités — la fonction ne trie rien elle-même — et un jeu ne
    repasse jamais avant que tous les autres aient eu leur tour. Les articles
    sans jeu forment leur propre file plutôt que d'être écartés. */
-export function spreadByGame(posts: Post[], limit: number): Post[] {
-  const queues = new Map<string, Post[]>();
+export function spreadByGame<T extends Sortable>(posts: T[], limit: number): T[] {
+  const queues = new Map<string, T[]>();
   for (const p of posts) {
     const key = p.game?.id ?? `—${p.id}`;
     const q = queues.get(key);
     if (q) q.push(p); else queues.set(key, [p]);
   }
   const lists = [...queues.values()];
-  const out: Post[] = [];
+  const out: T[] = [];
   for (let round = 0; out.length < limit; round++) {
     const before = out.length;
     for (const list of lists) {
@@ -104,8 +60,8 @@ export function spreadByGame(posts: Post[], limit: number): Post[] {
 }
 
 /* Suite de lecture : le même jeu d'abord, les mêmes tags ensuite. */
-export function related(posts: Post[], post: Post, limit = 3): Post[] {
-  const score = (p: Post) =>
+export function related<T extends Sortable>(posts: T[], post: T, limit = 3): T[] {
+  const score = (p: T) =>
     (p.game && p.game.id === post.game?.id ? 10 : 0) +
     p.data.tags.filter((t) => post.data.tags.includes(t)).length;
   return posts
@@ -117,14 +73,14 @@ export function related(posts: Post[], post: Post, limit = 3): Post[] {
     .map(({ p }) => p);
 }
 
-export const allTags = (posts: Post[]) => {
+export const allTags = <T extends Sortable>(posts: T[]): [string, number][] => {
   const counts = new Map<string, number>();
   for (const p of posts) for (const t of p.data.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
   return [...counts].sort((a, b) => b[1] - a[1]);
 };
 
 export const slugifyTag = (tag: string) =>
-  tag.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  tag.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 /* Pagination maison : les articles vivent sur /rubrique/<slug>/, les pages sur

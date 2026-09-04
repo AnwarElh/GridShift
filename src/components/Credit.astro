@@ -1,10 +1,11 @@
 ---
-/* Attribution d'une image libre. CC BY et CC BY-SA l'exigent, CC0 et le
-   domaine public non — on la pose quand même, c'est la moindre des choses. */
-import { creditFor } from '../lib/credits';
-interface Props { img?: { src: string }; class?: string; }
+import type { Media } from '../lib/content';
+/* Attribution d'un visuel. Le crédit ne se cherche plus dans une table du code :
+   il voyage avec le média, depuis D1. Un visuel sans ayant droit nommé ne peut
+   pas entrer dans la base — la contrainte est en amont, pas ici. */
+interface Props { img?: Media; class?: string; }
 const { img, class: cls = '' } = Astro.props;
-const c = creditFor(img);
+const c = img?.credit;
 ---
 {c && (
   <span class:list={['credit', cls]}>

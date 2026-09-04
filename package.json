@@ -6,9 +6,22 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "node --test test/**/*.test.js"
+    "test": "node --experimental-test-module-mocks --test test/**/*.test.js",
+    "content:check": "node scripts/content-to-d1.mjs --check",
+    "content:export": "node scripts/content-to-d1.mjs",
+    "db:migrate": "wrangler d1 migrations apply gridshift-content --local",
+    "db:migrate:remote": "wrangler d1 migrations apply gridshift-content --remote",
+    "db:seed": "npm run content:export && wrangler d1 execute gridshift-content --local --file=db/seed.sql",
+    "db:seed:remote": "npm run content:export && wrangler d1 execute gridshift-content --remote --file=db/seed.sql",
+    "db:console": "wrangler d1 execute gridshift-content --local --command",
+    "media:push": "node scripts/assets-to-r2.mjs",
+    "media:push:remote": "node scripts/assets-to-r2.mjs --remote",
+    "media:plan": "node scripts/assets-to-r2.mjs --dry-run",
+    "cf:provision": "bash scripts/cf-provision.sh",
+    "cf:setup": "npm run db:migrate && npm run db:seed && npm run media:push"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.13",
     "@astrojs/mdx": "^4.3.14",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.7.1",

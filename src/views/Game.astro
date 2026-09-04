@@ -1,5 +1,4 @@
 ---
-import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
 import Fig from '../components/Fig.astro';
@@ -13,7 +12,7 @@ import SectionHead from '../components/SectionHead.astro';
 import Ad from '../components/Ad.astro';
 import Offers from '../components/Offers.astro';
 import GameCard from '../components/GameCard.astro';
-import { getPosts, byGame, type Game } from '../lib/articles';
+import { getPosts, getGames, byGame, type Game } from '../lib/content';
 import { int } from '../lib/format';
 import { site } from '../site';
 import {
@@ -27,9 +26,8 @@ const d = game.data;
 const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
 
-const all = await getPosts(lang);
+const all = await getPosts(Astro.locals, lang);
 const posts = byGame(all, game.id);
-const { Content } = await render(game);
 /* La meilleure offre remonte en tête de fiche : c'est l'action que la page
    sert. Le tableau complet reste dans la colonne, avec sa mention. */
 const best = d.offers.find((o) => o.tone === 'brass') ?? d.offers[0];
@@ -37,8 +35,8 @@ const best = d.offers.find((o) => o.tone === 'brass') ?? d.offers[0];
 /* Une fiche peu couverte laissait une colonne vide face à un pavé de 600 px.
    On finit par où le lecteur va ensuite : les autres jeux suivis, le même
    genre d'abord. */
-const allGames = await getCollection('games');
-const sameGenre = (g: typeof game) => g.data.genre[lang] === d.genre[lang];
+const allGames = await getGames(Astro.locals, lang);
+const sameGenre = (g: typeof game) => g.data.genre === d.genre;
 const otherGames = [
   ...allGames.filter((g) => g.id !== game.id && sameGenre(g)),
   ...allGames.filter((g) => g.id !== game.id && !sameGenre(g)),
@@ -63,7 +61,7 @@ const jsonLd = {
   '@type': 'VideoGame',
   name: d.title,
   publisher: d.studio,
-  genre: d.genre[lang],
+  genre: d.genre,
   inLanguage: lang,
   gamePlatform: d.platforms.map((p) => p.name),
   url: new URL(gameHref(lang, game.id), site.url).href,
@@ -81,10 +79,10 @@ const jsonLd = {
       <div class="hub-id">
         <Crumbs trail={[{ label: t('nav.games'), href: pageHref(lang, 'games') }, { label: d.title }]} style="margin-bottom:12px" />
         <h1>{d.title}</h1>
-        <p class="studio">{d.studio} · {d.genre[lang]} · {d.released}</p>
+        <p class="studio">{d.studio} · {d.genre} · {d.released}</p>
         <Platforms platforms={d.platforms} style="margin-bottom:14px" />
         <div class="hub-facts">
-          {d.facts[lang].map((f) => <span><b>{f.label}</b> {f.value}</span>)}
+          {d.facts.map((f) => <span><b>{f.label}</b> {f.value}</span>)}
           {d.version && <span><b>{t('game.trackedVersion')}</b> {d.version}</span>}
         </div>
       </div>
@@ -126,7 +124,7 @@ const jsonLd = {
   <div class="page split" style="padding-top:40px">
     <div>
       <div data-tabpanel="overview" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
-        <div class="read" style="margin-bottom:40px"><p>{d.summary[lang]}</p></div>
+        <div class="read" style="margin-bottom:40px"><p>{d.summary}</p></div>
         <SectionHead title={t('game.allCoverage')} sub={t('game.coverageSub')} />
         <Feed posts={posts} side="version" />
       </div>

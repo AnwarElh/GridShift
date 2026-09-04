@@ -1,14 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
-import { credits } from '../lib/credits';
+import { getContent } from '../lib/content';
 import { langFromPath, otherLocale, pageHref } from '../i18n/config';
 
 /* Toutes les images du site sont réutilisables : CC0, domaine public, CC BY
    ou CC BY-SA, depuis Wikimedia Commons. Les licences BY et BY-SA imposent
    de nommer l'auteur et la licence — cette page le fait pour l'ensemble. */
 const lang = langFromPath(Astro.url.pathname);
-const rows = Object.entries(credits).sort(([a], [b]) => a.localeCompare(b));
+/* Le registre vient de D1 : la page des crédits liste ce que le site sert
+   réellement, pas ce qu'une table du code prétend qu'il sert. */
+const { media } = await getContent(Astro.locals, lang);
+const rows = [...media.values()]
+  .map((m) => [m.key.replace(/\.[^.]+$/, ''), m.credit] as const)
+  .sort(([a], [b]) => a.localeCompare(b));
 const copy = {
   en: {
     title: 'Photo credits',

@@ -1,0 +1,61 @@
+/**
+ * Gridshift sur Cloudflare — les quatre liaisons de l'architecture cible.
+ *
+ *   D1        la source de vérité : articles, rubriques, auteurs, méta SEO
+ *   R2        les médias : images et fichiers, sans frais d'egress
+ *   KV        le cache : servir une page de base de données aussi vite que du statique
+ *   ASSETS    les fichiers statiques du build Astro (polices, favicon, robots)
+ *
+ * Les identifiants sont vides tant que les ressources ne sont pas créées.
+ * `npm run cf:provision` les crée et affiche les identifiants à recopier ici :
+ * wrangler ne réécrit pas ce fichier lui-même, et un identifiant inventé
+ * échoue au déploiement plutôt qu'au premier appel.
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gridshift",
+  "main": "dist/_worker.js/index.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+
+  "observability": {
+    "enabled": true
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "gridshift-content",
+      "database_id": "local-dev-placeholder",
+      "migrations_dir": "db/migrations"
+    }
+  ],
+
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "gridshift-media"
+    }
+  ],
+
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "local-dev-placeholder"
+    }
+  ],
+
+  "vars": {
+    /* Le préfixe public des médias R2. En production, un domaine relié au
+       bucket ; en développement, le worker sert R2 lui-même sous /media/. */
+    "MEDIA_BASE_URL": "/media",
+    /* Durée de vie d'une page en cache, en secondes. Le contenu d'un média de
+       jeu se périme vite : une heure au bord, revalidation en arrière-plan. */
+    "CACHE_TTL": "3600"
+  }
+}

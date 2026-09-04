@@ -1,5 +1,5 @@
 ---
-import type { Author } from '../lib/articles';
+import type { Author } from '../lib/content';
 import { langFromPath, authorHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 interface Props { author: Author; count?: number; style?: string; }
@@ -12,11 +12,11 @@ const t = useT(lang);
   <span class="avatar">{a.initials}</span>
   <div>
     <b style="font-size:var(--ui-lg)">{a.name}</b>
-    <p class="role">{a.role[lang]}{a.since && ` · ${t('author.since')(a.since)}`}</p>
-    <p class="bio">{a.bio[lang]}</p>
+    <p class="role">{a.role}{a.since && ` · ${t('author.since')(a.since)}`}</p>
+    <p class="bio">{a.bio}</p>
     <div class="creds">
       {count !== undefined && <span class="tag">{t('author.published')(count)}</span>}
-      {a.creds[lang].map((c) => <span class="tag">{c}</span>)}
+      {a.creds.map((c) => <span class="tag">{c}</span>)}
       <a class="tag" href={authorHref(lang, author.id)}>{t('game.allArticles')}</a>
     </div>
   </div>

@@ -2,7 +2,7 @@
 import Fig from './Fig.astro';
 import Chips from './Chips.astro';
 import { feedStamp } from '../lib/format';
-import { slugifyTag, type Post } from '../lib/articles';
+import { slugifyTag, type Post } from '../lib/content';
 import { useT } from '../i18n/ui';
 interface Props { posts: Post[]; side?: 'game' | 'version' | 'type'; }
 const { posts, side = 'game' } = Astro.props;

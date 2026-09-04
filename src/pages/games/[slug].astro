@@ -1,11 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import GameView from '../../views/Game.astro';
+import { getGame } from '../../lib/content';
 
-export async function getStaticPaths() {
-  const games = await getCollection('games');
-  return games.map((game) => ({ params: { slug: game.id }, props: { game } }));
-}
-const { game } = Astro.props;
+const game = await getGame(Astro.locals, 'en', Astro.params.slug!);
+if (!game) return Astro.rewrite('/404');
 ---
 <GameView game={game} />

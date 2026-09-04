@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { searchIndex } from '../lib/searchIndex';
-export const GET: APIRoute = async () =>
-  new Response(JSON.stringify(await searchIndex('en')), {
+export const GET: APIRoute = async ({ locals }) =>
+  new Response(JSON.stringify(await searchIndex(locals, 'en')), {
     headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=3600' },
   });
