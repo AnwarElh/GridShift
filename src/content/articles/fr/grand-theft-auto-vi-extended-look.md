@@ -8,8 +8,8 @@ date: 2026-08-28T11:00:00+02:00
 author: nour-benali
 game: grand-theft-auto-vi
 tags: ["Grand Theft Auto VI", Rockstar Games, Netflix, Leonida]
-cover: ../../../assets/h-grand-theft-auto-vi.jpg
-coverCaption: "Grand Theft Auto VI, visuel de fiche boutique."
+cover: ../../../assets/h-grand-theft-auto-vi-2.jpg
+coverCaption: "Jason braque un employé de supérette — le braquage qui ouvre l’Extended Look."
 sources: "« An Extended Look at GTA 6 », Netflix, 27 août 2026 ; publication sur la chaîne YouTube de Rockstar Games et le site du jeu ; chiffres d'audience simultanée."
 ---
 

@@ -16,8 +16,8 @@ steps:
   - "Assumed: everything about structure"
   - "Not shown at all"
 tags: ["Grand Theft Auto VI", Rockstar Games, Analysis, Leonida]
-cover: ../../../assets/h-grand-theft-auto-vi.jpg
-coverCaption: "Grand Theft Auto VI, store listing artwork."
+cover: ../../../assets/h-grand-theft-auto-vi-4.jpg
+coverCaption: "Lucia in a backlit gym — the everyday-life material the showcase spent time on."
 sources: "'An Extended Look at GTA 6', Netflix, August 27, 2026; Rockstar Games."
 ---
 

@@ -17,8 +17,8 @@ steps:
   - "The case for PS5 or Xbox Series"
   - "What we have not verified"
 tags: ["Onimusha: Way of the Sword", Platforms, "Switch 2", Capcom]
-cover: ../../../assets/h-onimusha-way-of-the-sword.jpg
-coverCaption: "Onimusha: Way of the Sword, store listing artwork."
+cover: ../../../assets/h-onimusha-way-of-the-sword-5.jpg
+coverCaption: "Edo-era Kyoto from the temple rooftops — the view each platform has to hold."
 ---
 
 Onimusha: Way of the Sword launched today on four platforms at once — PlayStation 5, Xbox Series X|S,

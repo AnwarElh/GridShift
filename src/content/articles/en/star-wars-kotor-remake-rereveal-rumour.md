@@ -8,8 +8,8 @@ date: 2026-09-03T11:00:00+02:00
 author: nour-benali
 game: star-wars-kotor-remake
 tags: [KOTOR Remake, Star Wars, Saber Interactive, Rumour]
-cover: ../../../assets/h-star-wars-kotor-remake.jpg
-coverCaption: "Star Wars: Knights of the Old Republic – Remake. No gameplay has ever been shown."
+cover: ../../../assets/h-star-wars-kotor-remake-1.jpg
+coverCaption: "Revan unmasked in the 2021 cinematic reveal — still the only footage Saber has ever shown."
 sources: "Claims attributed to the insider account '100% Star Wars', 2026 — unverified and not confirmed by Saber Interactive, Lucasfilm Games or Embracer Group. Official statements: Tim Willits and Saber's CEO, March 2026."
 ---
 

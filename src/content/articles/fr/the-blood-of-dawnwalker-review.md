@@ -27,8 +27,8 @@ reviewNotes:
 testedOn: "Version de lancement avec correctif du premier jour, PS5"
 level: Test
 tags: ["The Blood of Dawnwalker", "Action-RPG", Rebel Wolves, Test]
-cover: ../../../assets/h-the-blood-of-dawnwalker.jpg
-coverCaption: "The Blood of Dawnwalker, visuel de fiche boutique."
+cover: ../../../assets/h-the-blood-of-dawnwalker-1.jpg
+coverCaption: "Coen affronte un adversaire cuirassé dans un rai de lumière, épée tirée."
 method: "Joué sur PS5 à partir d'un code fourni par Bandai Namco avant l'embargo du 31 août : une partie complète d'environ 45 heures jusqu'au générique, plus une dizaine d'heures d'une seconde partie pour éprouver à quel point la première semaine peut se dérouler autrement. L'essentiel de la première partie s'est fait sous la limite de 40 i/s des versions de test ; la dernière ligne droite et la seconde partie après le correctif 60 i/s du premier jour. Version PC non jouée. La note sera revérifiée si un correctif modifie sensiblement l'économie du temps."
 sources: "Annonces Rebel Wolves et Bandai Namco ; VGC sur la polémique des 40 i/s et l'engagement 60 i/s du 24 août 2026 ; agrégats Metacritic et OpenCritic ; tests Destructoid, VGC, GamesRadar, Game Informer, PCGamesN et Shacknews."
 ---

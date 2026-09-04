@@ -16,8 +16,8 @@ steps:
   - "La Switch 2 n'est pas une plateforme de ce jeu"
   - "Choisir entre les trois qui existent"
 tags: ["Clair Obscur: Expedition 33", Plateformes, "Game Pass", Réglages]
-cover: ../../../assets/h-clair-obscur-expedition-33.jpg
-coverCaption: "Clair Obscur: Expedition 33, visuel de fiche boutique."
+cover: ../../../assets/h-clair-obscur-expedition-33-5.jpg
+coverCaption: "Maelle sous l’éclairage de sélection, la lecture la plus nette de la direction artistique."
 sources: "Informations de sortie de Sandfall Interactive et Kepler Interactive ; notes du correctif du 30 juin 2026 ; fiche Steam (appid 1903340)."
 ---
 

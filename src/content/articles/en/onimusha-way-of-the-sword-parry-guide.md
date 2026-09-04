@@ -17,8 +17,8 @@ steps:
   - "The soul colours, in one pass"
   - "The choice a boss makes you make"
 tags: ["Onimusha: Way of the Sword", Action, Combat, Beginner]
-cover: ../../../assets/h-onimusha-way-of-the-sword.jpg
-coverCaption: "Onimusha: Way of the Sword, store listing artwork."
+cover: ../../../assets/h-onimusha-way-of-the-sword-3.jpg
+coverCaption: "A Break Issen lands: the blade flash that follows a drained stamina bar."
 ---
 
 Onimusha: Way of the Sword is not a Soulslike and does not want to be one, which means most of the

@@ -17,8 +17,8 @@ steps:
   - "Two PC builds, one game"
   - "Shrines are the setting nobody tells you about"
 tags: ["The Blood of Dawnwalker", Platforms, Settings, Rebel Wolves]
-cover: ../../../assets/h-the-blood-of-dawnwalker.jpg
-coverCaption: "The Blood of Dawnwalker, store listing artwork."
+cover: ../../../assets/h-the-blood-of-dawnwalker-5.jpg
+coverCaption: "Daylight combat in the mountain ruins — the load the 60fps patch has to carry."
 ---
 
 The Blood of Dawnwalker released yesterday on PlayStation 5, Xbox Series X|S and PC through Steam,

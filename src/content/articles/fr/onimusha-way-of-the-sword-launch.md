@@ -9,8 +9,8 @@ author: nour-benali
 game: onimusha-way-of-the-sword
 live: true
 tags: ["Onimusha: Way of the Sword", Action, Capcom, Sortie]
-cover: ../../../assets/h-onimusha-way-of-the-sword.jpg
-coverCaption: "Onimusha: Way of the Sword, visuel de fiche boutique."
+cover: ../../../assets/h-onimusha-way-of-the-sword-2.jpg
+coverCaption: "Musashi et le gantelet Oni, modelé sur Toshiro Mifune."
 ---
 
 Onimusha: Way of the Sword sort aujourd'hui sur PlayStation 5, Xbox Series X|S, Nintendo Switch 2 et

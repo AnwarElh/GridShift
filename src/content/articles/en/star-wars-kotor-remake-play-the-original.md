@@ -15,8 +15,8 @@ steps:
   - "The four categories of community fix"
   - "The second half, and going in knowing"
 tags: [KOTOR Remake, Star Wars, BioWare, RPG]
-cover: ../../../assets/h-star-wars-kotor-remake.jpg
-coverCaption: "Star Wars: Knights of the Old Republic – Remake. No gameplay has ever been shown."
+cover: ../../../assets/h-star-wars-kotor-remake-2.jpg
+coverCaption: "Darth Malak on the original game's key art, which has aged rather better than its 2003 renderer."
 method: "Written as a general orientation to a 2003 release, not as a mod list. Storefront availability and platform listings change; check the current listing before buying. We deliberately do not name specific mod files or version numbers we cannot verify are current."
 ---
 

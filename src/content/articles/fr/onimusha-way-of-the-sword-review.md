@@ -27,8 +27,8 @@ reviewNotes:
 testedOn: "Version de lancement, PS5"
 level: Test
 tags: ["Onimusha: Way of the Sword", Action, Capcom, Test]
-cover: ../../../assets/h-onimusha-way-of-the-sword.jpg
-coverCaption: "Onimusha: Way of the Sword, visuel de fiche boutique."
+cover: ../../../assets/h-onimusha-way-of-the-sword-1.jpg
+coverCaption: "Musashi fait face à un démon corrompu par la Malice sous une lune rouge."
 method: "Joué sur PS5 à partir d'un code fourni par Capcom avant la sortie du 4 septembre : une partie complète d'environ 22 heures et une seconde partie entamée pour retester les boss avec un arsenal d'Oni Armaments plus étoffé. Nous avons acheté un exemplaire Switch 2 en boutique le jour de la sortie ; il n'entre pas dans cette note, et si les écarts entre versions s'avèrent significatifs, la note sera revérifiée plutôt que laissée en l'état."
 sources: "Communiqué Capcom IR sur l'avancée de la date (1er juillet 2026) ; Gematsu ; entretien GameSpot avec le directeur, juin 2025 ; agrégats Metacritic et OpenCritic au 4 septembre 2026 ; tests VGC, GamesRadar, Game Informer, Polygon, PCGamesN, Shacknews."
 ---

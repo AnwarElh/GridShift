@@ -17,8 +17,8 @@ steps:
   - "Ordonnez la meute au lieu de la subir"
   - "Quand la pièce est le problème"
 tags: ["Onimusha: Way of the Sword", Action, Combat, Intermédiaire]
-cover: ../../../assets/h-onimusha-way-of-the-sword.jpg
-coverCaption: "Onimusha: Way of the Sword, visuel de fiche boutique."
+cover: ../../../assets/h-onimusha-way-of-the-sword-4.jpg
+coverCaption: "Musashi affronte un démon cuirassé à découvert, en jouant de la berge pour respirer."
 ---
 
 La plupart des guides d'un jeu de parade parlent de timing. Celui-ci non. Onimusha: Way of the Sword

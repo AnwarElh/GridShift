@@ -27,8 +27,8 @@ reviewNotes:
 testedOn: "Launch build with day-one patch, PS5"
 level: Review
 tags: ["The Blood of Dawnwalker", "Action RPG", Rebel Wolves, Review]
-cover: ../../../assets/h-the-blood-of-dawnwalker.jpg
-coverCaption: "The Blood of Dawnwalker, store listing artwork."
+cover: ../../../assets/h-the-blood-of-dawnwalker-1.jpg
+coverCaption: "Coen meets an armoured opponent in a shaft of daylight, sword drawn."
 method: "Played on PS5 from a code Bandai Namco supplied ahead of the August 31 embargo: one complete run of roughly 45 hours to the credits, plus about ten hours of a second run to test how differently the first week can go. Most of the first run was played on the 40fps cap the game shipped its review builds with; the final stretch and the second run were after the day-one 60fps patch. No PC version played. The score is re-checked if a patch materially changes the time economy."
 sources: "Rebel Wolves and Bandai Namco announcements; VGC on the 40fps backlash and the August 24, 2026 60fps commitment; Metacritic and OpenCritic aggregates; Destructoid, VGC, GamesRadar, Game Informer, PCGamesN and Shacknews reviews."
 ---

@@ -15,8 +15,8 @@ steps:
   - "The twist is an information system"
   - "What 'rebuilt from scratch' can and cannot mean"
 tags: [KOTOR Remake, Star Wars, Saber Interactive, RPG]
-cover: ../../../assets/h-star-wars-kotor-remake.jpg
-coverCaption: "Star Wars: Knights of the Old Republic – Remake. No gameplay has ever been shown."
+cover: ../../../assets/h-star-wars-kotor-remake-3.jpg
+coverCaption: "Revan ignites a blade in the 2021 announcement teaser. Cinematic, not gameplay — as the trailer itself states."
 method: "Analysis of the 2003 original and of the design problems any remake of it would face. Saber Interactive has published no design information; every statement here about the remake is written as an open question, not a report."
 ---
 

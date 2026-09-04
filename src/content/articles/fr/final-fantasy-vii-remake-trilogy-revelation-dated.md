@@ -10,8 +10,8 @@ game: final-fantasy-vii-remake-trilogy
 featured: true
 live: true
 tags: ["Final Fantasy VII Remake Trilogy", Square Enix, PS5, "Switch 2"]
-cover: ../../../assets/h-final-fantasy-vii-remake-trilogy.jpg
-coverCaption: "Final Fantasy VII Remake Trilogy — le final, Final Fantasy VII Revelation, est daté du 8 avril 2027."
+cover: ../../../assets/h-final-fantasy-vii-remake-trilogy-1.jpg
+coverCaption: "Cloud et Séphiroth face à face — l’affrontement vers lequel Revelation avance."
 sources: "Annonce Square Enix au State of Play de Sony, 3 septembre 2026 ; fiches de précommande et d'éditions Square Enix ; Jason Schreier, Bloomberg, 12 juin 2026."
 ---
 

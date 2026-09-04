@@ -15,8 +15,8 @@ steps:
   - "The standard edition has no price, and that matters"
   - "What we would do"
 tags: ["Grand Theft Auto VI", Rockstar Games, Pre-orders, Editions]
-cover: ../../../assets/h-grand-theft-auto-vi.jpg
-coverCaption: "Grand Theft Auto VI, store listing artwork."
+cover: ../../../assets/h-grand-theft-auto-vi-3.jpg
+coverCaption: "Lucia driving through Vice City neon at night."
 sources: "Rockstar Games pre-order and edition information."
 ---
 

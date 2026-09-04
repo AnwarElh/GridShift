@@ -15,8 +15,8 @@ steps:
   - "Manettes et consoles portables"
   - "La liste de contrôle du vieil exécutable"
 tags: [KOTOR Remake, Star Wars, PC, Consoles portables]
-cover: ../../../assets/h-star-wars-kotor-remake.jpg
-coverCaption: "Star Wars: Knights of the Old Republic – Remake. Aucune séquence de jeu n'a jamais été montrée."
+cover: ../../../assets/h-star-wars-kotor-remake-4.jpg
+coverCaption: "Manaan dans l’original de 2003 — le jeu auquel on peut réellement jouer aujourd’hui."
 method: "Conseils de configuration généraux pour une sortie PC de 2003 tournant sur du matériel actuel. Nous ne citons aucun fichier de mod, option de lancement ou numéro de version dont nous ne pouvons pas garantir l'actualité ; les fiches par plateforme et leur état de mise à jour évoluent et se vérifient en boutique."
 ---
 

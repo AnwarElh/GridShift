@@ -9,8 +9,8 @@ author: nour-benali
 game: the-blood-of-dawnwalker
 live: true
 tags: ["The Blood of Dawnwalker", RPG, Rebel Wolves, Launch]
-cover: ../../../assets/h-the-blood-of-dawnwalker.jpg
-coverCaption: "The Blood of Dawnwalker, store listing artwork."
+cover: ../../../assets/h-the-blood-of-dawnwalker-2.jpg
+coverCaption: "Brencis and his vampire court, assembled in the candlelit hall."
 ---
 
 The Blood of Dawnwalker is out today on PlayStation 5, Xbox Series X|S and PC via Steam, the Xbox app

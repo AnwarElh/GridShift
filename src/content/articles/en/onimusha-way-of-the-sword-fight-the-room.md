@@ -17,8 +17,8 @@ steps:
   - "Order the crowd instead of surviving it"
   - "When the room is the problem"
 tags: ["Onimusha: Way of the Sword", Action, Combat, Intermediate]
-cover: ../../../assets/h-onimusha-way-of-the-sword.jpg
-coverCaption: "Onimusha: Way of the Sword, store listing artwork."
+cover: ../../../assets/h-onimusha-way-of-the-sword-4.jpg
+coverCaption: "Musashi fights an armoured demon in the open, using the riverbank for space."
 ---
 
 Most guides for a parry game are about timing. This one is not. Onimusha: Way of the Sword is largely

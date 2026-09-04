@@ -14,8 +14,8 @@ steps:
   - "Ce qui n'a pas été annoncé, et pourquoi cela touche votre installation"
   - "Les deux dates à mettre au calendrier"
 tags: ["Grand Theft Auto VI", Plateformes, PS5, "Xbox Series"]
-cover: ../../../assets/h-grand-theft-auto-vi.jpg
-coverCaption: "Grand Theft Auto VI, visuel de fiche boutique."
+cover: ../../../assets/h-grand-theft-auto-vi-5.jpg
+coverCaption: "La ligne d’horizon de Vice City au crépuscule, capturée en moteur sur PS5."
 sources: "Informations de sortie et de précommande de Rockstar Games."
 ---
 

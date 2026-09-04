@@ -15,8 +15,8 @@ steps:
   - "La révélation est un système d'information"
   - "Ce que « repris de zéro » peut vouloir dire"
 tags: [KOTOR Remake, Star Wars, Saber Interactive, Jeu de rôle]
-cover: ../../../assets/h-star-wars-kotor-remake.jpg
-coverCaption: "Star Wars: Knights of the Old Republic – Remake. Aucune séquence de jeu n'a jamais été montrée."
+cover: ../../../assets/h-star-wars-kotor-remake-3.jpg
+coverCaption: "Revan allume une lame dans le teaser d’annonce de 2021. Cinématique, pas du jeu — la bande-annonce le dit elle-même."
 method: "Analyse du jeu de 2003 et des problèmes de conception auxquels tout remake ferait face. Saber Interactive n'a publié aucune information de design ; chaque énoncé portant ici sur le remake est formulé comme une question ouverte, jamais comme un constat."
 ---
 

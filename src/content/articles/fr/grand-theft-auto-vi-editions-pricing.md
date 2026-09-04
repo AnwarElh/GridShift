@@ -15,8 +15,8 @@ steps:
   - "L'édition standard n'a pas de prix, et cela compte"
   - "Ce que nous ferions"
 tags: ["Grand Theft Auto VI", Rockstar Games, Précommandes, Éditions]
-cover: ../../../assets/h-grand-theft-auto-vi.jpg
-coverCaption: "Grand Theft Auto VI, visuel de fiche boutique."
+cover: ../../../assets/h-grand-theft-auto-vi-3.jpg
+coverCaption: "Lucia au volant dans les néons de Vice City, de nuit."
 sources: "Informations de précommande et d'éditions de Rockstar Games."
 ---
 

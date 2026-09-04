@@ -16,8 +16,8 @@ steps:
   - "Supposé : tout ce qui touche à la structure"
   - "Pas montré du tout"
 tags: ["Grand Theft Auto VI", Rockstar Games, Analyse, Leonida]
-cover: ../../../assets/h-grand-theft-auto-vi.jpg
-coverCaption: "Grand Theft Auto VI, visuel de fiche boutique."
+cover: ../../../assets/h-grand-theft-auto-vi-4.jpg
+coverCaption: "Lucia dans une salle de sport à contre-jour — le quotidien sur lequel la présentation s’est attardée."
 sources: "« An Extended Look at GTA 6 », Netflix, 27 août 2026 ; Rockstar Games."
 ---
 

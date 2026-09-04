@@ -16,8 +16,8 @@ steps:
   - "The Endless Tower is the difficulty spike"
   - "What to do if the Tower stops you"
 tags: ["Clair Obscur: Expedition 33", RPG, "Endless Tower", Sandfall Interactive]
-cover: ../../../assets/h-clair-obscur-expedition-33.jpg
-coverCaption: "Clair Obscur: Expedition 33, store listing artwork."
+cover: ../../../assets/h-clair-obscur-expedition-33-3.jpg
+coverCaption: "A late-game boss encounter in the red wastes, of the kind the Endless Tower revisits."
 sources: "Sandfall Interactive Thank You Update announcement; Kotaku on the update's difficulty; June 30, 2026 language patch notes."
 ---
 

@@ -16,8 +16,8 @@ steps:
   - "The Musée d'Orsay is the strangest line on the CV"
   - "What the sweep does not prove"
 tags: ["Clair Obscur: Expedition 33", Sandfall Interactive, "The Game Awards", Analysis]
-cover: ../../../assets/h-clair-obscur-expedition-33.jpg
-coverCaption: "Clair Obscur: Expedition 33, store listing artwork."
+cover: ../../../assets/h-clair-obscur-expedition-33-4.jpg
+coverCaption: "The ruined city under the Monolith — the image the awards run was built on."
 sources: "The Game Awards 2025; 29th DICE Awards; 26th GDC Awards; 22nd BAFTA Games Awards; Kepler Interactive sales announcements."
 ---
 

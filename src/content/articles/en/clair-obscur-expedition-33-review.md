@@ -28,8 +28,8 @@ testedOn: "Thank You Update, June 2026 patch"
 level: Review
 scoreRevision: "This is a first score, arrived at deliberately late. Gridshift did not review Clair Obscur: Expedition 33 at its April 2025 launch, and scoring it in the middle of an awards run would have measured the run rather than the game. The number below is set on the post-Thank You Update build with the June 30, 2026 language patch installed, and will be re-checked if a Switch 2 version ever ships."
 tags: ["Clair Obscur: Expedition 33", RPG, Sandfall Interactive, Review]
-cover: ../../../assets/h-clair-obscur-expedition-33.jpg
-coverCaption: "Clair Obscur: Expedition 33, store listing artwork."
+cover: ../../../assets/h-clair-obscur-expedition-33-1.jpg
+coverCaption: "The expedition crosses a flowering field beneath a luminous tree."
 method: "Bought at retail on PS5. Played through the original release, then re-played the late game on the post-Thank You Update build with the June 30, 2026 patch installed. No press code, no publisher travel, no early access. This is a re-check of a sixteen-month-old game, not a launch review: it is scoring the version that exists today, including free content that did not exist in April 2025."
 sources: "The Game Awards 2025 results; DICE Awards 2026; GDC Awards 2026; BAFTA Games Awards 2026; Kepler Interactive sales announcements; Kotaku on the Thank You Update; Sandfall Interactive patch notes."
 ---

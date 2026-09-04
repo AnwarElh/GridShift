@@ -16,8 +16,8 @@ steps:
   - "La version physique Switch 2 est une Game-Key Card"
   - "Ce que nous achèterions"
 tags: ["Final Fantasy VII Remake Trilogy", Square Enix, Éditions, "Switch 2"]
-cover: ../../../assets/h-final-fantasy-vii-remake-trilogy.jpg
-coverCaption: "Final Fantasy VII Remake Trilogy — les précommandes ont ouvert le 3 septembre 2026."
+cover: ../../../assets/h-final-fantasy-vii-remake-trilogy-3.jpg
+coverCaption: "Le groupe au repos sur le rivage — trois jeux de compagnonnage."
 sources: "Fiches de précommande et d'éditions Square Enix, 3 septembre 2026."
 ---
 

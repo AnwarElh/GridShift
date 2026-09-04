@@ -17,8 +17,8 @@ steps:
   - "Choisir lequel des deux Coen résout un problème"
   - "L'infiltration nocturne est différente, et plus dure"
 tags: ["The Blood of Dawnwalker", RPG, Vampires, Intermédiaire]
-cover: ../../../assets/h-the-blood-of-dawnwalker.jpg
-coverCaption: "The Blood of Dawnwalker, visuel de fiche boutique."
+cover: ../../../assets/h-the-blood-of-dawnwalker-4.jpg
+coverCaption: "Coen après s’être nourri, les marques de sang encore sur la peau."
 ---
 
 La transformation ratée de Coen l'a laissé à moitié de deux choses. Le jeu répartit cela sur

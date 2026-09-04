@@ -18,8 +18,8 @@ steps:
   - "A budget that works"
   - "The end is not the end"
 tags: ["The Blood of Dawnwalker", RPG, Time economy, Beginner]
-cover: ../../../assets/h-the-blood-of-dawnwalker.jpg
-coverCaption: "The Blood of Dawnwalker, store listing artwork."
+cover: ../../../assets/h-the-blood-of-dawnwalker-3.jpg
+coverCaption: "A Vale Sangora market street by day, when Coen is human and time is spendable."
 ---
 
 The Blood of Dawnwalker gives Coen thirty days and nights to reach his family before Brencis is

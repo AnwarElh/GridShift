@@ -18,8 +18,8 @@ steps:
   - "Un budget qui fonctionne"
   - "La fin n'est pas la fin"
 tags: ["The Blood of Dawnwalker", RPG, Économie du temps, Débutant]
-cover: ../../../assets/h-the-blood-of-dawnwalker.jpg
-coverCaption: "The Blood of Dawnwalker, visuel de fiche boutique."
+cover: ../../../assets/h-the-blood-of-dawnwalker-3.jpg
+coverCaption: "Une rue de marché de Vale Sangora le jour, quand Coen est humain et que le temps se dépense."
 ---
 
 The Blood of Dawnwalker accorde à Coen trente jours et trente nuits pour rejoindre sa famille avant

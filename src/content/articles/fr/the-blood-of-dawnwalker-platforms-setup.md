@@ -17,8 +17,8 @@ steps:
   - "Deux versions PC, un seul jeu"
   - "Les sanctuaires, le réglage dont personne ne parle"
 tags: ["The Blood of Dawnwalker", Plateformes, Réglages, Rebel Wolves]
-cover: ../../../assets/h-the-blood-of-dawnwalker.jpg
-coverCaption: "The Blood of Dawnwalker, visuel de fiche boutique."
+cover: ../../../assets/h-the-blood-of-dawnwalker-5.jpg
+coverCaption: "Combat en plein jour dans les ruines de montagne — la charge que le correctif 60 ips doit tenir."
 ---
 
 The Blood of Dawnwalker est sorti hier sur PlayStation 5, Xbox Series X|S et PC via Steam,

@@ -17,8 +17,8 @@ steps:
   - "Choosing which Coen solves a problem"
   - "The stealth is different at night, and harder"
 tags: ["The Blood of Dawnwalker", RPG, Vampires, Intermediate]
-cover: ../../../assets/h-the-blood-of-dawnwalker.jpg
-coverCaption: "The Blood of Dawnwalker, store listing artwork."
+cover: ../../../assets/h-the-blood-of-dawnwalker-4.jpg
+coverCaption: "Coen after feeding, the blood marks still on his skin."
 ---
 
 Coen's failed turning left him half of two things. The game splits that across the clock: human by

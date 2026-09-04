@@ -18,8 +18,8 @@ steps:
   - "What carries over mechanically"
   - "The things that changed behind the scenes"
 tags: ["Final Fantasy VII Remake Trilogy", Square Enix, "Action RPG", "Switch 2"]
-cover: ../../../assets/h-final-fantasy-vii-remake-trilogy.jpg
-coverCaption: "Final Fantasy VII Remake Trilogy — Remake (2020), Rebirth (2024), Revelation (2027)."
+cover: ../../../assets/h-final-fantasy-vii-remake-trilogy-2.jpg
+coverCaption: "The party looks out over the open world of Rebirth, the game Revelation continues."
 sources: "Square Enix announcements, Summer Game Fest June 2026 and Sony State of Play September 3, 2026; Jason Schreier, Bloomberg, June 12, 2026."
 ---
 

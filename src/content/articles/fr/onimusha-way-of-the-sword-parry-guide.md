@@ -17,8 +17,8 @@ steps:
   - "Les couleurs d'âmes, en une passe"
   - "Le choix qu'un boss vous impose"
 tags: ["Onimusha: Way of the Sword", Action, Combat, Débutant]
-cover: ../../../assets/h-onimusha-way-of-the-sword.jpg
-coverCaption: "Onimusha: Way of the Sword, visuel de fiche boutique."
+cover: ../../../assets/h-onimusha-way-of-the-sword-3.jpg
+coverCaption: "Un Break Issen aboutit : l’éclat de lame qui suit une jauge d’endurance vidée."
 ---
 
 Onimusha: Way of the Sword n'est pas un Souls-like et ne veut pas l'être, ce qui signifie que la

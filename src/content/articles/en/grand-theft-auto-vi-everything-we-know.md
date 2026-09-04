@@ -10,8 +10,8 @@ game: grand-theft-auto-vi
 featured: true
 live: true
 tags: ["Grand Theft Auto VI", Rockstar Games, PS5, "Xbox Series"]
-cover: ../../../assets/h-grand-theft-auto-vi.jpg
-coverCaption: "Grand Theft Auto VI, store listing artwork."
+cover: ../../../assets/h-grand-theft-auto-vi-1.jpg
+coverCaption: "Jason and Lucia, masked, outside a Leonida gas station."
 sources: "Rockstar Games release and pre-order information; 'An Extended Look at GTA 6', Netflix, August 27, 2026; concurrent viewership figures."
 ---
 

@@ -9,8 +9,8 @@ author: nour-benali
 game: clair-obscur-expedition-33
 kicker: "Rumeur"
 tags: ["Clair Obscur: Expedition 33", "Nintendo Switch 2", Sandfall Interactive, Rumeur]
-cover: ../../../assets/h-clair-obscur-expedition-33.jpg
-coverCaption: "Clair Obscur: Expedition 33, visuel de fiche boutique."
+cover: ../../../assets/h-clair-obscur-expedition-33-2.jpg
+coverCaption: "Le groupe dans les cavernes bleues immergées."
 sources: "Nate the Hate, juin 2026 ; propos publics antérieurs de Guillaume Broche, PDG de Sandfall Interactive."
 ---
 

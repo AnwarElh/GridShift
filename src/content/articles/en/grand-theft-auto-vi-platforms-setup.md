@@ -14,8 +14,8 @@ steps:
   - "What has not been announced, and why it matters to your setup"
   - "The two dates to put in a calendar"
 tags: ["Grand Theft Auto VI", Platforms, PS5, "Xbox Series"]
-cover: ../../../assets/h-grand-theft-auto-vi.jpg
-coverCaption: "Grand Theft Auto VI, store listing artwork."
+cover: ../../../assets/h-grand-theft-auto-vi-5.jpg
+coverCaption: "The Vice City skyline at dusk, captured in-engine on PS5."
 sources: "Rockstar Games release and pre-order information."
 ---
 

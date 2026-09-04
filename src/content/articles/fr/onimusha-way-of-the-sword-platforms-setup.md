@@ -17,8 +17,8 @@ steps:
   - "Le dossier PS5 ou Xbox Series"
   - "Ce que nous n'avons pas vérifié"
 tags: ["Onimusha: Way of the Sword", Plateformes, "Switch 2", Capcom]
-cover: ../../../assets/h-onimusha-way-of-the-sword.jpg
-coverCaption: "Onimusha: Way of the Sword, visuel de fiche boutique."
+cover: ../../../assets/h-onimusha-way-of-the-sword-5.jpg
+coverCaption: "Le Kyoto de l’ère Edo depuis les toits du temple — la vue que chaque plateforme doit tenir."
 ---
 
 Onimusha: Way of the Sword est sorti aujourd'hui sur quatre plateformes à la fois : PlayStation 5,

@@ -16,8 +16,8 @@ steps:
   - "Switch 2 is not a platform for this game"
   - "Picking between the three that exist"
 tags: ["Clair Obscur: Expedition 33", Platforms, "Game Pass", Settings]
-cover: ../../../assets/h-clair-obscur-expedition-33.jpg
-coverCaption: "Clair Obscur: Expedition 33, store listing artwork."
+cover: ../../../assets/h-clair-obscur-expedition-33-5.jpg
+coverCaption: "Maelle in character-select lighting, the cleanest read of the art direction."
 sources: "Sandfall Interactive and Kepler Interactive release information; June 30, 2026 patch notes; Steam listing (appid 1903340)."
 ---
 

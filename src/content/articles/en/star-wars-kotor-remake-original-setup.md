@@ -15,8 +15,8 @@ steps:
   - "Controllers and handhelds"
   - "The old-executable checklist"
 tags: [KOTOR Remake, Star Wars, PC, Handhelds]
-cover: ../../../assets/h-star-wars-kotor-remake.jpg
-coverCaption: "Star Wars: Knights of the Old Republic – Remake. No gameplay has ever been shown."
+cover: ../../../assets/h-star-wars-kotor-remake-4.jpg
+coverCaption: "Manaan in the 2003 original — the game you can actually play today."
 method: "General setup guidance for a 2003 PC release running on current hardware. We do not name specific mod files, launch options or version numbers we cannot verify are current; platform listings and their patch state change and should be checked on the store page."
 ---
 

@@ -15,8 +15,8 @@ steps:
   - "Les quatre familles de correctifs communautaires"
   - "La seconde moitié, et y aller en le sachant"
 tags: [KOTOR Remake, Star Wars, BioWare, Jeu de rôle]
-cover: ../../../assets/h-star-wars-kotor-remake.jpg
-coverCaption: "Star Wars: Knights of the Old Republic – Remake. Aucune séquence de jeu n'a jamais été montrée."
+cover: ../../../assets/h-star-wars-kotor-remake-2.jpg
+coverCaption: "Dark Malak sur l’illustration officielle du jeu d’origine, qui a mieux vieilli que son moteur de 2003."
 method: "Écrit comme une orientation générale vers une sortie de 2003, pas comme une liste de mods. La disponibilité en boutique et les fiches par plateforme évoluent : vérifiez la fiche en cours avant d'acheter. Nous ne citons délibérément aucun fichier de mod ni numéro de version dont nous ne pouvons pas garantir l'actualité."
 ---
 

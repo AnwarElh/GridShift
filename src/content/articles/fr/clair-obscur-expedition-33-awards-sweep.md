@@ -16,8 +16,8 @@ steps:
   - "Le musée d'Orsay est la ligne la plus étrange du CV"
   - "Ce que la razzia ne prouve pas"
 tags: ["Clair Obscur: Expedition 33", Sandfall Interactive, "The Game Awards", Analyse]
-cover: ../../../assets/h-clair-obscur-expedition-33.jpg
-coverCaption: "Clair Obscur: Expedition 33, visuel de fiche boutique."
+cover: ../../../assets/h-clair-obscur-expedition-33-4.jpg
+coverCaption: "La cité en ruine sous le Monolithe — l’image sur laquelle s’est bâtie la moisson de prix."
 sources: "The Game Awards 2025 ; 29ᵉ DICE Awards ; 26ᵉ GDC Awards ; 22ᵉ BAFTA Games Awards ; annonces de ventes de Kepler Interactive."
 ---
 

@@ -16,8 +16,8 @@ steps:
   - "La Tour sans fin est le pic de difficulté"
   - "Que faire si la Tour vous arrête"
 tags: ["Clair Obscur: Expedition 33", RPG, "Tour sans fin", Sandfall Interactive]
-cover: ../../../assets/h-clair-obscur-expedition-33.jpg
-coverCaption: "Clair Obscur: Expedition 33, visuel de fiche boutique."
+cover: ../../../assets/h-clair-obscur-expedition-33-3.jpg
+coverCaption: "Un boss de fin de partie dans les terres rouges, du genre que revisite la Tour sans fin."
 sources: "Annonce de la mise à jour Thank You par Sandfall Interactive ; Kotaku sur sa difficulté ; notes du correctif du 30 juin 2026."
 ---
 
