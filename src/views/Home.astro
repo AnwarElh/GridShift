@@ -59,10 +59,30 @@ const counts: Record<string, number> = {
 };
 
 /* Les jeux couverts : la grille remonte juste sous la Une — sur un média de
-   jeu en service, on navigue par jeu avant de naviguer par rubrique. */
-const covered = [...games].sort((a, b) => (b.data.followers ?? 0) - (a.data.followers ?? 0));
-const hasDeals = games.some((g) => g.data.offers.length > 0);
+   jeu en service, on navigue par jeu avant de naviguer par rubrique.
+
+   L'accueil n'en montre qu'une rangée pleine. La grille tient six colonnes au
+   plus large : la page fait 1360px moins 2×24 de marge, soit 1312, et six
+   pistes de 190 séparées par 16 en demandent 1220 quand sept en demanderaient
+   1426. Le septième jeu tombait donc seul sur une deuxième rangée et laissait
+   cinq emplacements vides — une rangée entière de vide pour une vignette.
+   Les jeux au-delà vivent sur « Tous les jeux », dont le lien est juste à
+   côté du titre. */
 const countFor = (id: string) => byGame(posts, id).length;
+const ROW = 6;
+/* Le classement décide qui reste et qui passe sur « Tous les jeux ». Les
+   abonnés d'abord — c'est la donnée voulue — mais aucune fiche n'en porte
+   aujourd'hui, et le tri serait alors sans effet : l'ordre rendu par la base
+   déciderait à sa place, et le jeu écarté changerait au gré des lignes. On
+   départage donc par la couverture, ce que cette section annonce justement,
+   puis par le titre pour que deux jeux à égalité gardent un ordre stable. */
+const covered = [...games]
+  .sort((a, b) =>
+    (b.data.followers ?? 0) - (a.data.followers ?? 0)
+    || countFor(b.id) - countFor(a.id)
+    || a.data.title.localeCompare(b.data.title))
+  .slice(0, ROW);
+const hasDeals = games.some((g) => g.data.offers.length > 0);
 
 /* Tendances : les articles des jeux les plus suivis. Le classement vient des
    données du site (`followers`), pas d'un compteur de vues qu'on n'a pas. */
