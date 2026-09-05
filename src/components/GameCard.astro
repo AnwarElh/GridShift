@@ -5,8 +5,12 @@ import { num } from '../lib/format';
 import type { Game } from '../lib/content';
 import { langFromPath, gameHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
-interface Props { game: Game; count?: number; }
-const { game, count } = Astro.props;
+/* `meta` : la ligne note/sortie + nombre d'articles. L'accueil la coupe —
+   la vignette y porte déjà le titre et le studio, et la grille est un point
+   d'entrée, pas une fiche. Les autres grilles la gardent : sur « Tous les
+   jeux » et en bas d'une fiche, c'est la donnée qui fait choisir. */
+interface Props { game: Game; count?: number; meta?: boolean; }
+const { game, count, meta = true } = Astro.props;
 const d = game.data;
 const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
@@ -16,11 +20,13 @@ const t = useT(lang);
   <span>
     <b>{d.title}</b><span class="studio">{d.studio} · {d.genre}</span>
     <Platforms platforms={d.platforms} style="margin-top:8px" />
-    <span class="meta" style="display:block;margin-top:8px">
-      {d.score !== undefined
-        ? <><b>{num(d.score, lang)}</b> · </>
-        : <>{t('card.released')} {d.released} · </>}
-      {t('card.articles')(count ?? 0)}
-    </span>
+    {meta && (
+      <span class="meta" style="display:block;margin-top:8px">
+        {d.score !== undefined
+          ? <><b>{num(d.score, lang)}</b> · </>
+          : <>{t('card.released')} {d.released} · </>}
+        {t('card.articles')(count ?? 0)}
+      </span>
+    )}
   </span>
 </a>

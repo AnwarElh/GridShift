@@ -614,13 +614,6 @@ a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-
 .ggrid .card-game b{font-family:var(--f-display);font-size:var(--ui-md);color:#fff;
   line-height:1.15;text-shadow:0 1px 10px rgba(0,0,0,.7)}
 .ggrid .card-game .studio,.ggrid .card-game .plats{display:none}
-/* la tuile est toujours sur fond sombre — un voile posé sur une jaquette,
-   pas une surface de thème. Le compteur garde donc l'or de nuit dans les
-   deux thèmes, comme `.hero-body` garde son blanc : en papier, --brass-2
-   vaut #674600 et serait illisible ici. */
-.ggrid .card-game .meta{margin-top:0!important;color:#FFC635;font-size:11px;
-  letter-spacing:.07em;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.7)}
-.ggrid .card-game .meta b{font-size:11px;color:inherit;text-shadow:inherit}
 
 /* liste dense — la couverture complète d'un jeu, du plus récent au plus
    ancien. Même vocabulaire que la carte, densité d'un sommaire. */

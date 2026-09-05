@@ -148,7 +148,7 @@ const jsonLd = {
         <a class="more" href={pageHref(lang, 'games')}>{t('home.allGames')}</a>
       </div>
       <div class="ggrid">
-        {covered.map((g) => <GameCard game={g} count={countFor(g.id)} />)}
+        {covered.map((g) => <GameCard game={g} meta={false} />)}
       </div>
     </section>
 
