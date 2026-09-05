@@ -1,0 +1,155 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partie 09 — Déploiement Cloudflare · BlogStarter Doc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doc.css"></head><body>
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BLOG<span>STARTER</span></span><span class="tag"><a href="index.html">← SOMMAIRE</a> · PARTIE 09</span></div></header>
+<div class="doc-hero"><div class="wrap"><a class="back" href="index.html">← Sommaire</a><span class="kick">Partie 09</span><h1>Déploiement Cloudflare</h1><p class="lede">De l'app Astro locale à un site en production sur le réseau edge de Cloudflare. La procédure réelle, dans l'ordre exact : authentification, création des ressources distantes (D1, KV, R2), application des migrations et du seed, upload des créatives, build SSR et déploiement. Puis les vérifications prod et le post-déploiement.</p></div></div>
+<main class="wrap doc-body"><div class="prose-doc">
+
+<p>Le projet est prêt : composants Astro fidèles au design system, contenu importé en local dans D1, routes SSR et endpoints SEO en place. Il reste à <strong>reproduire l'infrastructure en distant</strong> (les ressources Cloudflare que le Worker consommera) puis à publier. Tout se fait avec <code>wrangler</code>, en s'appuyant sur le <code>wrangler.jsonc</code> déjà écrit lors de la Partie 06.</p>
+
+<div class="callout info"><span class="l">Rappel des bindings</span><p>Le Worker déclare quatre liaisons : <strong>ASSETS</strong> (statiques <code>dist/</code>), <strong>DB</strong> (D1 <code>blogstarter-db</code>), <strong>MEDIA</strong> (R2 <code>blogstarter-media</code>) et <strong>SESSION</strong> (KV, sessions Astro). Chaque ressource distante doit exister <em>avant</em> le déploiement, et son identifiant doit figurer dans <code>wrangler.jsonc</code>.</p></div>
+
+<div class="callout info"><span class="l">Sécurité &amp; complétude</span><p><strong>Aucun secret n'est requis à ce stade</strong> : le projet n'utilise aucune clé d'API (pas d'AdSense côté serveur, pas de service tiers authentifié). Le cas échéant, les secrets <em>n'iraient pas</em> dans <code>wrangler.jsonc</code> (versionné) mais dans <code>.dev.vars</code> en local (git-ignoré, voir Partie 10) et via <code>npx wrangler secret put NOM</code> en production — jamais en clair dans la config. À prévoir également : les <strong>headers de sécurité</strong> ne sont pas encore posés (voir la vérif post-deploy plus bas).</p></div>
+
+<h2>Procédure de déploiement</h2>
+
+<ol class="steps">
+
+<li><span class="st-t">S'authentifier auprès de Cloudflare</span><span class="st-d">Connexion interactive (elle ouvre le navigateur, côté utilisateur), puis vérification du compte actif.</span>
+<pre class="cmd"><span class="k">npx wrangler login</span>
+<span class="k">npx wrangler whoami</span>   <span class="c"># confirme le compte you@example.com</span></pre>
+</li>
+
+<li><span class="st-t">Vérifier l'adapter : imageService en passthrough</span><span class="st-d">Dans <code>astro.config.mjs</code>, l'adapter Cloudflare est réglé sur <code>imageService:'passthrough'</code>. C'est ce qui évite d'avoir à provisionner et binder Cloudflare Images au déploiement — les images sont servies telles quelles (elles sont déjà optimisées en amont).</span>
+<pre class="cmd code">adapter: cloudflare({
+  platformProxy: { enabled: true },
+  <b>imageService: 'passthrough'</b>,
+})</pre>
+</li>
+
+<li><span class="st-t">Vérifier les compatibility_flags de wrangler.jsonc</span><span class="st-d">Le <code>wrangler.jsonc</code> déclare <code>compatibility_flags: ["global_fetch_strictly_public"]</code>. Ce flag force les <code>fetch()</code> sortants du Worker à passer par le réseau public (au lieu d'un routage interne au réseau Cloudflare) — utile quand le Worker refetch ses propres ressources par URL absolue (covers, médias) pour un comportement identique à l'extérieur. Il doit rester présent tel quel au déploiement.</span>
+<pre class="cmd code">"compatibility_date": "2024-xx-xx",
+<b>"compatibility_flags": ["global_fetch_strictly_public"]</b></pre>
+</li>
+
+<li><span class="st-t">Créer la base D1 distante</span><span class="st-d">La commande renvoie un <code>database_id</code>. Il faut le coller dans <code>wrangler.jsonc</code> (il remplace le placeholder utilisé en local).</span>
+<pre class="cmd"><span class="k">npx wrangler d1 create blogstarter-db</span>
+<span class="c"># → database_id = <VOTRE_DATABASE_ID></span></pre>
+<pre class="cmd code">"d1_databases": [{
+  "binding": "DB",
+  "database_name": "blogstarter-db",
+  <b>"database_id": "<VOTRE_DATABASE_ID>"</b>,
+  "migrations_dir": "migrations"
+}]</pre>
+</li>
+
+<li><span class="st-t">Créer (ou récupérer) le namespace KV SESSION</span><span class="st-d">Le binding SESSION est requis par les sessions d'Astro. Ici la création a renvoyé « already exists » : on liste alors les namespaces pour récupérer l'id existant et le placer dans <code>wrangler.jsonc</code>.</span>
+<pre class="cmd"><span class="k">npx wrangler kv namespace create SESSION</span>   <span class="c"># → « already exists »</span>
+<span class="k">npx wrangler kv namespace list</span>            <span class="c"># → id = <VOTRE_KV_NAMESPACE_ID></span></pre>
+<pre class="cmd code">"kv_namespaces": [{
+  "binding": "SESSION",
+  <b>"id": "<VOTRE_KV_NAMESPACE_ID>"</b>
+}]</pre>
+</li>
+
+<li><span class="st-t">Créer le bucket R2</span><span class="st-d">Bucket pour les médias (créatives pub). La commande peut poser un prompt interactif (« add on your behalf? ») qui n'est pas confirmé en contexte non-interactif : on vérifie donc l'existence du bucket juste après.</span>
+<pre class="cmd"><span class="k">npx wrangler r2 bucket create blogstarter-media</span>
+<span class="k">npx wrangler r2 bucket list</span>   <span class="c"># vérifie que blogstarter-media est bien présent</span></pre>
+</li>
+
+<li><span class="st-t">Appliquer les migrations sur la D1 distante</span><span class="st-d">Rejoue en <code>--remote</code> les migrations Drizzle générées en Partie 06 (celles déjà appliquées en <code>--local</code>).</span>
+<pre class="cmd"><span class="k">npx wrangler d1 migrations apply blogstarter-db --remote</span></pre>
+</li>
+
+<li><span class="st-t">Charger le seed (30 articles) en distant</span><span class="st-d">Exécute le <code>seed.sql</code> généré par le script d'import sur la base distante, puis vérifie le nombre de lignes.</span>
+<pre class="cmd"><span class="k">npx wrangler d1 execute blogstarter-db --remote --file=./seed.sql</span>
+<span class="k">npx wrangler d1 execute blogstarter-db --remote --command <b>"SELECT COUNT(*) FROM articles;"</b></span></pre>
+</li>
+
+<li><span class="st-t">Uploader les créatives sur R2 (--remote)</span><span class="st-d">Chaque créative WebP (déjà optimisée et sans métadonnées) est poussée sous la clé <code>ads/…</code> attendue par les composants pub. Une commande par fichier.</span>
+<pre class="cmd"><span class="k">npx wrangler r2 object put blogstarter-media/ads/arknights-endfield-728x90.webp \
+  --file=media-src/ads/arknights-endfield-728x90.webp --remote</span>
+<span class="c"># … idem pour la seconde créative</span></pre>
+</li>
+
+<li><span class="st-t">Builder l'app en SSR Cloudflare</span><span class="st-d">Produit le bundle Worker + les statiques dans <code>dist/</code> (servis via le binding ASSETS).</span>
+<pre class="cmd"><span class="k">npm run build</span></pre>
+</li>
+
+<li><span class="st-t">Déployer</span><span class="st-d">Publie le Worker et connecte tous les bindings. La sortie donne l'URL de production.</span>
+<pre class="cmd"><span class="k">npx wrangler deploy</span></pre>
+</li>
+
+</ol>
+
+<h2>Résultat du déploiement</h2>
+
+<p>Le site est en ligne à l'adresse <a href="https://blogstarter.votre-compte.workers.dev">https://blogstarter.votre-compte.workers.dev</a>. Les quatre bindings sont connectés et les statiques du dossier <code>public/</code> (dont <code>wp-content/</code>) sont déployés automatiquement avec le Worker.</p>
+
+<table class="doc-table">
+<thead><tr><th>Binding</th><th>Type</th><th>Ressource</th><th>Rôle</th></tr></thead>
+<tbody>
+<tr><td><strong>SESSION</strong></td><td>KV</td><td>id d5be819e…</td><td>Sessions Astro</td></tr>
+<tr><td><strong>DB</strong></td><td>D1</td><td>blogstarter-db</td><td>Contenu (articles, jeux, tags…)</td></tr>
+<tr><td><strong>MEDIA</strong></td><td>R2</td><td>blogstarter-media</td><td>Créatives pub (route /media)</td></tr>
+<tr><td><strong>ASSETS</strong></td><td>Assets</td><td>./dist</td><td>Statiques (covers wp-content, etc.)</td></tr>
+</tbody>
+</table>
+
+<div class="callout tip"><span class="l">Coût</span><p>Pour un blog qui démarre, l'ensemble tient dans les <strong>quotas gratuits</strong> de Cloudflare (Workers, D1, R2, KV) : coût <strong>0 €</strong>.</p></div>
+
+<h2>Vérifications post-déploiement</h2>
+
+<p>On sonde chaque route clé en production et on vérifie qu'elle répond bien <strong>200</strong> (et <strong>404</strong> pour un slug inexistant). Le pattern <code>curl -o /dev/null -w '%{http_code}'</code> n'imprime que le code HTTP.</p>
+
+<pre class="cmd"><span class="c"># pages HTML</span>
+<span class="k">curl -o /dev/null -w '%{http_code}\n'</span> https://blogstarter.votre-compte.workers.dev/
+<span class="k">curl -o /dev/null -w '%{http_code}\n'</span> https://blogstarter.votre-compte.workers.dev/reviews/where-winds-meet
+<span class="k">curl -o /dev/null -w '%{http_code}\n'</span> https://blogstarter.votre-compte.workers.dev/guides
+<span class="k">curl -o /dev/null -w '%{http_code}\n'</span> https://blogstarter.votre-compte.workers.dev/privacy
+<span class="c"># média R2 (attendu : image/webp) et cover statique</span>
+<span class="k">curl -o /dev/null -w '%{http_code}\n'</span> https://blogstarter.votre-compte.workers.dev/media/ads/arknights-endfield-728x90.webp
+<span class="k">curl -o /dev/null -w '%{http_code}\n'</span> https://blogstarter.votre-compte.workers.dev/wp-content/uploads/2026/08/24/cover.jpg
+<span class="c"># endpoints SEO</span>
+<span class="k">curl -o /dev/null -w '%{http_code}\n'</span> https://blogstarter.votre-compte.workers.dev/sitemap.xml
+<span class="k">curl -o /dev/null -w '%{http_code}\n'</span> https://blogstarter.votre-compte.workers.dev/robots.txt
+<span class="c"># slug inexistant → doit renvoyer 404</span>
+<span class="k">curl -o /dev/null -w '%{http_code}\n'</span> https://blogstarter.votre-compte.workers.dev/guides/ce-slug-nexiste-pas</pre>
+
+<div class="callout"><span class="l">Checklist de vérif prod</span><p>Toutes ces URLs répondent <strong>200</strong> : <code>/</code>, <code>/reviews/where-winds-meet</code>, <code>/guides</code>, <code>/media/ads/…webp</code> (Content-Type <code>image/webp</code>), <code>/wp-content/…jpg</code>, <code>/sitemap.xml</code>, <code>/robots.txt</code>, <code>/privacy</code>. Un slug inexistant renvoie bien <strong>404</strong>.</p></div>
+
+<h3>Contrôle des headers de sécurité</h3>
+
+<p>Au-delà des codes HTTP, on inspecte les <strong>en-têtes de réponse</strong> avec <code>curl -I</code> (requête <code>HEAD</code>). C'est le moment de constater ce qui est présent et ce qui manque.</p>
+
+<pre class="cmd"><span class="k">curl -I</span> https://blogstarter.votre-compte.workers.dev/
+<span class="c"># on cherche : Content-Security-Policy, X-Content-Type-Options: nosniff,</span>
+<span class="c"># Strict-Transport-Security (HSTS), X-Frame-Options / Referrer-Policy</span></pre>
+
+<div class="callout warn"><span class="l">Headers de sécurité — à prévoir</span><p>À ce stade, <strong>aucun header de sécurité n'est encore posé</strong> par le Worker : ni <code>Content-Security-Policy</code>, ni <code>X-Content-Type-Options: nosniff</code>, ni <code>Strict-Transport-Security</code> (HSTS). Ils devront être ajoutés — soit via un middleware Astro qui enrichit les réponses, soit via une <em>Transform Rule</em> Cloudflare une fois le domaine <code>votreblog.com</code> branché. À noter : une CSP devra whitelister les domaines AdSense avant activation de la pub.</p></div>
+
+<h2>Pièges du déploiement</h2>
+
+<div class="callout warn"><span class="l">imageService passthrough</span><p>Sans <code>imageService:'passthrough'</code>, l'adapter Cloudflare active le service d'images et exige un binding <strong>IMAGES</strong> au deploy — ressource non provisionnée ici. Le passthrough sert les images sans traitement (elles sont déjà optimisées en amont).</p></div>
+
+<div class="callout warn"><span class="l">Binding KV SESSION requis</span><p>Astro attend un namespace KV lié à <strong>SESSION</strong> pour ses sessions. Il doit exister et son id doit être dans <code>wrangler.jsonc</code>, sinon le deploy échoue. La création peut renvoyer « already exists » : dans ce cas on récupère l'id via <code>kv namespace list</code>.</p></div>
+
+<div class="callout warn"><span class="l">Prompt interactif R2</span><p><code>wrangler r2 bucket create</code> peut afficher un prompt « add on your behalf? » qui n'est pas confirmé automatiquement en contexte non-interactif. Toujours vérifier ensuite avec <code>wrangler r2 bucket list</code> que le bucket a bien été créé.</p></div>
+
+<h2>Domaine &amp; post-déploiement</h2>
+
+<p>Le site tourne sur le sous-domaine <code>*.workers.dev</code>. Il reste quelques branchements pour le mettre pleinement en production :</p>
+
+<ol class="steps">
+<li><span class="st-t">Brancher le domaine votreblog.com</span><span class="st-d">Dashboard Cloudflare → Worker blogstarter → <strong>Custom domain</strong> → ajouter <code>votreblog.com</code>. Le certificat SSL est provisionné automatiquement.</span></li>
+<li><span class="st-t">Search Console + sitemap</span><span class="st-d">Ajouter la propriété dans Google Search Console et soumettre <code>https://votreblog.com/sitemap.xml</code> (généré dynamiquement depuis D1).</span></li>
+<li><span class="st-t">Compléter ads.txt &amp; les pages légales</span><span class="st-d">Renseigner l'identifiant AdSense réel dans <code>ads.txt</code> (placeholder posé en Partie 07) et remplir les <code>[ ]</code> restants des pages légales (Legal notice, Privacy, Cookies) — à faire valider par un juriste.</span></li>
+</ol>
+
+</div>
+<nav class="doc-pager"><a href="08-monetisation.html"><span class="dir">← Précédent</span><span class="ttl">Monétisation &amp; conformité</span></a><a class="next" href="10-versioning.html"><span class="dir">Suivant →</span><span class="ttl">Versioning &amp; CI</span></a></nav>
+</main>
+<footer><div class="wrap">BlogStarter — Documentation du process · Partie 09</div></footer></body></html>

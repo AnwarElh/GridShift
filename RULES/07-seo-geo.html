@@ -1,0 +1,192 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partie 07 — SEO &amp; GEO · BlogStarter Doc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doc.css"></head><body>
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BLOG<span>STARTER</span></span><span class="tag"><a href="index.html">← SOMMAIRE</a> · PARTIE 07</span></div></header>
+<div class="doc-hero"><div class="wrap"><a class="back" href="index.html">← Sommaire</a><span class="kick">Partie 07</span><h1>SEO &amp; GEO</h1><p class="lede">Être trouvable par Google <b>et</b> citable par les moteurs IA. Tout le SEO on-page est centralisé dans le BaseLayout ; les données structurées décrivent le site et chaque article ; et comme le contenu est dynamique en D1, les fichiers de crawl (sitemap, robots, ads.txt, llms.txt, RSS) sont des <b>endpoints générés</b> à la volée, pas des fichiers statiques.</p></div></div>
+<main class="wrap doc-body"><div class="prose-doc">
+
+<h2>7.1 — SEO on-page (BaseLayout)</h2>
+<p>Le <code>&lt;head&gt;</code> vit dans <code>src/layouts/BaseLayout.astro</code>, alimenté par des props (<code>title</code>, <code>description</code>, <code>canonical</code>, <code>image</code>, <code>type</code>, <code>noindex</code>, <code>articlePublished/Modified</code>, <code>author</code>). Chaque page passe ses valeurs ; le layout produit un head cohérent et complet :</p>
+<pre class="cmd code">&lt;title&gt;{title}&lt;/title&gt;
+&lt;meta name="description" content={description} /&gt;
+&lt;link rel="canonical" href={canonicalUrl} /&gt;
+{noindex &amp;&amp; &lt;meta name="robots" content="noindex, nofollow" /&gt;}
+&lt;!-- Open Graph --&gt;
+&lt;meta property="og:type" content={type} /&gt;
+&lt;meta property="og:title" content={title} /&gt;
+&lt;meta property="og:description" content={description} /&gt;
+&lt;meta property="og:url" content={canonicalUrl} /&gt;
+&lt;meta property="og:site_name" content="BlogStarter" /&gt;
+{ogImage &amp;&amp; &lt;meta property="og:image" content={ogImage} /&gt;}
+&lt;meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} /&gt;
+{type === 'article' &amp;&amp; articlePublished &amp;&amp; &lt;meta property="article:published_time" content={articlePublished} /&gt;}
+{type === 'article' &amp;&amp; articleModified &amp;&amp; &lt;meta property="article:modified_time" content={articleModified} /&gt;}
+{type === 'article' &amp;&amp; author &amp;&amp; &lt;meta property="article:author" content={author} /&gt;}
+&lt;meta name="theme-color" content="#07080b" /&gt;</pre>
+<p>Points à noter : la <b>canonical</b> est calculée par défaut depuis l'URL courante (<code>new URL(Astro.url.pathname, Astro.site).href</code>) mais peut être surchargée par article ; l'<b>og:image</b> est résolue en URL absolue ; la <b>twitter:card</b> bascule automatiquement en <code>summary_large_image</code> dès qu'une image existe ; <code>noindex</code> (piloté par le champ <code>draft</code>/<code>noindex</code> de l'article) injecte la balise robots. Le <code>theme-color</code> reprend le dark signature <code>#07080b</code> du Command HUD.</p>
+<p>Les valeurs viennent de l'article. Sur la page single, elles sont câblées ainsi :</p>
+<pre class="cmd code">&lt;BaseLayout
+  title={`${a.title} — BlogStarter`}
+  description={a.meta_description || a.dek}
+  image={a.og_image || a.cover}
+  type="article"
+  noindex={!!a.noindex}
+  articlePublished={a.published_at}
+  articleModified={a.updated_at || a.published_at}
+  author={a.authorName || 'Alex'}&gt;</pre>
+
+<h2>7.2 — Données structurées (JSON-LD)</h2>
+<h3>Au niveau du site</h3>
+<p>Le BaseLayout émet sur <b>toutes</b> les pages un <code>@graph</code> décrivant l'<b>Organization</b> et le <b>WebSite</b> (avec une <code>SearchAction</code> pour la sitelinks searchbox) :</p>
+<pre class="cmd code">const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': `${siteHref}#org`, name: 'BlogStarter', url: siteHref,
+      logo: { '@type': 'ImageObject', url: `${siteHref}logo.svg`, width: 512, height: 512 } },
+    { '@type': 'WebSite', '@id': `${siteHref}#website`,
+      name: 'BlogStarter', url: siteHref,
+      publisher: { '@id': `${siteHref}#org` },
+      inLanguage: 'en',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${siteHref}search?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
+};</pre>
+
+<h3>Au niveau de l'article</h3>
+<p>La page single ajoute son propre <code>@graph</code> : un nœud <b>Article</b> — ou <b>Review</b> quand la catégorie est <code>reviews</code>, avec <code>reviewRating</code> et <code>itemReviewed</code> (VideoGame) — plus un <b>BreadcrumbList</b> à trois niveaux (Home → Catégorie → Titre). Le basculement Article/Review et le rating conditionnel :</p>
+<pre class="cmd code">const jsonld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': isReview ? 'Review' : 'Article',
+      headline: a.title,
+      description: a.dek,
+      image: imgAbs,   // repli sur ${siteHref}logo.svg si l'article n'a pas de cover
+      datePublished: a.published_at,
+      dateModified: a.updated_at || a.published_at,
+      author: authorNode,   // { '@type':'Person', name, sameAs?:[twitter] }
+      publisher: { '@id': `${siteHref}#org` },   // référence l'Organization (avec logo)
+      mainEntityOfPage: pageUrl,
+      ...(isReview &amp;&amp; a.rating
+        ? { reviewRating: { '@type': 'Rating', ratingValue: String(a.rating), bestRating: '10', worstRating: '1' },
+            itemReviewed: { '@type': 'VideoGame', name: a.gameName, image: imgAbs } }
+        : {}),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).href },
+        { '@type': 'ListItem', position: 2, name: a.catName, item: new URL(`/${a.catSlug}`, Astro.site).href },
+        { '@type': 'ListItem', position: 3, name: a.title, item: pageUrl },
+      ],
+    },
+  ],
+};</pre>
+<p>Il est injecté dans le head via le slot dédié du layout :</p>
+<pre class="cmd code">&lt;div slot="head" set:html={`&lt;script type="application/ld+json"&gt;${JSON.stringify(jsonld)}&lt;/script&gt;`} /&gt;</pre>
+<div class="callout tip"><span class="l">Pourquoi Review + VideoGame</span><p>Marquer une review avec <code>reviewRating</code> (note /10) et <code>itemReviewed</code> de type <b>VideoGame</b> rend l'avis éligible aux rich results « étoiles » et donne un signal net aux moteurs IA sur ce qui est noté. C'est le pendant structuré du bloc verdict visible côté lecteur.</p></div>
+
+<h2>7.3 — Fichiers de crawl &amp; distribution (endpoints dynamiques)</h2>
+<div class="callout info"><span class="l">Pourquoi des endpoints custom</span><p>Le contenu n'est pas des fichiers Markdown compilés au build : il est <b>en D1</b> et lu au runtime. Un plugin de sitemap statique (type <code>@astrojs/sitemap</code>) ne le verrait pas. On génère donc chaque fichier de crawl comme un <b>endpoint</b> qui interroge D1 à la volée et renvoie du texte/XML avec le bon Content-Type et un cache <code>s-maxage=3600</code>.</p></div>
+
+<h3>sitemap.xml.ts</h3>
+<p>Liste la home, les 4 catégories, et tous les articles publiés (30 au moment de la rédaction, mais le nombre est dynamique : <code>WHERE draft=0</code>). <strong>Le <code>lastmod</code> n'est posé que sur les articles</strong> (<code>updated_at</code>, fallback <code>published_at</code>) ; la home et les catégories sont listées sans <code>lastmod</code> :</p>
+<pre class="cmd code">const { results } = await DB.prepare(
+  `SELECT a.slug, a.updated_at, a.published_at, c.slug AS catSlug
+   FROM articles a JOIN categories c ON c.id=a.category_id WHERE a.draft=0`
+).all();
+const urls = [{ loc: site }];
+for (const c of CATEGORIES) urls.push({ loc: `${site}${c}` });
+for (const r of results) urls.push({ loc: `${site}${r.catSlug}/${r.slug}`, lastmod: r.updated_at || r.published_at });</pre>
+
+<h3>robots.txt.ts — crawlers IA bienvenus (GEO)</h3>
+<p>Autorise tout, <b>déclare explicitement les crawlers IA</b> (GPTBot, PerplexityBot, ClaudeBot) et pointe le sitemap :</p>
+<pre class="cmd code">const body = [
+  'User-agent: *', 'Allow: /', '',
+  '# AI crawlers welcome (GEO)',
+  'User-agent: GPTBot', 'Allow: /',
+  'User-agent: PerplexityBot', 'Allow: /',
+  'User-agent: ClaudeBot', 'Allow: /',
+  '', `Sitemap: ${site}sitemap.xml`,
+].join('\n');</pre>
+
+<h3>llms.txt.ts — le plan GEO</h3>
+<p>Pièce maîtresse « Generative Engine Optimization » : un plan Markdown lisible par les IA, avec une description du site puis les articles <b>groupés par catégorie</b> (titre + dek + URL) — de quoi être cité correctement par ChatGPT/Perplexity :</p>
+<pre class="cmd code">const lines = ['# BlogStarter', '',
+  '&gt; Guides, news and reviews for live-service games. Hands-on expertise from real players — we play, we test.', ''];
+for (const cat of CATEGORIES) {
+  const { results } = await DB.prepare(
+    `SELECT a.slug, a.title, a.dek, c.name AS catName FROM articles a JOIN categories c ON c.id=a.category_id
+     WHERE c.slug=? AND a.draft=0 ORDER BY a.published_at DESC`).bind(cat).all();
+  if (!results.length) continue;
+  lines.push(`## ${results[0].catName}`);
+  for (const r of results) lines.push(`- [${r.title}](${site}${cat}/${r.slug})${r.dek ? `: ${r.dek}` : ''}`);
+  lines.push('');
+}</pre>
+
+<h3>ads.txt.ts &amp; rss.xml.ts</h3>
+<p><code>ads.txt</code> est un endpoint <b>placeholder</b> (AdSense requiert ce fichier ; la vraie ligne <code>google.com, pub-…, DIRECT, …</code> sera collée une fois le compte approuvé — voir <a href="08-monetisation.html">Partie 08</a>). Le <code>rss.xml</code> sert les 30 derniers articles, avec échappement XML et <code>pubDate</code> RFC-822 :</p>
+<pre class="cmd code">const { results } = await DB.prepare(
+  `SELECT a.slug, a.title, a.dek, a.published_at, c.slug AS catSlug
+   FROM articles a JOIN categories c ON c.id=a.category_id
+   WHERE a.draft=0 ORDER BY a.published_at DESC, a.id DESC LIMIT 30`).all();</pre>
+<table class="doc-table"><thead><tr><th>Endpoint</th><th>Source</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><code>/sitemap.xml</code></td><td>D1</td><td>Home + 4 catégories + tous les articles (lastmod sur les articles uniquement)</td></tr>
+<tr><td><code>/robots.txt</code></td><td>contenu fixe (pas de requête D1)</td><td>Allow all + crawlers IA + lien sitemap</td></tr>
+<tr><td><code>/llms.txt</code></td><td>D1</td><td>Plan GEO : articles par catégorie · <code>X-Robots-Tag: noindex</code></td></tr>
+<tr><td><code>/ads.txt</code></td><td>placeholder</td><td>Requis AdSense (à compléter) · <code>X-Robots-Tag: noindex</code></td></tr>
+<tr><td><code>/rss.xml</code></td><td>D1</td><td>Flux des 30 derniers articles</td></tr>
+</tbody></table>
+
+<h2>7.4 — Performance &amp; Core Web Vitals</h2>
+<p>La perf est un pilier du modèle (« vitesse = marge par visiteur »). Les leviers réellement en place :</p>
+<ul>
+<li><strong>Images dimensionnées</strong> : les créatives ont <code>width</code>/<code>height</code> explicites (ex. <code>width="728" height="90"</code>) → réservation d'espace, <b>zéro CLS</b>. Les visuels non critiques sont en <code>loading="lazy"</code>.</li>
+<li><strong>imageService passthrough</strong> : pas de couche de transformation d'image côté Cloudflare — on sert directement des WebP optimisés (covers en statique, créatives depuis R2).</li>
+<li><strong>Cache edge</strong> : chaque page HTML et chaque endpoint pose un <code>Cache-Control</code> (<code>s-maxage=300</code> pour les pages, <code>3600</code> pour les fichiers de crawl ; <code>immutable</code> 1 an pour les médias R2).</li>
+<li><strong>JS minimal</strong> : seule la page article embarque un petit script inline (barre de progression, scrollspy du sommaire, ancre pub) ; le reste est du HTML rendu au serveur.</li>
+<li><strong>Polices</strong> : Chakra Petch / Inter / JetBrains Mono chargées via Google Fonts, à <b>self-hoster</b> ensuite (prévu, commenté dans le head : « à self-host plus tard »).</li>
+</ul>
+
+<h2>7.5 — État SEO/GEO : câblé &amp; reste à faire</h2>
+<p>Après l'audit, une passe d'amélioration (« Lot C ») a câblé plusieurs leviers directement dans le projet Astro. Voici l'état réel <b>aligné sur le code actuel</b>.</p>
+
+<h3>✅ Câblé (post-audit, en production)</h3>
+<ul>
+<li><strong>JSON-LD enrichi</strong> : l'<code>Organization</code> porte un <code>logo</code> (<code>ImageObject</code> 512×512, <code>/logo.svg</code>) — requis pour l'éligibilité Rich Results ; l'article référence le <code>publisher</code> par <code>@id</code>, l'<code>image</code> a un <b>repli</b> sur le logo, l'<code>author</code> émet un <code>sameAs</code> (Twitter) quand il existe, et <code>itemReviewed</code> (VideoGame) porte une <code>image</code>.</li>
+<li><strong>Pages catégories paginées</strong> : <b>canonical auto-référente</b> (incluant <code>?page=N</code>) et <code>noindex</code> au-delà de la page 1 (<code>noindex={page &gt; 1}</code>) — évite le duplicate et la dilution du crawl.</li>
+<li><strong><code>X-Robots-Tag: noindex</code></strong> posé sur les endpoints texte <code>ads.txt</code> et <code>llms.txt</code> (fichiers utilitaires non indexables).</li>
+<li><strong>IndexNow — socle en place</strong> : la clé est publiée à la racine (<code>/a1b2…f90.txt</code>) et un helper <code>submitToIndexNow(urls)</code> (<code>src/lib/indexnow.ts</code>) POST vers l'API. Le <b>ping automatique</b> reste à brancher sur un flux de publication (pas d'admin dynamique pour l'instant).</li>
+</ul>
+
+<h3>⏳ Reste à faire</h3>
+<ul>
+<li><strong>Ping IndexNow à la publication</strong> : appeler le helper depuis le futur flux d'admin/import à chaque nouvel article ou mise à jour.</li>
+<li><strong>Page auteur + <code>author.url</code></strong> : le <code>sameAs</code> est là, mais il manque une page auteur dédiée (<code>/author/&lt;slug&gt;</code>) à référencer dans <code>author.url</code> pour compléter l'entité E-E-A-T.</li>
+<li><strong>Crawlers IA à étoffer</strong> : ajouter <b>OAI-SearchBot</b> (recherche ChatGPT, distinct de GPTBot) et <b>Google-Extended</b> (opt-in Gemini / AI Overviews) au <code>robots.txt</code>.</li>
+<li><strong>Politique trailing-slash</strong> : figer explicitement la forme canonique des URLs (avec/sans <code>/</code> final).</li>
+<li><strong>hreflang</strong> : non requis (site mono-langue EN) — noté pour lever l'ambiguïté.</li>
+</ul>
+
+<h3>GEO — leviers continus (éditorial)</h3>
+<ul>
+<li><strong>Passages citables</strong> : structurer chaque section avec une <b>réponse directe en tête</b> (phrase auto-portante), avant le développement — c'est ce qu'un moteur IA extrait et cite.</li>
+<li><strong>Format <code>llms.txt</code> justifié</strong> : suit la spec <a href="https://llmstxt.org">llmstxt.org</a> (H1, blockquote de résumé, liens groupés), pensé pour être lu/cité par les LLM.</li>
+<li><strong>Mention de marque off-site</strong> : la citation par les IA dépend fortement des mentions hors site (Reddit, YouTube, Wikipedia…). Hors périmètre technique, mais <b>clé</b> — à piloter côté contenu/communauté.</li>
+</ul>
+<div class="callout info"><span class="l">Priorité GEO vs SEO</span><p>Le SEO technique est désormais quasi complet côté code. Les leviers GEO (passages citables, E-E-A-T, mentions off-site) sont <b>continus</b> et dépendent surtout de la qualité éditoriale — c'est là que se joue la citabilité IA, pas dans le balisage seul.</p></div>
+
+<hr>
+<p>Le site est désormais indexable, structuré et citable. Reste à documenter comment il gagne de l'argent tout en restant conforme : c'est la <a href="08-monetisation.html">Partie 08</a>.</p>
+
+</div>
+<nav class="doc-pager"><a href="06-astro.html"><span class="dir">← Précédent</span><span class="ttl">Adaptation pour Astro</span></a><a class="next" href="08-monetisation.html"><span class="dir">Suivant →</span><span class="ttl">Monétisation &amp; conformité</span></a></nav>
+</main>
+<footer><div class="wrap">BlogStarter — Documentation du process · Partie 07</div></footer></body></html>

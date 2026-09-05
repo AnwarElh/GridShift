@@ -1,0 +1,210 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partie 06 — Adaptation pour Astro · BlogStarter Doc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doc.css"></head><body>
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BLOG<span>STARTER</span></span><span class="tag"><a href="index.html">← SOMMAIRE</a> · PARTIE 06</span></div></header>
+<div class="doc-hero"><div class="wrap"><a class="back" href="index.html">← Sommaire</a><span class="kick">Partie 06</span><h1>Adaptation pour Astro</h1><p class="lede">Le HTML validé du design system devient une application Astro rendue côté serveur sur Cloudflare Workers : bindings D1/R2/KV, schéma Drizzle, import du contenu Markdown vers D1, routes SSR avec cache edge, médias servis depuis R2. C'est la partie la plus technique — et celle qui recèle le piège Astro/Cloudflare le plus coûteux.</p></div></div>
+<main class="wrap doc-body"><div class="prose-doc">
+
+<h2>6.1 — Scaffold du projet</h2>
+<p>On part d'un projet Astro minimal en TypeScript strict, dans le dossier <code>site/</code> à côté de <code>design/</code> et <code>contents/</code>. Les commandes réellement exécutées, dans l'ordre :</p>
+<pre class="cmd"><span class="c"># Scaffold Astro minimal, TypeScript strict, sans git, install auto</span>
+npm create astro@latest site -- --template minimal --typescript strict --no-git --install --skip-houston --yes
+<span class="c"># Adapter Cloudflare (SSR sur Workers)</span>
+npx astro add cloudflare --yes
+<span class="c"># ORM + outils d'import de contenu</span>
+npm install drizzle-orm
+npm install -D drizzle-kit gray-matter marked</pre>
+<p>Versions réelles : Astro <strong>^7.2.6</strong>, <code>@astrojs/cloudflare</code> <strong>^14.2.4</strong>, <code>drizzle-orm</code> <strong>^0.45</strong>, <code>drizzle-kit</code> <strong>^0.31</strong>, plus <code>gray-matter</code> (parse le frontmatter YAML) et <code>marked</code> (Markdown → HTML). Node 24, npm 11, wrangler ^4.125.</p>
+
+<h3>astro.config.mjs</h3>
+<p>La config déclare le site canonique, le rendu serveur, et l'adapter Cloudflare. Deux réglages sont déterminants : <code>platformProxy</code> (expose les bindings Cloudflare en dev local via wrangler) et <code>imageService: 'passthrough'</code> (aucun traitement d'image par Cloudflare Images — on sert des <code>&lt;img&gt;</code> statiques et R2).</p>
+<pre class="cmd code">export default defineConfig({
+  site: 'https://votreblog.com',
+  output: 'server',
+  adapter: cloudflare({
+    // Expose les bindings Cloudflare (D1, etc.) en dev local via wrangler
+    platformProxy: { enabled: true },
+    // Pas de traitement d'image via Cloudflare Images (on sert des &lt;img&gt; statiques / R2)
+    imageService: 'passthrough',
+  }),
+  image: {
+    remotePatterns: [{ protocol: 'https' }],
+  },
+});</pre>
+<div class="callout tip"><span class="l">Pourquoi passthrough</span><p>Sans <code>imageService: 'passthrough'</code>, l'adapter cherche à brancher le binding Cloudflare <b>Images</b> au moment du <code>deploy</code>, ce qui échoue si le service n'est pas activé. On sert nos propres images (covers en statique, créatives depuis R2), donc on désactive proprement ce pipeline.</p></div>
+
+<h3>wrangler.jsonc — les bindings</h3>
+<p>Le worker s'appelle <code>blogstarter</code>. Son point d'entrée est fourni par l'adapter (<code>@astrojs/cloudflare/entrypoints/server</code>). Quatre bindings sont déclarés : <strong>ASSETS</strong> (le <code>dist/</code> statique), <strong>DB</strong> (D1), <strong>MEDIA</strong> (R2), <strong>SESSION</strong> (KV pour les sessions Astro).</p>
+<pre class="cmd code">{
+  "compatibility_date": "2026-08-25",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "name": "blogstarter",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "assets": { "directory": "./dist", "binding": "ASSETS" },
+  "observability": { "enabled": true },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "blogstarter-db",
+      "database_id": "<VOTRE_DATABASE_ID>",
+      "migrations_dir": "migrations" }
+  ],
+  "r2_buckets": [ { "binding": "MEDIA", "bucket_name": "blogstarter-media" } ],
+  "kv_namespaces": [ { "binding": "SESSION", "id": "<VOTRE_KV_NAMESPACE_ID>" } ]
+}</pre>
+
+<h2>6.2 — Componentiser le design system</h2>
+<p>Règle d'or maintenue depuis la partie 02 : <strong>le design system reste la source de vérité unique</strong>. Concrètement, <code>styles-v2.css</code> est <b>copié tel quel</b> depuis <code>design/</code> vers <code>site/src/styles/styles-v2.css</code>, puis importé <b>une seule fois</b>, dans <code>BaseLayout.astro</code> :</p>
+<pre class="cmd code">---
+import '../styles/styles-v2.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---</pre>
+<p>Les maquettes HTML validées deviennent des composants <code>.astro</code> qui <b>réutilisent les mêmes classes</b> du DS — rendu fidèle, zéro style ad-hoc. Le <code>Header</code> reprend le logo SVG et la nav 4 catégories ; l'<code>ArticleCard</code> reprend <code>.card</code>/<code>.thumb</code>/<code>.body</code> et calcule sa métadonnée droite selon la catégorie :</p>
+<pre class="cmd code">if (art.catSlug === 'news') right = fmtDate(art.published_at);
+else if (art.catSlug === 'reviews') right = art.rating ? `${art.rating}/10` : 'REVIEW';
+else if (art.catSlug === 'guides') right = art.tier ? `TIER ${art.tier}` : 'GUIDE';
+else right = fmtDate(art.published_at);   // setup (et tout autre) → date</pre>
+<p>La branche <code>else</code> couvre la catégorie <strong><code>setup</code></strong> (hardware) : elle a bien été <strong>créée</strong> dans le modèle, mais <strong>sans article de test</strong> à ce stade — le hardware est en réserve. Faute de <code>tier</code>/<code>rating</code>, une carte <code>setup</code> affiche simplement sa date.</p>
+<div class="callout info"><span class="l">Le DS s'enrichit, dans les deux sens</span><p>L'adaptation a révélé des besoins réels (images, grilles, pubs remplies) : on a ajouté au CSS des règles <code>&lt;img&gt;</code> concrètes (<code>.card .thumb img</code>, <code>img.bg</code>), l'utilitaire <code>.grid.cols-N</code>, <code>.ad-slot.filled</code>, <code>.ad-band</code>, <code>.article-hero-split</code> + <code>.ad-square</code>, <code>.article-summary</code>, <code>.flow</code>, <code>.related-grid</code>, <code>.listing-layout/.listing-grid/.listing-side</code>, <code>.ad-anchor</code>. Chaque ajout est <b>mirroré</b> dans <code>design/styles-v2.css</code> pour garder la source de vérité intacte.</p></div>
+
+<h2>6.3 — Couche données D1</h2>
+<p>Le contenu vit dans <strong>D1</strong> (SQLite à l'edge). Le schéma est décrit en TypeScript avec Drizzle (<code>drizzle-orm/sqlite-core</code>) dans <code>src/db/schema.ts</code>. Tables : <code>categories</code>, <code>games</code>, <code>authors</code>, <code>articles</code>, <code>tags</code>, <code>article_tags</code>. La table <code>articles</code> porte le contenu, l'éditorial (rating/verdict/pros/cons/tier) et les champs SEO :</p>
+<pre class="cmd code">export const articles = sqliteTable('articles', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  slug: text('slug').notNull(),
+  title: text('title').notNull(),
+  dek: text('dek'),
+  bodyMd: text('body_md'),
+  bodyHtml: text('body_html'),
+  categoryId: integer('category_id').notNull().references(() =&gt; categories.id),
+  gameId: integer('game_id').references(() =&gt; games.id),
+  authorId: integer('author_id').references(() =&gt; authors.id),
+  rating: text('rating'),        // stocké en texte pour préserver "8.2"
+  verdict: text('verdict'),
+  pros: text('pros'),            // JSON array
+  cons: text('cons'),            // JSON array
+  tier: text('tier'),
+  publishedAt: text('published_at'),
+  updatedAt: text('updated_at'),
+  featured: integer('featured', { mode: 'boolean' }).default(false),
+  // SEO
+  metaDescription: text('meta_description'),
+  ogImage: text('og_image'),
+  canonical: text('canonical'),
+  noindex: integer('noindex', { mode: 'boolean' }).default(false),
+  draft: integer('draft', { mode: 'boolean' }).default(false),
+  // … extrait partiel — la table porte aussi cover, cover_alt, cover_source, reading_time, views
+}, (t) =&gt; ({
+  catSlug: uniqueIndex('idx_articles_cat_slug').on(t.categoryId, t.slug),
+  byCategory: index('idx_articles_category').on(t.categoryId),
+  byPublished: index('idx_articles_published').on(t.publishedAt),
+}));</pre>
+<p>L'extrait ci-dessus est <strong>partiel</strong> : la table <code>articles</code> porte aussi les colonnes de cover (<code>cover</code>, <code>cover_alt</code>, <code>cover_source</code>), le <code>reading_time</code> et le compteur <code>views</code> (voir le commentaire dans le code).</p>
+<p>Deux détails révélateurs : <code>rating</code> est un <b>texte</b> (pour préserver « 8.2 » sans dérive de flottant) ; l'index unique <code>(category_id, slug)</code> garantit qu'une catégorie ne peut pas avoir deux articles au même slug — ce qui autorise des slugs identiques entre catégories.</p>
+<p>Le <code>drizzle.config.ts</code> pointe le schéma en dialecte SQLite :</p>
+<pre class="cmd code">export default defineConfig({
+  dialect: 'sqlite',
+  schema: './src/db/schema.ts',
+  out: './migrations',
+});</pre>
+<p>On génère la migration puis on l'applique en <b>local</b> :</p>
+<pre class="cmd"><span class="c"># Génère migrations/0000_*.sql à partir du schéma Drizzle</span>
+npx drizzle-kit generate
+<span class="c"># Applique la migration à la D1 locale (via platformProxy)</span>
+npx wrangler d1 migrations apply blogstarter-db --local</pre>
+
+<h3>Les requêtes — src/lib/queries.ts</h3>
+<p>Toutes les lectures passent par des <b>prepared statements</b> D1 (<code>.prepare(...).bind(...)</code>). Un jeu de colonnes partagé (<code>ARTICLE_CARD_COLS</code>) sert les cartes ; les fonctions couvrent chaque écran : <code>getCategory</code>, <code>listByCategory</code>, <code>latest</code>, <code>latestInCategory</code>, <code>trending</code>, <code>listGames</code>, <code>getArticle</code>, <code>relatedArticles</code>. Exemple, le listing d'une catégorie (articles publiés uniquement, triés par date) :</p>
+<pre class="cmd code">export async function listByCategory(DB, slug, limit = 24, offset = 0) {
+  const { results } = await DB.prepare(
+    `SELECT ${ARTICLE_CARD_COLS} FROM articles a JOIN categories c ON c.id=a.category_id
+     WHERE c.slug=? AND a.draft=0 ORDER BY a.published_at DESC, a.id DESC LIMIT ? OFFSET ?`
+  ).bind(slug, limit, offset).all();
+  return results;
+}</pre>
+<p>Les utilitaires (<code>src/lib/util.ts</code>) complètent : <code>badgeClass</code> (mappe la catégorie sur une classe de badge), <code>fmtDate</code>, <code>parseJsonArray</code> (relit les pros/cons JSON) et surtout <code>withHeadingIds</code>, qui injecte des <code>id</code> sur les <code>&lt;h2&gt;/&lt;h3&gt;</code> et construit le sommaire de l'article à la volée :</p>
+<pre class="cmd code">export function withHeadingIds(html) {
+  const toc = [];
+  const out = html.replace(/&lt;h([23])&gt;([\s\S]*?)&lt;\/h\1&gt;/g, (_m, lvl, inner) =&gt; {
+    const text = inner.replace(/&lt;[^&gt;]+&gt;/g, '').trim();
+    const id = slugifyHeading(text) || 't' + toc.length;
+    if (lvl === '2') toc.push({ id, text });
+    return `&lt;h${lvl} id="${id}"&gt;${inner}&lt;/h${lvl}&gt;`;
+  });
+  return { html: out, toc };
+}</pre>
+
+<div class="callout danger"><span class="l">Piège majeur — Astro.locals.runtime.env supprimé</span><p>Il s'agit d'un <strong>comportement d'API introduit en Astro v6+</strong> (retrait de l'accès à l'env via le runtime), présent sur l'<strong>Astro 7.2.6 installé</strong> ici : l'ancien accès <code>Astro.locals.runtime.env</code> a été <b>supprimé</b>. Résultat : <b>erreur 500</b> au tout premier run. Le correctif appliqué partout — pages ET endpoints — est d'importer l'env directement depuis le runtime Workers :</p></div>
+<pre class="cmd code">import { env } from 'cloudflare:workers';
+
+const DB = (env as any).DB as D1Database;   // au lieu de Astro.locals.runtime.env.DB</pre>
+<p>Ce même import sert pour tous les bindings : <code>env.DB</code> (D1), <code>env.MEDIA</code> (R2). On le retrouve en tête de chaque page de données et de chaque endpoint.</p>
+
+<h2>6.4 — Import du contenu → D1</h2>
+<p>Le script <code>scripts/import-content.mjs</code> transforme les 30 fichiers Markdown en un <code>seed.sql</code> prêt à charger. Étapes :</p>
+<ol class="steps">
+<li><span class="st-t">Lire chaque .md</span><span class="st-d"><code>gray-matter</code> sépare le frontmatter YAML (title, dek, cover, rating, tier, tags…) du corps Markdown.</span></li>
+<li><span class="st-t">Télécharger les covers</span><span class="st-d">chaque cover distante est récupérée (<code>fetch</code>, <code>redirect: 'follow'</code>) et écrite dans <code>public/wp-content/uploads/2026/08/24/</code> ; le champ <code>cover</code> est réécrit en URL locale.</span></li>
+<li><span class="st-t">Rendre le HTML</span><span class="st-d"><code>marked.parse(body_md)</code> produit <code>body_html</code>, stocké en base à côté du Markdown source.</span></li>
+<li><span class="st-t">Générer le SQL</span><span class="st-d">catégories, auteur unique (Alex), jeux, tags puis articles + liaisons <code>article_tags</code> sont sérialisés dans <code>seed.sql</code>.</span></li>
+</ol>
+<p>Le téléchargement d'image et la réécriture de l'URL, au cœur du script :</p>
+<pre class="cmd code">for (const a of articles) {
+  if (a.cover &amp;&amp; /^https?:\/\//.test(a.cover)) {
+    const filename = `${a.slug}-${a.category}${extOf(a.cover)}`;
+    const local = await download(a.cover, filename);
+    if (local) { a.cover = local; }
+  }
+  a.og_image = a.og_image || a.cover;
+}</pre>
+<p>Chaque valeur est échappée pour SQLite (<code>q(v)</code> double les apostrophes ; <code>qbool</code> convertit les booléens). Puis on charge le seed dans la D1 locale :</p>
+<pre class="cmd"><span class="c"># Génère site/seed.sql à partir de contents/**/*.md</span>
+node scripts/import-content.mjs
+<span class="c"># Charge le seed dans la base D1 locale</span>
+npx wrangler d1 execute blogstarter-db --local --file=./seed.sql</pre>
+<p>Résultat consigné par le script : <strong>30 articles, 10 jeux, 50 tags</strong>, un auteur (Alex).</p>
+
+<h2>6.5 — Routes SSR + cache edge</h2>
+<p>Trois routes couvrent tout le site, plus une 404 :</p>
+<table class="doc-table"><thead><tr><th>Route</th><th>Fichier</th><th>Rôle</th></tr></thead><tbody>
+<tr><td><code>/</code></td><td>src/pages/index.astro</td><td>Home : spotlight, jeux couverts, derniers guides/news, tendances, newsletter</td></tr>
+<tr><td><code>/[category]</code></td><td>src/pages/[category]/index.astro</td><td>Archive : en-tête de hub, grille + pub in-feed, pagination</td></tr>
+<tr><td><code>/[category]/[slug]</code></td><td>src/pages/[category]/[slug].astro</td><td>Article : hero 2 colonnes, prose + sommaire, verdict/pros-cons, ancre pub</td></tr>
+</tbody></table>
+<p>Les routes dynamiques valident leurs paramètres et retombent proprement sur la 404 via <code>Astro.rewrite('/404')</code> :</p>
+<pre class="cmd code">const { category } = Astro.params;
+if (!category || !CATEGORIES.includes(category as any)) return Astro.rewrite('/404');
+const cat = await getCategory(DB, category);
+if (!cat) return Astro.rewrite('/404');</pre>
+<p>Chaque page pose le <b>même en-tête de cache edge</b> : servi 5 min depuis le cache Cloudflare, et jusqu'à 10 min de plus en <code>stale-while-revalidate</code> pendant la régénération. C'est le levier « vitesse = marge par visiteur » : le SSR ne tourne qu'une fois par fenêtre, le reste est servi à froid par l'edge.</p>
+<pre class="cmd code">Astro.response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');</pre>
+
+<h2>6.6 — Médias sur R2</h2>
+<p>Les <b>covers</b> d'articles sont servies en statique (copiées dans <code>public/wp-content/…</code>, déployées via ASSETS). Les <b>créatives publicitaires</b>, elles, vivent dans le bucket R2 <code>blogstarter-media</code> (clés <code>ads/…webp</code>) et sont servies par une route dédiée <code>src/pages/media/[...key].ts</code>, qui lit le binding <code>MEDIA</code>, choisit le Content-Type par extension et pose un cache immuable d'un an :</p>
+<pre class="cmd code">export const GET: APIRoute = async ({ params }) =&gt; {
+  const key = params.key;
+  if (!key) return new Response('Not found', { status: 404 });
+  const obj = await (env as any).MEDIA.get(key);
+  if (!obj) return new Response('Not found', { status: 404 });
+  const ext = key.split('.').pop()?.toLowerCase() || '';
+  const ct = obj.httpMetadata?.contentType || TYPES[ext] || 'application/octet-stream';
+  return new Response(obj.body, {
+    headers: { 'Content-Type': ct, 'Cache-Control': 'public, max-age=31536000, immutable' },
+  });
+};</pre>
+<p>Les composants <code>AdLeaderboard</code> (728×90) et <code>AdRectangle</code> (300×250) pointent ces clés via <code>/media/ads/…webp</code> — détaillé en <a href="08-monetisation.html">Partie 08</a>.</p>
+
+<h3>Dev local &amp; bindings</h3>
+<pre class="cmd"><span class="c"># Serveur de dev en arrière-plan (gestion via stop/status/logs)</span>
+npx astro dev --background</pre>
+<div class="callout warn"><span class="l">Piège — redémarrer astro dev après un binding</span><p>Les bindings locaux sont chargés par <code>platformProxy</code> <b>au démarrage</b> du serveur. Si tu ajoutes un binding (ex. le bucket R2 <code>MEDIA</code>) dans <code>wrangler.jsonc</code> pendant que <code>astro dev</code> tourne, il ne sera <b>pas</b> vu. Il faut <code>astro dev stop</code> puis relancer pour qu'il soit pris en compte.</p></div>
+
+<hr>
+<p>À ce stade, l'app tourne : le HTML du DS est devenu des composants Astro, le contenu est en D1, les médias sur R2, les routes sont en SSR avec cache edge. Les deux parties suivantes exploitent cette base : le <a href="07-seo-geo.html">SEO/GEO</a> (head, JSON-LD, endpoints dynamiques) puis la <a href="08-monetisation.html">monétisation</a>.</p>
+
+</div>
+<nav class="doc-pager"><a href="05-agents.html"><span class="dir">← Précédent</span><span class="ttl">Production par agents spécialisés</span></a><a class="next" href="07-seo-geo.html"><span class="dir">Suivant →</span><span class="ttl">SEO &amp; GEO</span></a></nav>
+</main>
+<footer><div class="wrap">BlogStarter — Documentation du process · Partie 06</div></footer></body></html>

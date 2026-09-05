@@ -1,0 +1,60 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partie 01 — Cadrage éditorial · BlogStarter Doc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doc.css"></head><body>
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BLOG<span>STARTER</span></span><span class="tag"><a href="index.html">← SOMMAIRE</a> · PARTIE 01</span></div></header>
+<div class="doc-hero"><div class="wrap"><a class="back" href="index.html">← Sommaire</a><span class="kick">Partie 01</span><h1>Cadrage éditorial</h1><p class="lede">Avant la moindre maquette : décider ce qu'on couvre, sous quelle marque, sur quel domaine, et avec quelle architecture de catégories. Ces choix figent la navigation, les silos SEO et la ligne de tout le contenu à venir.</p></div></div>
+<main class="wrap doc-body"><div class="prose-doc">
+
+<h2>1.1 — Choisir la niche</h2>
+<p>La première décision éditoriale est aussi la plus structurante : <strong>sur quoi va-t-on faire autorité ?</strong> Pour BlogStarter, la réponse est nette — les <strong>guides de jeux live-service focalisés</strong>, sur le modèle Prydwen.</p>
+<p>Ce choix n'est pas arbitraire, il coche plusieurs cases business :</p>
+<ul>
+<li><strong>Audience unique et récurrente.</strong> Un joueur de jeu live-service revient à chaque patch, chaque nouveau personnage, chaque event. La demande de recherche se régénère toute seule.</li>
+<li><strong>Autorité topique.</strong> En couvrant en profondeur un petit nombre de jeux plutôt qu'en dispersant l'effort, on construit une expertise reconnue par Google (topical authority) et par les lecteurs.</li>
+<li><strong>Défendabilité E-E-A-T.</strong> Les guides qui reposent sur du <strong>vécu réel</strong> — on a joué, testé, atteint tel palier — sont difficiles à répliquer par de l'IA générique. C'est la meilleure protection à long terme.</li>
+</ul>
+<div class="callout"><span class="l">La règle « focus »</span><p>Mieux vaut être la <strong>référence</strong> sur 10 jeux que médiocre sur 100. La niche se choisit resserrée : c'est ce resserrement qui crée l'autorité, donc le trafic, donc la marge.</p></div>
+
+<h2>1.2 — Marque &amp; nom de domaine</h2>
+<p>La marque doit être <strong>brandable</strong> (mémorisable, prononçable, non générique) et disponible en <strong>.com</strong>. Ici : <strong>BlogStarter</strong>, sur <code>votreblog.com</code>.</p>
+<p>Le nom fonctionne à plusieurs niveaux :</p>
+<ul>
+<li><strong>« Blog »</strong> annonce sans ambiguïté la nature du site — le visiteur sait immédiatement ce qu'il va trouver, et le terme porte bien en SEO.</li>
+<li><strong>« Starter »</strong> évoque le point de départ, le socle prêt à l'emploi — aligné avec la promesse d'un blog rapide à déployer et à monétiser.</li>
+<li>L'assemblage reste court, en <strong>.com</strong>, et se prête à une identité visuelle forte (voir la marque dans le design system : logo « BLOG » en blanc / « STARTER » en couleur d'accent + pictogramme).</li>
+</ul>
+<div class="callout tip"><span class="l">Bonnes pratiques domaine</span><p>Viser le <strong>.com</strong> exclusivement (les extensions « gaming » diluent la confiance et le rappel). Vérifier la disponibilité avant de s'attacher à un nom, s'assurer qu'il n'y a pas de collision de marque évidente, et privilégier un nom court, sans tiret, facile à dicter à l'oral.</p></div>
+
+<h2>1.3 — Définir les catégories</h2>
+<p>Les catégories ne sont pas de simples étiquettes : elles <strong>structurent la navigation, les silos SEO et l'organisation du contenu</strong>. Une architecture claire aide Google à comprendre le site et le lecteur à s'y repérer.</p>
+<div class="callout warn"><span class="l">Règle du maximum</span><p><strong>Cinq catégories maximum.</strong> Au-delà, la navigation se dilue, les silos se chevauchent et l'autorité topique se disperse. BlogStarter en retient <strong>quatre</strong>.</p></div>
+<table class="doc-table">
+<thead><tr><th>Catégorie</th><th>Rôle éditorial</th><th>Type de contenu</th></tr></thead>
+<tbody>
+<tr><td><strong>Guides</strong></td><td>Le cœur : aider à progresser</td><td>Tier lists, builds, reroll, farming, roadmaps — le contenu qui ramène du trafic récurrent.</td></tr>
+<tr><td><strong>News</strong></td><td>Fraîcheur &amp; actualité</td><td>Patchs, annonces, events — factuel, publié vite, entretient la récurrence.</td></tr>
+<tr><td><strong>Reviews</strong></td><td>Jugement &amp; autorité</td><td>Tests notés avec verdict et pros/cons — signal E-E-A-T fort.</td></tr>
+<tr><td><strong>Setup</strong></td><td>Passerelle hardware</td><td>Config, matériel, optimisation — le pont vers l'affiliation hardware (réservé).</td></tr>
+</tbody>
+</table>
+<p>Ces quatre catégories deviennent directement :</p>
+<ol class="steps">
+<li><span class="st-t">La navigation principale</span><span class="st-d">Guides · News · Reviews · Setup constituent le menu du site. Simple, lisible, sans sous-menus superflus.</span></li>
+<li><span class="st-t">Les silos SEO</span><span class="st-d">Chaque catégorie est une route d'archive (<code>/guides</code>, <code>/news</code>…) qui regroupe ses articles, concentre le jus de lien interne et signale la thématique à Google.</span></li>
+<li><span class="st-t">L'ossature du modèle de données</span><span class="st-d">La catégorie est un champ normalisé du contenu (voir partie 04) et une table en base (partie 06). Elle relie l'éditorial à la technique de bout en bout.</span></li>
+</ol>
+
+<h2>1.4 — Structure d'URL, cannibalisation &amp; maillage</h2>
+<p>Les catégories décidées ci-dessus se traduisent directement en <strong>architecture d'URL</strong>. BlogStarter retient des <strong>silos plats</strong> : chaque article vit à <code>/[category]/[slug]</code> (par ex. <code>/guides/nikke-tier-list</code>, <code>/news/genshin-5-3-patch</code>), sans hiérarchie profonde ni sous-dossiers par jeu. Une URL courte, une catégorie, un slug — c'est lisible pour le lecteur, simple pour Google, et cela concentre le jus de lien sur les pages d'archive de catégorie.</p>
+<div class="callout warn"><span class="l">Risque de cannibalisation</span><p>Un même jeu peut légitimement avoir un <strong>guide</strong>, une <strong>news</strong> et une <strong>review</strong>. Le piège SEO est la <strong>cannibalisation</strong> : plusieurs pages qui se disputent la même requête. La parade est de <strong>distinguer les intentions de recherche</strong> — <strong>informationnel</strong> pour le guide (« comment / meilleur build »), <strong>factuel</strong> pour la news (« patch / date / annonce »), <strong>commercial/évaluatif</strong> pour la review (« ça vaut le coup ? »). Un intent = une page ; on ne double jamais deux articles sur la même intention pour un même jeu.</p></div>
+<p>Le pendant positif est le <strong>maillage croisé par jeu</strong>. Chaque contenu porte un champ <code>game</code> (voir partie 04) qui relie entre eux tous les articles d'un même titre, toutes catégories confondues : depuis un guide on renvoie vers la review et les news du jeu, et réciproquement. Ce maillage transversal renforce l'autorité topique par jeu <em>sans</em> créer de silo physique dans l'URL — la structure reste plate, les liens font le reste.</p>
+
+<div class="callout"><span class="l">Ce qui est figé ici</span><p>À l'issue de cette partie, trois choses sont verrouillées et ne bougeront plus sans refonte : la <strong>niche</strong> (guides live-service), la <strong>marque + domaine</strong> (BlogStarter / votreblog.com), et les <strong>quatre catégories</strong> (Guides · News · Reviews · Setup). Tout le reste — design system, gabarits, contenu, technique — s'appuie dessus.</p></div>
+
+</div>
+<nav class="doc-pager"><a href="00-introduction.html"><span class="dir">← Précédent</span><span class="ttl">Partie 00 — Introduction &amp; cadrage</span></a><a class="next" href="02-design-system.html"><span class="dir">Suivant →</span><span class="ttl">Partie 02 — Le Design System</span></a></nav>
+</main>
+<footer><div class="wrap">BlogStarter — Documentation du process · Partie 01</div></footer></body></html>

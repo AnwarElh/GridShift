@@ -1,0 +1,103 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partie 11 — Annexes · BlogStarter Doc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doc.css"></head><body>
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BLOG<span>STARTER</span></span><span class="tag"><a href="index.html">← SOMMAIRE</a> · PARTIE 11</span></div></header>
+<div class="doc-hero"><div class="wrap"><a class="back" href="index.html">← Sommaire</a><span class="kick">Partie 11</span><h1>Annexes</h1><p class="lede">Les références rapides du projet : la checklist récapitulative du process dans l'ordre, la liste des pièges réellement rencontrés avec leur correctif, et un aide-mémoire des commandes accompagné de l'arborescence du dépôt.</p></div></div>
+<main class="wrap doc-body"><div class="prose-doc">
+
+<h2>A · Checklist récapitulative</h2>
+
+<p>Le process complet, dans l'ordre exact où il a été suivi — du cadrage au déploiement. Chaque étape suppose la précédente validée.</p>
+
+<ol class="steps">
+<li><span class="st-t">Cadrage éditorial</span><span class="st-d">Niche (guides jeux live-service, modèle Prydwen), marque BlogStarter, domaine .com, 4 catégories : Guides · News · Reviews · Setup.</span></li>
+<li><span class="st-t">Design system — d'abord, toujours</span><span class="st-d">V2 « Command HUD » (dark, accent volt unique, formes angulaires). Tokens + composants + styleguide navigable, à valider avant la suite. C'est la source de vérité unique.</span></li>
+<li><span class="st-t">Gabarits, dans l'ordre</span><span class="st-d">Article → Listing → Home, chacun assemblé à partir des composants du DS (aucun style hors DS).</span></li>
+<li><span class="st-t">Modèle de contenu</span><span class="st-d">1 Markdown par article + frontmatter YAML, images en convention WordPress <code>wp-content/uploads/AAAA/MM/JJ/</code>, toujours optimisées + métadonnées nettoyées.</span></li>
+<li><span class="st-t">Production par agents</span><span class="st-d">Un rédacteur expert par catégorie + un photo-finder. 10 jeux × 3 catégories = 30 articles de test.</span></li>
+<li><span class="st-t">Adaptation Astro</span><span class="st-d">Scaffold + adapter Cloudflare, DS copié et componentisé, couche D1 (Drizzle + migrations), import du contenu → seed, routes SSR + cache edge, médias sur R2.</span></li>
+<li><span class="st-t">SEO / GEO</span><span class="st-d">head complet + JSON-LD, endpoints dynamiques (sitemap, robots, ads.txt, llms.txt, rss), perf/CWV.</span></li>
+<li><span class="st-t">Monétisation &amp; conformité</span><span class="st-d">Emplacements pub réservés dès le DS (bon CLS), créatives WebP sur R2, bandeau cookies + pages légales.</span></li>
+<li><span class="st-t">Déploiement Cloudflare</span><span class="st-d">login → <code>imageService:'passthrough'</code> (évite le binding IMAGES) → D1/KV/R2 distants → migrations + seed --remote → upload créatives → build → deploy. Vérifs prod à 200.</span></li>
+<li><span class="st-t">Versioning &amp; CI</span><span class="st-d">.gitignore propre, dépôt privé GitHub (username/blogstarter), déploiement continu optionnel.</span></li>
+</ol>
+
+<h2>B · Pièges à éviter</h2>
+
+<p>Les obstacles réellement rencontrés pendant le build, chacun avec son correctif.</p>
+
+<div class="callout danger"><span class="l">1 · Design system générique</span><p>La V1 était trop « SaaS sombre générique » (coins arrondis, violet+cyan safe) et a été rejetée. <strong>Correctif :</strong> refonte en V2 avec un parti pris fort et assumé (« Command HUD » : dark quasi-noir, accent volt unique, formes angulaires).</p></div>
+
+<div class="callout danger"><span class="l">2 · Astro.locals.runtime.env supprimé</span><p><code>Astro.locals.runtime.env</code> n'existe plus (comportement Astro v6) → erreur 500 au premier run. <strong>Correctif :</strong> <code>import { env } from 'cloudflare:workers'</code> puis <code>const DB = env.DB</code>, dans chaque page et endpoint qui accède aux bindings.</p></div>
+
+<div class="callout danger"><span class="l">3 · Agents .claude non reconnus en session</span><p>Les agents personnalisés de <code>.claude/agents/</code> ne sont pas reconnus en cours de session (le registre est chargé au démarrage). <strong>Correctif :</strong> lancer des agents <strong>general-purpose</strong> avec le même prompt expert. Ils redeviennent disponibles à la session suivante.</p></div>
+
+<div class="callout danger"><span class="l">4 · sips laisse un bloc « Photoshop 3.0 »</span><p><code>sips</code> redimensionne mais laisse un bloc « Photoshop 3.0 » (et parfois du XMP). <strong>Correctif :</strong> utiliser <code>cwebp</code> (strip total des métadonnées) pour les créatives ; pour un JPEG propre, la chaîne <code>cwebp → dwebp → sips</code>. Vérif : <code>strings fichier | grep -iE "xmp|c2pa|openai|adobe|FBMD"</code>.</p></div>
+
+<div class="callout danger"><span class="l">5 · Prompt interactif R2</span><p><code>wrangler r2 bucket create</code> peut poser un prompt interactif (« add on your behalf? ») non confirmé en contexte non-interactif. <strong>Correctif :</strong> vérifier l'existence du bucket après coup avec <code>wrangler r2 bucket list</code>.</p></div>
+
+<div class="callout danger"><span class="l">6 · imageService passthrough + KV SESSION</span><p>Au deploy, l'adapter réclame un binding IMAGES si le service d'images est actif, et un KV SESSION pour les sessions. <strong>Correctif :</strong> régler <code>imageService:'passthrough'</code> (évite le binding IMAGES) et provisionner le namespace KV lié à <strong>SESSION</strong>.</p></div>
+
+<div class="callout danger"><span class="l">7 · Redémarrage du dev après binding</span><p>Un binding ajouté (ex. R2) n'est pas pris en compte par le serveur de dev déjà lancé. <strong>Correctif :</strong> redémarrer <code>astro dev</code> après tout ajout de binding pour qu'il soit chargé via platformProxy.</p></div>
+
+<div class="callout danger"><span class="l">8 · Featured = titre seul</span><p>Le spotlight « à la une » de la home affichait trop d'éléments. <strong>Correctif (choix éditorial validé) :</strong> ne garder que le titre pour le featured.</p></div>
+
+<div class="callout danger"><span class="l">9 · Un sous-agent ne pilote pas d'autres sous-agents</span><p>Lors de la production par agents, un sous-agent lancé ne peut pas lui-même orchestrer d'autres sous-agents (pas de fan-out imbriqué). <strong>Correctif :</strong> le <strong>main loop reste le chef d'orchestre</strong> — c'est lui qui lance les rédacteurs et le photo-finder en parallèle, collecte leurs résultats et enchaîne. Les sous-agents restent des exécutants à tâche unique.</p></div>
+
+<h2>C · Commandes &amp; arborescence</h2>
+
+<h3>Aide-mémoire wrangler</h3>
+<pre class="cmd"><span class="k">npx wrangler login</span>                                         <span class="c"># auth interactive</span>
+<span class="k">npx wrangler whoami</span>                                        <span class="c"># compte actif</span>
+<span class="k">npx wrangler d1 create</span> blogstarter-db                          <span class="c"># crée la D1 → database_id</span>
+<span class="k">npx wrangler kv namespace create</span> SESSION                   <span class="c"># crée le namespace KV</span>
+<span class="k">npx wrangler kv namespace list</span>                             <span class="c"># récupère l'id existant</span>
+<span class="k">npx wrangler r2 bucket create</span> blogstarter-media                 <span class="c"># crée le bucket</span>
+<span class="k">npx wrangler r2 bucket list</span>                                <span class="c"># vérifie le bucket</span>
+<span class="k">npx wrangler d1 migrations apply</span> blogstarter-db --remote        <span class="c"># migrations distantes</span>
+<span class="k">npx wrangler d1 execute</span> blogstarter-db --remote --file=./seed.sql
+<span class="k">npx wrangler r2 object put</span> blogstarter-media/ads/arknights-endfield-728x90.webp --file=media-src/ads/arknights-endfield-728x90.webp --remote
+<span class="k">npm run build</span>                                              <span class="c"># build SSR Cloudflare</span>
+<span class="k">npx wrangler deploy</span>                                        <span class="c"># déploie le Worker</span></pre>
+
+<h3>Aide-mémoire gh &amp; git</h3>
+<pre class="cmd"><span class="k">gh auth status</span>                                             <span class="c"># compte username, scope repo</span>
+<span class="k">git init -b main</span>
+<span class="k">git config</span> user.name <b>"…"</b> &amp;&amp; <span class="k">git config</span> user.email <b>"…"</b>
+<span class="k">git add -A</span> &amp;&amp; <span class="k">git commit</span> -m <b>"Initial commit — BlogStarter"</b>
+<span class="k">gh repo create</span> blogstarter --private --source=. --remote=origin --push</pre>
+
+<h3>Arborescence du projet</h3>
+<pre class="filetree">gaming/
+├── <span class="d">design/</span>                 <span class="c"># maquettes + styles-v2.css (SOURCE DE VÉRITÉ)</span>
+│   ├── styles-v2.css        <span class="c"># tokens + composants « Command HUD »</span>
+│   ├── design-system-v2.html
+│   ├── article-v3.html · article-news.html
+│   └── listing.html · home.html
+├── <span class="d">contents/</span>               <span class="c"># {guides,news,reviews,setup}/*.md (30) + _images.json</span>
+├── <span class="d">wp-content/uploads/2026/08/24/</span>   <span class="c"># covers d'articles</span>
+├── <span class="d">site/</span>                   <span class="c"># PROJET ASTRO (l'app déployée)</span>
+│   ├── astro.config.mjs · wrangler.jsonc · drizzle.config.ts · seed.sql
+│   ├── <span class="d">media-src/ads/</span>*.webp   <span class="c"># créatives pub source (→ R2)</span>
+│   ├── <span class="d">migrations/</span>          <span class="c"># migration D1 (drizzle-kit)</span>
+│   ├── <span class="d">scripts/</span>import-content.mjs
+│   ├── <span class="d">public/wp-content/</span>…   <span class="c"># covers servies en statique</span>
+│   └── <span class="d">src/</span>
+│       ├── styles/styles-v2.css   <span class="c"># COPIE du DS (importée 1x dans BaseLayout)</span>
+│       ├── db/schema.ts           <span class="c"># schéma Drizzle (D1)</span>
+│       ├── lib/{db,queries,util}.ts
+│       ├── layouts/BaseLayout.astro
+│       ├── components/{Header,Footer,ArticleCard,AdLeaderboard,AdRectangle}.astro
+│       └── pages/{index, [category]/index, [category]/[slug], 404, legal-notice, privacy, cookies}.astro
+│                 + endpoints {sitemap.xml, robots.txt, ads.txt, llms.txt, rss.xml}.ts + media/[...key].ts
+├── <span class="d">.claude/agents/</span>         <span class="c"># guide/news/review-writer, photo-finder</span>
+├── <span class="d">Dev Book/</span>               <span class="c"># CHECKLIST.csv/.md, todo-list.txt</span>
+└── <span class="d">documentation/</span>          <span class="c"># cette doc</span></pre>
+
+</div>
+<nav class="doc-pager"><a href="10-versioning.html"><span class="dir">← Précédent</span><span class="ttl">Versioning &amp; CI</span></a><a class="next" href="index.html"><span class="dir">Suivant →</span><span class="ttl">Retour au sommaire</span></a></nav>
+</main>
+<footer><div class="wrap">BlogStarter — Documentation du process · Partie 11</div></footer></body></html>

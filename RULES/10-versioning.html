@@ -1,0 +1,86 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partie 10 — Versioning &amp; CI · BlogStarter Doc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doc.css"></head><body>
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BLOG<span>STARTER</span></span><span class="tag"><a href="index.html">← SOMMAIRE</a> · PARTIE 10</span></div></header>
+<div class="doc-hero"><div class="wrap"><a class="back" href="index.html">← Sommaire</a><span class="kick">Partie 10</span><h1>Versioning &amp; CI</h1><p class="lede">Mettre le projet sous contrôle de version et le pousser sur un dépôt GitHub privé, sans jamais y embarquer les artefacts de build ni les secrets. Puis, en option, brancher le dépôt à Cloudflare pour un déploiement automatique à chaque push.</p></div></div>
+<main class="wrap doc-body"><div class="prose-doc">
+
+<p>Le site est déployé, mais le projet n'était pas encore versionné. On l'initialise en Git, on vérifie l'authentification GitHub, puis on crée un dépôt <strong>privé</strong> et on pousse le premier commit — en s'assurant que <code>node_modules/</code> et les artefacts n'y entrent pas.</p>
+
+<h2>Vérifier l'authentification GitHub</h2>
+
+<p>Le CLI <code>gh</code> (2.92) est déjà authentifié sur le compte <strong>username</strong>, avec le scope <code>repo</code>. On le confirme avant toute opération distante :</p>
+
+<pre class="cmd"><span class="k">gh auth status</span>   <span class="c"># → connecté, compte « username », scope repo</span></pre>
+
+<h2>Le .gitignore</h2>
+
+<p>Placé à la racine <code>gaming/</code>, il exclut les dépendances, la sortie de build, l'état local de Wrangler, les secrets et les fichiers d'OS/éditeur. C'est lui qui garantit un dépôt propre (0 <code>node_modules</code>).</p>
+
+<pre class="cmd code"><span class="c"># dependencies</span>
+node_modules/
+
+<span class="c"># build output</span>
+dist/
+.astro/
+.output/
+
+<span class="c"># cloudflare / wrangler local state</span>
+.wrangler/
+
+<span class="c"># env &amp; secrets</span>
+.env
+.env.*
+.dev.vars
+
+<span class="c"># os / editor</span>
+.DS_Store
+*.log</pre>
+
+<div class="callout warn"><span class="l">Pourquoi ces exclusions</span><p><code>.dev.vars</code> et <code>.env*</code> contiennent des secrets — ils ne doivent <strong>jamais</strong> être commités. <code>.wrangler/</code>, <code>dist/</code>, <code>.astro/</code> et <code>node_modules/</code> sont régénérables : les versionner alourdit le dépôt et provoque des conflits inutiles.</p></div>
+
+<h2>Initialiser et pousser le dépôt</h2>
+
+<p>Le projet n'était pas versionné au départ. On l'initialise sur la branche <code>main</code>, on configure l'identité, on stage tout (le <code>.gitignore</code> filtre), on commite, puis <code>gh repo create</code> crée le dépôt privé, ajoute le remote et pousse — le tout en une commande.</p>
+
+<pre class="cmd"><span class="c"># à la racine gaming/</span>
+<span class="k">git init -b main</span>
+<span class="k">git config</span> user.name  <b>"…"</b>
+<span class="k">git config</span> user.email <b>"…"</b>
+<span class="k">git add -A</span>
+<span class="k">git commit</span> -m <b>"Initial commit — BlogStarter"</b>
+<span class="k">gh repo create</span> blogstarter --private --source=. --remote=origin --push</pre>
+
+<h2>Résultat</h2>
+
+<table class="doc-table">
+<thead><tr><th>Élément</th><th>Valeur</th></tr></thead>
+<tbody>
+<tr><td>Dépôt</td><td><strong><a href="https://github.com/username/blogstarter">https://github.com/username/blogstarter</a></strong></td></tr>
+<tr><td>Visibilité</td><td><strong>Privé</strong></td></tr>
+<tr><td>Compte</td><td>username</td></tr>
+<tr><td>Fichiers commités</td><td><strong>136</strong></td></tr>
+<tr><td>node_modules inclus</td><td><strong>0</strong> (filtré par .gitignore)</td></tr>
+</tbody>
+</table>
+
+<div class="callout tip"><span class="l">Bon signe</span><p>136 fichiers et <strong>zéro</strong> <code>node_modules</code> : le <code>.gitignore</code> fait son travail. Le dépôt ne contient que le code source, la config, le contenu et le design system — tout ce qui est régénérable reste dehors.</p></div>
+
+<h2>Déploiement continu (optionnel)</h2>
+
+<p>Le déploiement s'est fait manuellement via <code>wrangler deploy</code>. Pour automatiser, on peut <strong>connecter le dépôt GitHub à Cloudflare</strong> : chaque <code>git push</code> sur <code>main</code> déclenche alors un build et un déploiement du Worker, sans commande manuelle. Deux chemins concrets s'offrent, au choix :</p>
+
+<ol class="steps">
+<li><span class="st-t">Via le Dashboard Cloudflare (sans code CI)</span><span class="st-d"><strong>Cloudflare Dashboard → Workers &amp; Pages → « Connect to Git »</strong> → autoriser GitHub, choisir <code>username/blogstarter</code>, définir la commande de build (<code>npm run build</code>) et la branche de production (<code>main</code>). Cloudflare rebuild et redéploie à chaque push. Le plus simple : rien à versionner.</span></li>
+<li><span class="st-t">Via un workflow GitHub Actions</span><span class="st-d">Ajouter un fichier <code>.github/workflows/deploy.yml</code> qui, sur push <code>main</code>, exécute <code>npm ci</code> → <code>npm run build</code> → <code>wrangler deploy</code> (action <code>cloudflare/wrangler-action</code>). Nécessite un <code>CLOUDFLARE_API_TOKEN</code> stocké en <strong>secret GitHub</strong> (jamais dans le dépôt). Plus de contrôle (tests, étapes conditionnelles) mais un fichier de plus à maintenir.</span></li>
+</ol>
+
+<div class="callout info"><span class="l">À garder en tête</span><p>Quel que soit le chemin, le déploiement automatique ne rejoue que le <strong>build du site</strong>. Les opérations one-shot sur les données restent <strong>manuelles</strong> quand elles changent : migrations <code>d1 migrations apply --remote</code>, chargement du <code>seed.sql</code>, et upload des créatives sur R2 (<code>r2 object put --remote</code>). Elles ne font pas partie du build et ne sont pas déclenchées par un <code>git push</code>.</p></div>
+
+</div>
+<nav class="doc-pager"><a href="09-deploiement.html"><span class="dir">← Précédent</span><span class="ttl">Déploiement Cloudflare</span></a><a class="next" href="11-annexes.html"><span class="dir">Suivant →</span><span class="ttl">Annexes</span></a></nav>
+</main>
+<footer><div class="wrap">BlogStarter — Documentation du process · Partie 10</div></footer></body></html>

@@ -1,0 +1,124 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partie 03 — Valider les gabarits · BlogStarter Doc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doc.css"></head><body>
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BLOG<span>STARTER</span></span><span class="tag"><a href="index.html">← SOMMAIRE</a> · PARTIE 03</span></div></header>
+<div class="doc-hero"><div class="wrap"><a class="back" href="index.html">← Sommaire</a><span class="kick">Partie 03</span><h1>Valider les gabarits (dans l'ordre)</h1><p class="lede">Le design system est validé : on passe aux pages. Mais pas n'importe lesquelles, ni dans n'importe quel ordre. On assemble article, puis listing, puis home — uniquement à partir des composants du système, sans jamais écrire un style hors du DS.</p></div></div>
+<main class="wrap doc-body"><div class="prose-doc">
+
+<h2>L'ordre : article → listing → home</h2>
+<p>Un gabarit n'est pas une page décorative : c'est un <strong>assemblage de composants du design system</strong>. Chaque maquette de cette partie ne fait qu'agencer des briques déjà définies en Partie 02 (cartes, encarts pub, sommaire, callouts, stats, tier, bloc auteur…). La règle absolue tient en une phrase : <strong>aucun style de composant n'est écrit dans une page</strong>. Chaque fichier HTML de <code>design/</code> ne charge qu'une seule feuille : <code>styles-v2.css</code>. On le lit d'ailleurs en toutes lettres en tête de chaque maquette.</p>
+<pre class="cmd code"><span class="c">&lt;!-- SOURCE DE VÉRITÉ : styles-v2.css. Aucun style de composant dans cette page. --&gt;</span>
+<span class="k">&lt;link</span> rel=<b>"stylesheet"</b> href=<b>"styles-v2.css"</b><span class="k">&gt;</span></pre>
+<p>L'ordre article → listing → home n'est pas arbitraire, il suit la logique de valeur :</p>
+<ol>
+  <li><strong>L'article (single) d'abord</strong> — c'est la page où le lecteur arrive (SEO), où il lit, et où <strong>toute la monétisation se joue</strong>. C'est la plus dense en composants et la plus exigeante côté UX. La valider en premier fait émerger la majorité des besoins réels du système.</li>
+  <li><strong>Le listing ensuite</strong> — une fois la carte article stabilisée, l'archive n'est qu'une grille de ces cartes plus un en-tête. Elle réutilise presque tout ce qui existe déjà.</li>
+  <li><strong>La home en dernier</strong> — c'est la page la plus « composite » : elle recycle le spotlight, les cartes, la sidebar tendances, la newsletter. La construire en dernier, c'est n'assembler que des briques déjà éprouvées.</li>
+</ol>
+<div class="callout"><span class="l">Principe</span><p>On valide du plus contraignant (article) vers le plus dérivé (home). Chaque page suivante hérite des composants durcis par la précédente. Zéro recopie, zéro régression.</p></div>
+
+<h2>Page ARTICLE — le cœur du site</h2>
+<p>La page article a été <strong>auditée en expert UX/UI</strong> puis reprise en v3 (<code>design/article-v3.html</code>). L'objectif : une lecture confortable de bout en bout <em>et</em> une monétisation intégrée qui ne casse jamais le flux. Les améliorations réelles :</p>
+
+<h3>Le module « at-a-glance » (verdict + stats + infos-clés)</h3>
+<p>Plutôt que d'éparpiller le verdict, les jauges de stats et les infos-clés en trois blocs distincts, la v3 les réunit en <strong>un seul module de synthèse</strong> en tête d'article : <code>&lt;section class="article-summary"&gt;</code>. C'est le standard des références du secteur (Prydwen, Mobalytics) : le lecteur a le résumé d'un coup d'œil avant de plonger dans le détail.</p>
+<pre class="cmd code"><span class="k">&lt;section</span> class=<b>"article-summary"</b><span class="k">&gt;</span>
+  <span class="k">&lt;div</span> class=<b>"as-top"</b><span class="k">&gt;</span>
+    <span class="c">&lt;!-- Verdict : tier S + note /10 + badge "Recommended" --&gt;</span>
+    <span class="k">&lt;div</span> class=<b>"as-verdict"</b><span class="k">&gt;</span> … <span class="k">&lt;/div&gt;</span>
+    <span class="c">&lt;!-- Stats : jauges Damage / Survivability / Mobility / Difficulty --&gt;</span>
+    <span class="k">&lt;div</span> class=<b>"as-stats"</b><span class="k">&gt;</span> … <span class="k">&lt;/div&gt;</span>
+  <span class="k">&lt;/div&gt;</span>
+  <span class="c">&lt;!-- Infos-clés : Class / Role / Content / F2P cost --&gt;</span>
+  <span class="k">&lt;div</span> class=<b>"as-facts"</b><span class="k">&gt;</span> … <span class="k">&lt;/div&gt;</span>
+<span class="k">&lt;/section&gt;</span></pre>
+<p>Le verdict combine une pastille de tier (<code>&lt;span class="tier s"&gt;S&lt;/span&gt;</code>), une note chiffrée (<code>&lt;span class="rating"&gt;</code> avec score et « / 10 ») et un badge de recommandation. Les stats sont des jauges (<code>.meter</code>, avec variantes <code>.warning</code>/<code>.danger</code>) et les infos-clés une grille de couples clé/valeur (<code>.as-fact</code>).</p>
+
+<h3>L'utilitaire <code>.flow</code> — un rythme vertical systématique</h3>
+<p>Le corps (<code>&lt;main class="article-main flow"&gt;</code>) et chaque bloc de prose (<code>.prose.flow-sm</code>) utilisent l'utilitaire <strong><code>.flow</code></strong> : il applique un espacement vertical régulier entre enfants successifs. Résultat : un rythme de lecture homogène sans avoir à gérer des marges au cas par cas. C'est ce qui donne à l'article son allure « propre » quel que soit l'enchaînement titre / paragraphe / table / callout.</p>
+
+<h3>La première pub repoussée après 2 sections (guides)</h3>
+<p>Décision UX assumée : <strong>on n'affiche pas de pub avant que le lecteur soit accroché</strong>. Dans le gabarit guide/build, le premier <code>.ad-slot.ad-inline</code> n'apparaît qu'après les deux premières sections (aperçu + gear/stats). <strong>Nuance :</strong> le gabarit news (contenu plus court) insère sa première pub dès <strong>après la première section</strong> — la règle « 2 sections » vaut pour le contenu long, pas pour l'actu.</p>
+<pre class="cmd code"><span class="c">&lt;!-- 1re PUB : après 2 sections, lecteur accroché --&gt;</span>
+<span class="k">&lt;div</span> class=<b>"ad-slot ad-inline"</b><span class="k">&gt;</span> … <span class="k">&lt;/div&gt;</span></pre>
+<p>Les autres emplacements suivent : un rectangle <code>300×250</code> en milieu d'article (<code>.ad-rectangle</code>), et un rectangle sticky en bas de sidebar.</p>
+
+<h3>Sidebar remontée en mobile + ancre pub</h3>
+<p>Sur mobile, la sidebar (sommaire + pub) est remontée pour rester utile, et une <strong>ancre pub</strong> (<code>.ad-anchor</code>, bandeau 728×90) est ajoutée en bas d'écran. Elle est masquée par défaut, <strong>apparaît au scroll une fois la byline dépassée</strong> (on ne colle pas une pub dès le premier pixel), et reste <strong>fermable définitivement</strong> par l'utilisateur (bouton ✕). Le comportement est géré par un petit script sans dépendance.</p>
+<pre class="cmd code"><span class="k">function</span> toggleAnchor(){
+  <span class="k">if</span>(anchorClosed || !byline || !anchor) <span class="k">return</span>;
+  <span class="c">// byline sortie par le haut ?</span>
+  anchor.classList.toggle(<b>'is-visible'</b>, byline.getBoundingClientRect().bottom &lt; 0);
+}</pre>
+
+<h3>Scrollspy + barre de progression réels</h3>
+<p>Deux aides à la lecture, réellement câblées en JS (pas décoratives) :</p>
+<ul>
+  <li><strong>Barre de progression</strong> (<code>.reading-progress &gt; #progress</code>, en <code>position:sticky</code>) : sa largeur suit l'avancée dans <code>.article-main</code>.</li>
+  <li><strong>Scrollspy du sommaire</strong> : un <code>IntersectionObserver</code> surveille chaque section (<code>apercu</code>, <code>stuff</code>, <code>talents</code>, <code>rotation</code>, <code>f2p</code>, <code>faq</code>) et met en surbrillance l'entrée correspondante du sommaire (<code>.toc a.active</code>).</li>
+</ul>
+
+<h3>Accessibilité (a11y)</h3>
+<p>Les attributs ARIA sont posés dès la maquette : <code>aria-label</code> sur la navigation, le fil d'Ariane et le sommaire, <code>aria-current="page"</code> sur l'onglet actif, <code>aria-hidden="true"</code> sur les éléments purement décoratifs (chevrons, icônes, avatars), <code>aria-label</code> sur les boutons de fermeture. Le picto « auteur vérifié » porte un <code>aria-label="Verified author"</code>.</p>
+
+<h3>Le second gabarit article : <code>article-news</code> (les news)</h3>
+<p>À côté du gabarit guide/build ci-dessus (<code>design/article-v3.html</code>), un <strong>second gabarit distinct</strong>, <code>design/article-news.html</code>, sert les <strong>news</strong>. Les deux <strong>coexistent</strong> : ils réutilisent les mêmes composants du design system, mais leur mise en page diffère (le guide privilégie la profondeur ; la news, une lecture rapide et une densité pub plus haute). Les particularités de <code>article-news</code> :</p>
+<table class="doc-table">
+  <thead><tr><th>Élément</th><th>Rôle</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Bande pub haute</strong> (<code>.ad-band</code>)</td><td>Leaderboard 728×90 placé entre le menu et le hero, en haut de page.</td></tr>
+    <tr><td><strong>Hero 2 colonnes</strong> (<code>.article-hero-split</code>)</td><td>Contenu à gauche (fil d'Ariane, titre, dek, byline), <strong>pub carrée</strong> à droite (<code>.ad-square</code>, 300×300).</td></tr>
+    <tr><td><strong>Image dans la prose</strong></td><td><code>&lt;figure&gt;&lt;img&gt;…&lt;figcaption&gt;</code> intégrée au fil du texte, plutôt qu'un hero pleine largeur systématique.</td></tr>
+    <tr><td><strong>Sidebar « pub d'abord »</strong></td><td>La sidebar affiche le rectangle 300×250 <strong>en haut</strong>, <em>puis</em> le sommaire — l'inverse de la v3 où le sommaire venait en premier.</td></tr>
+    <tr><td><strong>Ancre pub en bas</strong></td><td>Même <code>.ad-anchor</code> 728×90 fermable, apparition après la byline.</td></tr>
+  </tbody>
+</table>
+<div class="callout tip"><span class="l">Reviews</span><p>Pour les <strong>tests</strong>, le gabarit article ajoute le bloc <strong>verdict / note</strong> (score /10 + phrase de synthèse) et le bloc <strong>pros / cons</strong> (<code>.proscons</code> avec colonnes <code>.pros</code> et <code>.cons</code>). Guides et reviews partagent donc le même squelette, enrichi de ces composants d'évaluation.</p></div>
+
+<h2>Page LISTING — un seul template pour trois usages</h2>
+<p>La maquette <code>design/listing.html</code> est un <strong>template unique et réutilisable</strong> pour trois types d'archives : <strong>catégorie</strong>, <strong>tag</strong> et <strong>auteur</strong>. La différence tient à une classe modificatrice sur l'en-tête, documentée directement dans le HTML :</p>
+<pre class="cmd code"><span class="c">&lt;!-- Variantes du même template : --&gt;</span>
+<span class="c">&lt;!-- · Catégorie → &lt;div class="hub-header"&gt; --&gt;</span>
+<span class="c">&lt;!-- · Tag      → &lt;div class="hub-header is-tag"&gt; … &lt;h1 class="h-title"&gt;DPS&lt;/h1&gt; (le # est ajouté auto) --&gt;</span>
+<span class="c">&lt;!-- · Auteur   → &lt;div class="hub-header is-author"&gt;&lt;div class="author-avatar"&gt;A&lt;/div&gt; … profil de l'auteur --&gt;</span></pre>
+<p>Sa composition :</p>
+<ul>
+  <li><strong>Bande pub haute</strong> (<code>.ad-band</code>, leaderboard 728×90) puis fil d'Ariane.</li>
+  <li><strong>En-tête d'archive</strong> (<code>.hub-header</code>) : image de fond, badge de type, titre (<code>.h-title</code>), description (<code>.h-desc</code>) et statistiques (<code>.h-stats</code> : nombre d'articles, cette semaine, aujourd'hui).</li>
+  <li><strong>Layout <code>.listing-layout</code></strong> : une colonne principale + une sidebar sticky.</li>
+  <li><strong>Grille 2 colonnes</strong> (<code>.listing-grid</code>) de cartes article, avec une <strong>pub in-feed dans le flux</strong> (<code>.ad-slot.ad-inline.grid-span-all</code>) insérée entre les cartes.</li>
+  <li><strong>Sidebar tendances</strong> (<code>.trending</code> : items classés 1→4) précédée d'un rectangle 300×250.</li>
+  <li><strong>Pagination</strong> (<code>.pagination</code> : PREV / pages / NEXT).</li>
+</ul>
+
+<h2>Page HOME — assemblage de briques éprouvées</h2>
+<p>La home (<code>design/home.html</code>) n'introduit aucun composant nouveau : elle assemble l'existant.</p>
+<ul>
+  <li><strong>Spotlight « à la une »</strong> (<code>.spotlight</code>) : une <em>feature</em> principale (<code>.feature</code>) + trois entrées secondaires (<code>.side .mini</code>). Choix éditorial validé : le feature ne garde que <strong>le titre</strong>, sans dek.</li>
+  <li><strong>« Games covered »</strong> : grille 4 colonnes (<code>.grid.cols-4</code>) de <code>.game-card</code> (jeu + nombre de guides).</li>
+  <li><strong>Dernières sections</strong> : « Latest guides » puis « Latest news », en grilles 2 colonnes (<code>.grid.cols-2</code>) de cartes, avec une pub in-feed intercalée.</li>
+  <li><strong>Sidebar tendances</strong> : le même bloc <code>.trending</code> + rectangle que le listing.</li>
+  <li><strong>Newsletter</strong> (<code>.newsletter</code>) : accroche + formulaire e-mail, en pied de page.</li>
+</ul>
+<div class="callout info"><span class="l">Cohérence</span><p>La sidebar tendances, la carte article, l'encart pub rectangle : ce sont <em>exactement</em> les mêmes composants sur le listing et sur la home. C'est tout l'intérêt d'avoir figé le système avant de dessiner les pages.</p></div>
+
+<h2>Responsive &amp; CLS</h2>
+<p>Tous les gabarits se réagencent proprement en mobile, sans redessiner le moindre composant :</p>
+<ul>
+  <li>Les grilles (<code>.listing-grid</code>, <code>.grid.cols-4</code>, <code>.grid.cols-2</code>) passent en <strong>une seule colonne</strong>.</li>
+  <li>Le <strong>hero 2 colonnes</strong> de <code>article-news.html</code> (<code>.article-hero-split</code>) <strong>s'empile</strong> : contenu au-dessus, pub carrée en dessous.</li>
+  <li>Les sidebars sont remontées ou repositionnées sous la colonne principale selon la page.</li>
+</ul>
+<div class="callout info"><span class="l">Anti-CLS</span><p>Pour éviter tout décalage de mise en page (<em>Cumulative Layout Shift</em>) provoqué par l'ancre pub qui apparaît au scroll, <code>article-news.html</code> <strong>réserve son espace à l'avance</strong> : un <code>padding-bottom:140px</code> est appliqué sur le <code>&lt;body&gt;</code>. Le bandeau 728×90 se glisse ainsi dans une zone déjà libérée, sans repousser le contenu au moment où il s'affiche.</p></div>
+
+<h2>La règle d'or</h2>
+<div class="callout danger"><span class="l">Non négociable</span><p><strong>Modifier une page = modifier d'abord le design system.</strong> Si un besoin apparaît en construisant un gabarit (un espacement, une variante de carte, un nouvel emplacement pub), on ne le règle jamais dans la page : on l'ajoute d'abord à <code>styles-v2.css</code>, puis on l'utilise. Sinon le système cesse d'être la source de vérité unique, et la dette de recopie repart.</p></div>
+<p>Cette discipline est ce qui rendra l'étape suivante (l'adaptation Astro) presque mécanique : puisque chaque page n'est qu'une combinaison de classes du DS, la transformer en composant <code>.astro</code> revient à copier le même balisage. Le rendu reste fidèle au pixel.</p>
+
+</div>
+<nav class="doc-pager"><a href="02-design-system.html"><span class="dir">← Précédent</span><span class="ttl">Le Design System</span></a><a class="next" href="04-contenu.html"><span class="dir">Suivant →</span><span class="ttl">Modèle de contenu</span></a></nav>
+</main>
+<footer><div class="wrap">BlogStarter — Documentation du process · Partie 03</div></footer></body></html>

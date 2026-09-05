@@ -1,0 +1,174 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partie 02 — Le Design System · BlogStarter Doc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doc.css"></head><body>
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BLOG<span>STARTER</span></span><span class="tag"><a href="index.html">← SOMMAIRE</a> · PARTIE 02</span></div></header>
+<div class="doc-hero"><div class="wrap"><a class="back" href="index.html">← Sommaire</a><span class="kick">Partie 02</span><h1>Le Design System — commencer par ça</h1><p class="lede">La fondation. Rien ne se construit tant qu'il n'est pas validé. On explique pourquoi il passe avant tout, on pose le parti pris « Command HUD », on cite les vrais tokens de <code>styles-v2.css</code>, on dresse l'inventaire priorisé des composants, et on fixe les bonnes pratiques qui garantissent la cohérence.</p></div></div>
+<main class="wrap doc-body"><div class="prose-doc">
+
+<h2>2.1 — Pourquoi démarrer par le design system</h2>
+<p>C'est l'étape la plus contre-intuitive et pourtant la plus rentable. La tentation naturelle est de « faire une première page » puis d'en dériver les suivantes en recopiant le HTML. C'est un piège.</p>
+<div class="callout danger"><span class="l">Le piège du HTML recopié</span><p>Recopier le HTML d'une page à l'autre crée une <strong>dette de cohérence</strong> immédiate : le même bouton finit avec trois paddings différents, la même carte avec deux bordures, et chaque correction doit être répétée manuellement partout. À dix pages, c'est ingérable. Le site devient incohérent visuellement — exactement ce qui trahit un « site fait à la va-vite » aux yeux du visiteur <em>et</em> des régies publicitaires.</p></div>
+<p>La bonne approche inverse la logique : on construit d'abord un <strong>système</strong> — un fichier CSS unique de tokens et de composants — et chaque page n'est plus qu'un <strong>assemblage</strong> de ces briques. Bénéfices concrets :</p>
+<ul>
+<li><strong>Cohérence garantie.</strong> Un bouton est <em>le</em> bouton, partout. Une carte est <em>la</em> carte.</li>
+<li><strong>Zéro dette de recopie.</strong> On modifie une fois, à un seul endroit, et tout le site suit.</li>
+<li><strong>Source de vérité unique.</strong> <code>styles-v2.css</code> est la référence. Toute évolution passe par lui.</li>
+</ul>
+<div class="callout"><span class="l">La règle d'or (répétée dans toute la doc)</span><p>Modifier une page = modifier <strong>d'abord</strong> le design system, puis laisser la modification se répercuter. Jamais un style « en dur » dans une page. Cette discipline est ce qui rend le passage à Astro (partie 06) fidèle au pixel : le CSS validé y est copié tel quel.</p></div>
+
+<h2>2.2 — Concept &amp; direction artistique : « Command HUD »</h2>
+<p>Un design system a besoin d'un <strong>parti pris</strong>. Sans direction forte, on retombe sur du générique — et le générique ne se retient pas.</p>
+<h3>La leçon de la V1</h3>
+<p>Une première version a été produite puis <strong>rejetée</strong> : trop « SaaS sombre générique » — coins arrondis, palette safe violet + cyan. Rien de faux, mais rien de mémorable. La leçon retenue : <strong>il faut un parti pris fort et assumé</strong>, quitte à polariser.</p>
+<h3>La V2 : Command HUD</h3>
+<p>La V2 assume une esthétique <strong>HUD / esport</strong> — l'interface d'un jeu compétitif. Ses marqueurs :</p>
+<ul>
+<li>Fond <strong>dark quasi-noir</strong> (<code>--bg #07080b</code>), gris froids.</li>
+<li>Un <strong>seul accent signature</strong> : le <strong>volt</strong> <code>#03A9F4</code> (vert acide). Discipline mono-accent stricte.</li>
+<li>Des <strong>formes angulaires</strong> : coins entaillés (clip-path « notch »), crochets de viseur (brackets), rayons quasi nuls.</li>
+<li>Une <strong>grille blueprint</strong> en fond, fondue vers le haut de page.</li>
+<li>Une typo à trois voix : <strong>Chakra Petch</strong> (titres, techy), <strong>Inter</strong> (lecture) et <strong>JetBrains Mono</strong> (labels système).</li>
+</ul>
+<div class="callout tip"><span class="l">Pourquoi ça marche pour ce site</span><p>Le vocabulaire visuel (HUD, viseur, blueprint, mono technique) <em>parle</em> à l'audience gaming compétitive et distingue instantanément BlogStarter d'un blog générique. Le parti pris devient un actif de marque.</p></div>
+
+<h2>2.3 — Les tokens</h2>
+<p>Tous les tokens vivent dans le <code>:root</code> de <code>styles-v2.css</code> : surfaces, accent volt, sémantiques de statut, échelle tier S→D, typo, espacements, rayons quasi nuls. Voici un extrait fidèle des valeurs réelles.</p>
+<pre class="cmd code"><span class="c">/* Surfaces — gris froids, quasi-noir */</span>
+<span class="k">--bg</span>:            #07080b;
+<span class="k">--surface-1</span>:     #0e1116;
+<span class="k">--surface-2</span>:     #141821;
+<span class="k">--border</span>:        #232a38;
+
+<span class="c">/* Signature — VOLT (vert acide) : accent UNIQUE */</span>
+<span class="k">--volt</span>:        #03A9F4;
+<span class="k">--volt-tint</span>:   rgba(3, 169, 244, .11);
+<span class="k">--grad-volt</span>:   linear-gradient(120deg, #4fc3f7, #03A9F4 55%, #0288d1);
+
+<span class="c">/* Sémantiques (statut, PAS marque) */</span>
+<span class="k">--success</span>: #34d399;  <span class="k">--warning</span>: #ffb020;
+<span class="k">--danger</span>:  #ff4d6d;  <span class="k">--info</span>:    #38bdf8;
+
+<span class="c">/* Échelle tier list */</span>
+<span class="k">--tier-s</span>: #ff4d6d;  <span class="k">--tier-a</span>: #ffb020;  <span class="k">--tier-b</span>: #03A9F4;
+
+<span class="c">/* Typographie — trois voix */</span>
+<span class="k">--font-display</span>: "Chakra Petch", system-ui, sans-serif;
+<span class="k">--font-sans</span>:    "Inter", system-ui, sans-serif;
+<span class="k">--font-mono</span>:    "JetBrains Mono", ui-monospace, monospace;
+
+<span class="c">/* Rayons — angulaires (peu arrondis) + notch signature */</span>
+<span class="k">--r-sm</span>: 2px; <span class="k">--r-md</span>: 4px; <span class="k">--r-lg</span>: 6px;
+<span class="k">--notch</span>: 12px;</pre>
+<h3>Les formes signature</h3>
+<p>Au-delà des tokens de couleur, le système définit des <strong>utilitaires de forme</strong> qui portent l'identité HUD :</p>
+<table class="doc-table">
+<thead><tr><th>Élément</th><th>Réalisation</th><th>Effet</th></tr></thead>
+<tbody>
+<tr><td><strong>Notch</strong> (<code>.hud</code>)</td><td><code>clip-path: polygon(...)</code> avec coins entaillés, double couche pour dessiner le bord</td><td>Le panneau angulaire caractéristique.</td></tr>
+<tr><td><strong>Crochets</strong> (<code>.brackets</code>)</td><td>Deux pseudo-éléments en <code>border</code> volt aux angles</td><td>L'effet « viseur » d'un HUD.</td></tr>
+<tr><td><strong>Grille blueprint</strong></td><td><code>body::before</code> : double dégradé linéaire <code>--grid-line</code>, taille 46px, masqué en radial</td><td>Fond technique fondu, discret.</td></tr>
+</tbody>
+</table>
+
+<h3>La matrice d'états</h3>
+<p>Le CSS ne définit pas que des « composants au repos » : il porte l'ensemble de leurs <strong>états d'interaction</strong>. Chaque élément interactif est spécifié pour six états, ce qui garantit un feedback cohérent partout et évite les boutons ou champs « morts » visuellement.</p>
+<table class="doc-table">
+<thead><tr><th>État</th><th>Déclencheur</th><th>Traitement visuel</th></tr></thead>
+<tbody>
+<tr><td><strong>default</strong></td><td>Au repos</td><td>Surface + bordure de base, texte pleine lisibilité.</td></tr>
+<tr><td><strong>hover</strong></td><td>Survol souris</td><td>Bordure volt / élévation légère, transition courte (120–180 ms).</td></tr>
+<tr><td><strong>focus</strong></td><td>Navigation clavier</td><td>Contour focus visible (accent volt) — jamais supprimé, exigence a11y.</td></tr>
+<tr><td><strong>active</strong></td><td>Clic / appui en cours</td><td>Enfoncement (teinte accentuée, léger décalage).</td></tr>
+<tr><td><strong>disabled</strong></td><td>Action indisponible</td><td>Opacité réduite, curseur bloqué, pas de hover.</td></tr>
+<tr><td><strong>error</strong></td><td>Validation échouée</td><td>Bordure/label <code>--danger</code>, message associé (champs de formulaire).</td></tr>
+</tbody>
+</table>
+
+<h3>Responsive &amp; breakpoints</h3>
+<p>Le système est pensé <strong>mobile-first</strong> et déclenche ses réagencements à une série de points de rupture explicites : <strong>940 / 900 / 820 / 680 / 560 / 520 px</strong>. Aux largeurs intermédiaires, la <strong>sidebar est réorganisée</strong> (remontée ou passée sous le contenu principal selon la page), et les grilles utilitaires <code>.grid.cols-N</code> réduisent leur nombre de colonnes jusqu'à passer sur une seule colonne aux plus petites tailles. Aucun composant n'est redessiné : ce sont les mêmes briques, réorganisées.</p>
+
+<h2>2.4 — L'inventaire des composants</h2>
+<p>Le design system n'est pas qu'une palette : c'est une <strong>bibliothèque complète de composants</strong>, organisée par familles et priorisée. Chaque composant existe comme spécimen dans la page styleguide (référencé <code>SYS.nn</code>). Priorités : <strong>🟢 Essentiel</strong> · <strong>🟡 Recommandé</strong> · <strong>⚪ Optionnel</strong>.</p>
+
+<h3>Fondations &amp; UI</h3>
+<table class="doc-table">
+<thead><tr><th>Composant</th><th>Rôle</th><th>Prio</th></tr></thead>
+<tbody>
+<tr><td>Couleurs · Typographie · Formes · Élévation · Grille</td><td>Les tokens de base, l'ADN visuel.</td><td>🟢</td></tr>
+<tr><td>Boutons (3 variantes × 3 tailles)</td><td>Primary volt, secondary, ghost.</td><td>🟢</td></tr>
+<tr><td>Badges · Tags · Tiers</td><td>Catégorie, statut à point lumineux, échelle S→D.</td><td>🟢</td></tr>
+<tr><td>Cartes article</td><td>La brique de tout listing (coin entaillé, index mono).</td><td>🟢</td></tr>
+<tr><td>Formulaires · Filtres · Onglets</td><td>Champs, tri d'archives, bascules de vue (PvE/PvP/F2P).</td><td>🟡</td></tr>
+<tr><td>Table &amp; pagination</td><td>Stats, comparatifs, archives.</td><td>🟡</td></tr>
+</tbody>
+</table>
+
+<h3>Navigation, accueil &amp; hubs</h3>
+<table class="doc-table">
+<thead><tr><th>Composant</th><th>Rôle</th><th>Prio</th></tr></thead>
+<tbody>
+<tr><td>Header &amp; nav · Footer</td><td>Barre sticky, logo BlogStarter, nav mono capitales.</td><td>🟢</td></tr>
+<tr><td>Spotlight / à la une · En-tête de section</td><td>Hero d'accueil (article vedette + pile) et titres de blocs.</td><td>🟢</td></tr>
+<tr><td>Hub de jeu / catégorie · Trending · Grille de jeux</td><td>En-tête d'archive, top lus, sélecteur de jeux poster.</td><td>🟡</td></tr>
+<tr><td>Méga-menu · Nav mobile · Modale recherche</td><td>Le hub navigationnel d'un site de guides.</td><td>🟡</td></tr>
+<tr><td>Barre d'annonce · Progression &amp; retour-haut · Newsletter</td><td>Event/patch, lecture, capture email.</td><td>⚪</td></tr>
+</tbody>
+</table>
+
+<h3>Gaming (le signature)</h3>
+<table class="doc-table">
+<thead><tr><th>Composant</th><th>Rôle</th><th>Prio</th></tr></thead>
+<tbody>
+<tr><td>Jauges &amp; note · Tier list complète</td><td>Le cœur d'un site de guides : stats d'un coup d'œil, classement S→D.</td><td>🟢</td></tr>
+<tr><td>Carte personnage/item · Build/loadout</td><td>Portrait, élément, rareté ; slots d'équipement.</td><td>🟡</td></tr>
+<tr><td>Pour/contre · Infos-clés · Patch notes</td><td>Synthèse forces/faiblesses, fiche d'identité, changelog codé par type.</td><td>🟡</td></tr>
+<tr><td>Config PC requise · Countdown &amp; roadmap</td><td>Tableau min/reco (pont hardware), event &amp; timeline.</td><td>⚪</td></tr>
+</tbody>
+</table>
+
+<h3>Éditorial &amp; monétisation</h3>
+<table class="doc-table">
+<thead><tr><th>Composant</th><th>Rôle</th><th>Prio</th></tr></thead>
+<tbody>
+<tr><td>Prose · Callouts</td><td>Le style réel du corps d'article ; encadrés note/tip/warn/danger.</td><td>🟢</td></tr>
+<tr><td>Résumé « at-a-glance » (SYS.36b)</td><td>Module signature : verdict + stats + infos réunis en un coup d'œil (standard Prydwen/Mobalytics).</td><td>🟢</td></tr>
+<tr><td>Verdict/TL;DR · FAQ · Sommaire · Auteur · Sources · Fil d'Ariane</td><td>Les signaux E-E-A-T qui rassurent Google et les régies.</td><td>🟡</td></tr>
+<tr><td>Encarts publicitaires (leaderboard, rectangle, in-feed)</td><td>Formats RSoC/AdSense réservés dès le design (bon CLS).</td><td>🟢</td></tr>
+<tr><td>Buy box &amp; comparatif · Disclosure</td><td>Affiliation (pilier hardware) + mention obligatoire.</td><td>🟡</td></tr>
+<tr><td>Bandeau cookies · Modale · Toast · Tooltip · Skeleton · Empty · 404</td><td>Conformité RGPD, overlays et états.</td><td>⚪</td></tr>
+</tbody>
+</table>
+<div class="callout"><span class="l">Détail signature</span><p>Le module <strong>« at-a-glance »</strong> (SYS.36b) a été ajouté pour <strong>remplacer</strong> les blocs verdict + stats empilés : il réunit verdict, stats-clés et infos en une seule ouverture, comme le font Prydwen et Mobalytics. C'est un différenciateur direct de lisibilité — il sera au centre de l'audit du gabarit article en partie 03.</p></div>
+
+<h2>2.5 — La page styleguide navigable</h2>
+<p>Tous ces tokens et composants sont réunis dans une <strong>page unique</strong> : <code>design/design-system-v2.html</code>. Elle sert de vitrine et de contrat visuel.</p>
+<pre class="filetree">design/
+├── <span class="d">styles-v2.css</span>          <span class="c"># SOURCE DE VÉRITÉ (tokens + composants)</span>
+└── <span class="d">design-system-v2.html</span>  <span class="c"># styleguide navigable (sommaire latéral + scrollspy)</span></pre>
+<p>Sa structure :</p>
+<ul>
+<li>Un <strong>sommaire latéral</strong> groupé par familles : Fondations · Navigation · Accueil &amp; hubs · Composants UI · Gaming · Éditorial · Monétisation · États &amp; overlays.</li>
+<li>Un <strong>scrollspy</strong> qui surligne la section en cours à la lecture.</li>
+<li>Chaque section montre le <strong>spécimen réel</strong> du composant, numéroté <code>SYS.01</code> → <code>SYS.45</code>.</li>
+</ul>
+<div class="callout warn"><span class="l">Point de validation obligatoire</span><p>Le styleguide doit être <strong>validé avant d'aller plus loin</strong>. C'est le dernier moment pour ajuster le parti pris à moindre coût. Une fois validé, il devient intangible : les gabarits (partie 03) puis l'app Astro (partie 06) n'en sont que des assemblages.</p></div>
+
+<h2>2.6 — Bonnes pratiques</h2>
+<ol class="steps">
+<li><span class="st-t">Discipline mono-accent</span><span class="st-d">Un <strong>seul</strong> accent de marque, le volt <code>#03A9F4</code>. Les couleurs sémantiques (success, warning, danger, info) servent le <strong>statut</strong>, jamais la marque. Cette contrainte est ce qui donne au site son identité tranchée.</span></li>
+<li><span class="st-t">Un seul CSS source</span><span class="st-d"><code>styles-v2.css</code> est unique. Aucun style « en dur » dans une page. En partie 06, ce fichier est <strong>copié tel quel</strong> dans l'app Astro et importé une seule fois dans le <code>BaseLayout</code> — la fidélité vient de là.</span></li>
+<li><span class="st-t">Formes signature systématiques</span><span class="st-d">Notch (coins entaillés), crochets de viseur, grille blueprint, rayons quasi nuls : réutiliser les utilitaires du système plutôt que réinventer des variantes.</span></li>
+<li><span class="st-t">Lisibilité éditoriale</span><span class="st-d">Inter pour le corps, largeur de prose maîtrisée (~680–720px), rythme vertical régulier. Le HUD habille, il ne gêne jamais la lecture — c'est du contenu long qu'on monétise.</span></li>
+<li><span class="st-t">Accessibilité</span><span class="st-d">Contrastes suffisants sur fond quasi-noir, focus visibles sur les champs, transitions courtes (120–180 ms) non tape-à-l'œil, sémantique HTML propre.</span></li>
+</ol>
+<div class="callout warn"><span class="l">Nuance accessibilité — contrastes</span><p>Le <strong>corps de texte</strong> (Inter sur fond quasi-noir) est conforme <strong>WCAG AA</strong>. En revanche, les tons les plus atténués — <code>--text-faint</code> et <code>--text-dim</code> — passent <strong>sous le seuil AA</strong> de contraste. Ils sont donc <strong>réservés aux labels non essentiels</strong> (numéros d'index mono, méta décoratives, séparateurs) et ne doivent jamais porter d'information critique ni de texte de lecture.</p></div>
+
+<div class="callout tip"><span class="l">C'est la fondation</span><p>Tout le reste du site repose sur cette partie. Un design system solide, cohérent et validé rend les étapes suivantes <strong>rapides et fiables</strong> : les gabarits s'assemblent sans friction, l'adaptation Astro est fidèle, et la monétisation (emplacements réservés dès le CSS) hérite d'un bon CLS gratuitement. Investir ici, c'est ne pas reconstruire deux fois.</p></div>
+
+</div>
+<nav class="doc-pager"><a href="01-cadrage.html"><span class="dir">← Précédent</span><span class="ttl">Partie 01 — Cadrage éditorial</span></a><a class="next" href="03-gabarits.html"><span class="dir">Suivant →</span><span class="ttl">Partie 03 — Valider les gabarits</span></a></nav>
+</main>
+<footer><div class="wrap">BlogStarter — Documentation du process · Partie 02</div></footer></body></html>

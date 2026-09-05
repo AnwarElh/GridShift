@@ -1,0 +1,128 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partie 08 — Monétisation &amp; conformité · BlogStarter Doc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doc.css"></head><body>
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BLOG<span>STARTER</span></span><span class="tag"><a href="index.html">← SOMMAIRE</a> · PARTIE 08</span></div></header>
+<div class="doc-hero"><div class="wrap"><a class="back" href="index.html">← Sommaire</a><span class="kick">Partie 08</span><h1>Monétisation &amp; conformité</h1><p class="lede">La monétisation n'est pas rajoutée après coup : les emplacements publicitaires sont <b>réservés dès le design system</b> (donc dimensionnés, donc sans CLS), les créatives sont des WebP optimisées servies depuis R2, et le volet conformité comprend un <b>socle Consent Mode v2 + bannière</b>, un <code>ads.txt</code> et des pages légales RGPD/AdSense — mais une pièce reste <b>bloquante</b> : un <b>CMP certifié TCF</b> est requis pour servir AdSense en EEE/UK.</p></div></div>
+<main class="wrap doc-body"><div class="prose-doc">
+
+<h2>8.1 — Emplacements publicitaires (réservés dès le DS)</h2>
+<p>Quatre formats standards sont prévus dans le design system, chacun avec un slot dédié dimensionné à l'avance — c'est ce qui garantit un bon <b>CLS</b> : l'espace est réservé, la créative se pose dedans.</p>
+<table class="doc-table"><thead><tr><th>Format</th><th>Taille</th><th>Emplacement</th><th>Classe DS</th></tr></thead><tbody>
+<tr><td>Leaderboard</td><td>728×90</td><td>Bande haute + ancre bas</td><td><code>.ad-band</code> · <code>.ad-anchor</code></td></tr>
+<tr><td>Medium rectangle</td><td>300×250</td><td>Hero (colonne droite) + sidebar</td><td><code>.article-hero-split .hero-ad</code> · <code>.listing-side</code></td></tr>
+<tr><td>In-feed natif</td><td>fluide</td><td>Dans la grille listing/home</td><td><code>.ad-slot.ad-inline</code></td></tr>
+</tbody></table>
+<p>Sur la page article, le leaderboard ouvre la page (<code>.ad-band</code>) et le rectangle occupe la colonne droite du hero 2 colonnes, en position <code>sticky</code> ; un second rectangle est en tête de sidebar. Le HTML réel :</p>
+<pre class="cmd code">&lt;!-- TOP AD --&gt;
+&lt;div class="ad-band"&gt;&lt;div class="container"&gt;&lt;AdLeaderboard /&gt;&lt;/div&gt;&lt;/div&gt;
+...
+&lt;div class="article-hero-split"&gt;
+  &lt;div class="article-head"&gt;...&lt;/div&gt;
+  &lt;div class="hero-ad"&gt;&lt;AdRectangle /&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+<p>Dans les grilles (home et listing), un bloc in-feed s'insère dans le flux — sur le listing, précisément <b>après la 4ᵉ carte</b> et en pleine largeur de grille :</p>
+<pre class="cmd code">&lt;ArticleCard art={a} index={(page - 1) * PER + i + 1} /&gt;
+{i === 3 &amp;&amp; &lt;div class="ad-slot ad-inline grid-span-all"&gt;&lt;div class="ad-inner"&gt;Native in-feed block&lt;/div&gt;&lt;/div&gt;}</pre>
+<div class="callout warn"><span class="l">CLS — réserver la hauteur de l'in-feed</span><p>Contrairement au leaderboard et au rectangle (dimensions fixes en <code>px</code>), le bloc in-feed est <b>fluide</b> : tant qu'il est vide (placeholder) sa hauteur est faible, puis la créative native le fait grandir → <b>décalage de mise en page</b>. Le slot <code>.ad-slot.ad-inline</code> doit imposer une <code>min-height</code> correspondant à la taille attendue de l'annonce pour réserver l'espace, exactement comme les autres formats.</p></div>
+<div class="callout info"><span class="l">Deux ambiguïtés à garder en tête</span><p><b>Nommage</b> : <code>.hero-ad</code> désigne le <b>wrapper</b> (la colonne droite du hero), tandis que <code>.ad-square</code> / <code>.ad-rectangle</code> désigne le <b>format</b> de l'annonce elle-même — ne pas confondre le conteneur et le slot. <b>Lazy-loading</b> : le leaderboard <code>.ad-band</code> est <b>above-the-fold</b> mais ses créatives sont en <code>loading="lazy"</code> ; c'est à nuancer, car un visuel critique en haut de page gagnerait à être en <code>loading="eager"</code> (le lazy retarderait le LCP au lieu de l'aider).</p></div>
+
+<h3>L'ancre publicitaire (comportement)</h3>
+<p>L'ancre bas de page est un leaderboard <b>fixe</b>, masqué par défaut, qui apparaît quand le lecteur a dépassé la byline, et se ferme d'un clic. Côté CSS, elle est <code>position: fixed</code> en bas, <code>display: none</code> tant que <code>.is-visible</code> n'est pas posée :</p>
+<pre class="cmd code">/* Masquée par défaut ; .is-visible l'affiche (déclenchée au scroll passé la byline). */
+.ad-anchor { position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; display: none; ... }
+.ad-anchor.is-visible { display: flex; }</pre>
+<p>Le HTML de l'ancre embarque le leaderboard et un bouton de fermeture ; un petit script inline bascule sa visibilité selon la position de la byline et la neutralise définitivement si le lecteur la ferme :</p>
+<pre class="cmd code">&lt;div class="ad-anchor" id="anchorAd"&gt;&lt;AdLeaderboard /&gt;
+  &lt;button class="close" aria-label="Close ad" onclick="closeAnchor()"&gt;✕&lt;/button&gt;&lt;/div&gt;
+
+&lt;script is:inline&gt;
+  var anchor=document.getElementById('anchorAd'), byline=document.querySelector('.article-byline'), closed=false;
+  function toggleAnchor(){ if(closed||!byline||!anchor) return;
+    anchor.classList.toggle('is-visible', byline.getBoundingClientRect().bottom &lt; 0); }
+  window.closeAnchor=function(){ closed=true; anchor.classList.remove('is-visible'); };
+  window.addEventListener('scroll', toggleAnchor, { passive:true }); toggleAnchor();
+&lt;/script&gt;</pre>
+<div class="callout tip"><span class="l">CLS et confort de lecture</span><p>L'ancre ne pousse jamais le contenu (elle est en overlay fixe), n'apparaît qu'une fois le lecteur engagé (après la byline), et reste fermable. Sur mobile, la pub inline suffit : la sidebar (<code>.article-side .ad-slot</code>) est masquée pour ne pas empiler les formats.</p></div>
+
+<h2>8.2 — Créatives &amp; ads.txt</h2>
+<h3>Créatives WebP optimisées, sans métadonnées, sur R2</h3>
+<p>Les créatives source vivent dans <code>site/media-src/ads/*.webp</code>, converties en <b>WebP avec <code>cwebp</code></b> qui, par défaut, <b>strippe toutes les métadonnées</b> (pas d'EXIF/XMP/C2PA parasites — cf. discipline images de la <a href="04-contenu.html">Partie 04</a>). Elles sont uploadées sur le bucket R2 <code>blogstarter-media</code> sous les clés <code>ads/…webp</code>, puis servies via la route <code>/media/[...key]</code> (Content-Type par extension, cache immuable 1 an — voir <a href="06-astro.html">Partie 06</a>).</p>
+<p>Les deux composants pointent directement ces clés, avec dimensions explicites et <code>rel="sponsored nofollow"</code> :</p>
+<pre class="cmd code">&lt;div class="ad-slot ad-leaderboard filled"&gt;
+  &lt;a href={href} rel="sponsored nofollow" aria-label="Advertisement"&gt;
+    &lt;img src="/media/ads/arknights-endfield-728x90.webp" width="728" height="90"
+         alt="Arknights: Endfield — download the game" loading="lazy" /&gt;
+  &lt;/a&gt;
+&lt;/div&gt;</pre>
+<pre class="cmd code">&lt;div class="ad-slot ad-rectangle filled"&gt;
+  &lt;a href={href} rel="sponsored nofollow" aria-label="Advertisement"&gt;
+    &lt;img src="/media/ads/arknights-endfield-300x250.webp" width="300" height="250"
+         alt="Arknights: Endfield — download the game" loading="lazy" /&gt;
+  &lt;/a&gt;
+&lt;/div&gt;</pre>
+<p>La classe <code>.ad-slot.filled</code> retire le fond/bordure/label « placeholder » pour afficher la créative pleine ; sans le modificateur <code>filled</code>, le slot montre juste <code>// ADVERTISEMENT</code> — utile pour les emplacements encore vides (in-feed natif).</p>
+
+<h3>ads.txt (requis AdSense)</h3>
+<p>AdSense exige un <code>ads.txt</code> à la racine. Il est servi par un endpoint (voir <a href="07-seo-geo.html">Partie 07</a>), en placeholder tant que le compte n'est pas approuvé :</p>
+<pre class="cmd code">const body = [
+  '# ads.txt — BlogStarter',
+  '# TODO: remplacer par ta ligne AdSense réelle une fois le compte approuvé :',
+  '# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0',
+].join('\n');</pre>
+<div class="callout warn"><span class="l">À compléter avant monétisation réelle</span><p>Dès que le compte AdSense est validé, remplacer la ligne commentée par la vraie déclaration <code>google.com, pub-…, DIRECT, f08c47fec0942fa0</code> (le <code>pub-…</code> est ton Publisher ID). Idem pour l'affiliation : les liens sont déjà en <code>rel="sponsored nofollow"</code>, la disclosure figure dans les mentions légales.</p></div>
+
+<h2>8.3 — Consentement &amp; pages légales</h2>
+<h3>Bandeau cookies (à brancher)</h3>
+<p>Le consentement est désormais <b>implémenté et branché à Google Consent Mode v2</b> (composant <code>ConsentBanner.astro</code> + un défaut <code>denied</code> posé très tôt dans le <code>&lt;head&gt;</code>, avant tout tag). Au premier chargement, la bannière propose <b>Accepter / Refuser / Gérer</b> ; le choix est mémorisé (<code>localStorage: rp-consent</code>) et met à jour le consentement (<code>ad_storage</code>, <code>analytics_storage</code>, <code>ad_user_data</code>, <code>ad_personalization</code>).</p>
+<pre class="cmd code"><span class="c">// dans le &lt;head&gt;, avant tout script pub/analytics</span>
+gtag(<b>'consent'</b>, <b>'default'</b>, {
+  ad_storage: <b>'denied'</b>, analytics_storage: <b>'denied'</b>,
+  ad_user_data: <b>'denied'</b>, ad_personalization: <b>'denied'</b>, wait_for_update: 500,
+});</pre>
+<div class="callout danger"><span class="l">Reste bloquant — CMP certifié TCF</span><p>Le <b>socle Consent Mode v2</b> (défaut refusé + bannière + mémorisation) est en place. Mais pour servir de la pub <b>AdSense en EEE / Royaume-Uni</b>, Google <b>impose en plus un CMP certifié TCF</b> (Transparency &amp; Consent Framework) depuis 2024, et les scripts AdSense doivent être chargés <b>derrière</b> ce consentement. Tant qu'un CMP certifié Google (Funding Choices, Cookiebot, Didomi…) n'est pas branché et les tags pub connectés au signal de consentement, la diffusion auprès d'un public EEE/UK reste bloquée.</p></div>
+
+<h3>Pages légales (Legal notice / Privacy / Cookies)</h3>
+<p>Trois pages Astro ont été créées <b>en anglais</b> (le site est anglophone), orientées RGPD/ePrivacy et AdSense : <code>legal-notice.astro</code>, <code>privacy.astro</code>, <code>cookies.astro</code>. Chacune s'appuie sur le <code>BaseLayout</code> et la classe <code>.prose</code> du DS, et s'ouvre sur un encadré d'avertissement explicite :</p>
+<pre class="cmd code">&lt;div class="callout warn"&gt;
+  &lt;span class="c-label"&gt;Note&lt;/span&gt;
+  &lt;p&gt;This is a template and must be reviewed by a qualified lawyer and completed
+     with your company details before publication.&lt;/p&gt;
+&lt;/div&gt;</pre>
+<p>Le contenu est réel et couvre les points attendus, avec des <b>placeholders</b> <code>[…]</code> à compléter :</p>
+<ul>
+<li><strong>Legal notice</strong> : éditeur, directeur de publication, hébergeur (<b>Cloudflare, Inc.</b>, adresse réelle), propriété intellectuelle, marques tierces &amp; contenus de jeux (BlogStarter « independent media outlet », non affilié aux éditeurs), et une section <b>Advertising and affiliation</b> assumée.</li>
+<li><strong>Privacy</strong> : responsable de traitement, données collectées (analytics, identifiants pub/cookies, données techniques), finalités, <b>bases légales GDPR</b> (consentement Art. 6(1)(a), intérêt légitime Art. 6(1)(f)), destinataires (<b>Google AdSense</b>, analytics, Cloudflare), transferts hors EEE, durées de conservation, droits, réclamation auprès d'une autorité.</li>
+<li><strong>Cookies</strong> : définition, catégories (strictement nécessaires / mesure d'audience / publicité &amp; personnalisation), cookies tiers Google, gestion et retrait du consentement, réglage navigateur, durées de vie.</li>
+</ul>
+<p>Exemple concret de la rigueur RGPD dans la Privacy (bases légales explicitées) :</p>
+<pre class="cmd code">&lt;li&gt;&lt;strong&gt;Consent&lt;/strong&gt; (Art. 6(1)(a) GDPR): for non-essential cookies,
+    audience measurement, and personalised advertising. You may withdraw consent at any time.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Legitimate interest&lt;/strong&gt; (Art. 6(1)(f) GDPR): for keeping the Site secure,
+    preventing abuse, and basic operation. You may object...&lt;/li&gt;</pre>
+<div class="callout danger"><span class="l">Template à valider par un juriste</span><p>Ces pages sont des <b>modèles de travail</b>, pas un avis juridique. Chaque encadré « Note » le rappelle, et les <code>[…]</code> (identité de l'éditeur, DPO, autorité de contrôle, durées) doivent être complétés puis <b>relus par un professionnel du droit</b> avant mise en production réelle avec de la publicité et de l'analytics.</p></div>
+<div class="callout warn"><span class="l">Manques à combler dans les pages légales</span><p>Au-delà des <code>[…]</code>, le contenu actuel ne couvre pas encore plusieurs points attendus pour un site avec pub programmatique&nbsp;:</p>
+<ul>
+<li><strong>Table nominative des cookies</strong> : <b>ajoutée</b> dans la Cookie Policy (tableau nom / fournisseur / catégorie / finalité / durée) — reste à compléter avec les noms et durées exacts des cookies tiers réels.</li>
+<li><strong>Profilage &amp; décision automatisée</strong> : mention explicite du profilage publicitaire (Art. 22 GDPR) et de la personnalisation des annonces.</li>
+<li><strong>Enfants / public visé</strong> : déclaration « non child-directed » (COPPA) et âge minimum, la pub ciblée sur mineurs étant interdite.</li>
+<li><strong>Cadre US / CPRA</strong> : mention « Do Not Sell/Share » et droits des résidents californiens (CPRA) si l'audience inclut les US.</li>
+</ul></div>
+
+<h3>Footer câblé</h3>
+<p>Le <code>Footer</code> (composant du DS) relie explicitement les trois pages, de sorte qu'elles sont accessibles partout :</p>
+<pre class="cmd code">&lt;div class="f-col"&gt;&lt;h4&gt;Legal&lt;/h4&gt;
+  &lt;a href="/legal-notice"&gt;Legal notice&lt;/a&gt;
+  &lt;a href="/privacy"&gt;Privacy&lt;/a&gt;
+  &lt;a href="/cookies"&gt;Cookies&lt;/a&gt;&lt;/div&gt;</pre>
+<p>Le footer affiche aussi le positionnement éditorial qui fonde la défendabilité E-E-A-T (et donc, indirectement, la valeur monétisable de l'audience) : « <em>Hands-on expertise from real players — not content churned out by AI.</em> »</p>
+
+<hr>
+<p>Emplacements dimensionnés, créatives propres sur R2, ads.txt amorcé, pages légales rédigées : les <b>fondations</b> sont posées. Mais le site n'est <b>pas encore « prêt à monétiser »</b> — il reste à valider AdSense et à brancher un <b>CMP certifié TCF</b> (le Consent Mode v2 + la bannière sont déjà en place), à connecter les tags pub au consentement, et à compléter les placeholders légaux. La suite — mettre tout ça en production — est la <a href="09-deploiement.html">Partie 09 · Déploiement Cloudflare</a>.</p>
+
+</div>
+<nav class="doc-pager"><a href="07-seo-geo.html"><span class="dir">← Précédent</span><span class="ttl">SEO &amp; GEO</span></a><a class="next" href="09-deploiement.html"><span class="dir">Suivant →</span><span class="ttl">Déploiement Cloudflare</span></a></nav>
+</main>
+<footer><div class="wrap">BlogStarter — Documentation du process · Partie 08</div></footer></body></html>
