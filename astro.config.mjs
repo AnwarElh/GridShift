@@ -16,8 +16,6 @@ import cloudflare from '@astrojs/cloudflare';
    écrits à la main. */
 const BASE = process.env.SITE_BASE ?? '/GridShift';
 
-const IS_GITHUB_PAGES = process.env.GITHUB_PAGES === 'true';
-
 /* Les anciennes URL françaises vivaient à la racine (/actus/, /tests/…).
    L'anglais y est passé : chaque ancienne adresse d'index renvoie vers son
    équivalent sous /fr/.
@@ -52,26 +50,14 @@ export default defineConfig({
   site: process.env.SITE_URL ?? 'https://anwarelh.github.io',
   base: BASE,
   trailingSlash: 'ignore',
-  output: IS_GITHUB_PAGES ? 'static' : 'server',
-
-   ...(IS_GITHUB_PAGES
-     ? {}
-     : {
-         adapter: cloudflare({
-           imageService: 'passthrough',
-           platformProxy: {
-             enabled: true,
-             configPath: 'wrangler.jsonc',
-           },
-         }),
-       }),
-     adapter: cloudflare({
-       /* Les images sont fabriquées à la publication (scripts/media-build.mjs) et
-          servies depuis R2 : le worker n'a aucun travail d'image à faire, donc
-          aucun service d'image à embarquer. */
-       imageService: 'passthrough',
-       platformProxy: { enabled: true, configPath: 'wrangler.jsonc' },
-     }),
+  output: 'server',
+  adapter: cloudflare({
+    /* Les images sont fabriquées à la publication (scripts/media-build.mjs) et
+       servies depuis R2 : le worker n'a aucun travail d'image à faire, donc
+       aucun service d'image à embarquer. */
+    imageService: 'passthrough',
+    platformProxy: { enabled: true, configPath: 'wrangler.jsonc' },
+  }),
   integrations: [mdx()],
   /* Conservé pour scripts/content-to-d1.mjs, qui rend le Markdown avec la même
      chaîne : le HTML stocké dans D1 doit être celui que le site produisait. */

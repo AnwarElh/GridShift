@@ -1,0 +1,101 @@
+# L'aperçu, pour montrer le site avant qu'il ait son adresse définitive.
+#
+# Il ne remplace pas deploy.yml : celui-là met le worker en ligne sur
+# Cloudflare, avec la vraie D1 et le vrai R2. Celui-ci fabrique la même chose
+# sur la machine du runner — base locale, bucket local, worker local — puis en
+# prend l'empreinte et publie des fichiers, parce que c'est tout ce que GitHub
+# Pages sait servir.
+#
+# Aucun secret n'est utilisé : tout ce que le site montre vient du dépôt. Le
+# Markdown devient la base, src/assets/ devient les images, et le worker qu'on
+# interroge est celui qu'on déploierait.
+name: Preview on GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Une publication à la fois, et on abandonne celle qui est dépassée : un aperçu
+# en retard n'intéresse personne.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  SITE_URL: https://anwarelh.github.io
+  SITE_BASE: /GridShift
+  # Les médias ne passent pas par R2 dans l'aperçu : ils sont posés à côté des
+  # pages, sous le préfixe du dépôt. Sans cette valeur, les URL d'images
+  # oublieraient /GridShift et pointeraient toutes à côté.
+  MEDIA_BASE_URL: /GridShift/media
+  # Les emplacements publicitaires montrent une créa factice plutôt qu'une
+  # plaque grise : l'aperçu doit ressembler à la page, pas à son squelette.
+  PUBLIC_AD_DEMO: '1'
+  WRANGLER_SEND_METRICS: 'false'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Le contenu d'abord, comme au déploiement : si l'export refuse de passer,
+      # l'aperçu s'arrête ici plutôt que de montrer une base incohérente.
+      - name: Build the local database
+        run: |
+          npm run content:export
+          npx wrangler d1 migrations apply gridshift-content --local
+          npx wrangler d1 execute gridshift-content --local --file db/seed.sql
+
+      # Les mêmes variantes que pousse la publication, sans l'étape R2 : les
+      # fichiers restent sur le disque et seront copiés à côté des pages.
+      - name: Build the media
+        run: |
+          node scripts/media-build.mjs
+          npx wrangler d1 execute gridshift-content --local --file db/variants.sql
+
+      - name: Build the worker
+        run: npm run build
+
+      - name: Snapshot the site
+        run: |
+          npx wrangler dev --port 8787 --var MEDIA_BASE_URL:"$MEDIA_BASE_URL" &
+          for i in $(seq 1 60); do
+            curl -sf -o /dev/null "http://localhost:8787$SITE_BASE/" && break
+            sleep 2
+          done
+          curl -sf -o /dev/null "http://localhost:8787$SITE_BASE/" \
+            || { echo "le worker local n'a pas répondu"; exit 1; }
+          node scripts/preview-snapshot.mjs --origin http://localhost:8787 --out preview
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: preview
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
