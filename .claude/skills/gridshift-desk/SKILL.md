@@ -1,25 +1,33 @@
 ---
 name: gridshift-desk
 description: >
-  Weekly editorial run for the Gridshift blog: research the latest news on the games
-  we cover from five gaming outlets, reverse-engineer their copywriting, and publish
-  three new bilingual articles (EN + FR) to src/content/articles/.
-  Triggers: "gridshift desk", "weekly articles", "research and write articles",
-  "nouvelle fournée d'articles". Run manually, or from a weekly schedule.
+  Write and publish Gridshift articles in the house style. Holds a copywriting blueprint
+  distilled from five gaming outlets, so articles get written from the blueprint rather than
+  by re-reading those sites every time. Also runs the weekly research pass that finds what to
+  write about. Triggers: "gridshift desk", "weekly articles", "write an article",
+  "nouvelle fournée d'articles".
 ---
 
-# gridshift-desk — research → copywriting → publish
+# gridshift-desk — blueprint-driven writing, with a research pass in front of it
 
-One run = **3 topics**, each written **twice** (`en/` + `fr/`), built, committed and pushed to
-`main`. Pushing to `main` deploys to Cloudflare, so a run that ends in a push is a run that
-went live. Do not push a build that fails.
+Two separable jobs. Keep them separate.
 
-Work through the five steps in order. Do not start writing before step 2 is done — the style
-comes from the sources, not from memory.
+**Style comes from [`blueprint.md`](blueprint.md).** It is distilled from ~20 articles across the
+five outlets and it is the authority on how a Gridshift piece is built — headlines, ledes,
+structure, register, sourcing, French conventions. Read it before writing. Do not go back to the
+source sites to work out *how* to write; that question is already answered and written down.
+
+**Facts come from research.** News is time-bound, so finding out *what happened* still means
+fetching. That is steps 1 and 2.
+
+If the task is "write an article about X" and you already know X, skip to step 3. The research
+pass is not a prerequisite for writing — the blueprint is.
+
+---
 
 ## The five sources
 
-These are the only research and style sources. All five are RSS/Atom; `feedparser` reads both.
+Research sources, and the corpus the blueprint was distilled from.
 
 | Outlet | Feed |
 |---|---|
@@ -29,80 +37,65 @@ These are the only research and style sources. All five are RSS/Atom; `feedparse
 | GameSpot | `https://www.gamespot.com/feeds/news/` |
 | VG247 | `https://www.vg247.com/feed` |
 
-## Step 1 · Research
-
-Use the **agent-reach** skill (`web` category) — announce that you are using it, per its rules.
-
-Pull the feeds — stdlib only, no install needed:
+## Step 1 · Find the stories
 
 ```bash
-python3 .claude/skills/gridshift-desk/feeds.py 25   # TSV: outlet, date, title, link
+python3 .claude/skills/gridshift-desk/feeds.py 40    # TSV: outlet, date, title, link
 ```
 
-It exits non-zero if fewer than three feeds answered. Three healthy feeds is the floor for
-a run; below that, stop and report rather than writing from one outlet.
+Exits non-zero if fewer than three feeds answered — below that, stop and report rather than
+writing off one outlet.
 
-Read the full text of the articles you shortlist with Jina Reader:
-`curl -s "https://r.jina.ai/<url>"`.
-
-**Corroborate before you write.** A fact carried by one outlet is a claim, not a fact. Either
-find it in a second source or write it as what it is ("VG247 reports…"). Rumours stay labelled
-as rumours.
-
-## Step 2 · Extract the copywriting
-
-The five outlets are the style authority for this blog. Before writing anything, take the
-headlines and opening paragraphs you just pulled (~10 per outlet) and write down, for this run:
-
-- **Headline mechanics** — length, whether the claim is in the headline or withheld, use of the
-  second person, the subordinate clause that carries the twist, question forms, numbers.
-- **Lede mechanics** — how many facts before the angle appears, where the source is credited.
-- **Structure** — subhead cadence, where the "what this means for you" turn lands, how they close.
-- **Register** — how much the writer is present, how contractions and asides are used.
-
-Keep the notes in the scratchpad and write against them. You are matching *method*, not prose:
-**never lift sentences, headlines or phrasings from a source.** Every sentence you ship is
-written from scratch. Facts are borrowed and attributed; wording is not.
-
-## Step 3 · Pick three topics
-
-Topics must be about a game we cover. Check what exists:
+Read the ones you shortlist:
 
 ```bash
-ls src/content/games            # the games with a fiche
+python3 .claude/skills/gridshift-desk/read.py <url>
+```
+
+It tries Jina Reader, then falls back to fetching the page directly. Push Square needs the
+fallback (Jina returns its forum sidebar). GAMINGbible arms an anti-bot block for hours at a
+time and defeats both when it does — that is a real limit, not something to keep retrying.
+
+**Corroborate.** A fact carried by one outlet is a claim, not a fact: find it twice, or write it
+as attributed (*"VG247 reports…"*). Never write a piece from a headline you could not open —
+that is inventing the middle. Rumours stay labelled as rumours.
+
+## Step 2 · Pick the topics
+
+```bash
+ls src/content/games            # games with a fiche
 ls src/assets                   # g-<game>.jpg = cover, h-<game>-N.jpg = hero
-ls src/content/articles/en      # what we already published — do not repeat an angle
+ls src/content/articles/en      # what exists — do not repeat an angle
 ```
 
-Rules:
+1. The topic maps to a game with a file in `src/content/games/` **and** an image in
+   `src/assets/`. No image, no article — this blog is image-led.
+2. No angle already published. Check existing slugs and ledes.
+3. Spread across games where the week allows. Three pieces on one game is a bad issue.
+4. `news` for anything time-bound, `setup` for platform/edition/hardware comparisons, `guide`
+   for how-to. Only `review` if we actually played it — a review needs `score`, `verdict`,
+   `pros`, `cons`, and inventing those is fabrication.
 
-1. The topic maps to a game that has a file in `src/content/games/` **and** at least one
-   image in `src/assets/`. No image, no article — this blog is image-led and a listing card
-   without a picture is not shippable.
-2. No angle we already published. Check the existing slugs and ledes first.
-3. Three different games where the week allows it. Three pieces on one game is a bad issue.
-4. Prefer `type: news` for anything time-bound. Use `setup` for platform/edition/hardware
-   comparisons and `guide` for how-to. Only use `type: review` if we have actually played it —
-   a review needs `score`, `verdict`, `pros`, `cons`, and inventing those is fabrication.
+Ship fewer rather than pad. If the week is thin, say so in the report; a thin piece costs more
+than a missing one.
 
-If fewer than three topics survive these rules, ship fewer and say so in the report. Padding the
-run with a thin fourth piece is worse than publishing two.
+## Step 3 · Write
 
-## Step 4 · Write
+**Read [`blueprint.md`](blueprint.md) now if you have not.** Everything about how the prose
+works lives there. What follows is only the mechanical contract with the site.
 
 Two files per topic, **same filename** in `src/content/articles/en/` and `.../fr/` — the mirrored
-filename is what links a page to its translation. Slug is kebab-case, game name first:
-`the-witcher-3-remastered-free-upgrade-setup.md`.
+filename is what links a page to its translation. Slug is kebab-case, game name first.
 
-Frontmatter (schema is `src/content.config.ts` — it is enforced at build time):
+Frontmatter (schema is `src/content.config.ts`, enforced at build time):
 
 ```yaml
 ---
 type: news              # news | review | guide | setup
 lang: en                # en in en/, fr in fr/
-title: "…"              # the editorial headline, can run long
-seoTitle: "…"           # ≤60 chars incl. brand — Google cuts the rest
-lede: "…"               # 1–2 sentences, the facts and the angle
+title: "…"              # editorial headline, can run long
+seoTitle: "…"           # ≤60 chars incl. brand
+lede: "…"               # 1–2 sentences carrying both fact and angle
 date: 2026-09-09T09:00:00+02:00
 author: nour-benali     # nour-benali (news) · lina-morel (guides/setup) · sacha-vidal (reviews)
 game: the-witcher-3-remastered
@@ -112,25 +105,23 @@ coverCaption: "…"       # what is in the frame, not a repeat of the headline
 ---
 ```
 
-- **Image**: pick an `h-<game>-N.jpg` for that game. Prefer one not already used as a cover:
-  `grep -h '^cover:' src/content/articles/en/*.md | sort | uniq -c`. Fall back to
+- **Image**: an `h-<game>-N.jpg` for that game, preferring one not already a cover
+  (`grep -h '^cover:' src/content/articles/en/*.md | sort | uniq -c`). Fall back to
   `g-<game>.jpg`. Never invent a filename — the build resolves the path and will fail.
-- **French is a translation, not a second article.** Same facts, same structure, same images,
-  same slug. Follow the conventions already in `src/content/articles/fr/`: `i/s` for fps,
-  `« »` for quotes, French date formats. Adapt the headline so it lands in French rather than
-  translating the English word order.
+- **Internal links** use section slugs, which differ per language: `news`→`/news/` and
+  `/fr/actus/`, `review`→`/reviews/` and `/fr/tests/`, `guide` and `setup` keep their names.
+  See `src/i18n/config.ts`.
 - Body is Markdown with `##` subheads, wrapped near 100 columns like the existing files.
-  Attribute the outlet in the prose where a fact came from one.
 
-## Step 5 · Verify, then publish
+## Step 4 · Verify, then publish
 
 ```bash
-npm ci --silent 2>/dev/null || npm install   # fresh checkout (the Wednesday run) has no node_modules
-npm run build                                # validates frontmatter against the schema — must pass
+npm ci --silent 2>/dev/null || npm install   # fresh checkout has no node_modules
+npm run build                                # validates frontmatter — must pass
+npm run content:check                        # confirms the D1 export still parses
 ```
 
-A build failure is the schema rejecting the article. Fix the file, never the schema. When it
-passes:
+A build failure is the schema rejecting the article. Fix the file, never the schema.
 
 ```bash
 git add src/content/articles
@@ -138,10 +129,7 @@ git commit    # message in French, like the rest of the log
 git push
 ```
 
-Commit message: one line naming the issue, e.g.
-`Trois articles : <jeu>, <jeu>, <jeu>` — then the trailers this session already uses.
-
 ## Report
 
-Close with: the three topics and why, the sources behind each, anything dropped and why, and
-the commit SHA. If the push happened, say the articles are live.
+The topics and why, the sources behind each, anything dropped and why, and the commit SHA. If
+the push happened, say the articles are live.
