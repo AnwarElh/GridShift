@@ -7,6 +7,7 @@ lede: "La bande-annonce de gameplay étendue a été remplacée vers le 31 août
 date: 2026-09-05T10:00:00+02:00
 author: nour-benali
 game: grand-theft-auto-vi
+featured: true
 tags: ["Grand Theft Auto VI", Rockstar, Censure, Chine]
 cover: ../../../assets/h-grand-theft-auto-vi-3.jpg
 coverCaption: "Vice City la nuit, le genre de plan néon-et-peau que le montage Bilibili floute."

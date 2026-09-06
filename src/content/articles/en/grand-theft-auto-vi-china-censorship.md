@@ -7,6 +7,7 @@ lede: "The extended gameplay trailer was replaced on Rockstar's official Bilibil
 date: 2026-09-05T10:00:00+02:00
 author: nour-benali
 game: grand-theft-auto-vi
+featured: true
 tags: ["Grand Theft Auto VI", Rockstar, Censorship, China]
 cover: ../../../assets/h-grand-theft-auto-vi-3.jpg
 coverCaption: "Vice City at night, the kind of neon-and-skin frame the Bilibili edit blurs."
