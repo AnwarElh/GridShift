@@ -1,9 +1,9 @@
 ---
 type: news
 lang: en
-title: "Rockstar blurred the GTA 6 trailer for Bilibili, and the uncensored cut is still sitting on its own website in China"
+title: "Rockstar blurred the GTA 6 trailer for Bilibili, but not on its own site"
 seoTitle: "GTA 6 trailer censored on Bilibili"
-lede: "The extended gameplay trailer was replaced on Rockstar's official Bilibili channel around August 31 with a version that blurs smoking, underwear, dancing and bodies. Kotaku confirmed the edits after they were documented by a GTA Forums user, and nobody has explained why the same footage runs uncut on Rockstar's own site."
+lede: "The extended trailer was swapped around August 31 for a version that blurs smoking, underwear and bodies. Kotaku confirmed the edits; nobody has explained them."
 date: 2026-09-05T10:00:00+02:00
 author: nour-benali
 game: grand-theft-auto-vi

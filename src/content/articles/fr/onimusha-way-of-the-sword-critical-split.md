@@ -1,9 +1,9 @@
 ---
 type: news
 lang: fr
-title: "Les tests d'Onimusha sont plus éloignés les uns des autres que ceux de tout autre jeu couvert cette année, et le désaccord porte entièrement sur le monde ouvert"
+title: "Pourquoi la critique se divise sur Onimusha : le débat porte sur le monde ouvert, pas le combat"
 seoTitle: "Onimusha : pourquoi la presse se divise"
-lede: "Le test de Kotaku décrit Way of the Sword comme un jeu en guerre contre lui-même, enseveli sous les compromis. Le nôtre lui a mis 8,2. À lire les deux, le désaccord se révèle étroit, précis, et concentré sur une seule décision de design."
+lede: "Kotaku décrit Way of the Sword comme un jeu en guerre contre lui-même. Nous lui avons mis 8,2. À lire les deux, le désaccord se révèle étroit, précis et limité à une décision."
 date: 2026-09-06T11:00:00+02:00
 author: sacha-vidal
 game: onimusha-way-of-the-sword

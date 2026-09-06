@@ -1,9 +1,9 @@
 ---
 type: news
 lang: fr
-title: "Kotaku a couvert les sept premières heures de Dawnwalker avec les vampires d'Anne Rice sur le canapé, et la blague tombe sur un vrai reproche"
+title: "Kotaku installe les vampires d'Anne Rice sur le canapé de Dawnwalker"
 seoTitle: "Dawnwalker : des corvées en ouverture"
-lede: "Le procédé est un gag — Lestat, Louis, Armand et Claudia commentant une partie. Ce qui en ressort est une objection précise : l'ouverture se passe à couper du bois et à chercher des cochons avant que le jeu ne vous laisse être ce qu'il vous a vendu."
+lede: "Le procédé est un gag : Lestat, Louis, Armand et Claudia commentant une partie. Ce qui en ressort est une vraie objection sur l'emploi des premières heures."
 date: 2026-09-06T09:00:00+02:00
 author: nour-benali
 game: the-blood-of-dawnwalker

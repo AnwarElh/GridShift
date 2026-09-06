@@ -1,9 +1,9 @@
 ---
 type: news
 lang: en
-title: "Kotaku reviewed Dawnwalker's first seven hours with Anne Rice's vampires on the couch, and the joke lands on a real complaint"
+title: "Kotaku put Anne Rice's vampires on the couch for Dawnwalker's first seven hours"
 seoTitle: "Dawnwalker's opening hours are chores"
-lede: "The conceit is a bit — Lestat, Louis, Armand and Claudia watching a preview build. What comes out of it is a specific objection: you spend the opening chopping wood and finding pigs before the game lets you be what it sold you."
+lede: "The conceit is a bit: Lestat, Louis, Armand and Claudia watching a preview build. What comes out of it is a real objection about how the opening hours are spent."
 date: 2026-09-06T09:00:00+02:00
 author: nour-benali
 game: the-blood-of-dawnwalker

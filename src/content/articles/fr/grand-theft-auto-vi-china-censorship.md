@@ -1,9 +1,9 @@
 ---
 type: news
 lang: fr
-title: "Rockstar a flouté la bande-annonce de GTA 6 pour Bilibili, alors que la version non censurée est toujours sur son propre site en Chine"
+title: "Rockstar a flouté la bande-annonce de GTA 6 pour Bilibili, mais pas sur son site"
 seoTitle: "GTA 6 : bande-annonce censurée sur Bilibili"
-lede: "La bande-annonce de gameplay étendue a été remplacée vers le 31 août sur la chaîne officielle de Rockstar sur Bilibili par une version qui floute la cigarette, les sous-vêtements, la danse et les corps. Kotaku a confirmé ces retouches après leur documentation par un membre des GTA Forums, et personne n'a expliqué pourquoi les mêmes images passent sans coupe sur le site de Rockstar."
+lede: "La bande-annonce étendue a été remplacée vers le 31 août par une version qui floute cigarettes, sous-vêtements et corps. Kotaku a confirmé les retouches ; personne ne les a expliquées."
 date: 2026-09-05T10:00:00+02:00
 author: nour-benali
 game: grand-theft-auto-vi

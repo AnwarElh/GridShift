@@ -1,9 +1,9 @@
 ---
 type: news
 lang: en
-title: "Onimusha's reviews are further apart than any game we have covered this year, and the argument is entirely about the open world"
+title: "Why critics can't agree on Onimusha: the argument is the open world, not the combat"
 seoTitle: "Onimusha reviews: why critics split"
-lede: "Kotaku's review calls Way of the Sword a game at war with itself, buried under compromises. Our own scored it 8.2. Read both and the disagreement turns out to be narrow, specific, and about one design decision."
+lede: "Kotaku calls Way of the Sword a game at war with itself. We scored it 8.2. Read both and the disagreement turns out to be narrow, specific, and about one design decision."
 date: 2026-09-06T11:00:00+02:00
 author: sacha-vidal
 game: onimusha-way-of-the-sword

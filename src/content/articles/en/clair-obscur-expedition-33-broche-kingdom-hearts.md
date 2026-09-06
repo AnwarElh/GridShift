@@ -1,9 +1,9 @@
 ---
 type: news
 lang: en
-title: "Clair Obscur's director put Kingdom Hearts II in his top five, and the reason he gives explains a lot about Expedition 33"
+title: "Clair Obscur's director explains Expedition 33 by way of Kingdom Hearts II"
 seoTitle: "Broche: Kingdom Hearts II is a top-5 game"
-lede: "Guillaume Broche said on Konbini's Jeux Vidéo Club that he has been chasing Kingdom Hearts II's combat feel ever since he played it. Anyone who has fought through Expedition 33 will recognise what he means."
+lede: "Guillaume Broche told Konbini's Jeux Vidéo Club he has been chasing Kingdom Hearts II's combat feel ever since. Anyone who played Expedition 33 will recognise it."
 date: 2026-09-05T17:00:00+02:00
 author: nour-benali
 game: clair-obscur-expedition-33
