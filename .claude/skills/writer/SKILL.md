@@ -1,14 +1,14 @@
 ---
-name: gridshift-desk
+name: writer
 description: >
   Write and publish Gridshift articles in the house style. Holds a copywriting blueprint
   distilled from five gaming outlets, so articles get written from the blueprint rather than
   by re-reading those sites every time. Also runs the weekly research pass that finds what to
-  write about. Triggers: "gridshift desk", "weekly articles", "write an article",
+  write about. Triggers: "writer", "weekly articles", "write an article",
   "nouvelle fournée d'articles".
 ---
 
-# gridshift-desk — blueprint-driven writing, with a research pass in front of it
+# writer — blueprint-driven writing, with a research pass in front of it
 
 Two separable jobs. Keep them separate.
 
@@ -40,7 +40,7 @@ Research sources, and the corpus the blueprint was distilled from.
 ## Step 1 · Find the stories
 
 ```bash
-python3 .claude/skills/gridshift-desk/feeds.py 40    # TSV: outlet, date, title, link
+python3 .claude/skills/writer/feeds.py 40    # TSV: outlet, date, title, link
 ```
 
 Exits non-zero if fewer than three feeds answered — below that, stop and report rather than
@@ -49,7 +49,7 @@ writing off one outlet.
 Read the ones you shortlist:
 
 ```bash
-python3 .claude/skills/gridshift-desk/read.py <url>
+python3 .claude/skills/writer/read.py <url>
 ```
 
 It tries Jina Reader, then falls back to fetching the page directly. Push Square needs the
