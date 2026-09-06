@@ -19,7 +19,7 @@ import Credit from '../components/Credit.astro';
 import Offers from '../components/Offers.astro';
 import { site } from '../site';
 import { slugifyTag, type Post } from '../lib/content';
-import { authorHref, articleHref, gameHref, sectionHref, tagHref, otherLocale, htmlLang } from '../i18n/config';
+import { authorHref, articleHref, gameHref, sectionHref, tagHref, htmlLang, type Locale } from '../i18n/config';
 import { useT } from '../i18n/ui';
 import GithubSlugger from 'github-slugger';
 
@@ -46,7 +46,7 @@ const stepAnchors = data.steps.map((s) => slugger.slug(s));
 
 /* La traduction d'un article porte le même nom de fichier : c'est ce qui relie
    /reviews/echo-divide-test/ à /fr/tests/echo-divide-test/. */
-const alt = articleHref(otherLocale(lang), data.type, post.slug);
+const alt = (l: Locale) => articleHref(l, data.type, post.slug);
 
 const jsonLd: Record<string, unknown> = {
   '@context': 'https://schema.org',

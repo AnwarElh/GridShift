@@ -13,6 +13,7 @@ platforms:
 genre:
   en: Action RPG
   fr: Action-RPG
+  de: Action-RPG
 facts:
   en:
     - { label: Published by, value: "Bandai Namco Entertainment" }
@@ -26,9 +27,17 @@ facts:
     - { label: Moteur, value: "Unreal Engine 5" }
     - { label: Structure, value: "30 jours et nuits, 8 segments chacun" }
     - { label: Durée, value: "50 à 70 heures" }
+  de:
+    - { label: Publisher, value: "Bandai Namco Entertainment" }
+    - { label: Regie, value: "Konrad Tomaszkiewicz, The Witcher 3" }
+    - { label: Engine, value: "Unreal Engine 5" }
+    - { label: Struktur, value: "30 Spieltage und -nächte, je 8 Abschnitte" }
+    - { label: Spieldauer, value: "50 bis 70 Stunden" }
 summary:
   en: >-
     Ex-Witcher 3 leads build a vampire RPG around a clock: Coen has thirty days and nights to save his family, and there are deliberately more quests than time to run them. Human by day, vampire by night. Consoles were capped at 40fps until a backlash produced a 60fps day-one patch.
   fr: >-
     D’anciens cadres de The Witcher 3 bâtissent un RPG de vampires autour d’une horloge : Coen dispose de trente jours et nuits pour sauver sa famille, et il y a délibérément plus de quêtes que de temps pour les mener. Humain le jour, vampire la nuit. Les consoles étaient plafonnées à 40 ips jusqu’à ce qu’une levée de boucliers arrache un correctif 60 ips au lancement.
+  de: >-
+    Ehemalige Köpfe von The Witcher 3 bauen ein Vampir-RPG um eine Uhr: Coen hat dreißig Tage und Nächte, um seine Familie zu retten, und es gibt bewusst mehr Quests als Zeit, sie alle zu erledigen. Tagsüber Mensch, nachts Vampir. Auf Konsolen war bei 40 fps Schluss, bis ein Aufschrei einen 60-fps-Patch zum Launch erzwang.
 ---

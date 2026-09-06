@@ -14,6 +14,7 @@ platforms:
 genre:
   en: Action-adventure
   fr: Action-aventure
+  de: Action-Adventure
 facts:
   en:
     - { label: Engine, value: "RE Engine" }
@@ -27,9 +28,17 @@ facts:
     - { label: Protagoniste, value: "Miyamoto Musashi, modelé sur Toshiro Mifune" }
     - { label: Cadre, value: "Le Kyoto de l’ère Edo, corrompu par la Malice" }
     - { label: Durée, value: "Environ 20 heures, largement linéaire" }
+  de:
+    - { label: Engine, value: "RE Engine" }
+    - { label: Erster Hauptteil seit, value: "Dawn of Dreams, 2006" }
+    - { label: Hauptfigur, value: "Miyamoto Musashi, Toshiro Mifune nachempfunden" }
+    - { label: Schauplatz, value: "Das Kyoto der Edo-Zeit, von der Malice verdorben" }
+    - { label: Spieldauer, value: "Rund 20 Stunden, weitgehend linear" }
 summary:
   en: >-
     The first mainline Onimusha in twenty years, and explicitly neither open-world nor a Soulslike. Capcom brought the release forward three weeks to 4 September. Musashi fights with a parry that steers his opponent and a gauntlet that eats souls; the Switch 2 version reviewed highest of the four.
   fr: >-
     Le premier Onimusha principal depuis vingt ans, et explicitement ni monde ouvert ni Soulslike. Capcom a avancé la sortie de trois semaines, au 4 septembre. Musashi combat avec une parade qui oriente son adversaire et un gantelet qui dévore les âmes ; c’est la version Switch 2 qui a reçu les meilleures notes des quatre.
+  de: >-
+    Das erste Onimusha der Hauptreihe seit zwanzig Jahren — und ausdrücklich weder Open World noch Soulslike. Capcom zog den Release um drei Wochen auf den 4. September vor. Musashi kämpft mit einer Parade, die den Gegner lenkt, und einem Handschuh, der Seelen frisst; die Switch-2-Fassung bekam von den vier Versionen die besten Wertungen.
 ---

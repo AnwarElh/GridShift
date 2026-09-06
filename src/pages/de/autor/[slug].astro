@@ -1,0 +1,8 @@
+---
+import AuthorPage from '../../../views/AuthorPage.astro';
+import { getAuthor } from '../../../lib/content';
+
+const author = await getAuthor(Astro.locals, 'de', Astro.params.slug!);
+if (!author) return Astro.rewrite('/de/404');
+---
+<AuthorPage author={author} />

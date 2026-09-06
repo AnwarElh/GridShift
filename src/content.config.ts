@@ -5,19 +5,19 @@ import { glob } from 'astro/loaders';
    Deux stratégies, selon la nature de la donnée.
 
    Un ARTICLE est un document : il existe une fois par langue, dans
-   `articles/<lang>/`. Deux fichiers de même nom sont la traduction l'un de
-   l'autre — c'est ce qui relie /reviews/echo-divide-test/ à son équivalent
-   /fr/tests/echo-divide-test/.
+   `articles/<lang>/`. Trois fichiers de même nom sont la traduction l'un de
+   l'autre — c'est ce qui relie /reviews/echo-divide-test/ à ses équivalents
+   /fr/tests/echo-divide-test/ et /de/tests/echo-divide-test/.
 
    Un JEU ou un AUTEUR est une entité : une seule fiche, dont quelques champs
    sont traduits. Dupliquer la fiche dupliquerait le prix, la note et le nombre
    d'abonnés — trois chiffres qui n'ont pas de langue et qui divergeraient au
    premier oubli. */
 
-const LANGS = ['en', 'fr'] as const;
+const LANGS = ['en', 'fr', 'de'] as const;
 
 /* Champ traduit : une valeur par langue, les deux obligatoires. */
-const loc = <T extends z.ZodTypeAny>(inner: T) => z.object({ en: inner, fr: inner });
+const loc = <T extends z.ZodTypeAny>(inner: T) => z.object({ en: inner, fr: inner, de: inner });
 
 const articles = defineCollection({
   loader: glob({ base: './src/content/articles', pattern: '**/*.{md,mdx}' }),
@@ -102,7 +102,7 @@ const games = defineCollection({
 
     /* — traduits — */
     genre: loc(z.string()),
-    facts: loc(z.array(z.object({ label: z.string(), value: z.string() }))).default({ en: [], fr: [] }),
+    facts: loc(z.array(z.object({ label: z.string(), value: z.string() }))).default({ en: [], fr: [], de: [] }),
     summary: loc(z.string()),
   }),
 });
@@ -115,7 +115,7 @@ const authors = defineCollection({
     since: z.string().optional(),
     role: loc(z.string()),
     bio: loc(z.string()),
-    creds: loc(z.array(z.string())).default({ en: [], fr: [] }),
+    creds: loc(z.array(z.string())).default({ en: [], fr: [], de: [] }),
   }),
 });
 

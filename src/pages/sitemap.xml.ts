@@ -3,7 +3,7 @@ import { getContent } from '../lib/content.ts';
 import { site } from '../site.ts';
 import {
   articleHref, gameHref, sectionHref, pageHref, homeHref, authorHref,
-  sectionKeys, type Locale,
+  sectionKeys, locales, otherLocales, type Locale,
 } from '../i18n/config.ts';
 
 /* Le plan de site, rendu depuis D1.
@@ -26,14 +26,20 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
   const origin = (astroSite ?? new URL(site.url)).origin;
   const abs = (p: string) => `${origin}${p}`;
 
-  const entries: { loc: string; lastmod?: Date; alt?: { lang: Locale; loc: string } }[] = [];
-  const langs: Locale[] = ['en', 'fr'];
+  /* `alts` est une liste depuis qu'il y a trois langues : un seul `alt` ne
+     déclarait qu'une traduction sur deux, et l'allemand — le dernier venu —
+     aurait été celui qu'on tait. La liste vient de `locales`, donc une
+     quatrième langue n'aura rien à changer ici. */
+  const entries: { loc: string; lastmod?: Date; alts?: { lang: Locale; loc: string }[] }[] = [];
 
-  for (const lang of langs) {
-    const other: Locale = lang === 'en' ? 'fr' : 'en';
+  for (const lang of locales) {
+    const others = otherLocales(lang);
     const { posts, games, authors } = await getContent(locals, lang);
 
-    entries.push({ loc: abs(homeHref(lang)), alt: { lang: other, loc: abs(homeHref(other)) } });
+    entries.push({
+      loc: abs(homeHref(lang)),
+      alts: others.map((o) => ({ lang: o, loc: abs(homeHref(o)) })),
+    });
     for (const k of sectionKeys) entries.push({ loc: abs(sectionHref(lang, k)) });
     for (const p of ['games', 'about', 'credits', 'legal', 'privacy', 'cookies'] as const) {
       entries.push({ loc: abs(pageHref(lang, p)) });
@@ -44,9 +50,10 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
       entries.push({
         loc: abs(p.href),
         lastmod: p.data.updated ?? p.data.date,
-        /* Le même nom de fichier dans l'autre langue est la traduction : c'est
-           ce lien que hreflang doit annoncer. */
-        alt: { lang: other, loc: abs(articleHref(other, p.section, p.slug)) },
+        /* Le même nom de fichier dans les autres langues est la traduction :
+           c'est ce lien que hreflang doit annoncer. L'export refuse un article
+           qui manque dans une langue, donc l'adresse existe toujours. */
+        alts: others.map((o) => ({ lang: o, loc: abs(articleHref(o, p.section, p.slug)) })),
       });
     }
   }
@@ -56,8 +63,8 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${entries.map((e) => `  <url>
     <loc>${esc(e.loc)}</loc>${e.lastmod ? `
-    <lastmod>${e.lastmod.toISOString()}</lastmod>` : ''}${e.alt ? `
-    <xhtml:link rel="alternate" hreflang="${e.alt.lang}" href="${esc(e.alt.loc)}"/>` : ''}
+    <lastmod>${e.lastmod.toISOString()}</lastmod>` : ''}${e.alts?.length ? `
+${e.alts.map((a) => `    <xhtml:link rel="alternate" hreflang="${a.lang}" href="${esc(a.loc)}"/>`).join('\n')}` : ''}
   </url>`).join('\n')}
 </urlset>
 `;

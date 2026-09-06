@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Archive from '../components/Archive.astro';
 import { getPosts, byType, pageOf, allTags } from '../lib/content';
 import {
-  langFromPath, otherLocale, sectionHref, type SectionKey,
+  langFromPath, sectionHref, type SectionKey,
 } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
@@ -11,7 +11,6 @@ interface Props { section: SectionKey; pageNum?: number }
 const { section, pageNum = 1 } = Astro.props;
 
 const lang = langFromPath(Astro.url.pathname);
-const other = otherLocale(lang);
 const t = useT(lang);
 
 const meta = {
@@ -25,7 +24,7 @@ const posts = byType(await getPosts(Astro.locals, lang), section);
 const page = pageOf(posts, pageNum, 12, sectionHref(lang, section));
 const filters = allTags(posts).slice(0, 6).map(([tag]) => tag);
 ---
-<Base title={meta.title} description={meta.lede} alt={sectionHref(other, section)}>
+<Base title={meta.title} description={meta.lede} alt={(l) => sectionHref(l, section)}>
   <Archive
     title={meta.title}
     lede={meta.lede}

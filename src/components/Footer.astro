@@ -1,7 +1,14 @@
 ---
 import { site, siteCopy, footerLinks, socials } from '../site';
-import { langFromPath, homeHref, feedHref } from '../i18n/config';
+import { langFromPath, homeHref, feedHref, locales, localeNames, type Locale } from '../i18n/config';
 import { useT } from '../i18n/ui';
+
+/* Le même `alt` que le bandeau : sous 560 px le sélecteur du haut disparaît,
+   et un pied de page qui n'aurait su renvoyer que vers l'accueil aurait fait
+   perdre sa page au lecteur au moment précis où il change de langue. */
+interface Props { alt?: (l: Locale) => string }
+const { alt } = Astro.props;
+
 const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
 const year = new Date().getFullYear();
@@ -19,6 +26,13 @@ const cols = footerLinks(lang);
           </a>
         ))}
       </div>
+      <nav class="foot-lang" aria-label={t('nav.language')}>
+        {locales.map((l) => (
+          l === lang
+            ? <span aria-current="true" lang={l}>{localeNames[l]}</span>
+            : <a href={alt ? alt(l) : homeHref(l)} hreflang={l} lang={l}>{localeNames[l]}</a>
+        ))}
+      </nav>
     </div>
     {cols.map((col) => (
       <div>

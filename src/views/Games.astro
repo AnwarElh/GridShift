@@ -7,7 +7,7 @@ import Newsletter from '../components/Newsletter.astro';
 import SectionHead from '../components/SectionHead.astro';
 import { getPosts, getGames, byGame } from '../lib/content';
 import { shortDate } from '../lib/format';
-import { langFromPath, otherLocale, pageHref, gameHref } from '../i18n/config';
+import { langFromPath, pageHref, gameHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
 const lang = langFromPath(Astro.url.pathname);
@@ -20,7 +20,7 @@ const out = games.filter((g) => !g.data.releaseDate || g.data.releaseDate <= new
 const soon = games.filter((g) => g.data.releaseDate && g.data.releaseDate > new Date())
   .sort((a, b) => a.data.releaseDate!.getTime() - b.data.releaseDate!.getTime());
 ---
-<Base title={t('games.title')} description={t('games.desc')} alt={pageHref(otherLocale(lang), 'games')}>
+<Base title={t('games.title')} description={t('games.desc')} alt={(l) => pageHref(l, 'games')}>
   <div class="page" style="padding-top:40px">
     <Crumbs trail={[{ label: t('nav.games') }]} />
     <h1 class="d2" style="margin:12px 0 8px">{t('games.title')}</h1>

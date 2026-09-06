@@ -5,18 +5,19 @@ import { getGames } from '../lib/content';
 import { num, scoreBucket, shortDate } from '../lib/format';
 import { slugifyTag } from '../lib/content';
 import {
-  langFromPath, otherLocale, localeNames, homeHref, sectionHref, pageHref, gameHref, tagHref,
+  langFromPath, otherLocales, localeNames, homeHref, sectionHref, pageHref, gameHref, tagHref,
+  type Locale,
 } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
 /* La barre passe la langue courante à tout ce qu'elle rend, et offre le
-   basculement vers l'autre. `alt` est l'URL de CETTE page dans l'autre langue :
-   seule la page la connaît, elle la fait descendre par le gabarit. */
-interface Props { alt?: string }
+   basculement vers les autres. `alt` donne l'URL de CETTE page dans une langue
+   donnée : seule la page la connaît, elle la fait descendre par le gabarit. */
+interface Props { alt?: (l: Locale) => string }
 const { alt } = Astro.props;
 
 const lang = langFromPath(Astro.url.pathname);
-const other = otherLocale(lang);
+const others = otherLocales(lang);
 const t = useT(lang);
 
 const games = await getGames(Astro.locals, lang);
@@ -116,12 +117,20 @@ const links = [
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <span>{t('search.placeholder')}</span><kbd>⌘&nbsp;K</kbd>
     </button>
-    <!-- le sélecteur de langue porte le nom de la langue cible dans SA langue,
-         jamais traduit — c'est ce qu'un lecteur cherche du regard -->
-    <a class="btn btn-sm btn-quiet lang-btn" href={alt ?? homeHref(other)}
-       hreflang={other} lang={other} aria-label={useT(other)('nav.language') + ' : ' + localeNames[other]}>
-      {other.toUpperCase()}
-    </a>
+    <!-- Le sélecteur porte le nom de la langue cible dans SA langue, jamais
+         traduit — c'est ce qu'un lecteur cherche du regard. Deux cibles depuis
+         qu'il y a trois langues : un menu déroulant pour deux entrées ferait
+         payer un clic de plus pour cacher trente pixels. Sous 560 px il
+         disparaît du bandeau, déjà plein au doigt ; le pied de page porte le
+         même sélecteur, avec les mêmes URL. -->
+    <nav class="lang-switch" aria-label={t('nav.language')}>
+      {others.map((l) => (
+        <a class="btn btn-sm btn-quiet lang-btn" href={alt ? alt(l) : homeHref(l)}
+           hreflang={l} lang={l} aria-label={useT(l)('nav.language') + useT(l)('punct.colon') + localeNames[l]}>
+          {l.toUpperCase()}
+        </a>
+      ))}
+    </nav>
     <button class="btn btn-ico btn-quiet" id="theme" aria-label={t('theme.toLight')}>◐</button>
     <a class="btn btn-primary btn-sm" href={`${homeHref(lang)}#newsletter`}>{t('nav.subscribe')}</a>
   </div>

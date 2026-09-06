@@ -6,7 +6,7 @@ import type { Locale } from './config';
    par langue — 1 500 mots de texte juridique n'ont rien à faire ici.
 
    Toute clé absente d'une langue est une erreur de type, pas un texte manquant
-   au rendu : `Record<Locale, typeof en>` force les deux tables à coïncider. */
+   au rendu : `Record<Locale, typeof en>` force les trois tables à coïncider. */
 
 const en = {
   /* navigation */
@@ -25,6 +25,10 @@ const en = {
   'nav.breadcrumb': 'Breadcrumb',
   'nav.language': 'Language',
   'nav.switchTo': 'Lire en français',
+  /* Le deux-points, avec l'espace que la langue lui impose. Le français en
+     veut un devant, l'anglais et l'allemand non — codé en dur dans un gabarit,
+     ce détail écrivait « Language : English » sur le site anglais. */
+  'punct.colon': ': ',
 
   /* recherche */
   'search.open': 'Search for a game or a review',
@@ -269,6 +273,7 @@ const fr: Dict = {
   'nav.breadcrumb': 'Fil d’ariane',
   'nav.language': 'Langue',
   'nav.switchTo': 'Read in English',
+  'punct.colon': ' : ',
 
   'search.open': 'Chercher un jeu, un test',
   'search.label': 'Recherche',
@@ -472,7 +477,243 @@ const fr: Dict = {
   '404.latest': 'Nos derniers articles',
 };
 
-export const strings: Record<Locale, Dict> = { en, fr };
+/* ── Allemand ───────────────────────────────────────────────────────────────
+   Registre : « du » dans l'interface et la rédaction, comme toute la presse
+   jeu vidéo allemande (GameStar, PC Games, 4Players). Le vouvoiement est
+   réservé aux pages juridiques — Impressum, Datenschutz, Cookies — où c'est
+   l'usage allemand, et où le « du » sonnerait amateur.
+
+   Les noms de rubrique employés par `archive.*` sont au PLURIEL : l'allemand
+   ne forme pas son pluriel en ajoutant « s » (Artikel reste Artikel), donc les
+   gabarits anglais et français qui collent un « s » n'ont pas d'équivalent.
+   La phrase est donc écrite au pluriel une fois pour toutes — « Keine Tests
+   mit diesen Filtern » se lit aussi bien pour un résultat que pour vingt. */
+
+const de: Dict = {
+  'nav.home': 'Startseite',
+  'nav.news': 'News',
+  'nav.reviews': 'Tests',
+  'nav.guides': 'Guides',
+  'nav.setup': 'Technik',
+  'nav.games': 'Spiele',
+  'nav.deals': 'Angebote',
+  'nav.main': 'Hauptnavigation',
+  'nav.mobile': 'Mobile Navigation',
+  'nav.sections': 'Rubriken',
+  'nav.subscribe': 'Abonnieren',
+  'nav.skip': 'Zum Inhalt springen',
+  'nav.breadcrumb': 'Navigationspfad',
+  'nav.language': 'Sprache',
+  'nav.switchTo': 'Read in English',
+  'punct.colon': ': ',
+
+  'search.open': 'Spiel oder Test suchen',
+  'search.label': 'Suche',
+  'search.placeholder': 'Spiel, Test oder Guide suchen…',
+  'search.results': 'Ergebnisse',
+  'search.navigate': 'navigieren',
+  'search.select': 'öffnen',
+  'search.close': 'schließen',
+  'search.esc': 'Esc',
+  'search.minChars': 'Mindestens zwei Buchstaben eingeben',
+  'search.emptyTitle': 'Keine Ergebnisse',
+  'search.emptyBody': 'Versuch es mit dem Namen des Spiels statt dem des Studios.',
+  'search.brokenTitle': 'Suche nicht verfügbar',
+  'search.brokenBody': 'Der Index konnte nicht geladen werden. Prüf deine Verbindung und versuch es erneut.',
+  'search.groupGames': 'Spiele',
+  'search.groupNews': 'News',
+  'search.groupReviews': 'Tests',
+  'search.groupGuides': 'Guides',
+  'search.groupSetup': 'Technik',
+
+  'mega.mostFollowed': 'Meistbeobachtete Spiele',
+  'mega.byPlatform': 'Nach Plattform',
+  'mega.byGenre': 'Nach Genre',
+  'mega.upcoming': 'Kommende Releases',
+  'mega.browse': 'Alle Spiele ansehen →',
+  'mega.gamesTracked': (n: number) => `${n} Spiele im Blick · Wertungen bei jedem großen Patch neu geprüft`,
+  'mega.upcomingSoon': 'Bald',
+
+  'home.title': 'Tests und Guides zu Live-Service-Spielen',
+  'home.h1': 'Unabhängige Tests, Guides und News zu Live-Service-Spielen',
+  'home.wire': 'Der Ticker',
+  'home.headlines': 'Top-Themen',
+  'home.goToStory': (n: number) => `Thema ${n}`,
+  'home.pauseStories': 'Top-Themen anhalten',
+  'home.playStories': 'Top-Themen fortsetzen',
+  'home.seeDeals': 'Zu den Angeboten',
+  'home.gamesCovered': 'Behandelte Spiele',
+  'home.allGames': 'Alle Spiele →',
+  'home.deals': 'Aktuelle Angebote',
+  'home.allTrackedGames': 'Alle beobachteten Spiele →',
+  'home.trending': 'Im Trend',
+  'home.gameDatabase': 'Spieldatenbank →',
+  'home.seeAll': 'Alles ansehen →',
+  /* Pas de minuscule forcée : en allemand, un nom s'écrit avec une majuscule,
+     et « alle tests » serait une faute, pas un choix typographique. */
+  'home.seeAllOf': (label: string) => `Alle ${label} ansehen`,
+  'home.promoTitle': 'Ein Preis fällt — du erfährst es',
+  'home.promoBody':
+    'Der Dienstagsbrief: die Releases, die deine Zeit wert sind, die Patches, die ein Spiel verändern, und die Angebote, die wir selbst geprüft haben.',
+  'home.promoCta': 'Brief abonnieren',
+
+  'card.min': 'Min.',
+  'card.live': 'Live',
+  'card.articles': (n: number) => `${n} Artikel`,
+  'card.released': 'Erschienen',
+  'card.toCheck': 'zu prüfen',
+  'card.recommended': 'empfohlen',
+
+  'noun.news': 'Artikel',
+  'noun.review': 'Tests',
+  'noun.guide': 'Guides',
+  'noun.setup': 'Technik-Guides',
+  'section.news.title': 'News',
+  'section.news.lede': 'Der Ticker der Redaktion, laufend aktualisiert.',
+  'section.review.title': 'Tests',
+  'section.review.lede': 'Eine Wertung, eine getestete Version, eine Revisionshistorie.',
+  'section.guide.title': 'Guides',
+  'section.guide.lede':
+    'Bei jedem großen Patch neu geprüft. Die getestete Version steht in jedem Guide.',
+  'section.setup.title': 'Technik',
+  'section.setup.lede':
+    'Einstellungen, Hardware und Konfiguration — auf unseren eigenen Rechnern gemessen.',
+
+  'archive.clearFilters': 'Filter zurücksetzen',
+  'archive.onThisPage': (_n: number, noun: string) => `${noun} auf dieser Seite`,
+  'archive.emptySection': (noun: string) => `Noch keine ${noun} in dieser Rubrik. Der Dienstagsbrief sagt Bescheid, sobald es welche gibt.`,
+  'archive.noneWithFilters': (noun: string) => `Keine ${noun} mit diesen Filtern`,
+  'archive.resultsOf': (shown: number, total: number) => `${shown} von ${total}`,
+  'archive.emptyTitle': 'Hier ist noch nichts',
+  'archive.emptyBody':
+    'Diese Kombination ergibt auf dieser Seite nichts. Nimm einen Filter weg oder blätter durch alle Seiten.',
+  'archive.nothingYet': 'Noch nichts',
+  'archive.pagination': 'Seitennavigation',
+  'archive.prev': 'Vorherige Seite',
+  'archive.next': 'Nächste Seite',
+
+  'games.title': 'Spieldatenbank',
+  'games.lede': (n: number) => `${n} Spiele im Blick. Jede Seite bündelt unsere Wertung, die beobachtete Version und alle unsere Artikel zum Spiel.`,
+  'games.desc': 'Alle Spiele, die wir beobachten — mit Wertung, getesteter Version und unserer gesamten Berichterstattung.',
+  'games.upcomingSub': 'Was wir begleiten werden',
+  'games.allTitle': 'Alle Spiele',
+  'games.allSub': 'Nach Wertung sortiert',
+  'game.overview': 'Überblick',
+  'game.coverageSub': 'Neueste zuerst',
+  'game.bestPrice': (p: string) => `Bester Preis — ${p}`,
+  'game.atShop': (s: string) => `bei ${s}`,
+  'game.followers': (n: string) => `${n} Spieler beobachten es`,
+  'game.articlesOn': (n: number, g: string) => `${n} Artikel zu ${g}`,
+  'game.noneOfType': (label: string) => `Wir haben noch keine ${label} zu diesem Spiel veröffentlicht.`,
+  'game.alsoFollowSub': 'Die anderen Spiele, die wir begleiten',
+  'game.votes': (n: string) => `${n} Stimmen`,
+  'game.desc': (title: string, studio: string) => `${title} — ${studio}. Unsere Wertung, die beobachtete Version und unsere gesamte Berichterstattung.`,
+  'game.follow': 'Spiel beobachten',
+  'game.fullPage': 'Ganze Seite →',
+  'game.seePage': 'Zur Spielseite',
+  'game.allCoverage': 'Unsere gesamte Berichterstattung',
+  'game.trackedVersion': 'Beobachtete Version',
+  'game.ourScore': 'Gridshift-Wertung',
+  'game.playerScore': 'Spielerwertung',
+  'game.completedBy': 'Durchgespielt von',
+  'game.allOffers': 'alle Angebote',
+  'game.allArticles': 'Alle Artikel dazu →',
+  'game.wholeDatabase': 'Ganze Datenbank',
+  'game.alsoFollow': 'Ebenfalls einen Blick wert',
+
+  /* « Seine Artikel » aurait choisi un genre pour une personne qui n'en a pas
+     déclaré. Le titre nomme donc les articles, pas leur auteur. */
+  'author.articles': 'Veröffentlichte Artikel',
+  'author.publications': (n: number) => `${n} Veröffentlichung${n > 1 ? 'en' : ''}`,
+  'tag.topics': 'Themen',
+  'tag.desc': (tag: string) => `Alle unsere Artikel zu ${tag}: Tests, Guides und News.`,
+  'tag.lede': (n: number, tag: string) => `${n} Artikel unter „${tag}“ abgelegt.`,
+  'author.since': (y: string) => `bei Gridshift seit ${y}`,
+  'author.published': (n: number) => `${n} Artikel veröffentlicht`,
+  'review.testedOn': 'Für Version ',
+  'review.readTime': (n: number) => `${n} Min. Lesezeit`,
+  'review.updatedOn': (d: string) => `Aktualisiert am ${d}`,
+  'review.ourAverage': 'Unser Durchschnitt',
+  'review.topPercent': (p: number) => `Top ${p} % unserer Tests`,
+  'review.whereToBuy': 'Wo kaufen',
+  'aff.pricesChecked': (d: string) => `Preise geprüft am ${d}. `,
+  'review.theGame': 'Das Spiel',
+  'review.siblingCount': (n: number) => `${n} Artikel zu diesem Spiel`,
+  'review.verdict': 'Fazit',
+  'review.nextOn': (g: string) => `Mehr zu ${g}`,
+  'review.readNext': 'Weiterlesen',
+  'review.howWeTested': 'So haben wir getestet',
+  'review.whatWorks': 'Was funktioniert',
+  'review.whatDoesnt': 'Was nicht funktioniert',
+  'review.revisedScore': 'Korrigierte Wertung',
+  'review.scoresMove': 'Wertungen ändern sich',
+  'review.sources': 'Quellen',
+  'review.corrections': 'Korrekturen',
+  'review.inThisGuide': 'In diesem Guide',
+  'review.share': 'Teilen',
+  'review.linkCopied': 'Link kopiert',
+
+  'news.kicker': 'Jeden Dienstag',
+  'news.title': 'Was diese Woche wirklich zählt',
+  'news.body':
+    'Eine kurze Auswahl: die Releases, die deine Zeit wert sind, die Patches, die ein Spiel verändern, die Tests, die wir korrigieren. Keine Linklisten.',
+  'news.email': 'E-Mail-Adresse',
+  'news.placeholder': 'du@beispiel.de',
+  'news.cta': 'Brief abonnieren',
+  'news.sending': 'Wird gesendet…',
+  'news.terms': 'Eine E-Mail pro Woche. Abmeldung mit einem Klick.',
+  'news.errEmpty': 'Gib deine E-Mail-Adresse ein.',
+  'news.errInvalid': 'Diese Adresse sieht nicht richtig aus — prüf das @ und die Domain.',
+  'news.notConfigured': 'Anmeldung nicht eingerichtet',
+  'news.notConfiguredBody': 'PUBLIC_NEWSLETTER_ACTION in .env setzen',
+
+  'consent.title': 'Wir verwenden Werbe-Cookies.',
+  'consent.body':
+    'Damit finanzieren wir die Redaktion, mehr nicht. Vor deiner Zustimmung wird keiner gesetzt.',
+  'consent.more': 'Mehr erfahren',
+  'consent.accept': 'Akzeptieren',
+  'consent.refuse': 'Ablehnen',
+  'consent.reset': 'Auswahl ändern',
+  'consent.resetDone': 'Auswahl gelöscht',
+  'consent.resetBody': 'Der Banner erscheint beim nächsten Seitenaufruf wieder.',
+
+  'theme.toLight': 'Zum hellen Design wechseln',
+  'theme.toDark': 'Zum dunklen Design wechseln',
+
+  'foot.content': 'Inhalte',
+  'foot.site': 'Die Seite',
+  'foot.legal': 'Rechtliches',
+  'foot.about': 'Wer wir sind',
+  'foot.team': 'Die Redaktion',
+  'foot.charter': 'Redaktionsstatut',
+  'foot.howWeScore': 'Wie wir werten',
+  'foot.contact': 'Schreib uns',
+  'foot.legalNotice': 'Impressum',
+  'foot.privacy': 'Datenschutz',
+  'foot.cookies': 'Cookies',
+  'foot.affiliate': 'Affiliate-Links',
+  'foot.credits': 'Bildnachweise',
+  'foot.rss': 'RSS-Feed',
+  'foot.affiliateNote': 'Affiliate-Links:',
+  'foot.affiliateBody':
+    'Manche Angebote bringen uns eine Provision. Sie ändert weder deinen Preis noch unsere Wertungen.',
+
+  'aff.note':
+    'Affiliate-Links: Wir können eine Provision erhalten — ohne Auswirkung auf deinen Preis oder unsere Wertungen.',
+  'aff.seeOffer': 'Angebot ansehen',
+  'aff.atShopNewTab': (shop: string) => ` bei ${shop} (neuer Tab)`,
+
+  'ad.label': 'ANZEIGE',
+
+  '404.title': 'Seite nicht gefunden',
+  '404.heading': 'Diese Seite gibt es nicht mehr',
+  '404.body':
+    'Vielleicht ist sie in einem neueren Guide aufgegangen, oder das Spiel hat eine andere Seite bekommen.',
+  '404.home': 'Zurück zur Startseite',
+  '404.latest': 'Unsere neuesten Artikel',
+};
+
+export const strings: Record<Locale, Dict> = { en, fr, de };
 
 export type UIKey = keyof Dict;
 

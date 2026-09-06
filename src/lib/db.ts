@@ -9,10 +9,10 @@
  * Une requête par page, pas une par carte. D1 facture et surtout *attend* à
  * chaque aller-retour ; une page d'accueil qui ferait une requête par vignette
  * passerait son temps à attendre. On charge donc la langue entière d'un coup et
- * on trie en mémoire — 33 articles par langue, c'est quelques dizaines de Ko.
+ * on trie en mémoire — une vingtaine d'articles par langue, quelques dizaines de Ko.
  */
 import type { Locale, SectionKey } from '../i18n/config.ts';
-import { articleHref } from '../i18n/config.ts';
+import { articleHref, locales } from '../i18n/config.ts';
 import { readingTime } from './format.ts';
 
 /* ── formes rendues ─────────────────────────────────────────────────────── */
@@ -105,7 +105,7 @@ export interface Loaded {
   games: Game[];
   authors: Author[];
   media: Map<string, Media>;
-  sections: { key: SectionKey; slugEn: string; slugFr: string; labelEn: string; labelFr: string }[];
+  sections: { key: SectionKey; slug: Record<Locale, string>; label: Record<Locale, string> }[];
 }
 
 /** Charge tout le contenu d'une langue en cinq requêtes. Le résultat est
@@ -223,10 +223,12 @@ export async function load(db: D1Like, lang: Locale, mediaBase = '/media'): Prom
     };
   });
 
+  /* Une paire de champs par langue devenait six ; un enregistrement indexé par
+     la langue en demande zéro à la suivante. */
   const sections = (sectionRows.results as Record<string, unknown>[]).map((r) => ({
     key: String(r.key) as SectionKey,
-    slugEn: String(r.slug_en), slugFr: String(r.slug_fr),
-    labelEn: String(r.label_en), labelFr: String(r.label_fr),
+    slug: Object.fromEntries(locales.map((l) => [l, String(r[`slug_${l}`] ?? '')])) as Record<Locale, string>,
+    label: Object.fromEntries(locales.map((l) => [l, String(r[`label_${l}`] ?? '')])) as Record<Locale, string>,
   }));
 
   return { posts, games, authors, media, sections };

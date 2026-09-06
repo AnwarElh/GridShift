@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
-import { langFromPath, otherLocale, pageHref } from '../i18n/config';
+import { langFromPath, pageHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
@@ -26,9 +26,19 @@ const c = {
     change: 'Changer d’avis',
     changeBody: 'Votre choix n’est pas définitif. Le bouton ci-dessous efface votre réponse : la bannière réapparaîtra au prochain chargement et vous pourrez répondre autrement.',
   },
+  de: {
+    title: 'Cookies', desc: 'Welche Cookies Gridshift setzt, wozu sie dienen und wie Sie Ihre Entscheidung ändern.',
+    without: 'Was ohne Einwilligung gesetzt wird',
+    withoutBody1: 'Eine einzige Sache, und sie ist kein Cookie: Ihre Themenwahl (hell oder dunkel) liegt im lokalen Speicher Ihres Browsers, unter dem Schlüssel ',
+    withoutBody2: '. Sie verlässt Ihr Gerät nie. Ihre Antwort auf den Banner wird genauso abgelegt, unter ',
+    after: 'Was erst nach Ihrer Zustimmung gesetzt wird',
+    afterBody: 'Die Werbe-Cookies unseres Vermarkters. Sie dienen dazu, die Werbung auszuspielen und zu messen, die die Redaktion finanziert. Solange Sie nicht zugestimmt haben, wird das Skript des Vermarkters überhaupt nicht geladen.',
+    change: 'Entscheidung ändern',
+    changeBody: 'Ihre Wahl ist nicht endgültig. Die Schaltfläche unten löscht Ihre Antwort: Der Banner erscheint beim nächsten Seitenaufruf wieder, und Sie können anders antworten.',
+  },
 }[lang];
 ---
-<Base title={c.title} description={c.desc} alt={pageHref(otherLocale(lang), 'cookies')}>
+<Base title={c.title} description={c.desc} alt={(l) => pageHref(l, 'cookies')}>
   <div class="page narrow" style="padding-top:40px;padding-bottom:var(--s-9)">
     <Crumbs trail={[{ label: c.title }]} />
     <h1 class="d2" style="margin:12px 0 8px">{c.title}</h1>

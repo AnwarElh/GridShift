@@ -5,6 +5,7 @@ since: "2023"
 role:
   en: Guides writer
   fr: Rédactrice guides
+  de: Guides-Redaktion
 bio:
   en: >-
     Covers action RPGs and progression systems. Former QA tester. Re-checks her
@@ -12,6 +13,10 @@ bio:
   fr: >-
     Couvre les action-RPG et les systèmes de progression. Ancienne testeuse QA.
     Vérifie ses guides à chaque patch majeur plutôt que de les republier tels quels.
+  de: >-
+    Schreibt über Action-RPGs und Progressionssysteme. Kommt aus dem QA-Test.
+    Prüft die Guides bei jedem großen Patch neu, statt sie unverändert wieder
+    zu veröffentlichen.
 creds:
   en:
     - "Specialty: action RPGs"
@@ -19,4 +24,7 @@ creds:
   fr:
     - "Spécialité : action-RPG"
     - Vérifie ses guides à chaque patch
+  de:
+    - "Schwerpunkt: Action-RPGs"
+    - Prüft die Guides bei jedem Patch neu
 ---

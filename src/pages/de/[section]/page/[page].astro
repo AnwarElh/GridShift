@@ -1,0 +1,9 @@
+---
+import Section from '../../../../views/Section.astro';
+import { sectionFromSlug } from '../../../../i18n/config';
+
+const section = sectionFromSlug('de', Astro.params.section!);
+const page = Number(Astro.params.page);
+if (!section || !Number.isInteger(page) || page < 2) return Astro.rewrite('/de/404');
+---
+<Section section={section} pageNum={page} />

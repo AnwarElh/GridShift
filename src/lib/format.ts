@@ -1,4 +1,4 @@
-import type { Locale } from '../i18n/config';
+import { locales, type Locale } from '../i18n/config.ts';
 
 /* Palier de couleur d'une note — les seuils du système : 90 / 80 / 70 / 50 / 0. */
 export const scoreBucket = (score: number): '90' | '80' | '70' | '50' | '0' => {
@@ -14,7 +14,7 @@ export const scoreBucket = (score: number): '90' | '80' | '70' | '50' | '0' => {
    règle : 9.1 s'écrit « 9,1 » en français et « 9.1 » en anglais, et le mois
    ne s'abrège pas de la même manière. Rien n'est codé en dur. */
 
-const BCP47: Record<Locale, string> = { en: 'en-GB', fr: 'fr-FR' };
+const BCP47: Record<Locale, string> = { en: 'en-GB', fr: 'fr-FR', de: 'de-DE' };
 
 const make = (lang: Locale) => {
   const l = BCP47[lang];
@@ -27,7 +27,10 @@ const make = (lang: Locale) => {
   };
 };
 
-const F: Record<Locale, ReturnType<typeof make>> = { en: make('en'), fr: make('fr') };
+/* Dérivé de `locales` plutôt qu'énuméré : une table écrite à la main aurait
+   laissé l'allemand sans formateur — donc un `undefined.format()` à la
+   première date rendue sous /de/. */
+const F = Object.fromEntries(locales.map((l) => [l, make(l)])) as Record<Locale, ReturnType<typeof make>>;
 
 export const num = (n: number, lang: Locale) => F[lang].num.format(n);
 export const int = (n: number, lang: Locale) => F[lang].int.format(n);
@@ -45,7 +48,10 @@ export const feedStamp = (d: Date, lang: Locale, now = new Date()) =>
   d.toDateString() === now.toDateString() ? time(d, lang) : shortDate(d, lang);
 
 /* Vitesse de lecture : l'anglais se lit un peu plus vite que le français à
-   nombre de mots égal, les deux repères usuels de la presse éditoriale. */
-const WPM: Record<Locale, number> = { en: 250, fr: 230 };
+   nombre de mots égal, les deux repères usuels de la presse éditoriale.
+   L'allemand est plus lent encore — ses mots composés font moins de mots pour
+   autant de signes, donc un compteur au mot surestime la vitesse s'il garde
+   le repère anglais. */
+const WPM: Record<Locale, number> = { en: 250, fr: 230, de: 220 };
 export const readingTime = (body = '', lang: Locale = 'en') =>
   Math.max(1, Math.round(body.trim().split(/\s+/).length / WPM[lang]));

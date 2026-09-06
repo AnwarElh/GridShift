@@ -40,7 +40,7 @@ const slugifyTag = (tag) =>
    dépôt écrit réellement — scalaires, listes, listes d'objets en accolades,
    blocs `>-` et objets imbriqués sur deux niveaux. Ajouter js-yaml pour lire
    nos propres fichiers serait une dépendance pour un problème qu'on n'a pas. */
-function parseFrontmatter(raw, file) {
+export function parseFrontmatter(raw, file) {
   const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!m) throw new Error(`front-matter absent : ${file}`);
   const [, head, body] = m;
@@ -62,10 +62,16 @@ function parseFrontmatter(raw, file) {
     return s;
   };
 
-  /* `{ name: PC, best: true }` — la forme compacte utilisée par les fiches jeu */
+  /* `{ name: PC, best: true }` — la forme compacte utilisée par les fiches jeu.
+     La virgule qui sépare deux champs et la virgule qui appartient à une valeur
+     s'écrivent pareil ; seule la citation les distingue. Découper sur toutes les
+     virgules coupait « value: "Jason and Lucia, in the state of Leonida" » en
+     deux, et la fiche affichait « "Jason and Lucia » — guillemet compris, parce
+     que le morceau n'était plus fermé. On ne coupe donc que sur une virgule
+     laissant un nombre pair de guillemets derrière elle, et hors crochets. */
   const inlineObject = (s) => {
     const out = {};
-    for (const part of s.slice(1, -1).split(/,(?![^[]*\])/)) {
+    for (const part of s.slice(1, -1).split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)(?![^[]*\])/)) {
       const idx = part.indexOf(':');
       if (idx === -1) continue;
       out[part.slice(0, idx).trim()] = scalar(part.slice(idx + 1));
@@ -174,12 +180,23 @@ function jpegSize(buf) {
 
 /* ── export ────────────────────────────────────────────────────────────── */
 
+/* Les langues du site, dans l'ordre des colonnes du schéma. Une seule liste :
+   c'est elle qui pilote les colonnes écrites, les dossiers lus et le contrôle
+   de complétude — ajouter une langue ne demande de la déclarer qu'ici et dans
+   src/i18n/config.ts. */
+const LANGS = ['en', 'fr', 'de'];
+
 const SECTIONS = [
-  { key: 'news',   slug_en: 'news',    slug_fr: 'actus',   label_en: 'News',    label_fr: 'Actus',  position: 1 },
-  { key: 'review', slug_en: 'reviews', slug_fr: 'tests',   label_en: 'Reviews', label_fr: 'Tests',  position: 2 },
-  { key: 'guide',  slug_en: 'guides',  slug_fr: 'guides',  label_en: 'Guides',  label_fr: 'Guides', position: 3 },
-  { key: 'setup',  slug_en: 'setup',   slug_fr: 'configs', label_en: 'Setup',   label_fr: 'Configs',position: 4 },
+  { key: 'news',   position: 1, slug: { en: 'news',    fr: 'actus',   de: 'news' },    label: { en: 'News',    fr: 'Actus',   de: 'News' } },
+  { key: 'review', position: 2, slug: { en: 'reviews', fr: 'tests',   de: 'tests' },   label: { en: 'Reviews', fr: 'Tests',   de: 'Tests' } },
+  { key: 'guide',  position: 3, slug: { en: 'guides',  fr: 'guides',  de: 'guides' },  label: { en: 'Guides',  fr: 'Guides',  de: 'Guides' } },
+  { key: 'setup',  position: 4, slug: { en: 'setup',   fr: 'configs', de: 'technik' }, label: { en: 'Setup',   fr: 'Configs', de: 'Technik' } },
 ];
+
+/* « role_en, role_fr, role_de » à partir de « role ». Écrire les colonnes à la
+   main les aurait laissées désynchronisées de LANGS au premier ajout. */
+const cols = (...names) => names.flatMap((n) => LANGS.map((l) => `${n}_${l}`)).join(',');
+const vals = (row, names, fn) => names.flatMap((n) => LANGS.map((l) => fn(row?.[n]?.[l], n, l))).join(',');
 
 const iso = (v) => {
   if (v === null || v === undefined || v === '') return null;
@@ -206,8 +223,10 @@ async function main() {
 
   const authors = await readDir(path.join(CONTENT, 'authors'));
   const games = await readDir(path.join(CONTENT, 'games'));
-  const enArticles = await readDir(path.join(CONTENT, 'articles/en'));
-  const frArticles = await readDir(path.join(CONTENT, 'articles/fr'));
+  /* Un dossier par langue, énuméré depuis LANGS. */
+  const articlesByLang = Object.fromEntries(
+    await Promise.all(LANGS.map(async (l) => [l, await readDir(path.join(CONTENT, `articles/${l}`))])),
+  );
   const credits = await readCredits();
 
   /* Les médias : ce qui est réellement dans src/assets, pas ce que la table
@@ -233,12 +252,17 @@ async function main() {
   const authorIds = new Set(authors.map((a) => a.id));
   const gameIds = new Set(games.map((g) => g.id));
 
-  /* Un article n'existe qu'en une langue ⇒ le sélecteur de langue enverrait
-     vers une page absente. C'est exactement ce que le modèle interdit. */
-  const enIds = new Set(enArticles.map((a) => a.id));
-  const frIds = new Set(frArticles.map((a) => a.id));
-  for (const id of enIds) if (!frIds.has(id)) errors.push(`traduction FR manquante : ${id}`);
-  for (const id of frIds) if (!enIds.has(id)) errors.push(`traduction EN manquante : ${id}`);
+  /* Un article qui manque dans une langue ⇒ le sélecteur de langue, le hreflang
+     et le plan de site enverraient tous les trois vers une page absente. C'est
+     exactement ce que le modèle interdit, et c'est ce qui autorise le reste du
+     site à composer l'URL d'une traduction sans jamais vérifier son existence. */
+  const idsByLang = Object.fromEntries(LANGS.map((l) => [l, new Set(articlesByLang[l].map((a) => a.id))]));
+  const everyId = new Set(LANGS.flatMap((l) => [...idsByLang[l]]));
+  for (const id of [...everyId].sort()) {
+    for (const l of LANGS) {
+      if (!idsByLang[l].has(id)) errors.push(`traduction ${l.toUpperCase()} manquante : ${id}`);
+    }
+  }
 
   const lines = [];
   const push = (s) => lines.push(s);
@@ -252,7 +276,7 @@ async function main() {
 
   push('-- rubriques');
   for (const s of SECTIONS) {
-    push(`INSERT INTO sections (key,slug_en,slug_fr,label_en,label_fr,position) VALUES (${q(s.key)},${q(s.slug_en)},${q(s.slug_fr)},${q(s.label_en)},${q(s.label_fr)},${s.position});`);
+    push(`INSERT INTO sections (key,${cols('slug', 'label')},position) VALUES (${q(s.key)},${vals(s, ['slug', 'label'], q)},${s.position});`);
   }
   push('');
 
@@ -265,7 +289,10 @@ async function main() {
   push('-- auteurs');
   for (const a of authors) {
     const d = a.data;
-    push(`INSERT INTO authors (id,name,initials,since,role_en,role_fr,bio_en,bio_fr,creds_en,creds_fr,body_en,body_fr) VALUES (${q(a.id)},${q(d.name)},${q(d.initials)},${q(d.since)},${q(d.role?.en)},${q(d.role?.fr)},${q(d.bio?.en)},${q(d.bio?.fr)},${json(d.creds?.en)},${json(d.creds?.fr)},${q(await toHtml(a.body))},${q(await toHtml(a.body))});`);
+    /* Le corps libre d'une fiche d'auteur n'est pas traduit : la même prose est
+       stockée dans chaque colonne, comme avant l'allemand. */
+    const body = q(await toHtml(a.body));
+    push(`INSERT INTO authors (id,name,initials,since,${cols('role', 'bio', 'creds', 'body')}) VALUES (${q(a.id)},${q(d.name)},${q(d.initials)},${q(d.since)},${vals(d, ['role', 'bio'], q)},${vals(d, ['creds'], json)},${LANGS.map(() => body).join(',')});`);
   }
   push('');
 
@@ -276,13 +303,15 @@ async function main() {
       const k = mediaKey(val);
       if (k && !mediaKeys.has(k)) errors.push(`jeu ${g.id} : ${field} introuvable dans src/assets (${k})`);
     }
-    push(`INSERT INTO games (id,title,studio,released,release_date,score,user_score,user_votes,followers,completion,version,cover_media,hero_media,platforms,offers,prices_checked_on,genre_en,genre_fr,facts_en,facts_fr,summary_en,summary_fr,body_en,body_fr) VALUES (${q(g.id)},${q(d.title)},${q(d.studio)},${q(d.released)},${q(iso(d.releaseDate))},${n(d.score)},${n(d.userScore)},${n(d.userVotes)},${n(d.followers)},${n(d.completion)},${q(d.version)},${q(mediaKey(d.cover))},${q(mediaKey(d.hero))},${json(d.platforms)},${json(d.offers)},${q(iso(d.pricesCheckedOn))},${q(d.genre?.en)},${q(d.genre?.fr)},${json(d.facts?.en)},${json(d.facts?.fr)},${q(d.summary?.en)},${q(d.summary?.fr)},${q(await toHtml(g.body))},${q(await toHtml(g.body))});`);
+    const body = q(await toHtml(g.body));
+    push(`INSERT INTO games (id,title,studio,released,release_date,score,user_score,user_votes,followers,completion,version,cover_media,hero_media,platforms,offers,prices_checked_on,${cols('genre', 'facts', 'summary', 'body')}) VALUES (${q(g.id)},${q(d.title)},${q(d.studio)},${q(d.released)},${q(iso(d.releaseDate))},${n(d.score)},${n(d.userScore)},${n(d.userVotes)},${n(d.followers)},${n(d.completion)},${q(d.version)},${q(mediaKey(d.cover))},${q(mediaKey(d.hero))},${json(d.platforms)},${json(d.offers)},${q(iso(d.pricesCheckedOn))},${vals(d, ['genre'], q)},${vals(d, ['facts'], json)},${vals(d, ['summary'], q)},${LANGS.map(() => body).join(',')});`);
   }
   push('');
 
   push('-- articles');
   let tagCount = 0;
-  for (const [lang, list] of [['en', enArticles], ['fr', frArticles]]) {
+  for (const lang of LANGS) {
+    const list = articlesByLang[lang];
     for (const a of list) {
       const d = a.data;
       if (d.lang !== lang) errors.push(`${lang}/${a.id} : champ lang = ${d.lang}`);
@@ -306,7 +335,9 @@ async function main() {
 
   const summary = {
     sections: SECTIONS.length, media: mediaRows.length, authors: authors.length,
-    games: games.length, articles: enArticles.length + frArticles.length, tags: tagCount,
+    games: games.length,
+    articles: LANGS.reduce((t, l) => t + articlesByLang[l].length, 0),
+    tags: tagCount,
   };
 
   if (errors.length) {
@@ -326,4 +357,8 @@ async function main() {
   console.table(summary);
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+/* Lancé en script, pas importé : sans cette garde, `import { parseFrontmatter }`
+   depuis un test régénérerait db/seed.sql au passage. */
+if (import.meta.filename === process.argv[1]) {
+  main().catch((e) => { console.error(e); process.exit(1); });
+}

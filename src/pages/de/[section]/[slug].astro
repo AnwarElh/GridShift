@@ -1,0 +1,34 @@
+---
+import ArticleLayout from '../../../layouts/Article.astro';
+import { getPosts, related, byGame } from '../../../lib/content';
+import { sectionFromSlug } from '../../../i18n/config';
+
+/* En rendu serveur, les paramètres viennent de l'URL : plus de getStaticPaths,
+   plus de props posées au build. La page cherche l'article et rend 404 si elle
+   ne le trouve pas — ce que la version figée obtenait en n'existant pas. */
+const section = sectionFromSlug('de', Astro.params.section!);
+const posts = await getPosts(Astro.locals, 'de');
+const post = section
+  ? posts.find((p) => p.slug === Astro.params.slug && p.section === section)
+  : undefined;
+if (!post) return Astro.rewrite('/de/404');
+
+const siblings = post.game ? byGame(posts, post.game.id).length : 0;
+const scored = posts.filter((p) => p.data.score !== undefined);
+const average = scored.length ? scored.reduce((s, p) => s + p.data.score!, 0) / scored.length : 7.4;
+const authorCount = posts.filter((p) => p.author.id === post.author.id).length;
+/* percentile : la place de la note dans nos tests, pas dans le marché */
+const better = scored.filter((p) => (p.data.score ?? 0) > (post.data.score ?? 0)).length;
+const percentile = scored.length ? Math.max(1, Math.round((better / scored.length) * 100)) : 50;
+---
+<ArticleLayout
+  post={post}
+  related={related(posts, post)}
+  siblings={siblings}
+  percentile={percentile}
+  average={Number(average.toFixed(1))}
+  authorCount={authorCount}>
+  <!-- Le corps est rendu à la publication et stocké dans D1 : le worker
+       n'exécute aucune chaîne Markdown, il pose du HTML déjà fabriqué. -->
+  <Fragment set:html={post.body_html} />
+</ArticleLayout>

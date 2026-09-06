@@ -7,7 +7,8 @@ import CmdPalette from '../components/CmdPalette.astro';
 import Consent from '../components/Consent.astro';
 import { site, siteCopy } from '../site';
 import {
-  langFromPath, otherLocale, htmlLang, ogLocale, defaultLocale, homeHref, feedHref, withBase,
+  langFromPath, locales, otherLocales, htmlLang, ogLocale, defaultLocale,
+  feedHref, withBase, type Locale,
 } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
@@ -18,12 +19,15 @@ interface Props {
   image?: string;
   noindex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
-  /* Chemin de CETTE page dans l'autre langue. Seule la page le connaît : un
-     article a une traduction précise, pas seulement « la même rubrique ». */
-  alt?: string;
+  /* Le chemin de CETTE page dans une langue donnée. Seule la page le sait : un
+     article a une traduction précise, pas seulement « la même rubrique ».
+     C'est une fonction et non une URL depuis qu'il y a trois langues — une
+     valeur unique n'aurait pu désigner qu'une des deux autres, et le sélecteur
+     comme les hreflang auraient tu la troisième. */
+  alt?: (l: Locale) => string;
 }
 const lang = langFromPath(Astro.url.pathname);
-const other = otherLocale(lang);
+const others = otherLocales(lang);
 const t = useT(lang);
 
 const {
@@ -43,15 +47,18 @@ const canonical = new URL(canonicalPath, site.url).href;
 const ogImage = new URL(image ?? withBase('/og-default.png'), site.url).href;
 const fullTitle = title === site.name ? title : `${title} — ${site.name}`;
 
-/* hreflang : les deux versions se déclarent mutuellement, et x-default pointe
-   vers la langue principale. Sans `alt`, on ne prétend pas connaître
-   l'équivalent — mieux vaut aucune balise qu'une balise fausse. */
-const altUrl = alt ? new URL(alt, site.url).href : undefined;
-const alternates = altUrl
+/* hreflang : chaque version déclare toutes les autres — y compris elle-même,
+   comme la spécification le demande — et x-default pointe vers la langue
+   principale. Sans `alt`, on ne prétend pas connaître les équivalents : mieux
+   vaut aucune balise qu'une balise fausse. */
+const abs = (p: string) => new URL(p, site.url).href;
+const alternates = alt
   ? [
-      { lang: htmlLang[lang], href: canonical },
-      { lang: htmlLang[other], href: altUrl },
-      { lang: 'x-default', href: lang === defaultLocale ? canonical : altUrl },
+      ...locales.map((l) => ({
+        lang: htmlLang[l],
+        href: l === lang ? canonical : abs(alt(l)),
+      })),
+      { lang: 'x-default', href: lang === defaultLocale ? canonical : abs(alt(defaultLocale)) },
     ]
   : [];
 ---
@@ -79,7 +86,7 @@ const alternates = altUrl
 <meta property="og:url" content={canonical}>
 <meta property="og:image" content={ogImage}>
 <meta property="og:locale" content={ogLocale[lang]}>
-{altUrl && <meta property="og:locale:alternate" content={ogLocale[other]} />}
+{alt && others.map((l) => <meta property="og:locale:alternate" content={ogLocale[l]} />)}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content={site.twitter}>
 
@@ -121,7 +128,7 @@ const alternates = altUrl
   <slot />
 </main>
 
-<Footer />
+<Footer alt={alt} />
 <TabBar />
 <CmdPalette />
 <Consent />

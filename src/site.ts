@@ -34,6 +34,11 @@ export const siteCopy: Record<Locale, { tagline: string; description: string }> 
     description:
       'Tests, guides et actus jeu vidéo. Nous testons ce que nous achetons et nous révisons nos notes quand les jeux changent.',
   },
+  de: {
+    tagline: 'Unabhängiges Games-Magazin',
+    description:
+      'Tests, Guides und News zu Live-Service-Spielen. Wir kaufen, was wir testen, und wir korrigieren unsere Wertungen, wenn sich die Spiele ändern.',
+  },
 };
 
 /* Réseaux du pied de page. Le `d` est le tracé SVG, viewBox 24×24. */
@@ -91,4 +96,5 @@ export const platforms = ['PC', 'PS5', 'Xbox Series', 'Switch 2', 'Steam Deck'];
 export const genres: Record<Locale, string[]> = {
   en: ['Action RPG', 'Co-op', 'Strategy', 'Roguelite', 'Simulation'],
   fr: ['Action-RPG', 'Coop', 'Stratégie', 'Roguelite', 'Simulation'],
+  de: ['Action-RPG', 'Koop', 'Strategie', 'Roguelite', 'Simulation'],
 };

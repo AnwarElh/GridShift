@@ -16,7 +16,7 @@ import { getPosts, getGames, byGame, type Game } from '../lib/content';
 import { int } from '../lib/format';
 import { site } from '../site';
 import {
-  langFromPath, otherLocale, pageHref, gameHref, homeHref, type SectionKey,
+  langFromPath, pageHref, gameHref, homeHref, type SectionKey,
 } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
@@ -71,7 +71,7 @@ const jsonLd = {
 };
 ---
 <Base title={d.title} description={t('game.desc')(d.title, d.studio)} jsonLd={jsonLd}
-      alt={gameHref(otherLocale(lang), game.id)}>
+      alt={(l) => gameHref(l, game.id)}>
   <div class="hub">
     <div class="hub-bg">{d.hero ? <Fig src={d.hero} ratio="21-9" /> : <span class="ph"></span>}</div>
     <div class="hub-in">

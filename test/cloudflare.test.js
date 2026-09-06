@@ -14,7 +14,12 @@ import assert from 'node:assert/strict';
    ailleurs, et la mêler ici obligerait à démarrer Vite pour vérifier un
    `JSON.parse`. */
 mock.module(import.meta.resolve('../src/i18n/config.ts'), {
-  namedExports: { articleHref: (_lang, section, slug) => `/${section}/${slug}/` },
+  namedExports: {
+    articleHref: (_lang, section, slug) => `/${section}/${slug}/`,
+    /* db.ts dérive de cette liste les colonnes traduites qu'il relit ; la
+       laisser hors du faux module faisait échouer le chargement, pas un test. */
+    locales: ['en', 'fr', 'de'],
+  },
 });
 
 const { cacheKey, isCacheable, ttlFrom } = await import('../src/lib/cache.ts');
@@ -71,17 +76,20 @@ const FIXTURE = {
   }],
   authors: [{
     id: 'lina-morel', name: 'Lina Morel', initials: 'LM', since: '2024',
-    role_en: 'Guides writer', role_fr: 'Rédactrice guides',
-    bio_en: 'bio', bio_fr: 'bio fr', creds_en: '["a"]', creds_fr: '["b"]',
-    body_en: '', body_fr: '',
+    role_en: 'Guides writer', role_fr: 'Rédactrice guides', role_de: 'Guides-Redaktion',
+    bio_en: 'bio', bio_fr: 'bio fr', bio_de: 'bio de',
+    creds_en: '["a"]', creds_fr: '["b"]', creds_de: '["c"]',
+    body_en: '', body_fr: '', body_de: '',
   }],
   games: [{
     id: 'onimusha', title: 'Onimusha', studio: 'Capcom', released: '2026',
     release_date: '2026-09-04T00:00:00.000Z', score: 8.2,
     cover_media: null, hero_media: 'h-x.jpg',
     platforms: '[{"name":"PS5","best":true}]', offers: '[]',
-    genre_en: 'Action', genre_fr: 'Action', facts_en: '[]', facts_fr: '[]',
-    summary_en: 'sum', summary_fr: 'résumé', body_en: '', body_fr: '',
+    genre_en: 'Action', genre_fr: 'Action', genre_de: 'Action',
+    facts_en: '[]', facts_fr: '[]', facts_de: '[]',
+    summary_en: 'sum', summary_fr: 'résumé', summary_de: 'Zusammenfassung',
+    body_en: '', body_fr: '', body_de: '',
   }],
   articles: [{
     slug: 'onimusha-review', lang: 'en', section: 'review', title: 'T', seo_title: null,
@@ -94,7 +102,11 @@ const FIXTURE = {
     method: null, sources: null, corrections: '[]', body: 'Un corps.',
   }],
   tags: [{ slug: 'onimusha-review', tag: 'Onimusha' }, { slug: 'onimusha-review', tag: 'Capcom' }],
-  sections: [{ key: 'review', slug_en: 'reviews', slug_fr: 'tests', label_en: 'Reviews', label_fr: 'Tests' }],
+  sections: [{
+    key: 'review',
+    slug_en: 'reviews', slug_fr: 'tests', slug_de: 'tests',
+    label_en: 'Reviews', label_fr: 'Tests', label_de: 'Tests',
+  }],
 };
 
 test('load() rend la forme qu’attendent les gabarits', async () => {
@@ -124,4 +136,18 @@ test('load() choisit la langue demandée', async () => {
   const { games, authors } = await load(fakeD1(fr), 'fr', '/media');
   assert.equal(games[0].data.summary, 'résumé', 'les colonnes _fr sont lues en français');
   assert.equal(authors[0].data.role, 'Rédactrice guides');
+});
+
+/* La troisième langue n'ajoute pas de code : elle ajoute des colonnes, que
+   db.ts nomme par interpolation. C'est précisément le genre de lecture qui
+   échoue en silence — une colonne absente rend « undefined », pas une erreur —
+   d'où une assertion par forme de donnée traduite. */
+test('load() lit les colonnes allemandes', async () => {
+  const de = { ...FIXTURE, articles: [{ ...FIXTURE.articles[0], lang: 'de' }] };
+  const { posts, games, authors } = await load(fakeD1(de), 'de', '/media');
+  assert.equal(games[0].data.summary, 'Zusammenfassung');
+  assert.equal(authors[0].data.role, 'Guides-Redaktion');
+  assert.deepEqual(authors[0].data.creds, ['c'], 'le JSON traduit suit la langue');
+  assert.equal(posts[0].lang, 'de');
+  assert.equal(games[0].data.score, 8.2, 'les chiffres ne sont pas dupliqués par langue');
 });

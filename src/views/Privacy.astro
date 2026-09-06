@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
 import { site } from '../site';
-import { langFromPath, otherLocale, pageHref } from '../i18n/config';
+import { langFromPath, pageHref } from '../i18n/config';
 const lang = langFromPath(Astro.url.pathname);
 const c = {
   en: {
@@ -37,9 +37,25 @@ const c = {
     rightsBody1: 'Vous pouvez demander l’accès, la rectification ou l’effacement des données vous concernant en écrivant à ',
     rightsBody2: '. Nous répondons sous trente jours.',
   },
+  de: {
+    title: 'Datenschutz', desc: `Welche Daten ${site.name} erhebt, wozu, und wie Sie sie zurückziehen.`,
+    lede: 'Die Seite ist statisch und legt kein Konto an. Wir erheben nur zwei Dinge, und nur, wenn Sie sie uns geben.',
+    letter: 'Der Dienstagsbrief',
+    letterBody: 'Wenn Sie sich anmelden, dient Ihre E-Mail-Adresse dazu, Ihnen den Brief zu schicken, und sonst nichts. Sie wird weder verkauft noch mit anderen Daten abgeglichen. Jede Ausgabe enthält einen Abmeldelink, der sofort wirkt.',
+    measure: 'Reichweitenmessung und Werbung',
+    measureBody1: 'Vor Ihrer Einwilligung wird kein Tracker gesetzt. Solange Sie nicht zugestimmt haben, werden keine Werbeskripte geladen. Sie können Ihre Entscheidung jederzeit auf der Seite ',
+    cookies: 'Cookies', measureBody2: ' ändern.',
+    never: 'Was wir nicht tun',
+    n1: 'Keine Werbeprofile auf Grundlage dessen, was Sie lesen.',
+    n2: 'Kein Verkauf von Daten an Dritte.',
+    n3: 'Kein Konto, also kein gespeichertes Passwort.',
+    rights: 'Ihre Rechte',
+    rightsBody1: 'Auskunft, Berichtigung oder Löschung der Sie betreffenden Daten können Sie verlangen — schreiben Sie an ',
+    rightsBody2: '. Wir antworten innerhalb von dreißig Tagen.',
+  },
 }[lang];
 ---
-<Base title={c.title} description={c.desc} alt={pageHref(otherLocale(lang), 'privacy')}>
+<Base title={c.title} description={c.desc} alt={(l) => pageHref(l, 'privacy')}>
   <div class="page narrow" style="padding-top:40px;padding-bottom:var(--s-9)">
     <Crumbs trail={[{ label: c.title }]} />
     <h1 class="d2" style="margin:12px 0 8px">{c.title}</h1>

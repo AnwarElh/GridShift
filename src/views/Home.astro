@@ -11,7 +11,7 @@ import { getPosts, getGames, byType, byGame, spreadByGame } from '../lib/content
 import { time } from '../lib/format';
 import { site, siteCopy, siteHome } from '../site';
 import {
-  langFromPath, otherLocale, homeHref, sectionHref, pageHref,
+  langFromPath, homeHref, sectionHref, pageHref,
   type SectionKey, sectionKeys,
 } from '../i18n/config';
 import { useT } from '../i18n/ui';
@@ -108,7 +108,7 @@ const jsonLd = {
   description: siteCopy[lang].description,
 };
 ---
-<Base title={t('home.title')} jsonLd={jsonLd} alt={homeHref(otherLocale(lang))}>
+<Base title={t('home.title')} jsonLd={jsonLd} alt={homeHref}>
   <!-- Le Fil : la pulsation. Un média se lit à l'heure. -->
   <div class="fil">
     <div class="fil-in">

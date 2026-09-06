@@ -5,6 +5,7 @@ since: "2024"
 role:
   en: News reporter
   fr: Journaliste actu
+  de: News-Redaktion
 bio:
   en: >-
     Follows studios, patches and working conditions across the industry. Would
@@ -12,6 +13,9 @@ bio:
   fr: >-
     Suit les studios, les patchs et les conditions de travail du secteur.
     Préfère une actu vérifiée deux heures plus tard à une actu la première.
+  de: >-
+    Verfolgt Studios, Patches und Arbeitsbedingungen der Branche. Lieber eine
+    Meldung zwei Stunden später und geprüft als zuerst und falsch.
 creds:
   en:
     - "Specialty: the industry"
@@ -19,4 +23,7 @@ creds:
   fr:
     - "Spécialité : industrie"
     - Vérifie avant de publier
+  de:
+    - "Schwerpunkt: die Branche"
+    - Prüft vor dem Veröffentlichen
 ---

@@ -1,0 +1,9 @@
+---
+import TagPage from '../../../views/TagPage.astro';
+import { getPosts, allTags, slugifyTag } from '../../../lib/content';
+
+const posts = await getPosts(Astro.locals, 'de');
+const match = allTags(posts).find(([t]) => slugifyTag(t) === Astro.params.tag);
+if (!match) return Astro.rewrite('/de/404');
+---
+<TagPage tag={match[0]} />

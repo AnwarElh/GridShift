@@ -1,0 +1,8 @@
+---
+import GameView from '../../../views/Game.astro';
+import { getGame } from '../../../lib/content';
+
+const game = await getGame(Astro.locals, 'de', Astro.params.slug!);
+if (!game) return Astro.rewrite('/de/404');
+---
+<GameView game={game} />

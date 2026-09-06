@@ -7,7 +7,7 @@ import SectionHead from '../components/SectionHead.astro';
 import Newsletter from '../components/Newsletter.astro';
 import { getPosts, getAuthors } from '../lib/content';
 import { site, siteCopy, siteHome } from '../site';
-import { langFromPath, otherLocale, pageHref } from '../i18n/config';
+import { langFromPath, pageHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
 const lang = langFromPath(Astro.url.pathname);
@@ -31,6 +31,17 @@ const scale = {
     { band: '7,0 – 7,9', tone: 'sc-70', label: 'Bon', text: 'Des qualités nettes, des défauts assumés. À voir en promo.' },
     { band: '5,0 – 6,9', tone: 'sc-50', label: 'Inégal', text: 'Une bonne idée mal servie, ou l’inverse.' },
     { band: '0 – 4,9', tone: 'sc-00', label: 'Raté', text: 'Cassé, cynique, ou les deux.' },
+  ],
+  /* La virgule décimale est la même qu'en français : « 9,0 – 10 ». L'allemand
+     écrit ses décimales avec une virgule, et Intl le fait déjà partout
+     ailleurs sur le site — une échelle en 9.0 aurait été le seul endroit du
+     site allemand à compter comme un site anglais. */
+  de: [
+    { band: '9,0 – 10', tone: 'sc-90', label: 'Herausragend', text: 'Ein Maßstab für sein Genre. In fünf Jahren reden wir noch darüber.' },
+    { band: '8,0 – 8,9', tone: 'sc-80', label: 'Sehr gut', text: 'Den vollen Preis wert, wenn das Genre dich anspricht.' },
+    { band: '7,0 – 7,9', tone: 'sc-70', label: 'Gut', text: 'Klare Stärken, eingestandene Schwächen. Im Angebot einen Blick wert.' },
+    { band: '5,0 – 6,9', tone: 'sc-50', label: 'Uneben', text: 'Eine gute Idee schlecht umgesetzt, oder umgekehrt.' },
+    { band: '0 – 4,9', tone: 'sc-00', label: 'Misslungen', text: 'Kaputt, zynisch, oder beides.' },
   ],
 }[lang];
 
@@ -83,6 +94,33 @@ const copy = {
     team: 'La rédaction',
     people: (n: number) => `${n} personnes`,
   },
+  /* Vouvoiement : cette page voisine avec l'Impressum et le Datenschutz, et
+     c'est l'usage allemand pour ce qui engage la rédaction. Le reste du site
+     tutoie — voir la note en tête de src/i18n/ui.ts. */
+  de: {
+    title: 'Wer wir sind',
+    desc: 'Unser Redaktionsstatut, unsere Wertungsmethode und unsere Transparenzregeln.',
+    heading: 'Wir testen, was wir kaufen',
+    lede: `${site.name} ist ein unabhängiges Games-Magazin. Keine getarnten Werbeinhalte, keine ausgehandelten Wertungen — und Tests, die korrigiert werden, wenn sich die Spiele ändern.`,
+    charter: 'Redaktionsstatut',
+    charter1: 'Wir kaufen die Spiele, die wir testen. Stellt ein Publisher ein Exemplar bereit, steht das im Test, oben, in der Fazit-Plakette — nicht in einer Fußnote.',
+    charter2: 'Keine geschäftliche Partnerschaft begründet einen Anspruch auf Berichterstattung, auf einen Veröffentlichungstermin oder auf eine Durchsicht vor Erscheinen. Werbung und Affiliate-Links betreut, wer die Tests nicht schreibt.',
+    scoring: 'Wie wir werten',
+    scoringSub: 'Eine Wertung von 10, mit einer Nachkommastelle, und eine getestete Version.',
+    scoresMove: 'Wertungen ändern sich',
+    scoresMoveBody: 'Ein Spiel, das repariert wird, verdient eine neue Wertung — ein Spiel, das verfällt, ebenso. Jede Korrektur ist auf der Testseite datiert und begründet.',
+    corrections: 'Korrekturen',
+    correctionsBody: 'Jeder Artikel führt sein eigenes, datiertes Korrekturprotokoll, im Block „Korrekturen“ am Ende des Textes. Wir ändern einen veröffentlichten Text niemals stillschweigend.',
+    affiliate: 'Affiliate-Links und Werbung',
+    affiliate1a: 'Links zu Shops sind Affiliate-Links: Wir erhalten eine Provision, wenn Sie kaufen, ohne Auswirkung auf Ihren Preis. Sie tragen das Attribut ',
+    affiliate1b: ' und sind auf jeder Spielseite gekennzeichnet.',
+    affiliate2: 'Werbeflächen sind im Layout reserviert, mit „Anzeige“ gekennzeichnet und nehmen niemals das Aussehen eines Artikels an.',
+    privacy: 'Datenschutz und Rechtliches',
+    privacyBody: 'Wir setzen vor Ihrer Einwilligung keinen Tracker. Der Dienstagsbrief wird ausschließlich dafür verwendet, den Dienstagsbrief zu verschicken.',
+    contact: 'Schreiben Sie uns: ',
+    team: 'Die Redaktion',
+    people: (n: number) => `${n} Personen`,
+  },
 }[lang];
 
 const jsonLd = {
@@ -94,7 +132,7 @@ const jsonLd = {
   employee: authors.map((a) => ({ '@type': 'Person', name: a.data.name, jobTitle: a.data.role })),
 };
 ---
-<Base title={copy.title} description={copy.desc} jsonLd={jsonLd} alt={pageHref(otherLocale(lang), 'about')}>
+<Base title={copy.title} description={copy.desc} jsonLd={jsonLd} alt={(l) => pageHref(l, 'about')}>
   <div class="page" style="padding-top:40px">
     <Crumbs trail={[{ label: copy.title }]} />
     <div class="narrow" style="margin-top:24px">

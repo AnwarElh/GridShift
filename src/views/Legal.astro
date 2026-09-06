@@ -2,11 +2,13 @@
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
 import { site } from '../site';
-import { langFromPath, otherLocale, pageHref } from '../i18n/config';
+import { langFromPath, pageHref } from '../i18n/config';
+import { useT } from '../i18n/ui';
 
 /* Page légale autonome : une mention légale doit avoir sa propre URL, c'est
    ce qu'un lecteur — et un service juridique — vient chercher. */
 const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
 const c = {
   en: {
     title: 'Legal notice', desc: `Publisher, host and liabilities of ${site.name}.`,
@@ -40,9 +42,33 @@ const c = {
     affiliateBody1: 'Certains liens vers les boutiques nous rapportent une commission, sans effet sur votre prix ni sur nos notes. Le détail est sur la page ',
     affiliateLink: 'Liens affiliés et publicité', affiliateBody2: '.',
   },
+  /* Un Impressum n'est pas la traduction d'une mention légale : c'est une page
+     que le droit allemand impose (§ 5 DDG, § 18 al. 2 MStV pour un service
+     éditorial), avec ses propres rubriques. Les intitulés ci-dessous sont donc
+     les intitulés attendus — « Handelsregister », « Umsatzsteuer-ID »,
+     « Verantwortlich für den Inhalt » — et non « SIRET » traduit.
+
+     Les champs restent « anzugeben » comme dans les deux autres langues : ce
+     sont des faits sur l'éditeur, et nous ne les inventons pas. */
+  de: {
+    title: 'Impressum', desc: `Anbieter, Hosting und Haftung von ${site.name}.`,
+    todo: 'Vor dem Livegang auszufüllen',
+    todoBody: 'Die unten mit „anzugeben“ markierten Felder betreffen die rechtliche Identität des Anbieters. Wir erfinden sie nicht: Sie müssen von Ihnen eingetragen werden.',
+    publisher: 'Anbieter', host: 'Hosting', ip: 'Urheberrecht',
+    liability: 'Haftung', affiliate: 'Affiliate-Links',
+    company: 'Name des Unternehmens', form: 'Rechtsform und Stammkapital', address: 'Anschrift',
+    reg: 'Handelsregister / Umsatzsteuer-ID', director: 'Verantwortlich für den Inhalt (§ 18 Abs. 2 MStV)', contact: 'Kontakt',
+    provided: 'anzugeben',
+    hostBody: 'Name, Firma und Anschrift des Hosters: ',
+    ipBody1: 'Die auf ', ipBody2: ' veröffentlichten Texte gehören ihren Autorinnen und Autoren. Die Bilder stammen aus frei nachnutzbaren Quellen; Urheber, Lizenz und Originaldatei sind auf der Seite ',
+    ipCredits: 'Bildnachweise', ipBody3: ' aufgeführt.',
+    liabilityBody: 'Tests, Wertungen und Guides geben den Zustand eines Spiels zu einer bestimmten Version wieder, die in jedem Artikel angegeben ist. Ein Live-Service-Spiel verändert sich: Wir korrigieren unsere Wertungen, wenn es das tut, und die Revisionshistorie ist in jedem Test öffentlich.',
+    affiliateBody1: 'Manche Links zu Shops bringen uns eine Provision, ohne Auswirkung auf Ihren Preis oder unsere Wertungen. Die Einzelheiten stehen auf der Seite ',
+    affiliateLink: 'Affiliate-Links und Werbung', affiliateBody2: '.',
+  },
 }[lang];
 ---
-<Base title={c.title} description={c.desc} alt={pageHref(otherLocale(lang), 'legal')}>
+<Base title={c.title} description={c.desc} alt={(l) => pageHref(l, 'legal')}>
   <div class="page narrow" style="padding-top:40px;padding-bottom:var(--s-9)">
     <Crumbs trail={[{ label: c.title }]} />
     <h1 class="d2" style="margin:12px 0 8px">{c.title}</h1>
@@ -55,12 +81,12 @@ const c = {
       <h2>{c.publisher}</h2>
       <p>
         {site.name}<br>
-        {c.company} : <b>{c.provided}</b><br>
-        {c.form} : <b>{c.provided}</b><br>
-        {c.address} : <b>{c.provided}</b><br>
-        {c.reg} : <b>{c.provided}</b><br>
-        {c.director} : <b>{c.provided}</b><br>
-        {c.contact} : <a href={`mailto:${site.email}`}>{site.email}</a>
+        {c.company}{t('punct.colon')}<b>{c.provided}</b><br>
+        {c.form}{t('punct.colon')}<b>{c.provided}</b><br>
+        {c.address}{t('punct.colon')}<b>{c.provided}</b><br>
+        {c.reg}{t('punct.colon')}<b>{c.provided}</b><br>
+        {c.director}{t('punct.colon')}<b>{c.provided}</b><br>
+        {c.contact}{t('punct.colon')}<a href={`mailto:${site.email}`}>{site.email}</a>
       </p>
 
       <h2>{c.host}</h2>

@@ -7,7 +7,7 @@ import SectionHead from '../components/SectionHead.astro';
 import Ad from '../components/Ad.astro';
 import { getPosts, type Author } from '../lib/content';
 import { site } from '../site';
-import { langFromPath, otherLocale, authorHref, pageHref } from '../i18n/config';
+import { langFromPath, authorHref, pageHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
 interface Props { author: Author }
@@ -27,7 +27,7 @@ const jsonLd = {
   worksFor: { '@type': 'Organization', name: site.name },
 };
 ---
-<Base title={a.name} description={a.bio} jsonLd={jsonLd} alt={authorHref(otherLocale(lang), author.id)}>
+<Base title={a.name} description={a.bio} jsonLd={jsonLd} alt={(l) => authorHref(l, author.id)}>
   <div class="page" style="padding-top:40px">
     <Crumbs trail={[{ label: t('foot.team'), href: pageHref(lang, 'about') }, { label: a.name }]} />
     <h1 class="d2" style="margin:12px 0 24px">{a.name}</h1>

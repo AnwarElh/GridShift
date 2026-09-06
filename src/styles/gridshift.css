@@ -373,6 +373,9 @@ a.tag:hover{border-color:var(--brass);color:var(--brass)}
 
 .nav .mark{height:100%}
 .nav-links{display:flex;align-items:center;gap:var(--s-2)}
+/* Trois langues, donc deux cibles : un groupe, pas un bouton. Le `gap` est
+   serré pour que « FR DE » se lise comme un seul contrôle. */
+.lang-switch{display:flex;align-items:center;gap:2px}
 .nav-links>*{position:relative}
 /* la rubrique courante ne se marque plus par une pastille pleine mais par
    un trait lumineux sous le mot : dans un chrome anguleux, la pilule était
@@ -1273,6 +1276,16 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .socials a:hover{background:var(--s3);border-color:var(--line-2);color:var(--tx)}
 .socials svg{width:17px;height:17px;fill:currentColor}
 
+/* Le sélecteur de langue du pied de page. Il porte les noms entiers — le
+   bandeau n'a la place que des codes — et marque la langue courante sans en
+   faire un lien vers la page où l'on est déjà. */
+.foot-lang{display:flex;flex-wrap:wrap;gap:var(--s-2) var(--s-3);margin-top:var(--s-5);
+  font-size:var(--ui-xs);color:var(--tx-3)}
+.foot-lang a{color:var(--tx-2);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--line-2);transition:color var(--t-1)}
+.foot-lang a:hover{color:var(--tx)}
+.foot-lang [aria-current]{color:var(--tx);font-weight:600}
+
 .foot-bar{border-top:1px solid var(--line)}
 .foot-bar div{max-width:var(--page);margin:0 auto;padding:var(--s-4) var(--pad);
   display:flex;flex-wrap:wrap;gap:var(--s-3) var(--s-5);justify-content:space-between;
@@ -1327,8 +1340,15 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
    tiennent encore mais pas le champ de recherche : à 900 px la barre
    réclamait 1 190 px et poussait toute la page en défilement horizontal.
    La loupe remplace le champ — ⌘K continue de l'ouvrir — et les écarts
-   se resserrent. En dessous de 860 px, l'autre règle prend le relais. */
-@media(min-width:861px) and (max-width:1100px){
+   se resserrent. En dessous de 860 px, l'autre règle prend le relais.
+
+   La borne haute était à 1 100 px, et le champ revenait donc cent pixels
+   avant d'avoir la place : entre 1 101 et 1 240 px, le bandeau débordait de
+   son cadre dans les trois langues — 75 px en anglais, 66 en français, 81 en
+   allemand. La borne est mesurée, pas devinée : au-dessus de 1 240 px, le
+   bandeau complet tient dans toutes les langues. Une langue plus bavarde que
+   l'allemand demandera de la remesurer. */
+@media(min-width:861px) and (max-width:1240px){
   .nav-in{gap:var(--s-3)}
   .nav-link{padding:0 var(--s-2)}
   .searchbar{min-width:0;width:40px;padding:0;justify-content:center;flex:none}
@@ -1487,6 +1507,9 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
      « Chercher » — la marque descend d'un cran, les écarts se resserrent.
      L'abonnement reste : c'est la seule action qui rapporte. */
   .nav .searchbar{display:none}
+  /* deux codes de langue de plus, c'est 34 px que le bandeau n'a pas à 375 px.
+     Le sélecteur complet du pied de page porte les mêmes URL. */
+  .nav .lang-switch{display:none}
   .nav-in{gap:var(--s-2)}
   .mark{font-size:1.125rem}
   .mark i{width:17px;height:17px}
