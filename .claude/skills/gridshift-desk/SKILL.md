@@ -5,7 +5,7 @@ description: >
   we cover from five gaming outlets, reverse-engineer their copywriting, and publish
   three new bilingual articles (EN + FR) to src/content/articles/.
   Triggers: "gridshift desk", "weekly articles", "research and write articles",
-  "nouvelle fournée d'articles", the Wednesday 3am cron.
+  "nouvelle fournée d'articles". Run manually, or from a weekly schedule.
 ---
 
 # gridshift-desk — research → copywriting → publish
