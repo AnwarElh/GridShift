@@ -1,5 +1,5 @@
 /**
- * Gridshift sur Cloudflare — les quatre liaisons de l'architecture cible.
+ * Autnic sur Cloudflare — les quatre liaisons de l'architecture cible.
  *
  *   D1        la source de vérité : articles, rubriques, auteurs, méta SEO
  *   R2        les médias : images et fichiers, sans frais d'egress
@@ -13,10 +13,22 @@
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "gridshift",
+  "name": "autnic",
   "main": "dist/_worker.js/index.js",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
+
+  /* Le domaine. `custom_domain` demande à Cloudflare de poser l'enregistrement
+     DNS et le certificat lui-même — la zone autnic.com doit donc déjà être sur
+     le compte, sans quoi le déploiement échoue en le disant.
+
+     L'apex seul : www ne figure pas ici. Deux routes serviraient les mêmes
+     pages sous deux adresses, alors que les canonical et les hreflang de
+     Base.astro n'en nomment qu'une. www est donc une Redirect Rule vers
+     l'apex, côté tableau de bord — un 301, pas un second site. */
+  "routes": [
+    { "pattern": "autnic.com", "custom_domain": true }
+  ],
 
   "assets": {
     "directory": "./dist",
@@ -30,8 +42,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "gridshift-content",
-      "database_id": "local-dev-placeholder",
+      "database_name": "autnic-content",
+      "database_id": "8940f350-c40c-464e-a500-9e98c1d371c3",
       "migrations_dir": "db/migrations"
     }
   ],
@@ -39,21 +51,34 @@
   "r2_buckets": [
     {
       "binding": "MEDIA",
-      "bucket_name": "gridshift-media"
+      "bucket_name": "autnic-media"
     }
   ],
 
   "kv_namespaces": [
     {
       "binding": "CACHE",
-      "id": "local-dev-placeholder"
+      "id": "e6e0fc7d3cc44774814547209f4f430e"
+    },
+    /* Astro tient ses sessions dans KV et attend ce nom de liaison, pas un
+       autre : l'adapter Cloudflare code « SESSION » en dur. Espace distinct de
+       CACHE — une session n'a ni la durée de vie ni le sort d'une entrée de
+       cache, qu'on purge sans prévenir. */
+    {
+      "binding": "SESSION",
+      "id": "2f54bd9891064c96bed2acd3d97cc83e"
     }
   ],
 
   "vars": {
-    /* Le préfixe public des médias R2. En production, un domaine relié au
-       bucket ; en développement, le worker sert R2 lui-même sous /media/. */
-    "MEDIA_BASE_URL": "/media",
+    /* Le préfixe public des médias R2 : un domaine relié au bucket, donc un
+       fichier qui part de R2 sans réveiller le worker et sans frais d'egress.
+       À brancher une fois, côté R2 → autnic-media → Custom Domains.
+
+       Pour développer avant que ce domaine existe, copier .dev.vars.example
+       en .dev.vars : la variable y repasse à '/media' et le worker sert R2
+       lui-même (src/pages/media/[...key].ts), qui reste le repli. */
+    "MEDIA_BASE_URL": "https://media.autnic.com",
     /* Durée de vie d'une page en cache, en secondes. Le contenu d'un média de
        jeu se périme vite : une heure au bord, revalidation en arrière-plan. */
     "CACHE_TTL": "3600"
