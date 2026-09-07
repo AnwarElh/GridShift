@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
-import { site } from '../site';
+import { site, owner } from '../site';
 import { langFromPath, pageHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
@@ -12,14 +12,16 @@ const t = useT(lang);
 const c = {
   en: {
     title: 'Legal notice', desc: `Publisher, host and liabilities of ${site.name}.`,
-    todo: 'To be completed before going live',
-    todoBody: 'The fields marked “to be provided” below are the publisher’s legal identity. We do not invent them: they must be filled in by you.',
-    publisher: 'Publisher', host: 'Host', ip: 'Intellectual property',
+    publisher: 'Site owner', host: 'Host', ip: 'Intellectual property',
     liability: 'Liability', affiliate: 'Affiliate links',
-    company: 'Legal name', form: 'Legal form and capital', address: 'Registered office',
-    reg: 'Company number', director: 'Publication director', contact: 'Contact',
-    provided: 'to be provided',
-    hostBody: 'Name, legal name and address of the host: ',
+    status: 'Sole trader (individual)', country: 'Italy',
+    contact: 'Email', phone: 'Phone',
+    director: 'Responsible for content',
+    vat: 'VAT number',
+    vatBody: 'No VAT number (Partita IVA) has been issued at this time. It will be added here once available.',
+    reg: 'Commercial register',
+    regBody: 'Not registered in any commercial register.',
+    hostBody: 'This site is hosted by ',
     ipBody1: 'The texts published on ', ipBody2: ' belong to their authors. Images come from sources that are free to reuse; their author, licence and original file are listed on the ',
     ipCredits: 'Photo credits', ipBody3: ' page.',
     liabilityBody: 'Reviews, scores and guides reflect the state of a game at a given version, shown on every article. A live-service game changes: we revise our scores when it does, and the revision history is public on every review.',
@@ -28,14 +30,16 @@ const c = {
   },
   fr: {
     title: 'Mentions légales', desc: `Éditeur, hébergeur et responsabilités du site ${site.name}.`,
-    todo: 'À compléter avant mise en ligne',
-    todoBody: 'Les champs marqués « à renseigner » ci-dessous relèvent de l’identité légale de l’éditeur. Nous ne les inventons pas : ils doivent être remplis par vos soins.',
     publisher: 'Éditeur du site', host: 'Hébergeur', ip: 'Propriété intellectuelle',
     liability: 'Responsabilité', affiliate: 'Liens affiliés',
-    company: 'Raison sociale', form: 'Forme juridique et capital', address: 'Siège social',
-    reg: 'SIRET / RCS', director: 'Directeur de la publication', contact: 'Contact',
-    provided: 'à renseigner',
-    hostBody: 'Nom, raison sociale et adresse de l’hébergeur : ',
+    status: 'Entrepreneur individuel (personne physique)', country: 'Italie',
+    contact: 'E-mail', phone: 'Téléphone',
+    director: 'Directeur de la publication',
+    vat: 'Numéro de TVA',
+    vatBody: 'Aucun numéro de TVA intracommunautaire (Partita IVA) n’est attribué à ce jour. Il sera ajouté ici dès son obtention.',
+    reg: 'Registre du commerce',
+    regBody: 'Aucune immatriculation à un registre du commerce.',
+    hostBody: 'Ce site est hébergé par ',
     ipBody1: 'Les textes publiés sur ', ipBody2: ' sont la propriété de leurs auteurs. Les images proviennent de sources libres de réutilisation ; leur auteur, leur licence et leur fichier d’origine sont listés sur la page ',
     ipCredits: 'Crédits photo', ipBody3: '.',
     liabilityBody: 'Les tests, notes et guides reflètent l’état d’un jeu à une version donnée, indiquée sur chaque article. Un jeu en service évolue : nous révisons nos notes quand il change, et l’historique des révisions est public sur chaque test.',
@@ -46,51 +50,73 @@ const c = {
      que le droit allemand impose (§ 5 DDG, § 18 al. 2 MStV pour un service
      éditorial), avec ses propres rubriques. Les intitulés ci-dessous sont donc
      les intitulés attendus — « Handelsregister », « Umsatzsteuer-ID »,
-     « Verantwortlich für den Inhalt » — et non « SIRET » traduit.
-
-     Les champs restent « anzugeben » comme dans les deux autres langues : ce
-     sont des faits sur l'éditeur, et nous ne les inventons pas. */
+     « Verantwortlich für den Inhalt » — et non « SIRET » traduit. */
   de: {
     title: 'Impressum', desc: `Anbieter, Hosting und Haftung von ${site.name}.`,
-    todo: 'Vor dem Livegang auszufüllen',
-    todoBody: 'Die unten mit „anzugeben“ markierten Felder betreffen die rechtliche Identität des Anbieters. Wir erfinden sie nicht: Sie müssen von Ihnen eingetragen werden.',
-    publisher: 'Anbieter', host: 'Hosting', ip: 'Urheberrecht',
+    publisher: 'Diensteanbieter', host: 'Hosting', ip: 'Urheberrecht',
     liability: 'Haftung', affiliate: 'Affiliate-Links',
-    company: 'Name des Unternehmens', form: 'Rechtsform und Stammkapital', address: 'Anschrift',
-    reg: 'Handelsregister / Umsatzsteuer-ID', director: 'Verantwortlich für den Inhalt (§ 18 Abs. 2 MStV)', contact: 'Kontakt',
-    provided: 'anzugeben',
-    hostBody: 'Name, Firma und Anschrift des Hosters: ',
+    status: 'Einzelunternehmer (natürliche Person)', country: 'Italien',
+    contact: 'E-Mail', phone: 'Telefon',
+    director: 'Verantwortlich für den Inhalt (§ 18 Abs. 2 MStV)',
+    vat: 'Umsatzsteuer-Identifikationsnummer',
+    vatBody: 'Eine Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz bzw. eine italienische Partita IVA liegt derzeit nicht vor. Sie wird an dieser Stelle ergänzt, sobald sie erteilt wurde.',
+    reg: 'Handelsregister',
+    regBody: 'Eine Eintragung in ein Handels-, Vereins-, Partnerschafts- oder Genossenschaftsregister besteht nicht.',
+    hostBody: 'Diese Website wird gehostet von ',
     ipBody1: 'Die auf ', ipBody2: ' veröffentlichten Texte gehören ihren Autorinnen und Autoren. Die Bilder stammen aus frei nachnutzbaren Quellen; Urheber, Lizenz und Originaldatei sind auf der Seite ',
     ipCredits: 'Bildnachweise', ipBody3: ' aufgeführt.',
     liabilityBody: 'Tests, Wertungen und Guides geben den Zustand eines Spiels zu einer bestimmten Version wieder, die in jedem Artikel angegeben ist. Ein Live-Service-Spiel verändert sich: Wir korrigieren unsere Wertungen, wenn es das tut, und die Revisionshistorie ist in jedem Test öffentlich.',
     affiliateBody1: 'Manche Links zu Shops bringen uns eine Provision, ohne Auswirkung auf Ihren Preis oder unsere Wertungen. Die Einzelheiten stehen auf der Seite ',
     affiliateLink: 'Affiliate-Links und Werbung', affiliateBody2: '.',
+    /* Obligatoire en Allemagne, et seulement là. La plateforme OS de la
+       Commission a fermé le 20 juillet 2025 : plus de lien, seule reste la
+       phrase VSBG. */
+    odr: 'Verbraucherstreitbeilegung',
+    odrBody: 'Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen. Die Online-Streitbeilegungsplattform (OS-Plattform) der Europäischen Kommission wurde zum 20. Juli 2025 eingestellt.',
   },
 }[lang];
+
+/* L'hébergeur est un fait d'infrastructure, pas une préférence : il suit
+   l'adapter d'astro.config. */
+const host = 'Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA';
 ---
 <Base title={c.title} description={c.desc} alt={(l) => pageHref(l, 'legal')}>
   <div class="page narrow" style="padding-top:40px;padding-bottom:var(--s-9)">
     <Crumbs trail={[{ label: c.title }]} />
     <h1 class="d2" style="margin:12px 0 8px">{c.title}</h1>
 
-    <div class="alert a-warn" style="margin:24px 0">
-      <div><b>{c.todo}</b>{c.todoBody}</div>
-    </div>
-
     <div class="read">
       <h2>{c.publisher}</h2>
       <p>
-        {site.name}<br>
-        {c.company}{t('punct.colon')}<b>{c.provided}</b><br>
-        {c.form}{t('punct.colon')}<b>{c.provided}</b><br>
-        {c.address}{t('punct.colon')}<b>{c.provided}</b><br>
-        {c.reg}{t('punct.colon')}<b>{c.provided}</b><br>
-        {c.director}{t('punct.colon')}<b>{c.provided}</b><br>
-        {c.contact}{t('punct.colon')}<a href={`mailto:${site.email}`}>{site.email}</a>
+        {owner.name}<br>
+        {c.status}<br>
+        {owner.street}<br>
+        {owner.zip} {owner.city} ({owner.province})<br>
+        {c.country}
+      </p>
+      <p>
+        {c.contact}{t('punct.colon')}<a href={`mailto:${owner.email}`}>{owner.email}</a><br>
+        {c.phone}{t('punct.colon')}<a href={`tel:${owner.phone.replace(/\s/g, '')}`}>{owner.phone}</a>
       </p>
 
+      <h2>{c.vat}</h2>
+      <p>{c.vatBody}</p>
+
+      <h2>{c.reg}</h2>
+      <p>{c.regBody}</p>
+
+      <h2>{c.director}</h2>
+      <p>{owner.name}, {owner.street}, {owner.zip} {owner.city} ({owner.province}), {c.country}</p>
+
+      {lang === 'de' && (
+        <>
+          <h2>{c.odr}</h2>
+          <p>{c.odrBody}</p>
+        </>
+      )}
+
       <h2>{c.host}</h2>
-      <p>{c.hostBody}<b>{c.provided}</b></p>
+      <p>{c.hostBody}{host}</p>
 
       <h2>{c.ip}</h2>
       <p>{c.ipBody1}{site.name}{c.ipBody2}<a href={pageHref(lang, 'credits')}>{c.ipCredits}</a>{c.ipBody3}</p>
