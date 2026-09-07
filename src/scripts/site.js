@@ -63,14 +63,17 @@ on($('[data-consent-reset]'), 'click', () => {
   toast(c?.dataset.resetTitle ?? '', c?.dataset.resetBody ?? '');
 });
 
-/* méga-menu */
-const mega = $('#mega'), megaBtn = $('#megaBtn');
-if (mega && megaBtn) {
-  const setMega = (open) => { mega.hidden = !open; megaBtn.setAttribute('aria-expanded', String(open)); };
-  on(megaBtn, 'click', (e) => { e.stopPropagation(); setMega(mega.hidden); });
-  on(document, 'click', (e) => { if (!mega.contains(e.target) && e.target !== megaBtn) setMega(false); });
-  on(document, 'keydown', (e) => { if (e.key === 'Escape') setMega(false); });
-}
+/* menus du bandeau : méga-menu et sélecteur de langue s'ouvrent, se ferment
+   au clic dehors et à Échap de la même façon — un seul comportement à tenir */
+const dropdown = (btn, panel) => {
+  if (!btn || !panel) return;
+  const set = (open) => { panel.hidden = !open; btn.setAttribute('aria-expanded', String(open)); };
+  on(btn, 'click', (e) => { e.stopPropagation(); set(panel.hidden); });
+  on(document, 'click', (e) => { if (!panel.contains(e.target) && !btn.contains(e.target)) set(false); });
+  on(document, 'keydown', (e) => { if (e.key === 'Escape') set(false); });
+};
+dropdown($('#megaBtn'), $('#mega'));
+dropdown($('#langBtn'), $('#langMenu'));
 
 /* recherche : ⌘K est le raccourci attendu, y compris hors SaaS */
 const cmd = $('#cmd');

@@ -117,19 +117,24 @@ const links = [
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <span>{t('search.placeholder')}</span><kbd>⌘&nbsp;K</kbd>
     </button>
-    <!-- Le sélecteur porte le nom de la langue cible dans SA langue, jamais
-         traduit — c'est ce qu'un lecteur cherche du regard. Deux cibles depuis
-         qu'il y a trois langues : un menu déroulant pour deux entrées ferait
-         payer un clic de plus pour cacher trente pixels. Sous 560 px il
-         disparaît du bandeau, déjà plein au doigt ; le pied de page porte le
-         même sélecteur, avec les mêmes URL. -->
+    <!-- Un seul bouton, celui de la langue courante ; les autres tiennent
+         dans le menu qu'il ouvre. Chaque cible porte son nom dans SA langue,
+         jamais traduit — c'est ce qu'un lecteur cherche du regard. Sous 560 px
+         le sélecteur disparaît du bandeau, déjà plein au doigt ; le pied de
+         page porte le même choix, avec les mêmes URL. -->
     <nav class="lang-switch" aria-label={t('nav.language')}>
-      {others.map((l) => (
-        <a class="btn btn-sm btn-quiet lang-btn" href={alt ? alt(l) : homeHref(l)}
-           hreflang={l} lang={l} aria-label={useT(l)('nav.language') + useT(l)('punct.colon') + localeNames[l]}>
-          {l.toUpperCase()}
-        </a>
-      ))}
+      <button class="btn btn-sm btn-quiet lang-btn" id="langBtn" aria-expanded="false" aria-controls="langMenu"
+              aria-label={t('nav.language') + t('punct.colon') + localeNames[lang]}>
+        {lang.toUpperCase()} <span class="chev" aria-hidden="true">▼</span>
+      </button>
+      <div class="lang-menu" id="langMenu" hidden>
+        {others.map((l) => (
+          <a href={alt ? alt(l) : homeHref(l)} hreflang={l} lang={l}
+             aria-label={useT(l)('nav.language') + useT(l)('punct.colon') + localeNames[l]}>
+            <b>{l.toUpperCase()}</b><span>{localeNames[l]}</span>
+          </a>
+        ))}
+      </div>
     </nav>
     <button class="btn btn-ico btn-quiet" id="theme" aria-label={t('theme.toLight')}>◐</button>
     <a class="btn btn-primary btn-sm" href={`${homeHref(lang)}#newsletter`}>{t('nav.subscribe')}</a>

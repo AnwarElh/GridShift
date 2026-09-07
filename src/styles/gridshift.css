@@ -373,9 +373,19 @@ a.tag:hover{border-color:var(--brass);color:var(--brass)}
 
 .nav .mark{height:100%}
 .nav-links{display:flex;align-items:center;gap:var(--s-2)}
-/* Trois langues, donc deux cibles : un groupe, pas un bouton. Le `gap` est
-   serré pour que « FR DE » se lise comme un seul contrôle. */
-.lang-switch{display:flex;align-items:center;gap:2px}
+/* Un bouton unique — la langue courante — et son menu : à trois langues, la
+   rangée de cibles occupait le bandeau pour un geste qu'on fait une fois. */
+.lang-switch{position:relative;display:flex;align-items:center}
+.lang-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:var(--z-pop);
+  min-width:150px;display:grid;padding:4px;
+  background:var(--s1);border:1px solid var(--line);border-top-color:var(--brass);
+  border-radius:var(--r-2);box-shadow:var(--sh-pop)}
+.lang-menu[hidden]{display:none}
+.lang-menu a{display:flex;align-items:baseline;gap:var(--s-2);padding:7px 9px;
+  font:600 var(--ui-xs)/1 var(--f-display);letter-spacing:.06em;color:var(--tx-2);
+  transition:background var(--t-1),color var(--t-1)}
+.lang-menu a:hover{background:var(--s2);color:var(--tx)}
+.lang-menu a span{font:400 var(--ui-xs)/1 var(--f-ui);letter-spacing:0;color:var(--tx-3)}
 .nav-links>*{position:relative}
 /* la rubrique courante ne se marque plus par une pastille pleine mais par
    un trait lumineux sous le mot : dans un chrome anguleux, la pilule était
@@ -394,8 +404,8 @@ a.tag:hover{border-color:var(--brass);color:var(--brass)}
   transition:background var(--t-1),border-color var(--t-1),color var(--t-1)}
 .nav-link:hover,.nav-link[aria-expanded="true"]{border-color:var(--line-2);color:var(--tx)}
 .nav-link[aria-current]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
-.nav-link .chev{font-size:9px;opacity:.6;transition:transform var(--t-2)}
-.nav-link[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.nav-link .chev,.lang-btn .chev{font-size:9px;opacity:.6;transition:transform var(--t-2)}
+.nav-link[aria-expanded="true"] .chev,.lang-btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
 .nav-sp{flex:1}
 
 /* recherche : entrée principale, pas un champ SaaS */
