@@ -72,6 +72,9 @@
   --tx:#F3F5F9; --tx-2:#A8B2C2; --tx-3:#8F97A5;
   --brass:#FF6B00; --brass-2:#FF9433; --brass-dim:#8F3D00; --on-brass:#141118;
   --live:#FF5252; --live-dim:#8A2020; --live-fill:#C42B2B; --on-live:#FFFFFF;
+  /* le dégradé signature du portail : or → rouge. Il ne sert plus qu'à la
+     bande de La Une — jamais sur du texte long. */
+  --grad:linear-gradient(118deg,#FFC635 0%,#FF5252 100%);
   --ok:#3E9E74; --warn:#C79A2E; --err:#D9645C;
   --sc-90:#4FAE83; --sc-80:#8CAE48; --sc-70:#C79A2E; --sc-50:#C4702E; --sc-00:#BA463D;
   --scrim:rgba(10,9,12,.72);
@@ -135,6 +138,7 @@
   --tx:#12151C; --tx-2:#4B5361; --tx-3:#666D7B;
   --brass:#8F3600; --brass-2:#752C00; --brass-dim:#C4713D; --on-brass:#FFFFFF;
   --live:#C0271F; --live-dim:#F0C4C1; --live-fill:#C0271F; --on-live:#FFFFFF;
+  --grad:linear-gradient(118deg,#B07D00 0%,#C0271F 100%);
   --ok:#20714C; --warn:#846009; --err:#A5352D;
   --sc-90:#20714C; --sc-80:#526D19; --sc-70:#846009; --sc-50:#95521F; --sc-00:#8C332B;
   --scrim:rgba(40,36,32,.5);
@@ -1001,14 +1005,14 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
    contenu : chaque carte est un lien réel vers un article réel, avec son
    heure. Rien n'y est un habillage vide.
 
-   La bande porte `--brass` à plat. C'était un dégradé or→rouge ; une seule
-   couleur franche tape plus fort qu'un fondu, et elle suit le thème. */
+   La bande porte le dégradé or→rouge de la maison. C'est le seul endroit du
+   site qui le montre encore : ailleurs l'accent est plat. */
 .deck{
   /* pleine largeur : la bande sort de la gouttière de page, sinon elle
      n'est plus une bande mais un encart. `50%` de la fenêtre, pas du
      conteneur, et on retranche la moitié du conteneur. */
   margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%);
-  background:var(--brass);
+  background:var(--grad);
   padding-block:var(--s-6);margin-bottom:var(--s-7);
   /* ce qui dépasse est coupé net par la bande : c'est ce bord franc qui fait
      lire l'éventail comme posé SUR quelque chose, et pas flottant dans le vide */
@@ -1462,7 +1466,12 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   .doc-nav{display:none}
   .hub-in{grid-template-columns:126px 1fr;gap:var(--s-5)}
   .hub-actions{grid-column:1/-1;grid-auto-flow:column;justify-content:start}
+  /* la marque prend la largeur, les deux colonnes de liens se rangent
+     sous elle, côte à côte. Sinon Légal tombe seule sur une deuxième
+     rangée et laisse un trou à sa droite. Tient jusqu'au plus petit
+     écran : deux listes courtes valent toujours mieux qu'une pile. */
   .foot-in{grid-template-columns:1fr 1fr}
+  .foot-brand{grid-column:1/-1}
 }
 @media(max-width:860px){
   :root{--nav-h:56px;--read:1.125rem}
@@ -1668,7 +1677,7 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
      côte à côte ne tiennent pas sous 560px (débordait de 19px à 375px) */
   .hub-actions{grid-auto-flow:row;justify-content:stretch}
   .hub-actions .consensus{width:auto!important}
-  .foot-in{grid-template-columns:1fr;gap:var(--s-5)}
+  .foot-in{gap:var(--s-5) var(--s-4)}
   .deals{grid-template-columns:1fr}
   .sec,.cat-sec{padding-block:var(--s-5)}
   .news-box{padding:var(--s-5)}
