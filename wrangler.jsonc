@@ -14,6 +14,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "autnic",
+  /* L'identifiant de compte n'est pas un secret — il est dans l'URL du tableau
+     de bord — et l'écrire ici évite d'avoir à le confier à la CI : un jeton
+     d'API suffit alors à déployer. C'est aussi ce qui lève l'ambiguïté le jour
+     où le compte n'est plus le seul auquel le jeton donne accès. */
+  "account_id": "1446750f7b7085675a3c4fc0be35cf36",
   "main": "dist/_worker.js/index.js",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],

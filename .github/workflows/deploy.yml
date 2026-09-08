@@ -57,19 +57,22 @@ jobs:
           npx wrangler d1 migrations apply autnic-content --remote
           npm run db:seed:remote
         env:
+          # Le compte est nommé dans wrangler.jsonc : un secret non défini vaut
+          # la chaîne vide, et une chaîne vide passée ici vaut moins que rien.
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Push media to R2
         run: |
           npm run media:push:remote
           node scripts/media-build.mjs --push --remote
         env:
+          # Le compte est nommé dans wrangler.jsonc : un secret non défini vaut
+          # la chaîne vide, et une chaîne vide passée ici vaut moins que rien.
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy worker
         run: npx wrangler deploy
         env:
+          # Le compte est nommé dans wrangler.jsonc : un secret non défini vaut
+          # la chaîne vide, et une chaîne vide passée ici vaut moins que rien.
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
