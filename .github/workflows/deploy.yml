@@ -57,22 +57,25 @@ jobs:
           npx wrangler d1 migrations apply autnic-content --remote
           npm run db:seed:remote
         env:
-          # Le compte est nommé dans wrangler.jsonc : un secret non défini vaut
-          # la chaîne vide, et une chaîne vide passée ici vaut moins que rien.
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # Le compte est nommé dans wrangler.jsonc ; il ne reste que le jeton.
+          # Les deux noms sont acceptés : le dépôt le tient sous `CLOUDFLARE`,
+          # et GitHub ne sait pas renommer un secret.
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE }}
 
       - name: Push media to R2
         run: |
           npm run media:push:remote
           node scripts/media-build.mjs --push --remote
         env:
-          # Le compte est nommé dans wrangler.jsonc : un secret non défini vaut
-          # la chaîne vide, et une chaîne vide passée ici vaut moins que rien.
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # Le compte est nommé dans wrangler.jsonc ; il ne reste que le jeton.
+          # Les deux noms sont acceptés : le dépôt le tient sous `CLOUDFLARE`,
+          # et GitHub ne sait pas renommer un secret.
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE }}
 
       - name: Deploy worker
         run: npx wrangler deploy
         env:
-          # Le compte est nommé dans wrangler.jsonc : un secret non défini vaut
-          # la chaîne vide, et une chaîne vide passée ici vaut moins que rien.
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # Le compte est nommé dans wrangler.jsonc ; il ne reste que le jeton.
+          # Les deux noms sont acceptés : le dépôt le tient sous `CLOUDFLARE`,
+          # et GitHub ne sait pas renommer un secret.
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE }}
