@@ -24,7 +24,11 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # 22, pas 20 : `npm test` passe par --experimental-test-module-mocks,
+          # arrivé en 22.3. Sur 20, node refuse l'option avant d'avoir lu un
+          # seul test, et le déploiement s'arrêtait là — sur une suite qui
+          # passe en local.
+          node-version: '22'
           cache: npm
 
       - name: Install dependencies
