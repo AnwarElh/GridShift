@@ -18,17 +18,16 @@
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
 
-  /* Le domaine. `custom_domain` demande à Cloudflare de poser l'enregistrement
-     DNS et le certificat lui-même — la zone autnic.com doit donc déjà être sur
-     le compte, sans quoi le déploiement échoue en le disant.
+  /* La zone autnic.com est passée sur le compte Cloudflare : le worker peut
+     donc porter le domaine lui-même. `custom_domain` demande à Cloudflare de
+     poser l'enregistrement DNS et le certificat — d'où le refus tant que la
+     zone était ailleurs.
 
-     L'apex seul : www ne figure pas ici. Deux routes serviraient les mêmes
-     pages sous deux adresses, alors que les canonical et les hreflang de
-     Base.astro n'en nomment qu'une. www est donc une Redirect Rule vers
-     l'apex, côté tableau de bord — un 301, pas un second site. */
-  "routes": [
-    { "pattern": "autnic.com", "custom_domain": true }
-  ],
+     L'apex seul, sans www : deux routes serviraient les mêmes pages sous deux
+     adresses, alors que les canonical et les hreflang de Base.astro n'en
+     nomment qu'une. www est une Redirect Rule vers l'apex, côté tableau de
+     bord — un 301, pas un second site. */
+  "routes": [{ "pattern": "autnic.com", "custom_domain": true }],
 
   "assets": {
     "directory": "./dist",
@@ -71,14 +70,16 @@
   ],
 
   "vars": {
-    /* Le préfixe public des médias R2 : un domaine relié au bucket, donc un
-       fichier qui part de R2 sans réveiller le worker et sans frais d'egress.
-       À brancher une fois, côté R2 → autnic-media → Custom Domains.
+    /* Le préfixe public des médias R2. Le worker les sert lui-même, par
+       src/pages/media/[...key].ts : ça marche partout, y compris hors zone
+       Cloudflare, au prix d'un réveil du worker par image.
 
-       Pour développer avant que ce domaine existe, copier .dev.vars.example
-       en .dev.vars : la variable y repasse à '/media' et le worker sert R2
-       lui-même (src/pages/media/[...key].ts), qui reste le repli. */
-    "MEDIA_BASE_URL": "https://media.autnic.com",
+       La cible reste un domaine relié au bucket — le fichier part alors de R2
+       sans réveiller personne et sans frais d'egress. Elle demande la zone
+       autnic.com sur le compte (voir `routes` plus haut) ; le jour venu,
+       brancher R2 → autnic-media → Custom Domains sur media.autnic.com, puis
+       remettre ici "https://media.autnic.com". */
+    "MEDIA_BASE_URL": "/media",
     /* Durée de vie d'une page en cache, en secondes. Le contenu d'un média de
        jeu se périme vite : une heure au bord, revalidation en arrière-plan. */
     "CACHE_TTL": "3600"

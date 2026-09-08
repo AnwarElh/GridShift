@@ -1,4 +1,11 @@
 ---
 import NotFound from '../../views/NotFound.astro';
+/* Le statut se pose dans la page, pas dans la vue partagée : Astro diffuse la
+   réponse au fil du rendu, et `Astro.response` posé depuis un composant enfant
+   arrive après le départ des en-têtes. `/404` est la route spéciale d'Astro et
+   hérite du 404 toute seule ; celle-ci est une page ordinaire, et sans cette
+   ligne une adresse inexistante répondait 200 avec le corps « Page
+   introuvable » — un soft 404, que Google indexe comme une vraie page. */
+Astro.response.status = 404;
 ---
 <NotFound />
