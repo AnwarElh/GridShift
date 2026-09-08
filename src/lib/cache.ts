@@ -30,9 +30,12 @@ export interface KVLike {
 }
 
 /** Le Cache API du colo. `caches.default` est propre aux Workers : il n'est pas
- *  dans la lib DOM, d'où cet accès typé plutôt qu'un `as any` disséminé. */
-const coloCache = (): Pick<Cache, 'match' | 'put'> =>
-  (caches as unknown as { default: Pick<Cache, 'match' | 'put'> }).default;
+ *  dans la lib DOM, d'où cet accès typé plutôt qu'un `as any` disséminé.
+ *  Absent hors worker (`astro dev`, tests node) : on rend `undefined` et
+ *  l'étage colo est simplement sauté, au lieu d'un 500 sur chaque page. */
+const coloCache = (): Pick<Cache, 'match' | 'put'> | undefined =>
+  (globalThis as unknown as { caches?: { default: Pick<Cache, 'match' | 'put'> } })
+    .caches?.default;
 
 export interface CacheEnv {
   CACHE?: KVLike;
@@ -89,7 +92,7 @@ export interface Hit { response: Response; from: 'colo' | 'kv' }
 export async function read(request: Request, env: CacheEnv): Promise<Hit | undefined> {
   if (!isCacheable(request)) return undefined;
 
-  const colo = await coloCache().match(coloRequest(request));
+  const colo = await coloCache()?.match(coloRequest(request));
   if (colo) return { response: colo, from: 'colo' };
 
   if (!env.CACHE) return undefined;
@@ -123,7 +126,8 @@ export async function write(
   const body = await response.clone().arrayBuffer();
   const toStore = new Response(body, { status: 200, headers });
 
-  waitUntil(coloCache().put(coloRequest(request), toStore.clone()));
+  const colo = coloCache();
+  if (colo) waitUntil(colo.put(coloRequest(request), toStore.clone()));
   if (env.CACHE) {
     waitUntil(env.CACHE.put(cacheKey(request), body, {
       expirationTtl: ttl,
