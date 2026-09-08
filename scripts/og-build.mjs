@@ -36,7 +36,7 @@ const W = 1200, H = 630;
    suit pas la préférence du lecteur : elle est fixe, donc elle est en Nuit. */
 const BG = '#0E1016', S2 = '#1D222E', S3 = '#28303E';
 const TX = '#F3F5F9', TX3 = '#8F97A5';
-const BRASS = '#FFC635', LIVE = '#FF5252';
+const BRASS = '#FF6B00', LIVE = '#FF5252';
 
 /* « AUTNIC », Chakra Petch 700, corps 128, interlettrage 3.
    Ligne de base en y=0, capitales jusqu'à y=-89.6, chasse totale 473.42. */

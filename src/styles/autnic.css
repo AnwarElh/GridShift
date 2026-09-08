@@ -70,7 +70,7 @@
      `--line` est bien trop clair pour ça */
   --line-ctl:#5D6D84;
   --tx:#F3F5F9; --tx-2:#A8B2C2; --tx-3:#8F97A5;
-  --brass:#FFC635; --brass-2:#FFDA75; --brass-dim:#8B6A1E; --on-brass:#141118;
+  --brass:#FF6B00; --brass-2:#FF9433; --brass-dim:#8F3D00; --on-brass:#141118;
   --live:#FF5252; --live-dim:#8A2020; --live-fill:#C42B2B; --on-live:#FFFFFF;
   --ok:#3E9E74; --warn:#C79A2E; --err:#D9645C;
   --sc-90:#4FAE83; --sc-80:#8CAE48; --sc-70:#C79A2E; --sc-50:#C4702E; --sc-00:#BA463D;
@@ -133,7 +133,7 @@
   --bg:#EDEFF3; --s1:#F6F7FA; --s2:#FFFFFF; --s3:#E4E8EE;
   --line:#D8DCE4; --line-2:#B3BAC6; --line-ctl:#7F8B9F;
   --tx:#12151C; --tx-2:#4B5361; --tx-3:#666D7B;
-  --brass:#7A5300; --brass-2:#674600; --brass-dim:#AE8B32; --on-brass:#FFFFFF;
+  --brass:#8F3600; --brass-2:#752C00; --brass-dim:#C4713D; --on-brass:#FFFFFF;
   --live:#C0271F; --live-dim:#F0C4C1; --live-fill:#C0271F; --on-live:#FFFFFF;
   --ok:#20714C; --warn:#846009; --err:#A5352D;
   --sc-90:#20714C; --sc-80:#526D19; --sc-70:#846009; --sc-50:#95521F; --sc-00:#8C332B;
