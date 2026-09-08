@@ -26,7 +26,7 @@ reviewNotes:
   - "Nachgeprüft auf dem Patch vom Juni 2026"
 testedOn: "Thank You Update, Patch vom Juni 2026"
 level: Test
-scoreRevision: "Das ist eine Erstwertung, und sie kommt mit Absicht spät. Gridshift hat Clair Obscur: Expedition 33 zum Release im April 2025 nicht getestet, und mitten in einem Preisregen zu werten hätte den Preisregen gemessen und nicht das Spiel. Die Zahl unten ist auf dem Build nach dem Thank You Update mit installiertem Sprachpatch vom 30. Juni 2026 gesetzt und wird erneut geprüft, falls je eine Switch-2-Fassung erscheint."
+scoreRevision: "Das ist eine Erstwertung, und sie kommt mit Absicht spät. Autnic hat Clair Obscur: Expedition 33 zum Release im April 2025 nicht getestet, und mitten in einem Preisregen zu werten hätte den Preisregen gemessen und nicht das Spiel. Die Zahl unten ist auf dem Build nach dem Thank You Update mit installiertem Sprachpatch vom 30. Juni 2026 gesetzt und wird erneut geprüft, falls je eine Switch-2-Fassung erscheint."
 tags: ["Clair Obscur: Expedition 33", RPG, Sandfall Interactive, Test]
 cover: ../../../assets/h-clair-obscur-expedition-33-1.jpg
 coverCaption: "Die Expedition durchquert ein blühendes Feld unter einem leuchtenden Baum."
@@ -46,7 +46,7 @@ Genau deshalb kommt dieser Test spät.
 
 Dieses Spiel im Dezember 2025 zu werten hätte geheißen, eine Welle zu werten. Alle schrieben denselben
 Text zur selben Zeit, und eine in dieser Woche veröffentlichte Zahl misst die Woche. Also hat
-Gridshift gewartet, bis die Veröffentlichung in einem gesetzten Zustand vorlag — nach dem kostenlosen
+Autnic gewartet, bis die Veröffentlichung in einem gesetzten Zustand vorlag — nach dem kostenlosen
 Thank You Update, nach dem Patch vom 30. Juni 2026, der die Sprachunterstützung auf zwanzig hob — und
 ist dann zurückgekehrt.
 

@@ -27,8 +27,8 @@ const run = promisify(execFile);
 const ROOT = path.resolve(import.meta.dirname, '..');
 const ASSETS = path.join(ROOT, 'src/assets');
 const OUT = path.join(ROOT, 'build/media');
-const BUCKET = 'gridshift-media';
-const DB = 'gridshift-content';
+const BUCKET = 'autnic-media';
+const DB = 'autnic-content';
 
 const push = process.argv.includes('--push');
 const remote = process.argv.includes('--remote');

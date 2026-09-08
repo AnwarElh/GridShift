@@ -20,20 +20,23 @@ paintTheme(document.documentElement.dataset.theme);
 on(themeBtn, 'click', () => {
   const r = document.documentElement;
   r.dataset.theme = r.dataset.theme === 'nuit' ? 'papier' : 'nuit';
-  try { localStorage.setItem('gs_theme', r.dataset.theme); } catch {}
+  try { localStorage.setItem('au_theme', r.dataset.theme); } catch {}
   paintTheme(r.dataset.theme);
 });
 
 /* consentement — rien de la régie n'est chargé avant un « oui » explicite.
-   Le choix vit dans localStorage : le site est statique, il n'y a pas de
-   serveur pour le retenir, et il n'a pas à quitter la machine du lecteur. */
-const KEY = 'gs_consent';
+   Le choix vit dans localStorage, jamais dans un cookie : le worker n'a pas de
+   session, et surtout une réponse envoyée à chaque requête sortirait le
+   consentement de la machine du lecteur pour rien. Corollaire utile : aucune
+   page ne varie selon le lecteur, donc tout reste partageable en cache
+   (src/lib/cache.ts refuse justement de mettre en cache une requête à cookie). */
+const KEY = 'au_consent';
 const readConsent = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
 
 function loadAds(client) {
-  if (!client || document.getElementById('gs-ads')) return;
+  if (!client || document.getElementById('au-ads')) return;
   const sc = document.createElement('script');
-  sc.id = 'gs-ads';
+  sc.id = 'au-ads';
   sc.async = true;
   sc.crossOrigin = 'anonymous';
   sc.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(client);

@@ -8,13 +8,14 @@ import cloudflare from '@astrojs/cloudflare';
    redéployer — écrire dans D1 suffit. */
 
 /* `base` existait pour GitHub Pages, où le site vivait dans un sous-dossier.
-   Sur un worker il n'y a plus de sous-dossier, mais changer la valeur change
-   toutes les URL du site : elle reste donc pilotée par l'environnement, à ''
-   pour un domaine propre, à '/GridShift' tant qu'on sert l'ancienne adresse.
+   Sur autnic.com il n'y a plus de sous-dossier : le défaut est donc '', et
+   c'est l'aperçu Pages qui pose '/GridShift' explicitement (pages.yml). Le
+   défaut inverse faisait porter le préfixe du dépôt à la production dès que la
+   variable manquait — 203 URL fausses pour une variable oubliée.
    Tout lien interne passe par les fabriques de src/i18n/config.ts, qui
    préfixent avec import.meta.env.BASE_URL — Astro ne réécrit pas les href
    écrits à la main. */
-const BASE = process.env.SITE_BASE ?? '/GridShift';
+const BASE = process.env.SITE_BASE ?? '';
 
 /* Les anciennes URL françaises vivaient à la racine (/actus/, /tests/…).
    L'anglais y est passé : chaque ancienne adresse d'index renvoie vers son
@@ -47,7 +48,7 @@ const BUILD_ID = process.env.GITHUB_SHA?.slice(0, 12) ?? Date.now().toString(36)
 
 export default defineConfig({
   vite: { define: { 'import.meta.env.BUILD_ID': JSON.stringify(BUILD_ID) } },
-  site: process.env.SITE_URL ?? 'https://anwarelh.github.io',
+  site: process.env.SITE_URL ?? 'https://autnic.com',
   base: BASE,
   trailingSlash: 'ignore',
   output: 'server',

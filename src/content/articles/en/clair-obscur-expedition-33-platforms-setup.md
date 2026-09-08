@@ -83,7 +83,7 @@ input-sensitive genres there is, which means a controller on a sofa is a perfect
 there is no competitive reason to prefer mouse and keyboard.
 
 If what you actually want is to play it in bed on a handheld, the honest answer is that the game
-does not currently support that in any officially announced form, and Gridshift is not going to
+does not currently support that in any officially announced form, and Autnic is not going to
 pretend otherwise until someone with the authority to announce it does.
 
 ## Where this page stops

@@ -1,4 +1,4 @@
-# Gridshift copywriting blueprint
+# Autnic copywriting blueprint
 
 Derived from ~20 full articles across Push Square, GAMINGbible, Kotaku, GameSpot and VG247,
 sampled 2026-09-06. **This file is the style authority.** Write from it. Do not re-read the
@@ -45,7 +45,7 @@ briefed them (*"Producer Rain tells me…"*). Will insert a frank negative mid-p
 could not find out. Short one-idea paragraphs in news; italics for emphasis on a single word.
 Use for hands-on and previews.
 
-**Where Gridshift sits:** GameSpot's spine, Kotaku's willingness to reach a conclusion. We
+**Where Autnic sits:** GameSpot's spine, Kotaku's willingness to reach a conclusion. We
 attribute like GameSpot, we judge like Kotaku, and we do not do GAMINGbible's one-sentence
 paragraphs or Push Square's first person unless the piece is genuinely hands-on.
 

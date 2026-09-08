@@ -1,4 +1,4 @@
--- Gridshift — schéma de contenu D1.
+-- Autnic — schéma de contenu D1.
 --
 -- Le modèle bilingue du site est conservé tel quel, parce qu'il est juste :
 --

@@ -1,0 +1,12 @@
+# Surcharges locales des `vars` de wrangler.jsonc. Copier en `.dev.vars` —
+# git-ignoré, comme tout ce qui est propre à une machine.
+#
+# Les secrets ne vont NI ici NI dans wrangler.jsonc : en production ils passent
+# par `npx wrangler secret put NOM`.
+#
+# Rien d'obligatoire pour l'instant : wrangler.jsonc porte des valeurs qui
+# fonctionnent telles quelles en local. Ce fichier sert le jour où l'une d'elles
+# ne convient plus à une machine — par exemple rebasculer les médias sur la
+# route worker si la production passe un jour au domaine media.autnic.com :
+#
+#   MEDIA_BASE_URL=/media

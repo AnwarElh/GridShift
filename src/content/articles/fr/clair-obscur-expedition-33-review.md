@@ -26,7 +26,7 @@ reviewNotes:
   - "Revérifié sur le correctif de juin 2026"
 testedOn: "Mise à jour Thank You, correctif de juin 2026"
 level: Test
-scoreRevision: "Il s'agit d'une première note, posée volontairement tard. Gridshift n'a pas testé Clair Obscur: Expedition 33 à sa sortie d'avril 2025, et le noter en pleine razzia de récompenses aurait mesuré la razzia, pas le jeu. La note ci-dessous porte sur la version postérieure à la mise à jour Thank You, correctif du 30 juin 2026 installé, et sera revérifiée si une version Switch 2 sort un jour."
+scoreRevision: "Il s'agit d'une première note, posée volontairement tard. Autnic n'a pas testé Clair Obscur: Expedition 33 à sa sortie d'avril 2025, et le noter en pleine razzia de récompenses aurait mesuré la razzia, pas le jeu. La note ci-dessous porte sur la version postérieure à la mise à jour Thank You, correctif du 30 juin 2026 installé, et sera revérifiée si une version Switch 2 sort un jour."
 tags: ["Clair Obscur: Expedition 33", RPG, Sandfall Interactive, Test]
 cover: ../../../assets/h-clair-obscur-expedition-33-1.jpg
 coverCaption: "L’expédition traverse un champ en fleurs sous un arbre lumineux."
@@ -44,7 +44,7 @@ C'est précisément pour cela que ce test arrive en retard.
 ## Pourquoi un test maintenant, et ce qu'il peut honnêtement dire
 
 Noter ce jeu en décembre 2025 aurait revenu à noter une vague. Tout le monde écrivait le même texte
-la même semaine, et un chiffre publié cette semaine-là mesure la semaine. Gridshift a donc attendu
+la même semaine, et un chiffre publié cette semaine-là mesure la semaine. Autnic a donc attendu
 que la version se stabilise — après la mise à jour Thank You gratuite, après le correctif du
 30 juin 2026 qui a porté la prise en charge à vingt langues — puis y est retourné.
 

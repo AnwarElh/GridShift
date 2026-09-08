@@ -14,3 +14,9 @@ db/seed.sql
 db/r2-uploads.json
 build/
 db/variants.sql
+
+# surcharges locales de wrangler.jsonc (voir .dev.vars.example)
+.dev.vars
+
+# jamais : captures d écran de jetons, clés, identifiants
+token/

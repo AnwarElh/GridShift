@@ -26,7 +26,7 @@ reviewNotes:
   - "Re-checked on the June 2026 patch"
 testedOn: "Thank You Update, June 2026 patch"
 level: Review
-scoreRevision: "This is a first score, arrived at deliberately late. Gridshift did not review Clair Obscur: Expedition 33 at its April 2025 launch, and scoring it in the middle of an awards run would have measured the run rather than the game. The number below is set on the post-Thank You Update build with the June 30, 2026 language patch installed, and will be re-checked if a Switch 2 version ever ships."
+scoreRevision: "This is a first score, arrived at deliberately late. Autnic did not review Clair Obscur: Expedition 33 at its April 2025 launch, and scoring it in the middle of an awards run would have measured the run rather than the game. The number below is set on the post-Thank You Update build with the June 30, 2026 language patch installed, and will be re-checked if a Switch 2 version ever ships."
 tags: ["Clair Obscur: Expedition 33", RPG, Sandfall Interactive, Review]
 cover: ../../../assets/h-clair-obscur-expedition-33-1.jpg
 coverCaption: "The expedition crosses a flowering field beneath a luminous tree."
@@ -44,7 +44,7 @@ That is exactly why this review is late.
 ## Why a review now, and what it can honestly tell you
 
 Scoring this game in December 2025 would have been scoring a wave. Everyone was writing the same
-piece at the same time, and a number published in that week measures the week. So Gridshift waited
+piece at the same time, and a number published in that week measures the week. So Autnic waited
 until the release existed in a settled state — after the free Thank You Update, after the June 30,
 2026 patch that took language support to twenty — and then went back to it.
 

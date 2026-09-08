@@ -63,9 +63,9 @@ const en = {
   /* Le titre de l'accueil ne répète pas la marque : elle est déjà dans le
      bandeau, dans le <title> et dans le JSON-LD. Il dit le sujet — c'est le
      seul endroit de la page qui en a la charge. */
-  /* Le <title> de l'accueil : « Gridshift » seul ne visait qu'une requête —
+  /* Le <title> de l'accueil : « Autnic » seul ne visait qu'une requête —
      le nom de la maison, que personne ne cherche encore. Le gabarit ajoute
-     « — Gridshift », la marque reste donc en fin de ligne. */
+     « — Autnic », la marque reste donc en fin de ligne. */
   'home.title': 'Live-service game reviews and guides',
   'home.h1': 'Independent reviews, guides and news for live-service games',
   'home.wire': 'The wire',
@@ -145,7 +145,7 @@ const en = {
   'game.seePage': 'View game page',
   'game.allCoverage': 'All our coverage',
   'game.trackedVersion': 'Tracked version',
-  'game.ourScore': 'Gridshift score',
+  'game.ourScore': 'Autnic score',
   'game.playerScore': 'Player score',
   'game.completedBy': 'Completed by',
   'game.allOffers': 'all offers',
@@ -159,7 +159,7 @@ const en = {
   'tag.topics': 'Topics',
   'tag.desc': (tag: string) => `All our articles on ${tag}: reviews, guides and news.`,
   'tag.lede': (n: number, tag: string) => `${n} article${n > 1 ? 's' : ''} filed under “${tag}”.`,
-  'author.since': (y: string) => `at Gridshift since ${y}`,
+  'author.since': (y: string) => `at Autnic since ${y}`,
   'author.published': (n: number) => `${n} article${n > 1 ? 's' : ''} published`,
   'review.testedOn': 'For version ',
   'review.readTime': (n: number) => `${n} min read`,
@@ -379,7 +379,7 @@ const fr: Dict = {
   'game.seePage': 'Voir la fiche',
   'game.allCoverage': 'Toute notre couverture',
   'game.trackedVersion': 'Version suivie',
-  'game.ourScore': 'Note Gridshift',
+  'game.ourScore': 'Note Autnic',
   'game.playerScore': 'Note des joueurs',
   'game.completedBy': 'Terminé par',
   'game.allOffers': 'toutes les offres',
@@ -392,7 +392,7 @@ const fr: Dict = {
   'tag.topics': 'Sujets',
   'tag.desc': (tag: string) => `Tous nos articles sur ${tag} : tests, guides et actus.`,
   'tag.lede': (n: number, tag: string) => `${n} article${n > 1 ? 's' : ''} classé${n > 1 ? 's' : ''} sous « ${tag} ».`,
-  'author.since': (y: string) => `à Gridshift depuis ${y}`,
+  'author.since': (y: string) => `à Autnic depuis ${y}`,
   'author.published': (n: number) => `${n} article${n > 1 ? 's' : ''} publié${n > 1 ? 's' : ''}`,
   'review.testedOn': 'Pour la version ',
   'review.readTime': (n: number) => `${n} min de lecture`,
@@ -613,7 +613,7 @@ const de: Dict = {
   'game.seePage': 'Zur Spielseite',
   'game.allCoverage': 'Unsere gesamte Berichterstattung',
   'game.trackedVersion': 'Beobachtete Version',
-  'game.ourScore': 'Gridshift-Wertung',
+  'game.ourScore': 'Autnic-Wertung',
   'game.playerScore': 'Spielerwertung',
   'game.completedBy': 'Durchgespielt von',
   'game.allOffers': 'alle Angebote',
@@ -628,7 +628,7 @@ const de: Dict = {
   'tag.topics': 'Themen',
   'tag.desc': (tag: string) => `Alle unsere Artikel zu ${tag}: Tests, Guides und News.`,
   'tag.lede': (n: number, tag: string) => `${n} Artikel unter „${tag}“ abgelegt.`,
-  'author.since': (y: string) => `bei Gridshift seit ${y}`,
+  'author.since': (y: string) => `bei Autnic seit ${y}`,
   'author.published': (n: number) => `${n} Artikel veröffentlicht`,
   'review.testedOn': 'Für Version ',
   'review.readTime': (n: number) => `${n} Min. Lesezeit`,

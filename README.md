@@ -1,7 +1,7 @@
-# Gridshift
+# Autnic
 
 Média gaming éditorial, construit avec Astro sur le système de design
-**GRIDSHIFT V2 « Platine »** (`../gridshift-v2.html`).
+**AUTNIC V2 « Platine »** (`../gridshift-v2.html`).
 
 ```bash
 npm install
@@ -14,7 +14,7 @@ npm test         # logique de recherche
 
 | Chemin | Rôle |
 |---|---|
-| `src/styles/gridshift.css` | le système de design, repris tel quel du fichier de référence |
+| `src/styles/autnic.css` | le système de design, repris tel quel du fichier de référence |
 | `src/site.ts` | nom du site, rubriques, pied de page — le seul fichier à éditer pour rebrander |
 | `src/content.config.ts` | schémas des articles, jeux et auteurs |
 | `src/content/` | le contenu (Markdown / MDX) |

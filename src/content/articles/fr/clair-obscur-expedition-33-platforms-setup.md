@@ -84,7 +84,7 @@ genres les moins sensibles à la précision d'entrée : une manette dans un cana
 choix par défaut, et aucune raison compétitive ne pousse vers le clavier-souris.
 
 Si ce que vous voulez, en réalité, c'est y jouer au lit sur une console portable, la réponse honnête
-est que le jeu ne le permet aujourd'hui sous aucune forme officiellement annoncée, et Gridshift ne
+est que le jeu ne le permet aujourd'hui sous aucune forme officiellement annoncée, et Autnic ne
 prétendra pas le contraire tant que quelqu'un ayant l'autorité de l'annoncer ne l'aura pas fait.
 
 ## Là où cette page s'arrête

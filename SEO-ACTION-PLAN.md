@@ -1,9 +1,9 @@
-# Gridshift — SEO action plan
+# Autnic — SEO action plan
 
 Audit date: 27 August 2026
 Scope: local Astro build (`dist/`, 48 HTML pages). Live response headers,
 redirects and real Core Web Vitals field data are **not** covered — they need
-a deployed `https://gridshift.fr` to verify.
+a deployed `https://autnic.com` to verify.
 Business model assumed: display ad arbitrage (paid traffic in, ad revenue out)
 on top of a French gaming media property.
 
@@ -63,7 +63,7 @@ both are terminal for the business model:
    *misrepresentation* policy. AdSense review will not approve it, and a manual
    action on the domain is not something you recover from quickly.
 
-If this content is placeholder data for the GRIDSHIFT V2 design system, this
+If this content is placeholder data for the AUTNIC V2 design system, this
 item is void — but then every item below is on hold until real articles land,
 because there is nothing yet to optimize. If it is meant to ship, this is not
 one finding among twelve; it is the entire audit.
@@ -116,7 +116,7 @@ once covers exist (action 7).
 ### Done when
 
 The Facebook Sharing Debugger and X Card Validator both render a card with an
-image for `https://gridshift.fr/` and for one article URL.
+image for `https://autnic.com/` and for one article URL.
 
 ---
 
@@ -211,7 +211,7 @@ aggregateRating: { '@type': 'AggregateRating', ratingValue: d.score, ratingCount
 
 `posts.length` is the number of articles *you* have written about the game. The
 markup declares it to Google as a count of independent user ratings. A game with
-five Gridshift articles is presented as a game rated by five people.
+five Autnic articles is presented as a game rated by five people.
 
 This is not a technicality. `AggregateRating` is one of the schema types Google
 polices most actively, because inflated star counts are the classic structured
@@ -220,7 +220,7 @@ star-rating manual action removes rich results sitewide — including for the
 pages that were honest.
 
 The site's editorial posture makes this worse rather than better. Everything
-else about Gridshift is unusually transparent: version tested, corrections log,
+else about Autnic is unusually transparent: version tested, corrections log,
 "exemplaire acheté", a published scoring method. One fabricated field
 contradicts all of it, and it is the one field a spam classifier reads.
 
@@ -330,9 +330,9 @@ non-article pages are the opposite:
 
 | Page | Current title | Length |
 |---|---|---|
-| `/` | `Gridshift` | 9 |
-| `/jeux/echo-divide/` | `Echo Divide — Gridshift` | 23 |
-| `/tag/pc/` | `PC — Gridshift` | 14 |
+| `/` | `Autnic` | 9 |
+| `/jeux/echo-divide/` | `Echo Divide — Autnic` | 23 |
+| `/tag/pc/` | `PC — Autnic` | 14 |
 
 The homepage case is deliberate: `src/layouts/Base.astro:20` skips the suffix
 when `title === site.name`, so the homepage title is the bare brand word. That
@@ -348,9 +348,9 @@ on-page implementation.
 
 ### What
 
-- Homepage: `Gridshift — tests, guides et actus jeu vidéo`
-- Game hub: `{title} : test, guides et soluces — Gridshift`
-- Tag: `{tag} : tous nos articles — Gridshift`
+- Homepage: `Autnic — tests, guides et actus jeu vidéo`
+- Game hub: `{title} : test, guides et soluces — Autnic`
+- Tag: `{tag} : tous nos articles — Autnic`
 
 ### Done when
 
@@ -368,7 +368,7 @@ over absence.
 
 **Breadcrumbs:** the `Crumbs` component renders a visible trail on every article
 and game page, but no `BreadcrumbList` JSON-LD accompanies it. Google therefore
-displays the raw URL path in the SERP instead of `Gridshift › Echo Divide ›
+displays the raw URL path in the SERP instead of `Autnic › Echo Divide ›
 Test`. The information architecture work is already done and paid for; the
 markup that converts it into SERP real estate — and the CTR that follows — is
 missing. This is the highest ratio of return to effort in the document.

@@ -60,15 +60,15 @@ jobs:
       - name: Build the local database
         run: |
           npm run content:export
-          npx wrangler d1 migrations apply gridshift-content --local
-          npx wrangler d1 execute gridshift-content --local --file db/seed.sql
+          npx wrangler d1 migrations apply autnic-content --local
+          npx wrangler d1 execute autnic-content --local --file db/seed.sql
 
       # Les mêmes variantes que pousse la publication, sans l'étape R2 : les
       # fichiers restent sur le disque et seront copiés à côté des pages.
       - name: Build the media
         run: |
           node scripts/media-build.mjs
-          npx wrangler d1 execute gridshift-content --local --file db/variants.sql
+          npx wrangler d1 execute autnic-content --local --file db/variants.sql
 
       - name: Build the worker
         run: npm run build

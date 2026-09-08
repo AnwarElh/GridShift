@@ -1,7 +1,7 @@
 ---
 name: writer
 description: >
-  Write and publish Gridshift articles in the house style. Holds a copywriting blueprint
+  Write and publish Autnic articles in the house style. Holds a copywriting blueprint
   distilled from five gaming outlets, so articles get written from the blueprint rather than
   by re-reading those sites every time. Also runs the weekly research pass that finds what to
   write about. Triggers: "writer", "weekly articles", "write an article",
@@ -13,7 +13,7 @@ description: >
 Two separable jobs. Keep them separate.
 
 **Style comes from [`blueprint.md`](blueprint.md).** It is distilled from ~20 articles across the
-five outlets and it is the authority on how a Gridshift piece is built — headlines, ledes,
+five outlets and it is the authority on how a Autnic piece is built — headlines, ledes,
 structure, register, sourcing, French conventions. Read it before writing. Do not go back to the
 source sites to work out *how* to write; that question is already answered and written down.
 

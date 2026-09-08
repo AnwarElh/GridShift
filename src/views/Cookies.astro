@@ -7,7 +7,7 @@ const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
 const c = {
   en: {
-    title: 'Cookies', desc: 'Which cookies Gridshift sets, what they do, and how to change your mind.',
+    title: 'Cookies', desc: 'Which cookies Autnic sets, what they do, and how to change your mind.',
     without: 'What is set without consent',
     withoutBody1: 'One thing, and it is not a cookie: your theme choice (light or dark) is kept in your browser’s local storage, under the key ',
     withoutBody2: '. It never leaves your machine. Your answer to the banner is kept the same way, under ',
@@ -17,7 +17,7 @@ const c = {
     changeBody: 'Your choice is not final. The button below clears your answer: the banner will come back on the next page load and you can answer differently.',
   },
   fr: {
-    title: 'Cookies', desc: 'Quels cookies Gridshift dépose, à quoi ils servent, et comment changer d’avis.',
+    title: 'Cookies', desc: 'Quels cookies Autnic dépose, à quoi ils servent, et comment changer d’avis.',
     without: 'Ce qui est déposé sans consentement',
     withoutBody1: 'Une seule chose, et ce n’est pas un cookie : votre choix de thème (clair ou sombre) est gardé dans le stockage local de votre navigateur, sous la clé ',
     withoutBody2: '. Il ne quitte jamais votre machine. Votre réponse à la bannière est gardée de la même façon, sous ',
@@ -27,7 +27,7 @@ const c = {
     changeBody: 'Votre choix n’est pas définitif. Le bouton ci-dessous efface votre réponse : la bannière réapparaîtra au prochain chargement et vous pourrez répondre autrement.',
   },
   de: {
-    title: 'Cookies', desc: 'Welche Cookies Gridshift setzt, wozu sie dienen und wie Sie Ihre Entscheidung ändern.',
+    title: 'Cookies', desc: 'Welche Cookies Autnic setzt, wozu sie dienen und wie Sie Ihre Entscheidung ändern.',
     without: 'Was ohne Einwilligung gesetzt wird',
     withoutBody1: 'Eine einzige Sache, und sie ist kein Cookie: Ihre Themenwahl (hell oder dunkel) liegt im lokalen Speicher Ihres Browsers, unter dem Schlüssel ',
     withoutBody2: '. Sie verlässt Ihr Gerät nie. Ihre Antwort auf den Banner wird genauso abgelegt, unter ',
@@ -44,7 +44,7 @@ const c = {
     <h1 class="d2" style="margin:12px 0 8px">{c.title}</h1>
     <div class="read">
       <h2>{c.without}</h2>
-      <p>{c.withoutBody1}<code>gs_theme</code>{c.withoutBody2}<code>gs_consent</code>.</p>
+      <p>{c.withoutBody1}<code>au_theme</code>{c.withoutBody2}<code>au_consent</code>.</p>
       <h2>{c.after}</h2><p>{c.afterBody}</p>
       <h2>{c.change}</h2>
       <p>{c.changeBody}</p>

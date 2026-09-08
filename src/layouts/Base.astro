@@ -1,5 +1,5 @@
 ---
-import '../styles/gridshift.css';
+import '../styles/autnic.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import TabBar from '../components/TabBar.astro';
@@ -92,7 +92,7 @@ const alternates = alt
 
 <link rel="alternate" type="application/rss+xml" title={`${site.name} — ${siteCopy[lang].tagline}`} href={feedHref(lang)}>
 
-<!-- polices auto-hébergées : @font-face vit dans gridshift.css.
+<!-- polices auto-hébergées : @font-face vit dans autnic.css.
      Les trois familles du premier écran sont préchargées : Inter compose
      l'interface, Chakra Petch les titres — donc l'élément LCP — et
      JetBrains Mono toutes les étiquettes de rubrique, visibles dès le Fil. -->
@@ -103,7 +103,7 @@ const alternates = alt
 <!-- thème appliqué avant peinture : pas de flash blanc au chargement -->
 <script is:inline>
   try {
-    const t = localStorage.getItem('gs_theme');
+    const t = localStorage.getItem('au_theme');
     if (t) {
       document.documentElement.dataset.theme = t;
       document.querySelector('meta[name="theme-color"]').content = t === 'papier' ? '#EDEFF3' : '#0E1016';

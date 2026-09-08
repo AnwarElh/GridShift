@@ -84,7 +84,7 @@ eingabeempfindlichen Genres überhaupt — ein Controller auf dem Sofa ist also 
 brauchbarer Standard, und es gibt keinen spielerischen Grund, Maus und Tastatur vorzuziehen.
 
 Wer es eigentlich im Bett auf einem Handheld spielen will, bekommt die ehrliche Antwort: Das
-unterstützt das Spiel derzeit in keiner offiziell angekündigten Form, und Gridshift wird nicht so
+unterstützt das Spiel derzeit in keiner offiziell angekündigten Form, und Autnic wird nicht so
 tun, als wäre es anders, solange es niemand ankündigt, der dazu befugt ist.
 
 ## Wo diese Seite aufhört

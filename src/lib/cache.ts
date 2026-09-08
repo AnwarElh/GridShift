@@ -99,7 +99,7 @@ export async function read(request: Request, env: CacheEnv): Promise<Hit | undef
   if (!stored?.value) return undefined;
 
   const headers = new Headers(stored.metadata?.headers ?? []);
-  headers.set('x-gridshift-cache', 'kv');
+  headers.set('x-autnic-cache', 'kv');
   return { response: new Response(stored.value, { status: 200, headers }), from: 'kv' };
 }
 
@@ -118,7 +118,7 @@ export async function write(
      à servir la version périmée pendant qu'on en refait une — c'est ce qui
      évite qu'une purge fasse retomber tout le monde sur D1 en même temps. */
   headers.set('cache-control', `public, s-maxage=${ttl}, stale-while-revalidate=${ttl * 4}`);
-  headers.set('x-gridshift-cache', 'miss');
+  headers.set('x-autnic-cache', 'miss');
 
   const body = await response.clone().arrayBuffer();
   const toStore = new Response(body, { status: 200, headers });

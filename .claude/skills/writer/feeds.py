@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pull the five Gridshift source feeds. Stdlib only — runs anywhere.
+"""Pull the five Autnic source feeds. Stdlib only — runs anywhere.
 
     python3 feeds.py [n_per_feed]   # default 25
 

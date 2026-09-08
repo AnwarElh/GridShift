@@ -25,8 +25,8 @@ import path from 'node:path';
 const run = promisify(execFile);
 const ROOT = path.resolve(import.meta.dirname, '..');
 const ASSETS = path.join(ROOT, 'src/assets');
-const BUCKET = 'gridshift-media';
-const DB = 'gridshift-content';
+const BUCKET = 'autnic-media';
+const DB = 'autnic-content';
 
 const remote = process.argv.includes('--remote');
 const force = process.argv.includes('--force');
