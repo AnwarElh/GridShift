@@ -20,6 +20,45 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # L'historique complet : `git diff` doit pouvoir remonter au commit
+          # d'avant le push, qui n'est pas forcément le parent immédiat quand
+          # plusieurs commits partent ensemble.
+          fetch-depth: 0
+
+      # Ce qui a changé décide de ce qui tourne.
+      #
+      # RULES 10 le dit : migrations, seed et envoi des médias ne font pas
+      # partie du build. Les rejouer à chaque push, c'est réécrire 63 articles
+      # et repousser 751 objets pour une virgule dans une feuille de style —
+      # quarante minutes pour ne rien changer. Ils ne tournent donc que si leur
+      # source a bougé. Un déclenchement manuel (workflow_dispatch) les rejoue
+      # tous : c'est le geste qu'on fait quand on veut précisément rattraper un
+      # état distant douteux.
+      - name: What changed
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "content=true" >> "$GITHUB_OUTPUT"
+            echo "media=true"   >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          before="${{ github.event.before }}"
+          if ! git cat-file -e "$before^{commit}" 2>/dev/null; then
+            # Premier push, ou historique tronqué : on ne devine pas, on rejoue.
+            echo "content=true" >> "$GITHUB_OUTPUT"
+            echo "media=true"   >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          files=$(git diff --name-only "$before" HEAD)
+          echo "$files"
+          grep -qE '^(src/content/|db/migrations/|scripts/content-to-d1\.mjs)' <<< "$files" \
+            && echo "content=true" >> "$GITHUB_OUTPUT" || echo "content=false" >> "$GITHUB_OUTPUT"
+          # `public/` n'est pas dans la liste : ces fichiers partent avec le
+          # worker (liaison ASSETS), pas dans R2. Seul src/assets/ nourrit le
+          # bucket.
+          grep -qE '^(src/assets/|scripts/(assets-to-r2|media-build)\.mjs)' <<< "$files" \
+            && echo "media=true" >> "$GITHUB_OUTPUT" || echo "media=false" >> "$GITHUB_OUTPUT"
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -65,14 +104,23 @@ jobs:
       # par le nouveau code doit trouver ses données et ses images en place, pas
       # l'inverse.
       - name: Migrate and seed D1
+        if: steps.changed.outputs.content == 'true'
         run: |
           npx wrangler d1 migrations apply autnic-content --remote
           npm run db:seed:remote
 
       - name: Push media to R2
+        if: steps.changed.outputs.media == 'true'
         run: |
           npm run media:push:remote
           node scripts/media-build.mjs --push --remote
 
       - name: Deploy worker
         run: npx wrangler deploy
+
+      # Après le déploiement, pas avant : on n'annonce pas une page que le
+      # moteur trouverait dans son ancienne version. Rien à annoncer quand le
+      # contenu n'a pas bougé.
+      - name: Ping IndexNow
+        if: steps.changed.outputs.content == 'true'
+        run: node scripts/indexnow.mjs
