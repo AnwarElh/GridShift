@@ -43,6 +43,18 @@ jobs:
       - name: Test
         run: npm test
 
+      # Le jeton, posé une fois pour les trois étapes qui parlent à Cloudflare.
+      # Il est débarrassé de ses blancs : un retour à la ligne ramassé au
+      # copier-coller en fait un en-tête HTTP illégal, et wrangler s'arrête sur
+      # « invalid header value » — un message qui ne dit pas d'où vient le mal.
+      # Les deux noms sont acceptés : le dépôt tient le sien sous `CLOUDFLARE`,
+      # et GitHub ne sait pas renommer un secret.
+      - name: Cloudflare credentials
+        env:
+          RAW: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE }}
+        run: |
+          echo "CLOUDFLARE_API_TOKEN=$(printf '%s' "$RAW" | tr -d '[:space:]')" >> "$GITHUB_ENV"
+
       - name: Build
         run: npm run build
         env:
@@ -56,26 +68,11 @@ jobs:
         run: |
           npx wrangler d1 migrations apply autnic-content --remote
           npm run db:seed:remote
-        env:
-          # Le compte est nommé dans wrangler.jsonc ; il ne reste que le jeton.
-          # Les deux noms sont acceptés : le dépôt le tient sous `CLOUDFLARE`,
-          # et GitHub ne sait pas renommer un secret.
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE }}
 
       - name: Push media to R2
         run: |
           npm run media:push:remote
           node scripts/media-build.mjs --push --remote
-        env:
-          # Le compte est nommé dans wrangler.jsonc ; il ne reste que le jeton.
-          # Les deux noms sont acceptés : le dépôt le tient sous `CLOUDFLARE`,
-          # et GitHub ne sait pas renommer un secret.
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE }}
 
       - name: Deploy worker
         run: npx wrangler deploy
-        env:
-          # Le compte est nommé dans wrangler.jsonc ; il ne reste que le jeton.
-          # Les deux noms sont acceptés : le dépôt le tient sous `CLOUDFLARE`,
-          # et GitHub ne sait pas renommer un secret.
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CLOUDFLARE }}
