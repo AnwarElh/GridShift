@@ -211,7 +211,7 @@ const jsonLd = {
             <div class="rail-list">
               {feedRail.map((p) => (
                 <article class="card card-sm card-xs" data-t={p.section}>
-                  <Fig src={p.data.cover} alt="" ratio="1-1" widths={[164]} sizes="82px" />
+                  <Fig src={p.data.cover} alt="" ratio="1-1" widths={[360]} sizes="171px" />
                   <div class="card-body">
                     <time class="fcard-ago" datetime={iso(p.data.date)}>{ago(p.data.date, lang)}</time>
                     <h3><a href={p.href}>{p.data.title}</a></h3>
@@ -232,7 +232,7 @@ const jsonLd = {
               <li>
                 <span class="trend-n" aria-hidden="true">{i + 1}</span>
                 <article class="card card-sm card-xs">
-                  <Fig src={p.data.cover} alt="" ratio="1-1" widths={[164]} sizes="82px" />
+                  <Fig src={p.data.cover} alt="" ratio="1-1" widths={[360]} sizes="171px" />
                   <div class="card-body">
                     <h3><a href={p.href}>{p.data.title}</a></h3>
                     <p class="card-meta"><span>{labels[p.section]}</span></p>

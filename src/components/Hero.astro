@@ -54,8 +54,17 @@ const cards = fan.slice(0, 5);
             titre. Un seul élément dans les deux cas — donc une seule chose
             à relire pour un lecteur d'écran, et une seule à rafraîchir. */}
         <time class="dtile-ago" datetime={iso(p.data.date)}>{ago(p.data.date, lang)}</time>
+        {/* La jaquette est un 16/9 recadré en 3/4 : `object-fit:cover` met
+            l'image à l'échelle sur la HAUTEUR, pas sur la largeur. Une carte
+            de 225px réclame donc une source de 225 × 4/3 × 16/9 ≈ 533px, et
+            le double sur écran dense. `sizes` annonce cette largeur-là, pas
+            celle de la boîte : sinon le navigateur prend une variante deux
+            fois trop petite et l'agrandit — c'est ce qui rendait l'éventail
+            flou pendant que la carte de tête, elle, restait nette.
+            Au pouce la carte repasse en 16/9 (voir la feuille de style) :
+            92vw y est la largeur vraie, sans correction. */}
         <Fig src={p.data.cover} alt="" ratio="3-4"
-             widths={[320, 480]} sizes="(max-width:860px) 92vw, 240px" />
+             widths={[480, 720, 1080]} sizes="(max-width:860px) 92vw, 533px" />
         {/* le titre ne s'affiche qu'au pouce, où la carte devient une vraie
             diapositive ; en éventail il ne tiendrait pas dans la tranche
             visible, et une carte muette y est plus honnête qu'un titre coupé. */}
