@@ -15,7 +15,11 @@ import cloudflare from '@astrojs/cloudflare';
    Tout lien interne passe par les fabriques de src/i18n/config.ts, qui
    préfixent avec import.meta.env.BASE_URL — Astro ne réécrit pas les href
    écrits à la main. */
-const BASE = process.env.SITE_BASE ?? '';
+/* `||`, pas `??` : un atelier GitHub qui passe `SITE_BASE: ${{ vars.SITE_BASE }}`
+   sans avoir défini la variable ne transmet pas « rien », il transmet la chaîne
+   vide — que `??` laisse passer. Ici elle vaut le défaut, mais la même écriture
+   plus bas donnait `site: ''` et coupait le build sur « site: Invalid url ». */
+const BASE = process.env.SITE_BASE || '';
 
 /* Les anciennes URL françaises vivaient à la racine (/actus/, /tests/…).
    L'anglais y est passé : chaque ancienne adresse d'index renvoie vers son
@@ -48,7 +52,7 @@ const BUILD_ID = process.env.GITHUB_SHA?.slice(0, 12) ?? Date.now().toString(36)
 
 export default defineConfig({
   vite: { define: { 'import.meta.env.BUILD_ID': JSON.stringify(BUILD_ID) } },
-  site: process.env.SITE_URL ?? 'https://autnic.com',
+  site: process.env.SITE_URL || 'https://autnic.com',
   base: BASE,
   trailingSlash: 'ignore',
   output: 'server',
