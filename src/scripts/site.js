@@ -227,7 +227,53 @@ if (slider && dotbar) {
 
   dotbar.hidden = !phone.matches;
   mark();
-  run();
+  /* l'état initial des deux icônes vient d'ici, pas du gabarit : `hidden` sur
+     un enfant de <svg> n'est pas un attribut que le typage Astro accepte. */
+  setPaused(false);
+}
+
+/* LE FILTRE DU FIL — « Choisis ton contenu ».
+
+   Les jetons sont de vrais liens vers les pages de rubrique : sans script,
+   un clic mène à la rubrique, et c'est un comportement correct, pas un
+   repli dégradé. Avec script, on reste sur place et on masque ce qui ne
+   correspond pas — voir les guides ne vaut pas un aller-retour serveur.
+
+   L'adresse suit (`#guide`), donc l'état est partageable et le bouton
+   « précédent » le rejoue. */
+const pills = $('[data-filter]');
+const feedRoot = $('#feed');
+if (pills && feedRoot) {
+  const cards = [...feedRoot.querySelectorAll('[data-t]')];
+  const tabs = [...pills.querySelectorAll('[data-t]')];
+
+  const apply = (key) => {
+    tabs.forEach((a) => {
+      if (a.dataset.t === key) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+    cards.forEach((c) => { c.hidden = key !== 'all' && c.dataset.t !== key; });
+  };
+
+  /* une rubrique absente du fil ne doit pas vider la page : on ne retient
+     du fragment que ce qu'au moins une carte porte réellement. */
+  const known = new Set(['all', ...cards.map((c) => c.dataset.t)]);
+  const fromHash = () => {
+    const k = location.hash.slice(1);
+    return known.has(k) ? k : 'all';
+  };
+
+  on(pills, 'click', (e) => {
+    const a = e.target.closest('[data-t]');
+    if (!a || !pills.contains(a)) return;
+    e.preventDefault();
+    const key = a.dataset.t;
+    apply(key);
+    history.pushState(null, '', key === 'all' ? '#feed' : `#${key}`);
+  });
+
+  on(window, 'popstate', () => apply(fromHash()));
+  apply(fromHash());
 }
 
 /* onglets, segments, filtres : un seul gestionnaire pour trois motifs */
@@ -407,3 +453,21 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   }, { threshold: 0.6 });
   document.querySelectorAll('.consensus .fill').forEach((f) => io2.observe(f));
 }
+
+
+/* Les heures relatives sont calculées au rendu. Une page servie depuis le
+   cache les fige : « il y a 2 heures » peut en valoir huit. Le navigateur,
+   lui, connaît l'heure — il relit `datetime` et corrige au chargement.
+   Sans script, la valeur rendue reste juste à moins d'un cycle de cache,
+   et au-delà de 24 h le serveur écrit déjà une date, qui ne vieillit pas. */
+const rtf = new Intl.RelativeTimeFormat(document.documentElement.lang || 'en', { numeric: 'always' });
+document.querySelectorAll('time.dtile-ago, time.fcard-ago').forEach((el) => {
+  const d = new Date(el.dateTime);
+  if (Number.isNaN(d.getTime())) return;
+  const mins = Math.round((Date.now() - d.getTime()) / 60000);
+  /* au-delà de 24 h le serveur a écrit une date courte : on n'y touche pas */
+  if (mins < 0 || mins >= 1440) return;
+  el.textContent = mins < 60
+    ? rtf.format(mins < 1 ? 0 : -mins, 'minute')
+    : rtf.format(-Math.round(mins / 60), 'hour');
+});

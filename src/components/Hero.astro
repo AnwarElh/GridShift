@@ -1,64 +1,77 @@
 ---
 import Fig from './Fig.astro';
-import Chips from './Chips.astro';
-import PostMeta from './PostMeta.astro';
 import type { Post } from '../lib/content';
 import { langFromPath } from '../i18n/config';
 import { useT } from '../i18n/ui';
+import { ago, iso } from '../lib/format';
 
-/* La Une : six sujets, six vignettes, aucun texte hors image.
+/* LE JEU DE CARTES — la Une du portail.
 
-   Au curseur, une mosaïque — un pavé maître, deux sujets à sa droite,
-   trois en bande dessous.
+   Six sujets posés comme une main de cartes sur une bande de couleur pleine :
+   cinq jaquettes en éventail, inclinées, et le sujet du jour à plat par-dessus.
+   Une mosaïque range les sujets ; un éventail les DONNE. La différence tient
+   à ce qu'un portail vend d'abord : pas un sommaire, une arrivée de nouvelles.
 
-   Au pouce, la même liste devient un cadre unique qui tourne tout seul :
-   les trois sujets importants passent en carrousel plein écran, les trois
-   autres se rangent dessous en lignes compactes. Un téléphone n'a pas la
-   place d'une mosaïque, et six vignettes empilées se lisent comme un
-   couloir. C'est le motif de Push Square, et c'est le bon.
+   L'heure relative est l'accessoire principal, pas une mention de bas de
+   carte : « il y a 2 heures » posé à côté d'une jaquette dit en trois mots
+   ce qu'une date ne dit pas — que le site a bougé depuis la dernière visite.
 
-   Les deux enveloppes sont en `display:contents` au curseur : la grille
-   voit toujours ses six tuiles, personne ne paie une boîte pour rien. */
+   Au pouce, l'éventail n'a plus de place : le même conteneur redevient un
+   rail qui défile carte par carte. Le script du site le fait tourner tout
+   seul — il ne connaît que `data-slider` et `data-dots`, donc la mécanique
+   du carrousel ne change pas d'une ligne. */
 interface Props { posts: Post[]; }
 const { posts } = Astro.props;
-const t = useT(langFromPath(Astro.url.pathname));
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
 
-const [lead, ...rest] = posts;
-const side = rest.slice(0, 2);
-const strip = rest.slice(2, 5);
-const slides = lead ? [lead, ...side] : side;
+const [lead, ...fan] = posts;
+/* Cinq jaquettes au plus : au-delà, l'éventail se referme sur lui-même et
+   les cartes du fond ne montrent plus qu'une tranche. */
+const cards = fan.slice(0, 5);
 ---
-<section class="hero" aria-label={t('home.headlines')}>
-  <div class="hero-main" data-slider>
+<section class="deck" aria-label={t('home.headlines')}>
+  <div class="deck-stage" data-slider>
     {lead && (
-      <article class="htile htile-lead">
+      <article class="dtile dtile-lead">
+        {/* la carte de tête ne porte pas sa jaquette en fond : elle est à
+            plat, en pleine matière, et c'est ce contraste avec les cinq
+            autres qui la désigne comme le sujet du jour. */}
         <Fig src={lead.data.cover} alt="" ratio="16-9"
-             widths={[720, 1080, 1440]} sizes="(max-width:1024px) 100vw, 830px" priority />
-        <div class="htile-body">
-          <Chips post={lead} max={3} />
+             widths={[560, 840, 1120]} sizes="(max-width:860px) 92vw, 430px" priority />
+        <div class="dtile-body">
+          <time class="dtile-ago" datetime={iso(lead.data.date)}>{ago(lead.data.date, lang)}</time>
           <h2><a href={lead.href}>{lead.data.title}</a></h2>
-          <PostMeta date={lead.data.date} minutes={lead.minutes} />
+          {lead.data.lede && <p>{lead.data.lede}</p>}
         </div>
       </article>
     )}
 
-    {side.map((p) => (
-      <article class="htile htile-side">
-        <Fig src={p.data.cover} alt="" ratio="16-9" widths={[560, 840]} sizes="(max-width:1024px) 100vw, 430px" />
-        <div class="htile-body">
-          <Chips post={p} max={2} />
+    {cards.map((p, i) => (
+      <article class={`dtile dtile-fan f${i + 1}`}>
+        {/* l'heure vit hors du corps : en éventail elle flotte sur la bande
+            à côté de la carte, au pouce elle reprend sa place au-dessus du
+            titre. Un seul élément dans les deux cas — donc une seule chose
+            à relire pour un lecteur d'écran, et une seule à rafraîchir. */}
+        <time class="dtile-ago" datetime={iso(p.data.date)}>{ago(p.data.date, lang)}</time>
+        <Fig src={p.data.cover} alt="" ratio="3-4"
+             widths={[320, 480]} sizes="(max-width:860px) 92vw, 240px" />
+        {/* le titre ne s'affiche qu'au pouce, où la carte devient une vraie
+            diapositive ; en éventail il ne tiendrait pas dans la tranche
+            visible, et une carte muette y est plus honnête qu'un titre coupé. */}
+        <div class="dtile-body">
           <h3><a href={p.href}>{p.data.title}</a></h3>
-          <PostMeta date={p.data.date} minutes={p.minutes} />
         </div>
+        <a class="dtile-hit" href={p.href}><span class="sr">{p.data.title}</span></a>
       </article>
     ))}
   </div>
 
-  {/* Les commandes n'existent qu'au pouce : au curseur les trois sujets
-      sont tous visibles, il n'y a rien à faire défiler ni à mettre en pause. */}
-  {slides.length > 1 && (
+  {/* Les commandes n'existent qu'au pouce : en éventail les six cartes sont
+      posées d'un coup, il n'y a rien à faire défiler ni à mettre en pause. */}
+  {posts.length > 1 && (
     <div class="hero-dots" data-dots hidden>
-      {slides.map((_, i) => (
+      {posts.map((_, i) => (
         <button type="button" data-go={i} aria-label={t('home.goToStory')(i + 1)}
                 aria-current={i === 0 ? 'true' : 'false'}></button>
       ))}
@@ -70,22 +83,9 @@ const slides = lead ? [lead, ...side] : side;
         <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
           <rect class="i-pause" x="4" y="3" width="3" height="10" rx="1"></rect>
           <rect class="i-pause" x="9" y="3" width="3" height="10" rx="1"></rect>
-          <path class="i-play" d="M5 3.5v9l8-4.5z" hidden></path>
+          <path class="i-play" d="M5 3.5v9l8-4.5z"></path>
         </svg>
       </button>
     </div>
   )}
-
-  <div class="hero-rest">
-    {strip.map((p) => (
-      <article class="htile htile-strip">
-        <Fig src={p.data.cover} alt="" ratio="16-9" widths={[480, 720]} sizes="(max-width:1024px) 100vw, 400px" />
-        <div class="htile-body">
-          <Chips post={p} max={2} />
-          <h3><a href={p.href}>{p.data.title}</a></h3>
-          <PostMeta date={p.data.date} minutes={p.minutes} />
-        </div>
-      </article>
-    ))}
-  </div>
 </section>

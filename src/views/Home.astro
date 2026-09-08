@@ -1,14 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
-import Card from '../components/Card.astro';
 import GameCard from '../components/GameCard.astro';
 import Hero from '../components/Hero.astro';
-import CatBar from '../components/CatBar.astro';
 import Deals from '../components/Deals.astro';
 import Ad from '../components/Ad.astro';
 import Fig from '../components/Fig.astro';
 import { getPosts, getGames, byType, byGame, spreadByGame } from '../lib/content';
-import { time } from '../lib/format';
+import { time, ago, iso } from '../lib/format';
 import { site, siteCopy, siteHome } from '../site';
 import {
   langFromPath, homeHref, sectionHref, pageHref,
@@ -42,16 +40,40 @@ const wire = spreadByGame(posts, 5);
    jeux couverts, puis les rubriques — guides d'abord, l'entrée la plus
    cherchée sur un média de jeu en service. Chaque rubrique garde sa maille. */
 const order: SectionKey[] = ['guide', 'news', 'review', 'setup'];
-const perBlock: Record<SectionKey, number> = { guide: 3, news: 4, review: 3, setup: 3 };
 const labels: Record<SectionKey, string> = {
   news: t('nav.news'), review: t('nav.reviews'), guide: t('nav.guides'), setup: t('nav.setup'),
 };
-/* Chaque rubrique passe par le même tour de table : sans lui, « Guides »
-   ouvrait sur deux articles du même jeu à la suite. Une rubrique reste
-   classée par date — le tour de table ne décide que des ex æquo. */
-const blocks = order
-  .map((key) => ({ key, label: labels[key], items: spreadByGame(byType(posts, key), perBlock[key]) }))
-  .filter((b) => b.items.length > 0);
+/* LE FIL PRINCIPAL — un seul flux, plus quatre blocs identiques.
+
+   La page répétait six fois le même motif : un en-tête de rubrique, une
+   grille de vignettes, un bouton d'archive. Six fois la même forme, c'est
+   une table des matières, pas une page d'accueil : rien n'y désigne quoi
+   que ce soit, puisque tout a le même poids.
+
+   À la place, un fil unique, trié par date, où la rubrique est une étiquette
+   sur la carte et non un titre au-dessus d'un rayon. Le tri par rubrique
+   n'est pas perdu — il passe dans la rangée de jetons, qui filtre ce fil.
+
+   Le vivier est constitué rubrique par rubrique avant d'être refondu par
+   date : sans ça, une semaine chargée en actus remplissait le fil d'actus
+   et le filtre « Configs » n'avait plus rien à montrer. */
+const inHero = new Set(hero.map((p) => p.href));
+/* Le vivier prend plus large que ce que la colonne affiche : le rail est
+   servi par le reste. Calé sur `perBlock`, il tombait à dix articles pile —
+   la colonne les prenait tous et « À lire aussi » ne s'affichait jamais. */
+const PER_SECTION = 6;
+const pool = order.flatMap((k) =>
+  spreadByGame(byType(posts, k).filter((p) => !inHero.has(p.href)), PER_SECTION));
+const feed = [...pool].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+/* La colonne porte les vignettes larges, le rail les brèves. La coupure se
+   fait sur le rang, pas sur la rubrique : le rail est la suite du fil, pas
+   une catégorie de seconde zone.
+
+   Onze, pas dix : la réclame occupe une case de la grille, donc onze cartes
+   font douze cases et six rangées pleines. À dix, la dernière rangée restait
+   à moitié vide. */
+const feedMain = feed.slice(0, 11);
+const feedRail = feed.slice(11, 17);
 
 const counts: Record<string, number> = {
   ...Object.fromEntries(sectionKeys.map((k) => [k, byType(posts, k).length])),
@@ -136,76 +158,70 @@ const jsonLd = {
          « Configs » ne serait plus atteignable depuis le haut de l'accueil. -->
     <h1 class="home-h1">{t('home.h1')}</h1>
 
-    <div class="catbar-m"><CatBar counts={counts} /></div>
-
-    <!-- 1. À la une -->
+    <!-- 1. La Une : le jeu de cartes -->
     <Hero posts={hero} />
 
-    <!-- 2. Les jeux couverts -->
-    <section class="cat-sec" id="games">
-      <div class="cat-head">
-        <h2 class="d3">{t('home.gamesCovered')}</h2>
-        <a class="more" href={pageHref(lang, 'games')}>{t('home.allGames')}</a>
-      </div>
-      <div class="ggrid">
-        {covered.map((g) => <GameCard game={g} meta={false} />)}
-      </div>
+    <!-- 2. « Choisis ton contenu » : la rangée de jetons.
+         Ce sont de vrais liens vers les pages de rubrique — donc indexables,
+         et fonctionnels sans script. Le script ne fait que les détourner
+         pour filtrer le fil sur place, ce qui évite un aller-retour serveur
+         quand on veut seulement voir les guides. -->
+    <section class="pick" aria-labelledby="pick-h">
+      <h2 class="pick-h" id="pick-h">{t('home.pick')}</h2>
+      <nav class="pills" data-filter aria-label={t('nav.sections')}>
+        <a class="pill" href="#feed" data-t="all" aria-current="true">{t('home.allStories')}</a>
+        {order.map((k) => (
+          <a class="pill" href={sectionHref(lang, k)} data-t={k}>
+            {labels[k]}<span class="n">{counts[k]}</span>
+          </a>
+        ))}
+      </nav>
     </section>
 
-    <!-- 3. Les offres : le moteur économique, en pleine largeur -->
-    {hasDeals && (
-      <section class="cat-sec" id="offers">
-        <div class="cat-head">
-          <h2 class="d3">{t('home.deals')}</h2>
-          <a class="more" href={pageHref(lang, 'games')}>{t('home.allTrackedGames')}</a>
-        </div>
-        <Deals games={games} />
-        <p class="aff-note" style="text-align:center">{t('aff.note')}</p>
-      </section>
-    )}
-
-    <!-- 4. Le corps du kiosque : les rubriques à gauche, la colonne de
-         service à droite (pavé publicitaire + palmarès), collante tant
-         qu'elle tient dans la fenêtre. C'est la charpente de la référence. -->
-    <div class="split">
-      <div>
-        {blocks.map((b, i) => (
+    <!-- 3. Le fil : la colonne large et son rail. -->
+    <div class="feed" id="feed">
+      <div class="feed-main">
+        {feedMain.map((p, n) => (
           <Fragment>
-            <section class="cat-sec" id={b.key}>
-              <div class="cat-head">
-                <h2 class="d3">{b.label}</h2>
-                <a class="more" href={sectionHref(lang, b.key)}>{t('home.seeAll')}</a>
-              </div>
-              {b.key === 'news' ? (
-                <div class="pgrid pgrid-lead">
-                  {b.items.slice(0, 1).map((p) => <Card post={p} variant="wide" level={3} showLede />)}
-                  {b.items.slice(1).map((p) => <Card post={p} variant="sm" level={3} />)}
-                </div>
-              ) : b.key === 'review' ? (
-                <div class="pgrid">
-                  {b.items.map((p) => <Card post={p} variant="verdict" level={3} />)}
-                </div>
-              ) : (
-                <div class="pgrid">
-                  {b.items.map((p) => <Card post={p} variant="sm" level={3} showLevel showVersion />)}
-                </div>
-              )}
-              <div class="cat-foot">
-                <a class="btn btn-quiet" href={sectionHref(lang, b.key)}>{t('home.seeAllOf')(b.label)}</a>
-              </div>
-            </section>
-
-            {i === 0 && (
-              <div style="margin-block:var(--s-6)">
-                <Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} />
-              </div>
+            <article class="fcard" data-t={p.section}>
+              <a class="fcard-fig" href={p.href} tabindex="-1" aria-hidden="true">
+                <Fig src={p.data.cover} alt="" ratio="16-9" widths={[480, 720]} sizes="(max-width:860px) 92vw, 400px" />
+              </a>
+              <time class="fcard-ago" datetime={iso(p.data.date)}>{ago(p.data.date, lang)}</time>
+              <h3><a href={p.href}>{p.data.title}</a></h3>
+              <p class="fcard-sec">{labels[p.section]}</p>
+            </article>
+            {/* la réclame vit DANS le fil, à hauteur de carte : posée entre
+                deux blocs, elle coupait la page en deux au lieu de s'y ranger */}
+            {n === 3 && (
+              <div class="fcard fcard-ad"><Ad h="250" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} /></div>
             )}
           </Fragment>
         ))}
       </div>
 
-      <aside class="sticky">
+      <aside class="feed-rail sticky">
         <Ad h="250" unit={import.meta.env.PUBLIC_AD_SIDEBAR} />
+
+        {feedRail.length > 0 && (
+          <div>
+            <div class="cat-head">
+              <h2 class="d4">{t('home.moreStories')}</h2>
+            </div>
+            <div class="rail-list">
+              {feedRail.map((p) => (
+                <article class="card card-sm card-xs" data-t={p.section}>
+                  <Fig src={p.data.cover} alt="" ratio="1-1" widths={[164]} sizes="82px" />
+                  <div class="card-body">
+                    <time class="fcard-ago" datetime={iso(p.data.date)}>{ago(p.data.date, lang)}</time>
+                    <h3><a href={p.href}>{p.data.title}</a></h3>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div>
           <div class="cat-head">
             <h2 class="d4">{t('home.trending')}</h2>
@@ -229,7 +245,31 @@ const jsonLd = {
       </aside>
     </div>
 
-    <!-- 5. L'appel : le panneau et le formulaire ne font plus qu'un.
+    <!-- 4. Les jeux couverts : la grille d'affiches. C'est la seule maille
+         verticale de la page, et c'est ce qui la fait respirer après le fil. -->
+    <section class="cat-sec" id="games">
+      <div class="cat-head">
+        <h2 class="d3">{t('home.gamesCovered')}</h2>
+        <a class="more" href={pageHref(lang, 'games')}>{t('home.allGames')}</a>
+      </div>
+      <div class="ggrid">
+        {covered.map((g) => <GameCard game={g} meta={false} />)}
+      </div>
+    </section>
+
+    <!-- 5. Les offres : le moteur économique, en pleine largeur -->
+    {hasDeals && (
+      <section class="cat-sec" id="offers">
+        <div class="cat-head">
+          <h2 class="d3">{t('home.deals')}</h2>
+          <a class="more" href={pageHref(lang, 'games')}>{t('home.allTrackedGames')}</a>
+        </div>
+        <Deals games={games} />
+        <p class="aff-note" style="text-align:center">{t('aff.note')}</p>
+      </section>
+    )}
+
+    <!-- 6. L'appel : le panneau et le formulaire ne font plus qu'un.
          Il y avait deux appels à la lettre à quatre cents pixels d'écart : le
          premier ne savait que renvoyer au second. Un lecteur convaincu par le
          premier devait donc scroller pour faire ce qu'il venait de décider.

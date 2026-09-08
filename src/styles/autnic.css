@@ -72,8 +72,6 @@
   --tx:#F3F5F9; --tx-2:#A8B2C2; --tx-3:#8F97A5;
   --brass:#FFC635; --brass-2:#FFDA75; --brass-dim:#8B6A1E; --on-brass:#141118;
   --live:#FF5252; --live-dim:#8A2020; --live-fill:#C42B2B; --on-live:#FFFFFF;
-  /* le dégradé signature du portail : or → rouge, jamais sur du texte long */
-  --grad:linear-gradient(118deg,#FFC635 0%,#FF5252 100%);
   --ok:#3E9E74; --warn:#C79A2E; --err:#D9645C;
   --sc-90:#4FAE83; --sc-80:#8CAE48; --sc-70:#C79A2E; --sc-50:#C4702E; --sc-00:#BA463D;
   --scrim:rgba(10,9,12,.72);
@@ -137,7 +135,6 @@
   --tx:#12151C; --tx-2:#4B5361; --tx-3:#666D7B;
   --brass:#7A5300; --brass-2:#674600; --brass-dim:#AE8B32; --on-brass:#FFFFFF;
   --live:#C0271F; --live-dim:#F0C4C1; --live-fill:#C0271F; --on-live:#FFFFFF;
-  --grad:linear-gradient(118deg,#B07D00 0%,#C0271F 100%);
   --ok:#20714C; --warn:#846009; --err:#A5352D;
   --sc-90:#20714C; --sc-80:#526D19; --sc-70:#846009; --sc-50:#95521F; --sc-00:#8C332B;
   --scrim:rgba(40,36,32,.5);
@@ -226,7 +223,7 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 /* la plaque est toujours un conteneur : sans ça, un <span class="plate"> laisse
    ses enfants de type bloc s'échapper de la boîte en ligne et le fond reste vide */
 .plate,.plate-in{display:block}
-.plate.p-brass{background:var(--grad)}
+.plate.p-brass{background:var(--brass)}
 .plate.p-lg{--pl-r:var(--r-card)}
 
 .score{display:flex;align-items:baseline;gap:var(--s-2);line-height:.82}
@@ -314,7 +311,7 @@ hr{border:0;border-top:1px solid var(--line);margin:0}
 .btn:hover{--bg-b:var(--s3);--bd-b:var(--tx-3)}
 .btn:active{transform:translateY(1px)}
 .btn[disabled],.btn[aria-disabled="true"]{opacity:.4;pointer-events:none}
-.btn-primary{--bg-b:var(--brass);--bd-b:var(--brass);--fg-b:var(--on-brass);background:var(--grad)}
+.btn-primary{--bg-b:var(--brass);--bd-b:var(--brass);--fg-b:var(--on-brass)}
 .btn-primary:hover{--bg-b:var(--brass-2);--bd-b:var(--brass-2);box-shadow:var(--glow)}
 .btn-live{--bg-b:var(--live-fill);--bd-b:var(--live);--fg-b:var(--on-live)}
 /* le fantôme ne porte pas d'encoche : sans fond, la coupe n'aurait rien
@@ -366,7 +363,7 @@ a.tag:hover{border-color:var(--brass);color:var(--brass)}
   height:var(--nav-h);display:flex;align-items:center;gap:var(--s-6)}
 .mark{display:flex;align-items:center;gap:2px;font:800 1.375rem/1 var(--f-ui);
   font-stretch:88%;letter-spacing:-.045em;text-transform:uppercase}
-.mark i{width:20px;height:20px;background:var(--grad);font-style:normal;
+.mark i{width:20px;height:20px;background:var(--brass);font-style:normal;
   border-radius:6px;align-self:center;margin-right:9px;
   clip-path:polygon(0 0,100% 0,100% 62%,62% 100%,0 100%)}
 .mark span{color:var(--tx-3);font-weight:400}
@@ -698,8 +695,7 @@ a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-
   clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
     calc(100% - var(--n)) 100%,0 100%,0 var(--n));
   border:1px solid var(--brass-dim);border-radius:var(--r-1);
-  background:linear-gradient(135deg,
-    color-mix(in srgb,var(--brass) 13%,var(--s1)),var(--s1) 58%)}
+  background:color-mix(in srgb,var(--brass) 8%,var(--s1))}
 .news-form{display:flex;gap:var(--s-2);flex-wrap:wrap}
 .news-form .input{flex:1;min-width:210px}
 /* le message d'erreur vit sous le champ, dans le flux : une bulle native
@@ -995,73 +991,168 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
      ligne respirer et `balance` répartit les deux lignes à parts égales. */
   max-width:52ch;text-wrap:balance;margin:0 0 var(--s-5)}
 
-/* La barre de rubriques ne sert plus que là où le bandeau cache ses liens. */
-.catbar-m{display:none}
-@media(max-width:860px){.catbar-m{display:block}}
 
-.catbar{display:flex;gap:var(--s-2);overflow-x:auto;scrollbar-width:none;
-  padding-bottom:var(--s-2);margin-bottom:var(--s-5)}
-.catbar::-webkit-scrollbar{display:none}
-.catbar a{flex:none;display:inline-flex;align-items:center;gap:7px;
-  min-height:38px;padding:0 var(--s-4);
-  --n:6px;
-  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
-    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
-  background:var(--s1);border:1px solid var(--line);
-  font:600 var(--ui-sm)/1 var(--f-display);letter-spacing:.04em;text-transform:uppercase;
-  color:var(--tx-2);white-space:nowrap;
-  transition:background var(--t-1),border-color var(--t-1),color var(--t-1)}
-.catbar a:hover{border-color:var(--line-2);color:var(--tx)}
-.catbar a[aria-current]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
-.catbar a .n{font-size:var(--ui-xs);opacity:.65;font-weight:600}
+/* ── LE JEU DE CARTES ──────────────────────────────────────
+   La Une n'est pas une grille, c'est une main de cartes : cinq jaquettes en
+   éventail sur une bande de couleur pleine, et le sujet du jour posé à plat
+   par-dessus. Une mosaïque range ; un éventail donne.
 
-/* La mosaïque de tête : six sujets, six vignettes. Un pavé maître sur
-   neuf colonnes, deux sujets empilés sur les six restantes, trois en bande
-   dessous — une grille de quinze colonnes est le plus petit dénominateur
-   qui donne à la fois 60/40 et trois tiers exacts.
-   Rien n'est posé à côté d'une image : le texte est DANS la vignette, sur
-   son voile. C'est ce qui fait qu'une Une se lit d'un coup d'œil. */
-.hero{display:grid;grid-template-columns:repeat(15,minmax(0,1fr));
-  grid-template-rows:1fr 1fr auto;
-  gap:var(--s-4);padding-bottom:var(--s-7)}
-/* les deux enveloppes s'effacent : la grille voit ses six tuiles en direct.
-   Elles ne redeviennent des boîtes qu'au pouce, où l'une devient le
-   carrousel et l'autre la pile de brèves. */
-.hero-main,.hero-rest{display:contents}
-.hero-dots{display:none}
+   L'éventail est purement décoratif dans sa géométrie mais pas dans son
+   contenu : chaque carte est un lien réel vers un article réel, avec son
+   heure. Rien n'y est un habillage vide.
 
-.htile{position:relative;display:block;overflow:hidden;isolation:isolate;
-  border-radius:var(--r-card);
+   La bande porte `--brass` à plat. C'était un dégradé or→rouge ; une seule
+   couleur franche tape plus fort qu'un fondu, et elle suit le thème. */
+.deck{
+  /* pleine largeur : la bande sort de la gouttière de page, sinon elle
+     n'est plus une bande mais un encart. `50%` de la fenêtre, pas du
+     conteneur, et on retranche la moitié du conteneur. */
+  margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%);
+  background:var(--brass);
+  padding-block:var(--s-6);margin-bottom:var(--s-7);
+  /* ce qui dépasse est coupé net par la bande : c'est ce bord franc qui fait
+     lire l'éventail comme posé SUR quelque chose, et pas flottant dans le vide */
+  overflow:hidden}
+.deck-stage{
+  position:relative;max-width:var(--page);margin:0 auto;
+  /* la scène tient sa hauteur toute seule : les cartes en éventail sont
+     détachées du flux, seule la carte de tête la mesure. */
+  min-height:clamp(360px,34vw,470px);
+  display:flex;align-items:center;justify-content:center}
+
+.dtile{position:relative;border-radius:var(--r-card);
   --n:var(--notch);
   clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
     calc(100% - var(--n)) 100%,0 100%,0 var(--n));
-  transition:transform var(--t-2) var(--ease)}
-.htile:hover{transform:translateY(-3px)}
-.htile>.fig{position:absolute;inset:0;border:0;border-radius:0;aspect-ratio:auto}
-.htile>.fig img{width:100%;height:100%;object-fit:cover;transition:transform 900ms var(--ease)}
-.htile:hover>.fig img{transform:scale(1.05)}
-/* le voile : dense sous le titre, transparent au-dessus. Sans lui, un titre
-   blanc sur un ciel clair devient illisible — et nos jaquettes sont claires. */
-.htile>.fig::after{content:"";position:absolute;inset:0;z-index:1;
-  background:linear-gradient(to top,rgba(6,7,10,.94) 6%,rgba(6,7,10,.6) 46%,rgba(6,7,10,.08) 82%)}
-.htile-body{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
-  align-items:flex-start;justify-content:flex-end;gap:var(--s-2);
-  padding:var(--s-5);color:#fff}
-.htile-body h2,.htile-body h3{text-wrap:balance;color:#fff}
-/* le titre couvre la vignette entière : toute la tuile devient la cible */
-.htile-body :is(h2,h3) a::after{content:"";position:absolute;inset:0;z-index:3}
-.htile-body .card-meta{color:rgba(255,255,255,.72)}
-.htile .chips{position:relative;z-index:4;top:auto;left:auto;right:auto;margin-bottom:2px}
+  transition:transform var(--t-3) var(--ease)}
 
-.htile-lead{grid-column:span 9;grid-row:span 2;min-height:clamp(340px,38vw,560px)}
-.htile-lead .htile-body{padding:var(--s-6)}
-.htile-lead h2{font-size:clamp(1.6rem,2.9vw,2.6rem);letter-spacing:-.024em;max-width:22ch}
+/* ── les cinq jaquettes ── */
+/* `left` autant que `top` : sans lui, la carte garde sa position statique en
+   horizontal, et le `translate(-50%)` la décalait d'une demi-carte vers la
+   gauche — tout l'éventail sortait du cadre de ce côté. */
+.dtile-fan{
+  position:absolute;top:50%;left:50%;width:clamp(150px,15vw,225px);
+  box-shadow:0 18px 40px -12px rgba(10,8,4,.5);
+  /* la rotation et le décalage vivent dans deux jetons par carte : la
+     règle de survol n'a plus qu'à ajouter sa translation sans réécrire
+     l'angle, et l'éventail garde sa forme. */
+  transform:translate(-50%,-50%) translateX(var(--x)) translateY(var(--y)) rotate(var(--rot))}
+/* `.fig` est un <span> : il ne tient sa blocité que du conteneur en flex ou
+   en grille où le système le pose d'habitude. Ici la carte est un bloc, donc
+   il reste en ligne — et un élément en ligne ignore `aspect-ratio`, ce qui
+   écrasait la jaquette. Il est donc déclaré ici, pas supposé. */
+.dtile>.fig{display:block;border:0;border-radius:0;margin:0}
+.dtile-fan>.fig img{width:100%;height:100%;object-fit:cover}
+/* le corps ne sert qu'au pouce : en éventail la tranche visible est trop
+   étroite pour un titre, et un titre coupé ment sur ce qu'il annonce. */
+.dtile-fan .dtile-body{display:none}
+.dtile-hit{position:absolute;inset:0;z-index:2}
+.dtile-fan:hover{transform:translate(-50%,-50%) translateX(var(--x))
+  translateY(calc(var(--y) - 10px)) rotate(var(--rot))}
+/* l'heure flotte À CÔTÉ de la carte, sur la bande, pas dessus : c'est ce
+   détachement qui fait lire l'éventail comme des cartes posées. Elle se
+   contre-incline pour rester horizontale — une étiquette penchée se lit
+   comme une faute, pas comme une intention. */
+.dtile-fan>.dtile-ago{position:absolute;z-index:3;
+  top:-24px;left:50%;transform:translateX(-50%) rotate(calc(var(--rot) * -1));
+  margin:0;white-space:nowrap;color:var(--on-brass);opacity:.8;
+  letter-spacing:.05em}
 
-.htile-side{grid-column:span 6;min-height:clamp(170px,18vw,270px)}
-.htile-side h3{font-size:clamp(1.05rem,1.5vw,1.35rem);letter-spacing:-.014em;max-width:26ch}
+/* Éventail asymétrique : deux cartes à gauche, trois à droite. Un éventail
+   symétrique redevient une rangée, et une rangée n'est plus un éventail.
 
-.htile-strip{grid-column:span 5;min-height:clamp(190px,15vw,240px)}
-.htile-strip h3{font-size:clamp(1rem,1.3vw,1.2rem);letter-spacing:-.012em;max-width:26ch}
+   Les hauteurs alternent franchement d'une carte à l'autre. À écarts égaux,
+   trois cartes du même côté se recouvrent en bloc et la carte du milieu
+   disparaît ; c'est le zigzag vertical qui les redonne à lire une par une.
+
+   L'écart est en `min()` : proportionnel tant que la fenêtre est étroite,
+   plafonné ensuite, sinon l'éventail s'étale jusqu'aux bords sur un écran
+   large et cesse d'être une main tenue. */
+.f1{--x:max(-33vw,-470px);--y:-38px;--rot:-12deg;z-index:1}
+.f2{--x:max(-21vw,-300px);--y:40px;--rot:-6deg;z-index:2}
+.f3{--x:min(20vw,290px);--y:44px;--rot:6deg;z-index:3}
+.f4{--x:min(30.5vw,440px);--y:-36px;--rot:10deg;z-index:2}
+.f5{--x:min(40vw,570px);--y:38px;--rot:15deg;z-index:1}
+
+/* ── la carte de tête ── */
+.dtile-lead{position:relative;z-index:5;width:min(430px,84vw);
+  background:var(--s1);border:1px solid var(--line);
+  box-shadow:0 26px 60px -14px rgba(10,8,4,.55)}
+.dtile-lead .dtile-body{padding:var(--s-5)}
+/* l'heure de la carte de tête est la seule note de rouge de la bande :
+   elle désigne le sujet du jour sans qu'aucune étiquette ne le dise. */
+.dtile-ago{display:block;margin-bottom:var(--s-2);color:var(--live);
+  font:700 var(--ui-xs)/1 var(--f-mono);letter-spacing:.07em;text-transform:uppercase}
+.dtile-lead h2{font-size:clamp(1.35rem,2vw,1.75rem);letter-spacing:-.02em;
+  line-height:1.16;text-wrap:balance}
+.dtile-lead h2 a::after{content:"";position:absolute;inset:0;z-index:3}
+.dtile-lead p{margin-top:var(--s-3);color:var(--tx-2);font-size:var(--ui-sm);
+  line-height:1.5;display:-webkit-box;-webkit-box-orient:vertical;
+  -webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+
+/* Sur une bande claire en thème papier, l'ombre portée chaude devient sale :
+   elle se refroidit avec le fond. */
+[data-theme="papier"] .dtile-fan{box-shadow:0 18px 40px -12px rgba(20,16,8,.35)}
+[data-theme="papier"] .dtile-lead{box-shadow:0 26px 60px -14px rgba(20,16,8,.4)}
+
+/* ── « CHOISIS TON CONTENU » ────────────────────────────────
+   La rangée de jetons. Ce n'est pas une barre de navigation de plus : c'est
+   la question posée au lecteur juste après la Une, et la réponse filtre le
+   fil sur place. La demande est centrée et la rangée aussi — c'est le seul
+   moment centré de la page, et c'est ce qui en fait un moment. */
+.pick{padding-block:var(--s-6) var(--s-5);text-align:center}
+.pick-h{font-family:var(--f-display);font-size:var(--d3);font-style:italic;
+  letter-spacing:-.02em;margin-bottom:var(--s-5)}
+.pick-h::after{content:":"}
+.pills{display:flex;flex-wrap:wrap;gap:var(--s-2);justify-content:center}
+.pill{display:inline-flex;align-items:center;gap:7px;min-height:40px;
+  padding:0 var(--s-4);
+  background:var(--s2);border:1px solid var(--line);color:var(--tx-2);
+  --n:var(--notch-sm);
+  clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
+    calc(100% - var(--n)) 100%,0 100%,0 var(--n));
+  font:700 var(--ui-sm)/1 var(--f-display);font-stretch:92%;
+  letter-spacing:.02em;text-transform:uppercase;
+  transition:background var(--t-1),border-color var(--t-1),color var(--t-1)}
+.pill:hover{border-color:var(--line-2);color:var(--tx)}
+.pill .n{font-family:var(--f-mono);font-size:var(--ui-xs);font-weight:600;opacity:.6}
+/* le jeton actif porte la couleur d'action pleine : c'est le même signal que
+   le bouton primaire, donc le lecteur sait déjà ce qu'il veut dire */
+.pill[aria-current]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
+.pill[aria-current] .n{opacity:.7}
+
+/* ── LE FIL ─────────────────────────────────────────────────
+   Une colonne large de vignettes, un rail de brèves. Un seul flux : la
+   rubrique est une étiquette sur la carte, pas un titre de rayon. */
+.feed{display:grid;grid-template-columns:1fr 336px;gap:var(--s-8);
+  align-items:start;padding-block:var(--s-5) var(--s-7)}
+.feed-main{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:var(--s-6) var(--s-5)}
+
+.fcard{position:relative;display:flex;flex-direction:column;min-width:0}
+.fcard-fig{display:block;margin-bottom:var(--s-3)}
+.fcard-fig .fig{display:block;margin:0}
+.fcard-fig img{transition:transform 700ms var(--ease)}
+.fcard:hover .fcard-fig img{transform:scale(1.04)}
+/* l'heure passe AVANT le titre, comme sur la carte de tête : sur un portail,
+   la fraîcheur est un critère de lecture, pas une signature de bas de page. */
+.fcard-ago{display:block;margin-bottom:6px;color:var(--tx-3);
+  font:700 var(--ui-xs)/1 var(--f-mono);letter-spacing:.05em;font-style:italic}
+.fcard h3{font-size:var(--ui-lg);line-height:1.24;letter-spacing:-.015em;
+  text-wrap:balance}
+.fcard h3 a::after{content:"";position:absolute;inset:0;z-index:2}
+.fcard-sec{margin-top:var(--s-2);color:var(--brass);
+  font:600 var(--ui-xs)/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase}
+/* la réclame prend une case du fil, pas une bande entre deux blocs */
+.fcard-ad{justify-content:center}
+
+.feed-rail{display:grid;gap:var(--s-6);align-content:start}
+.rail-list{display:grid;gap:var(--s-4)}
+.rail-list .fcard-ago{margin-bottom:4px;font-style:normal}
+
+/* le fil filtré : la carte écartée sort du flux, elle ne se contente pas de
+   pâlir. `hidden` seul serait battu par le `display:grid` des cartes. */
+.fcard[hidden],.rail-list .card[hidden]{display:none}
 
 /* Le bloc de rubrique : en-tête, grille de vignettes, sortie vers l'archive.
    C'est la répétition de ce bloc qui fait la page d'accueil. */
@@ -1070,7 +1161,7 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   margin-bottom:var(--s-5);padding-bottom:var(--s-3);border-bottom:1px solid var(--line)}
 .cat-head h2{display:flex;align-items:center;gap:var(--s-3);font-size:var(--d3);
   text-transform:uppercase;letter-spacing:-.005em;text-wrap:balance}
-.cat-head h2::before{content:"";width:4px;height:1em;background:var(--grad);
+.cat-head h2::before{content:"";width:4px;height:1em;background:var(--brass);
   box-shadow:0 0 12px color-mix(in srgb,var(--brass) 40%,transparent)}
 .cat-head .more{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
   font:600 var(--ui-xs)/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;
@@ -1124,10 +1215,7 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   --n:var(--notch);
   clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
     calc(100% - var(--n)) 100%,0 100%,0 var(--n));
-  background:
-    radial-gradient(120% 180% at 100% 0%,color-mix(in srgb,var(--live) 22%,transparent),transparent 62%),
-    radial-gradient(90% 160% at 0% 100%,color-mix(in srgb,var(--brass) 20%,transparent),transparent 60%),
-    var(--s1)}
+  background:color-mix(in srgb,var(--brass) 8%,var(--s1))}
 /* 22ch coupait « A price drops, you hear about it » — 32 signes — juste
    avant le dernier mot, et le panneau laissait 400 px de vide à droite.
    La mesure passe à la longueur du titre, et `balance` interdit l'orphelin
@@ -1250,7 +1338,7 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 /* ── 20. AUTEUR · CONFIANCE ───────────────────────────────── */
 .author{display:grid;grid-template-columns:auto 1fr;gap:var(--s-4);align-items:start;
   padding:var(--s-5);background:var(--s1);border:1px solid var(--line);border-radius:var(--r-1)}
-.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(145deg,var(--brass),var(--brass-2));
+.avatar{width:56px;height:56px;border-radius:50%;background:var(--brass);
   display:grid;place-items:center;color:var(--on-brass);font:800 1.125rem/1 var(--f-ui);flex:none}
 .avatar.av-sm{width:34px;height:34px;font-size:.8125rem}
 .author .role{font-size:var(--ui-xs);color:var(--tx-3);margin-bottom:var(--s-2)}
@@ -1268,8 +1356,8 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
    comment le site gagne sa vie. La dernière n'est pas en petits
    caractères — un site d'affiliation qui cache son modèle se grille. */
 .foot{margin-top:var(--s-7);border-top:1px solid var(--line);background:var(--s1)}
-.foot-in{max-width:var(--page);margin:0 auto;padding:var(--s-8) var(--pad) var(--s-6);
-  display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:var(--s-7) var(--s-6)}
+.foot-in{max-width:var(--page);margin:0 auto;padding:var(--s-6) var(--pad) var(--s-5);
+  display:grid;grid-template-columns:1.6fr repeat(2,1fr);gap:var(--s-6)}
 .foot h2{font-family:var(--f-ui);font-size:var(--ui-xs);font-stretch:80%;letter-spacing:.11em;text-transform:uppercase;
   color:var(--tx-3);margin-bottom:var(--s-4)}
 .foot ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
@@ -1277,14 +1365,6 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .foot a:hover{color:var(--brass)}
 .foot-brand p{margin-top:var(--s-4);max-width:38ch;color:var(--tx-2);
   font-size:var(--ui-sm);line-height:1.65}
-
-/* la rangée sociale : des cibles au doigt, pas des icônes décoratives */
-.socials{display:flex;flex-wrap:wrap;gap:var(--s-2);margin-top:var(--s-5)}
-.socials a{display:grid;place-items:center;width:38px;height:38px;border-radius:var(--r-pill);
-  background:var(--s2);border:1px solid var(--line);color:var(--tx-2);
-  transition:background var(--t-1),border-color var(--t-1),color var(--t-1)}
-.socials a:hover{background:var(--s3);border-color:var(--line-2);color:var(--tx)}
-.socials svg{width:17px;height:17px;fill:currentColor}
 
 /* Le sélecteur de langue du pied de page. Il porte les noms entiers — le
    bandeau n'a la place que des codes — et marque la langue courante sans en
@@ -1333,16 +1413,26 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 
 /* ── 23. RESPONSIVE ───────────────────────────────────────── */
 @media(max-width:1180px){
-  /* la mosaïque se replie en six colonnes : le pavé maître prend la
-     largeur, les deux sujets de côté se mettent côte à côte, et la bande
-     du bas passe de trois à deux + un pleine largeur */
-  .hero{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:auto;gap:var(--s-3)}
-  .htile-lead{grid-column:span 6;grid-row:auto;min-height:clamp(300px,42vw,420px)}
-  .htile-side{grid-column:span 3}
-  .htile-strip{grid-column:span 2}
+  /* l'éventail se referme : les écarts sont en vw, donc ils suivent déjà la
+     fenêtre, mais la cinquième carte finissait par sortir du cadre. Elle
+     rentre, et l'éventail passe de cinq cartes à quatre. */
+  /* La carte de tête garde une largeur fixe quand les cartes de l'éventail
+     suivent la fenêtre : au bas de cette plage, elle finissait par recouvrir
+     la moitié de ses voisines. Elle passe donc en proportion, et l'éventail
+     s'écarte — le recouvrement reste celui d'une main tenue, pas d'une pile. */
+  .dtile-lead{width:min(400px,40vw)}
+  .f1{--x:-36vw;--y:-30px;--rot:-9deg}
+  .f2{--x:-24vw;--y:34px;--rot:-5deg}
+  .f3{--x:24vw;--y:36px;--rot:5deg}
+  .f4{--x:36vw;--y:-28px;--rot:9deg}
+  .f5{display:none}
   .deals{grid-template-columns:repeat(2,minmax(0,1fr))}
   .split{grid-template-columns:1fr;gap:var(--s-6)}
   .split>.sticky{position:static;grid-template-columns:repeat(2,1fr);grid-auto-flow:column;align-items:start}
+  /* le rail perd sa colonne : il passe sous le fil, en deux blocs de front */
+  .feed{grid-template-columns:1fr;gap:var(--s-6)}
+  .feed-rail{position:static;grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-auto-flow:column;align-items:start}
   .mega-grid{grid-template-columns:1fr 1fr}
   .mega-col:nth-child(2){border-right:0}
 }
@@ -1390,7 +1480,7 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   /* au doigt, tout ce qui se tape tient la cible de 44px : le jeton, la
      rubrique, la pagination, le réseau social. Au curseur ils restent denses. */
   .tag,.catbar a{min-height:44px}
-  .pager a,.pager span,.socials a{min-width:44px;height:44px}
+  .pager a,.pager span{min-width:44px;height:44px}
   /* « Tout voir » d'un titre de rubrique : 12 px de haut au doigt, c'est
      une cible qu'on rate. Elle passe à 44 sans bouger la ligne. */
   .cat-head .more,.sec-head .more{min-height:44px}
@@ -1409,52 +1499,97 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
      dessous en lignes compactes. Le défilement est natif — accroche CSS,
      pas de dépendance carrousel — et le minuteur ne fait que pousser le
      conteneur d'une vignette. */
-  .hero{display:block}
-  .htile-body{padding:var(--s-4)}
+  /* AU POUCE, L'ÉVENTAIL SE RANGE.
+     Un éventail suppose de la largeur : à 380 px, cinq cartes inclinées se
+     recouvrent jusqu'à ne plus montrer qu'une tranche, et une tranche n'est
+     pas un sujet. Les six cartes reprennent donc leur rang et le plateau
+     redevient le rail que le script sait déjà faire tourner.
+     La bande de couleur reste : c'est elle qui signe la Une, pas l'angle. */
+  /* les jetons deviennent un rail : à cinq entrées, ils passaient sur trois
+     lignes et la rangée n'était plus une rangée. Le débordement dit qu'il y
+     en a d'autres, un retour à la ligne ne dit rien. */
+  .pick{padding-block:var(--s-5) var(--s-4);
+    margin-inline:calc(var(--pad) * -1);padding-inline:0}
+  .pick-h{font-size:var(--d4);margin-bottom:var(--s-4)}
+  .pills{flex-wrap:nowrap;justify-content:flex-start;
+    overflow-x:auto;scrollbar-width:none;
+    padding-inline:var(--pad);scroll-snap-type:x proximity}
+  .pills::-webkit-scrollbar{display:none}
+  .pill{flex:none;scroll-snap-align:start}
 
-  .hero-main{display:grid;grid-auto-flow:column;grid-auto-columns:100%;
-    gap:var(--s-2);overflow-x:auto;scroll-snap-type:x mandatory;
+  /* le fil passe en colonne unique : deux vignettes de front sous 860 px
+     donnent des titres de quatre lignes dans 150 px de large. */
+  .feed{padding-block:var(--s-4) var(--s-6)}
+  .feed-main{grid-template-columns:1fr;gap:var(--s-6)}
+  .feed-rail{grid-template-columns:1fr;grid-auto-flow:row}
+  .fcard h3{font-size:1.1875rem}
+
+  .deck{padding-block:var(--s-5);margin-bottom:var(--s-6);
+    /* le rail sort de la gouttière pour que la carte suivante affleure le
+       bord — c'est ce dépassement qui dit « ça continue à droite ». */
+    padding-inline:0}
+  .deck-stage{min-height:0;display:grid;grid-auto-flow:column;grid-auto-columns:86%;
+    /* `center` vient du plateau en éventail, où les cartes flottent ; dans un
+       rail il désaligne les diapositives de la hauteur qui les sépare. */
+    align-items:stretch;
+    gap:var(--s-3);padding-inline:var(--pad);
+    overflow-x:auto;scroll-snap-type:x mandatory;
     overscroll-behavior-x:contain;scrollbar-width:none}
-  .hero-main::-webkit-scrollbar{display:none}
-  /* les portées de la mosaïque (9 et 6 colonnes sur quinze) n'ont plus de
-     sens ici : dans un rail en `grid-auto-flow:column`, chacune réclamait
-     neuf pistes de 100 %, et le conteneur faisait 4 384 px de large */
-  .hero-main>.htile,.hero-rest>.htile{grid-column:auto;grid-row:auto}
-  .hero-main>.htile{scroll-snap-align:center;min-height:clamp(260px,62vw,320px)}
-  .hero-main>.htile h2,.hero-main>.htile h3{font-size:clamp(1.25rem,5.4vw,1.7rem);
-    letter-spacing:-.02em;max-width:none}
+  .deck-stage::-webkit-scrollbar{display:none}
+
+  /* chaque carte redevient une diapositive : plus de position absolue, plus
+     de rotation, plus de décalage. Les jetons --x/--y/--rot ne sont plus lus. */
+  .dtile{scroll-snap-align:center}
+  /* flux normal : la carte porte trois enfants dans le flux (heure, image,
+     titre) et un quatrième hors flux. Une grille à deux rangées en écrasait
+     donc une, et l'image tombait à zéro. */
+  .dtile-fan{position:static;width:auto;transform:none;
+    background:var(--s1);border:1px solid var(--line)}
+  .dtile-fan:hover{transform:none}
+  .dtile-lead{width:auto}
+  /* la jaquette portrait ne tient pas dans un rail : toutes les diapositives
+     passent au même rapport, sinon le rail monte et descend à chaque cran. */
+  .dtile-fan>.fig{aspect-ratio:16/9}
+  .dtile-fan>.fig img{width:100%;height:100%;object-fit:cover}
+  /* le titre revient : dans un rail, une carte muette n'est plus lisible
+     comme « la suivante », elle est juste vide. */
+  .dtile-fan .dtile-body{display:block;padding:var(--s-4)}
+  .dtile-fan h3{font-size:var(--ui-lg);line-height:1.25;letter-spacing:-.015em;
+    display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;
+    -webkit-box-orient:vertical;overflow:hidden}
+  /* l'heure reprend sa place au-dessus du titre, à l'endroit, dans le flux */
+  .dtile-fan>.dtile-ago{position:static;transform:none;margin:0 0 var(--s-2);
+    padding:var(--s-4) var(--s-4) 0;color:var(--live);opacity:1;
+    letter-spacing:.07em}
+  /* le titre est visible et cliquable : la nappe de clic ferait doublon et
+     volerait le lien au clavier */
+  .dtile-hit{display:none}
+  .dtile-fan h3 a::after{content:"";position:absolute;inset:0;z-index:3}
+  .dtile-lead .dtile-body{padding:var(--s-4)}
+  .dtile-lead h2{font-size:clamp(1.25rem,5vw,1.6rem)}
 
   /* la réglette : les points disent où l'on est, le bouton arrête le
      mouvement — sans lui, rien ne permet de stopper ce qui bouge seul */
   .hero-dots{display:flex;align-items:center;justify-content:center;gap:var(--s-2);
-    padding-top:var(--s-3)}
+    padding-top:var(--s-4)}
   .hero-dots button{width:34px;height:34px;display:grid;place-items:center;
     color:var(--tx-3)}
+  /* les points vivent SUR la bande : ils se peignent donc en encre de bande,
+     pas en jeton de surface. Sur du laiton plein, --line-2 disparaît. */
+  .hero-dots{color:var(--on-brass)}
   .hero-dots [data-go]::before{content:"";width:8px;height:8px;border-radius:50%;
-    background:var(--line-2);transition:background var(--t-1),transform var(--t-1)}
-  .hero-dots [data-go][aria-current="true"]::before{background:var(--brass);transform:scale(1.35)}
+    background:color-mix(in srgb,var(--on-brass) 38%,transparent);
+    transition:background var(--t-1),transform var(--t-1)}
+  .hero-dots [data-go][aria-current="true"]::before{
+    background:var(--on-brass);transform:scale(1.35)}
+  /* `.hero-dots button` est plus spécifique que `.hero-pause` : sans le
+     parent dans le sélecteur, l'icône restait en encre de surface sur la
+     bande de couleur. */
+  .hero-dots .hero-pause{color:color-mix(in srgb,var(--on-brass) 62%,transparent)}
+  .hero-dots .hero-pause:hover{color:var(--on-brass)}
   .hero-pause svg{width:15px;height:15px}
   .hero-pause:hover{color:var(--tx)}
 
-  /* les brèves : vignette à gauche, titre à droite. L'image reste — une
-     liste sans image, sur ce site, n'est pas une liste. */
-  .hero-rest{display:grid;gap:var(--s-2);padding-top:var(--s-4)}
-  .hero-rest>.htile{display:grid;grid-template-columns:112px 1fr;gap:var(--s-3);
-    align-items:center;min-height:0;padding:var(--s-2);
-    background:var(--s1);border:1px solid var(--line);transform:none}
-  .hero-rest>.htile>.fig{position:static;height:74px;border-radius:var(--r-1);
-    --n:var(--notch-sm);
-    clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),
-      calc(100% - var(--n)) 100%,0 100%,0 var(--n))}
-  .hero-rest>.htile>.fig::after{display:none}
-  .hero-rest>.htile .htile-body{position:static;padding:0;color:var(--tx);
-    justify-content:center;gap:5px}
-  .hero-rest>.htile h3{font-size:var(--ui-md);line-height:1.3;color:var(--tx);
-    letter-spacing:-.01em;
-    display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .hero-rest>.htile .card-meta{color:var(--tx-3)}
-  /* les étiquettes reviennent dans le flux : plus d'image à surplomber */
-  .hero-rest>.htile .chips{display:none}
   .card-lead h3{font-size:clamp(1.7rem,6.5vw,2.4rem)}
   /* la carte couchée se relève : au pouce, l'image passe au-dessus du titre */
   .card-wide{grid-template-columns:1fr}
@@ -1524,9 +1659,9 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   .mark{font-size:1.125rem}
   .mark i{width:17px;height:17px}
 
-  /* la mosaïque empilée coûtait 1 540 px avant la première rubrique :
-     les cinq tuiles secondaires se resserrent, la maîtresse garde sa taille */
-  .htile-side,.htile-strip{min-height:186px}
+  /* le rail montre un peu plus de la carte suivante : sur un écran étroit,
+     c'est l'affleurement qui dit qu'on peut pousser, pas les points. */
+  .deck-stage{grid-auto-columns:88%}
   .card-xs>.fig{width:82px}
   .hub-in{grid-template-columns:96px 1fr;padding-block:var(--s-5) var(--s-4)}
   /* la rangée d'actions repasse en colonne : plaque + bouton + mention

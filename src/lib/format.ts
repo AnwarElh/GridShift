@@ -55,3 +55,20 @@ export const feedStamp = (d: Date, lang: Locale, now = new Date()) =>
 const WPM: Record<Locale, number> = { en: 250, fr: 230, de: 220 };
 export const readingTime = (body = '', lang: Locale = 'en') =>
   Math.max(1, Math.round(body.trim().split(/\s+/).length / WPM[lang]));
+
+/* « il y a 2 heures » : la fraîcheur est ce qu'un portail vend en premier.
+   Au-delà de 24 h on repasse à la date — une page peut être servie depuis le
+   cache, et « il y a 5 heures » y vieillit mal quand « 12 SEPT. » reste vrai.
+   Le script du site corrige la valeur au chargement à partir de `datetime`. */
+const REL: Record<Locale, Intl.RelativeTimeFormat> = Object.fromEntries(
+  locales.map((l) => [l, new Intl.RelativeTimeFormat(BCP47[l], { numeric: 'always' })]),
+) as Record<Locale, Intl.RelativeTimeFormat>;
+
+export const ago = (d: Date, lang: Locale, now = new Date()) => {
+  const mins = Math.round((now.getTime() - d.getTime()) / 60000);
+  if (mins < 1) return REL[lang].format(0, 'minute');
+  if (mins < 60) return REL[lang].format(-mins, 'minute');
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return REL[lang].format(-hours, 'hour');
+  return shortDate(d, lang);
+};
