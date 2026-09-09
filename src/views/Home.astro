@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import GameCard from '../components/GameCard.astro';
 import Hero from '../components/Hero.astro';
 import Deals from '../components/Deals.astro';
-import Ad from '../components/Ad.astro';
 import Fig from '../components/Fig.astro';
 import { getPosts, getGames, byType, byGame, spreadByGame } from '../lib/content';
 import { time, ago, iso } from '../lib/format';
@@ -144,12 +143,11 @@ const jsonLd = {
   </div>
 
   <div class="page">
-    <!-- Le bandeau de tête est vendu : plus de titre de maison, la place
-         entière passe à la réclame. -->
-    <div class="masthead">
-      <Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} />
-      {hasDeals && <a class="btn btn-quiet" href="#offers">{t('home.seeDeals')}</a>}
-    </div>
+    {hasDeals && (
+      <div class="masthead">
+        <a class="btn btn-quiet" href="#offers">{t('home.seeDeals')}</a>
+      </div>
+    )}
 
     <!-- Le titre de la page prend la place qu'occupait la barre de rubriques :
          celles-ci vivent maintenant dans le bandeau, en boutons. L'accueil
@@ -181,28 +179,19 @@ const jsonLd = {
     <!-- 3. Le fil : la colonne large et son rail. -->
     <div class="feed" id="feed">
       <div class="feed-main">
-        {feedMain.map((p, n) => (
-          <Fragment>
-            <article class="fcard" data-t={p.section}>
-              <a class="fcard-fig" href={p.href} tabindex="-1" aria-hidden="true">
-                <Fig src={p.data.cover} alt="" ratio="16-9" widths={[480, 720]} sizes="(max-width:860px) 92vw, 400px" />
-              </a>
-              <time class="fcard-ago" datetime={iso(p.data.date)}>{ago(p.data.date, lang)}</time>
-              <h3><a href={p.href}>{p.data.title}</a></h3>
-              <p class="fcard-sec">{labels[p.section]}</p>
-            </article>
-            {/* la réclame vit DANS le fil, à hauteur de carte : posée entre
-                deux blocs, elle coupait la page en deux au lieu de s'y ranger */}
-            {n === 3 && (
-              <div class="fcard fcard-ad"><Ad h="250" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} /></div>
-            )}
-          </Fragment>
+        {feedMain.map((p) => (
+          <article class="fcard" data-t={p.section}>
+            <a class="fcard-fig" href={p.href} tabindex="-1" aria-hidden="true">
+              <Fig src={p.data.cover} alt="" ratio="16-9" widths={[480, 720]} sizes="(max-width:860px) 92vw, 400px" />
+            </a>
+            <time class="fcard-ago" datetime={iso(p.data.date)}>{ago(p.data.date, lang)}</time>
+            <h3><a href={p.href}>{p.data.title}</a></h3>
+            <p class="fcard-sec">{labels[p.section]}</p>
+          </article>
         ))}
       </div>
 
       <aside class="feed-rail sticky">
-        <Ad h="250" unit={import.meta.env.PUBLIC_AD_SIDEBAR} />
-
         {feedRail.length > 0 && (
           <div>
             <div class="cat-head">

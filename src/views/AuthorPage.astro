@@ -4,7 +4,6 @@ import Crumbs from '../components/Crumbs.astro';
 import AuthorBox from '../components/AuthorBox.astro';
 import Card from '../components/Card.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Ad from '../components/Ad.astro';
 import { getPosts, type Author } from '../lib/content';
 import { site, publisher } from '../site';
 import { langFromPath, authorHref, pageHref } from '../i18n/config';
@@ -51,7 +50,5 @@ const jsonLd = {
         {posts.map((p) => <Card post={p} variant="sm" />)}
       </div>
     </section>
-
-    <div style="margin-block:var(--s-7)"><Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} /></div>
   </div>
 </Base>

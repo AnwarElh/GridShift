@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
 import GameCard from '../components/GameCard.astro';
-import Ad from '../components/Ad.astro';
 import Newsletter from '../components/Newsletter.astro';
 import SectionHead from '../components/SectionHead.astro';
 import { getPosts, getGames, byGame } from '../lib/content';
@@ -51,7 +50,6 @@ const soon = games.filter((g) => g.data.releaseDate && g.data.releaseDate > new 
       </div>
     </section>
 
-    <div style="margin-block:var(--s-7)"><Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} /></div>
     <Newsletter />
   </div>
 </Base>

@@ -10,7 +10,6 @@ import AuthorBox from '../components/AuthorBox.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Card from '../components/Card.astro';
 import Fig from '../components/Fig.astro';
-import Ad from '../components/Ad.astro';
 import Score from '../components/Score.astro';
 import Consensus from '../components/Consensus.astro';
 import Platforms from '../components/Platforms.astro';
@@ -269,8 +268,6 @@ const jsonLd: Record<string, unknown> = {
         )}
 
         {game && <Offers game={game} title={`Acheter ${game.data.title}`} />}
-
-        <Ad h="600" unit={import.meta.env.PUBLIC_AD_SIDEBAR} />
       </aside>
     </div>
   </div>

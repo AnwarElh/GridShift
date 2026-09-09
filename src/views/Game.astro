@@ -9,7 +9,6 @@ import Consensus from '../components/Consensus.astro';
 import Feed from '../components/Feed.astro';
 import Card from '../components/Card.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Ad from '../components/Ad.astro';
 import Offers from '../components/Offers.astro';
 import GameCard from '../components/GameCard.astro';
 import { getPosts, getGames, byGame, type Game } from '../lib/content';
@@ -173,8 +172,6 @@ const jsonLd = {
           )}
         </div>
       )}
-
-      <Ad h={posts.length > 2 ? '600' : '250'} unit={import.meta.env.PUBLIC_AD_SIDEBAR} />
     </aside>
   </div>
 </Base>

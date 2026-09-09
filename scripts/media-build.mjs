@@ -30,6 +30,11 @@ const OUT = path.join(ROOT, 'build/media');
 const BUCKET = 'autnic-media';
 const DB = 'autnic-content';
 
+/* Une chaîne pour SQLite : quotes doublées, jamais concaténée telle quelle.
+   Le JSON des variantes n'en contient pas aujourd'hui, mais une légende ou un
+   nom de fichier apostrophé casserait le fichier sans cela. */
+const q = (v) => `'${String(v).replace(/'/g, "''")}'`;
+
 const push = process.argv.includes('--push');
 const remote = process.argv.includes('--remote');
 const scope = remote ? '--remote' : '--local';
@@ -95,12 +100,21 @@ async function main() {
   await writeFile(path.join(ROOT, 'build/media-manifest.json'),
     JSON.stringify(manifest, null, 2) + '\n', 'utf8');
 
-  /* Les lignes de variantes, rejouables : on remplace l'échelle en entier
-     plutôt que d'essayer de la réconcilier ligne à ligne. */
+  /* L'échelle rejoint la ligne de son média, en JSON (db/migrations/0004) :
+     le rendu lit `media` et rien d'autre. Rejouable — on remet toutes les
+     échelles à vide avant de les réécrire, sinon un média qui perd ses
+     variantes garderait les anciennes. */
+  const byMedia = new Map();
+  for (const m of manifest) {
+    if (m.original) continue;
+    const list = byMedia.get(m.mediaKey) ?? [];
+    list.push({ width: m.width, height: m.height, format: m.format, key: m.objectKey });
+    byMedia.set(m.mediaKey, list);
+  }
   const sql = [
-    'DELETE FROM media_variants;',
-    ...manifest.filter((m) => !m.original).map((m) =>
-      `INSERT INTO media_variants (media_key,width,height,format,bytes,object_key) VALUES ('${m.mediaKey}',${m.width},${m.height},'${m.format}',${m.bytes},'${m.objectKey}');`),
+    "UPDATE media SET variants = '[]';",
+    ...[...byMedia].map(([key, list]) =>
+      `UPDATE media SET variants = ${q(JSON.stringify(list))} WHERE key = ${q(key)};`),
   ].join('\n');
   await writeFile(path.join(ROOT, 'db/variants.sql'), sql + '\n', 'utf8');
 

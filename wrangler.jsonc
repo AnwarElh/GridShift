@@ -77,16 +77,25 @@
   "vars": {
     /* Le préfixe public des médias R2. Le worker les sert lui-même, par
        src/pages/media/[...key].ts : ça marche partout, y compris hors zone
-       Cloudflare, au prix d'un réveil du worker par image.
+       Cloudflare, au prix d'un réveil du worker par image — et c'est ce prix
+       qui a fini par décider : une page d'accueil référence 34 images, donc
+       35 requêtes worker au lieu d'une, soit ~92 % du budget du plan gratuit
+       dépensé à recopier des octets de R2 vers le lecteur.
 
-       La cible reste un domaine relié au bucket — le fichier part alors de R2
-       sans réveiller personne et sans frais d'egress. Elle demande la zone
-       autnic.com sur le compte (voir `routes` plus haut) ; le jour venu,
-       brancher R2 → autnic-media → Custom Domains sur media.autnic.com, puis
-       remettre ici "https://media.autnic.com". */
-    "MEDIA_BASE_URL": "/media",
-    /* Durée de vie d'une page en cache, en secondes. Le contenu d'un média de
-       jeu se périme vite : une heure au bord, revalidation en arrière-plan. */
-    "CACHE_TTL": "3600"
+       Le bucket porte maintenant son propre domaine (R2 → autnic-media →
+       Custom Domains). Le fichier part de R2 sans réveiller personne et sans
+       frais d'egress ; src/pages/media/[...key].ts a été supprimé avec le
+       dernier lecteur de /media/. */
+    "MEDIA_BASE_URL": "https://media.autnic.com",
+    /* Durée de vie d'une page en cache, en secondes.
+       Une heure paraissait juste pour un média de jeu, mais c'est le plan
+       gratuit qui décide : chaque expiration coûte une écriture KV, et
+       126 pages qui expirent toutes les heures font 3 024 écritures par jour
+       pour un quota de 1 000. À vingt-quatre heures, le plafond tombe à 126.
+       La fraîcheur ne souffre pas pour autant : BUILD_ID entre dans la clé de
+       cache (src/lib/cache.ts), donc un `wrangler deploy` invalide les deux
+       étages partout dans le monde, tout de suite. C'est publier DANS D1 sans
+       redéployer qui attend — jusqu'à un jour. */
+    "CACHE_TTL": "86400"
   }
 }

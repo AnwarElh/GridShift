@@ -23,7 +23,7 @@ export interface Credit {
 
 /** Un média R2. `width`/`height` sont obligatoires : sans eux la page réserve
  *  mal la place et le contenu saute au chargement. */
-export interface Variant { width: number; height: number; format: string; bytes: number; src: string }
+export interface Variant { width: number; height: number; format: string; src: string }
 
 export interface Media {
   key: string; width: number; height: number; bytes: number;
@@ -98,6 +98,21 @@ const str = (v: unknown): string | undefined =>
 const num = (v: unknown): number | undefined =>
   v === null || v === undefined ? undefined : Number(v);
 
+/* L'échelle responsive d'un média, telle que scripts/media-build.mjs l'a
+   écrite sur sa ligne (db/migrations/0004). Une base migrée dont les médias
+   n'ont pas encore été republiés porte '[]' : on rend une liste vide plutôt
+   que de jeter, et Fig.astro retombe alors sur l'original. */
+const parseVariants = (raw: unknown, base: string): Variant[] => {
+  if (typeof raw !== 'string' || raw === '') return [];
+  let rows: unknown;
+  try { rows = JSON.parse(raw); } catch { return []; }
+  if (!Array.isArray(rows)) return [];
+  return (rows as Record<string, unknown>[]).map((v) => ({
+    width: Number(v.width), height: Number(v.height),
+    format: String(v.format), src: `${base}/${String(v.key)}`,
+  }));
+};
+
 /* ── lecture ────────────────────────────────────────────────────────────── */
 
 export interface Loaded {
@@ -111,7 +126,7 @@ export interface Loaded {
 /** Charge tout le contenu d'une langue en cinq requêtes. Le résultat est
  *  ordonné comme le site l'attend : du plus récent au plus ancien. */
 export async function load(db: D1Like, lang: Locale, mediaBase = '/media'): Promise<Loaded> {
-  const [mediaRows, authorRows, gameRows, articleRows, tagRows, sectionRows, variantRows] =
+  const [mediaRows, authorRows, gameRows, articleRows, tagRows, sectionRows] =
     await Promise.all([
     db.prepare('SELECT * FROM media').all(),
     db.prepare('SELECT * FROM authors').all(),
@@ -121,21 +136,9 @@ export async function load(db: D1Like, lang: Locale, mediaBase = '/media'): Prom
     ).bind(lang).all(),
     db.prepare('SELECT slug, tag FROM article_tags WHERE lang = ?').bind(lang).all(),
     db.prepare('SELECT * FROM sections ORDER BY position').all(),
-    db.prepare('SELECT * FROM media_variants ORDER BY media_key, width').all(),
   ]);
 
   const base = mediaBase.replace(/\/$/, '');
-  const variantsByKey = new Map<string, Variant[]>();
-  for (const r of variantRows.results as Record<string, unknown>[]) {
-    const k = String(r.media_key);
-    const v: Variant = {
-      width: Number(r.width), height: Number(r.height),
-      format: String(r.format), bytes: Number(r.bytes),
-      src: `${base}/${String(r.object_key)}`,
-    };
-    const list = variantsByKey.get(k);
-    if (list) list.push(v); else variantsByKey.set(k, [v]);
-  }
 
   const media = new Map<string, Media>();
   for (const r of mediaRows.results as Record<string, unknown>[]) {
@@ -145,7 +148,7 @@ export async function load(db: D1Like, lang: Locale, mediaBase = '/media'): Prom
       width: Number(r.width), height: Number(r.height), bytes: Number(r.bytes),
       contentType: String(r.content_type),
       src: `${base}/${key}`,
-      variants: variantsByKey.get(key) ?? [],
+      variants: parseVariants(r.variants, base),
       credit: {
         artist: String(r.artist), licence: String(r.licence),
         licenceUrl: String(r.licence_url ?? ''), source: String(r.source),

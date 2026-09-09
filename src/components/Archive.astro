@@ -2,7 +2,6 @@
 import Crumbs from '../components/Crumbs.astro';
 import Card from '../components/Card.astro';
 import Pager from '../components/Pager.astro';
-import Ad from '../components/Ad.astro';
 import Newsletter from '../components/Newsletter.astro';
 import { slugifyTag, type Paged, type Post } from '../lib/content';
 import { langFromPath } from '../i18n/config';
@@ -65,6 +64,5 @@ const { title, lede, page, filters = [], trail = [], noun = 'article', showVersi
 
   <Pager page={page} />
 
-  <div style="margin-block:var(--s-8)"><Ad h="90" unit={import.meta.env.PUBLIC_AD_LEADERBOARD} /></div>
   <Newsletter id="newsletter" />
 </div>
