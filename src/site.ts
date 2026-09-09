@@ -21,6 +21,36 @@ export const site = {
    une adresse qui ne sert pas ce site. D'où cette constante, à utiliser partout
    où l'on nomme le site lui-même. */
 export const siteHome = new URL(withBase('/'), site.url).href;
+
+/* L'ÉDITEUR, une fois pour toutes.
+ *
+ * Chaque article déclarait `publisher: { '@type': 'Organization', name }` — un
+ * nom nu, sans adresse ni identifiant. La page « Qui sommes-nous » décrivait de
+ * son côté une Organization complète, avec l'équipe. Rien ne reliait les deux :
+ * un moteur y voyait deux choses sans rapport, et l'entité qui se fait citer
+ * dans une réponse d'IA est justement celle-là.
+ *
+ * `@id` est ce lien. Il est stable, absolu, et le même partout : les nœuds
+ * portant le même `@id` sont UN seul nœud, quelle que soit la page où on les
+ * rencontre. Les articles en portent une version suffisante — nom, adresse,
+ * logo — pour ne pas dépendre d'une autre page ; /à-propos/ en porte la version
+ * complète. Le logo est l'icône carrée : c'est la seule image de marque que le
+ * site possède, et une vraie vaut mieux qu'une propriété absente.
+ */
+export const orgId = `${siteHome}#organization`;
+
+export const publisher = {
+  '@type': 'Organization',
+  '@id': orgId,
+  name: site.name,
+  url: siteHome,
+  logo: {
+    '@type': 'ImageObject',
+    url: new URL(withBase('/apple-touch-icon.png'), site.url).href,
+    width: 180,
+    height: 180,
+  },
+};
 /* Identité légale de l'éditeur. Séparée de `site` : `site.email` est l'adresse
    de la rédaction, celle-ci est la personne physique responsable. Une seule
    source pour l'Impressum, les mentions légales et le responsable de

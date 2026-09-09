@@ -17,7 +17,7 @@ import Platforms from '../components/Platforms.astro';
 import Version from '../components/Version.astro';
 import Credit from '../components/Credit.astro';
 import Offers from '../components/Offers.astro';
-import { site } from '../site';
+import { site, publisher } from '../site';
 import { slugifyTag, type Post } from '../lib/content';
 import { authorHref, articleHref, gameHref, sectionHref, tagHref, htmlLang, type Locale } from '../i18n/config';
 import { useT } from '../i18n/ui';
@@ -51,13 +51,18 @@ const alt = (l: Locale) => articleHref(l, data.type, post.slug);
 const jsonLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
   inLanguage: htmlLang[lang],
-  '@type': isTest ? 'Review' : 'Article',
+  /* `NewsArticle` pour l'actualité, pas `Article`. C'est le type que Google
+     demande pour les surfaces d'actualité — « À la une », Google Actualités —
+     et une actu déclarée `Article` n'y est simplement pas éligible. Les guides
+     et les configs restent des `Article` : ce sont des pages de référence, pas
+     des dépêches, et elles n'ont rien à gagner à se déclarer périssables. */
+  '@type': isTest ? 'Review' : post.section === 'news' ? 'NewsArticle' : 'Article',
   headline: data.title,
   description: data.lede,
   datePublished: data.date.toISOString(),
   dateModified: (data.updated ?? data.date).toISOString(),
   author: { '@type': 'Person', name: post.author.data.name, url: new URL(authorHref(lang, post.author.id), site.url).href },
-  publisher: { '@type': 'Organization', name: site.name },
+  publisher,
   mainEntityOfPage: new URL(post.href, site.url).href,
   ...(cover ? { image: new URL(cover, site.url).href } : {}),
   ...(isTest && data.score !== undefined && game

@@ -168,6 +168,13 @@ const en = {
   'game.desc': (title: string, studio: string) =>
     `${title} by ${studio}: our score, the version we tested it on, where to buy it, and every `
     + 'review, guide and news story we have published about it.',
+  /* Le titre d'une fiche de jeu était le nom du jeu, seul. Sur cette requête
+     le studio, la boutique et la presse installée passent devant, et c'est
+     normal. Les requêtes qu'un média peut gagner sont « <jeu> guides », «
+     <jeu> test », « <jeu> actus » — aucun de ces mots n'était dans le titre.
+     Les noms les plus longs débordent des 60 signes : ce qui est coupé est le
+     suffixe générique, jamais le nom, donc la coupe tombe au bon endroit. */
+  'game.seoSuffixes': [' — guides, review and news', ' — guides and news', ' — guides'],
   'game.follow': 'Follow this game',
   'game.fullPage': 'Full page →',
   'game.seePage': 'View game page',
@@ -278,8 +285,12 @@ const en = {
 
 /* Les valeurs de `en` sont des littéraux (`as const`) : sans élargissement,
    « Accueil » ne serait pas assignable au type de « Home ». On garde la forme
-   — chaîne ou fonction, avec sa signature — et on élargit le contenu. */
-type Widen<T> = T extends (...args: infer A) => infer R ? (...args: A) => R : string;
+   — chaîne, liste ou fonction, avec sa signature — et on élargit le contenu.
+   La liste a sa branche parce que `as const` en fait un tuple figé : sans elle,
+   les suffixes de titre français ne seraient pas du même type que les anglais. */
+type Widen<T> = T extends (...args: infer A) => infer R ? (...args: A) => R
+  : T extends readonly string[] ? readonly string[]
+  : string;
 export type Dict = { [K in keyof typeof en]: Widen<(typeof en)[K]> };
 
 const fr: Dict = {
@@ -422,6 +433,7 @@ const fr: Dict = {
   'game.desc': (title: string, studio: string) =>
     `${title}, de ${studio} : notre note, la version sur laquelle nous l’avons testé, où l’acheter, `
     + 'et chaque test, guide et actu que nous avons publiés dessus.',
+  'game.seoSuffixes': [' — guides, test et actus', ' — guides et actus', ' — guides'],
   'game.follow': 'Suivre ce jeu',
   'game.fullPage': 'Fiche complète →',
   'game.seePage': 'Voir la fiche',
@@ -676,6 +688,7 @@ const de: Dict = {
   'game.desc': (title: string, studio: string) =>
     `${title} von ${studio}: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder `
     + 'Test, Guide und Artikel, den wir dazu veröffentlicht haben.',
+  'game.seoSuffixes': [' — Guides, Test und News', ' — Guides und News', ' — Guides'],
   'game.follow': 'Spiel beobachten',
   'game.fullPage': 'Ganze Seite →',
   'game.seePage': 'Zur Spielseite',

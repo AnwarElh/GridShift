@@ -7,7 +7,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-const { metaDescription } = await import('../src/lib/meta.ts');
+const { metaDescription, titleWithin } = await import('../src/lib/meta.ts');
 
 test('un chapô déjà court passe intact', () => {
   const s = 'Une note, une version testée, un historique de révisions.';
@@ -63,4 +63,20 @@ test('le texte rendu est toujours un début du texte donné', () => {
   const d = metaDescription(s);
   assert.ok(d.length <= 160);
   assert.ok(s.startsWith(d.replace(/…$/, '')));
+});
+
+test('le titre prend le suffixe le plus complet qui rentre', () => {
+  const S = [' — guides, review and news', ' — guides and news', ' — guides'];
+  /* 19 signes : tout rentre */
+  assert.equal(titleWithin('Grand Theft Auto VI', S), 'Grand Theft Auto VI — guides, review and news');
+  /* 37 signes : seul le plus court rentre */
+  assert.equal(titleWithin('The Witcher 3: Wild Hunt – Remastered', S),
+    'The Witcher 3: Wild Hunt – Remastered — guides');
+  /* 47 signes : le nom est déjà le titre */
+  const long = 'Star Wars: Knights of the Old Republic – Remake';
+  assert.equal(titleWithin(long, S), long);
+  /* le budget est tenu dans tous les cas */
+  for (const n of ['Grand Theft Auto VI', 'The Witcher 3: Wild Hunt – Remastered', long, 'X']) {
+    assert.ok(titleWithin(n, S).length <= Math.max(51, n.length), n);
+  }
 });

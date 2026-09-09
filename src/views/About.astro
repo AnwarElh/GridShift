@@ -6,7 +6,7 @@ import AuthorBox from '../components/AuthorBox.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Newsletter from '../components/Newsletter.astro';
 import { getPosts, getAuthors } from '../lib/content';
-import { site, siteCopy, siteHome } from '../site';
+import { site, siteCopy, publisher } from '../site';
 import { langFromPath, pageHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
@@ -123,11 +123,12 @@ const copy = {
   },
 }[lang];
 
+/* Le même `@id` que celui porté par le `publisher` de chaque article : c'est
+   ce qui fait de ces deux déclarations une seule entité, celle-ci en étant la
+   description complète. */
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: site.name,
-  url: siteHome,
+  ...publisher,
   description: siteCopy[lang].description,
   employee: authors.map((a) => ({ '@type': 'Person', name: a.data.name, jobTitle: a.data.role })),
 };

@@ -19,6 +19,7 @@ import {
   langFromPath, pageHref, gameHref, homeHref, type SectionKey,
 } from '../i18n/config';
 import { useT } from '../i18n/ui';
+import { titleWithin } from '../lib/meta';
 
 interface Props { game: Game }
 const { game } = Astro.props;
@@ -70,7 +71,7 @@ const jsonLd = {
     : {}),
 };
 ---
-<Base title={d.title} description={t('game.desc')(d.title, d.studio)} jsonLd={jsonLd}
+<Base title={titleWithin(d.title, t('game.seoSuffixes'))} description={t('game.desc')(d.title, d.studio)} jsonLd={jsonLd}
       alt={(l) => gameHref(l, game.id)}>
   <div class="hub">
     <div class="hub-bg">{d.hero ? <Fig src={d.hero} ratio="21-9" /> : <span class="ph"></span>}</div>

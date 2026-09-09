@@ -44,3 +44,19 @@ export const metaDescription = (text: string, max = 160): string => {
   const cut = s.lastIndexOf(' ', max - 1);
   return `${s.slice(0, cut > 0 ? cut : max - 1).replace(/[\s,;:—–-]+$/, '')}…`;
 };
+
+/* Le titre d'onglet : le nom d'abord, le qualificatif s'il reste la place.
+ *
+ * Une fiche de jeu doit dire « guides », « test », « actus » — ce sont les
+ * requêtes qu'un média peut gagner, là où le nom seul le met derrière le studio
+ * et la boutique. Mais les noms de jeux vont de dix-neuf signes à quarante-sept,
+ * et le même suffixe pour tous ferait déborder les plus longs.
+ *
+ * On prend donc le suffixe le plus complet qui rentre, et aucun quand il ne
+ * reste rien : à quarante-sept signes, le nom EST le titre, et lui coller des
+ * mots que le moteur coupera n'ajoute pas un caractère utile.
+ *
+ * `max` est le budget du titre seul : le gabarit ajoute « — Autnic » derrière,
+ * et c'est l'ensemble qui doit tenir dans les soixante signes d'usage. */
+export const titleWithin = (name: string, suffixes: readonly string[], max = 51): string =>
+  name + (suffixes.find((s) => name.length + s.length <= max) ?? '');

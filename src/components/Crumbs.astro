@@ -1,10 +1,40 @@
 ---
 import { langFromPath, homeHref } from '../i18n/config';
 import { useT } from '../i18n/ui';
+import { site } from '../site';
 interface Props { trail: { label: string; href?: string }[]; style?: string; }
 const { trail, style } = Astro.props;
 const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
+
+/* Le fil d'Ariane existait à l'écran et nulle part ailleurs.
+ *
+ * C'est la ligne grise sous le titre d'un résultat de recherche : « autnic.com
+ * › Tests › Onimusha » au lieu de l'URL brute. Le moteur ne la déduit pas du
+ * `<nav>`, il la lit dans un BreadcrumbList — et la donnée était déjà là,
+ * complète, à un JSON près.
+ *
+ * Le balisage est produit ICI plutôt que dans chaque page : neuf gabarits
+ * posent ce composant, et une déclaration écrite neuf fois est une déclaration
+ * qui divergera de ce qui est affiché. La liste rendue et la liste déclarée
+ * sortent de la même variable, donc elles ne peuvent pas se contredire.
+ *
+ * Le dernier maillon est la page courante : il porte un nom et pas d'adresse,
+ * ce que la spécification prévoit — c'est aussi pourquoi `Crumbs` ne le rend
+ * pas en lien. */
+const items = [{ label: t('nav.home'), href: homeHref(lang) }, ...trail];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    ...(c.href && i < items.length - 1
+      ? { item: new URL(c.href, site.url).href }
+      : {}),
+  })),
+};
 ---
 <nav class="crumbs" aria-label={t('nav.breadcrumb')} style={style}>
   <ol>
@@ -15,3 +45,4 @@ const t = useT(lang);
         : <li aria-current="page">{c.label}</li>)}
   </ol>
 </nav>
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
