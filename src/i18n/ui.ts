@@ -73,7 +73,7 @@ const en = {
   'home.goToStory': (n: number) => `Story ${n}`,
   'home.pauseStories': 'Pause the top stories',
   'home.playStories': 'Resume the top stories',
-  'home.pick': 'Choose your content',
+  'home.pick': 'Your ultimate gaming blog',
   'home.allStories': 'Everything',
   'home.moreStories': 'More stories',
   'home.seeDeals': 'See the deals',
@@ -101,6 +101,28 @@ const en = {
   'noun.review': 'review',
   'noun.guide': 'guide',
   'noun.setup': 'guide',
+  /* Les titres et descriptions de HEAD des rubriques.
+     Le titre visible d'une rubrique est un mot — « Actus », « Tests » — et c'est
+     le bon mot au-dessus d'une grille : la page dit déjà où l'on est. Mais dans
+     un onglet et dans un résultat de recherche, ce mot arrive sans sa page, et
+     « News — Autnic » ne dit alors ni de quoi, ni pour qui. Ces deux entrées ne
+     servent qu'au `<head>` ; le `<h1>` garde son mot. */
+  'section.news.seoTitle': 'Live-service game news, patches and updates',
+  'section.news.seoDesc':
+    'Patch notes, studio statements and release dates for the live-service games we cover '
+    + '— dated, sourced, and revised when the games change.',
+  'section.review.seoTitle': 'Game reviews with a tested version and a score',
+  'section.review.seoDesc':
+    'Scored reviews of live-service games. We buy what we review, name the version we tested, '
+    + 'and revise the score when the game changes under it.',
+  'section.guide.seoTitle': 'Game guides, re-checked at every major patch',
+  'section.guide.seoDesc':
+    'Walkthroughs, builds and progression guides for live-service games, each one showing the '
+    + 'game version it was last tested against.',
+  'section.setup.seoTitle': 'Game settings and hardware setup guides',
+  'section.setup.seoDesc':
+    'Graphics settings, controller and hardware setup for the games we cover, measured on our '
+    + 'own machines instead of copied off a spec sheet.',
   'section.news.title': 'News',
   'section.news.lede': 'The newsroom feed, updated continuously.',
   'section.review.title': 'Reviews',
@@ -126,8 +148,11 @@ const en = {
 
   /* jeu */
   'games.title': 'Game database',
+  'games.seoTitle': 'Every live-service game we cover, scored',
   'games.lede': (n: number) => `${n} games tracked. Every page gathers our score, the tracked version and all our articles on the game.`,
-  'games.desc': 'Every game we track, with its score, its tested version and our full coverage.',
+  'games.desc':
+    'Every live-service game we track, with its score, the version we tested, its release date '
+    + 'and every review, guide and news story we have published on it.',
   'games.upcomingSub': 'What we will be covering',
   'games.allTitle': 'All games',
   'games.allSub': 'Ranked by score',
@@ -140,7 +165,9 @@ const en = {
   'game.noneOfType': (label: string) => `We have not published any ${label.toLowerCase()} on this game.`,
   'game.alsoFollowSub': 'The other games we cover',
   'game.votes': (n: string) => `${n} votes`,
-  'game.desc': (title: string, studio: string) => `${title} — ${studio}. Our score, the tracked version and our full coverage.`,
+  'game.desc': (title: string, studio: string) =>
+    `${title} by ${studio}: our score, the version we tested it on, where to buy it, and every `
+    + 'review, guide and news story we have published about it.',
   'game.follow': 'Follow this game',
   'game.fullPage': 'Full page →',
   'game.seePage': 'View game page',
@@ -307,7 +334,7 @@ const fr: Dict = {
   'home.goToStory': (n: number) => `Sujet ${n}`,
   'home.pauseStories': 'Mettre la Une en pause',
   'home.playStories': 'Reprendre la Une',
-  'home.pick': 'Choisis ton contenu',
+  'home.pick': 'Ton blog gaming ultime',
   'home.allStories': 'Tout',
   'home.moreStories': 'À lire aussi',
   'home.seeDeals': 'Voir les bons plans',
@@ -333,6 +360,23 @@ const fr: Dict = {
   'noun.review': 'test',
   'noun.guide': 'guide',
   'noun.setup': 'config',
+  /* Voir le bloc anglais : ces deux entrées ne servent qu'au `<head>`. */
+  'section.news.seoTitle': 'Actus, correctifs et annonces des studios',
+  'section.news.seoDesc':
+    'Notes de patch, déclarations de studio et dates de sortie des jeux en service que nous '
+    + 'suivons — datées, sourcées, et corrigées quand le jeu change.',
+  'section.review.seoTitle': 'Tests de jeux, avec version testée et note',
+  'section.review.seoDesc':
+    'Nos tests de jeux en service. Nous achetons ce que nous testons, nous indiquons la version '
+    + 'testée, et nous révisons la note quand le jeu change.',
+  'section.guide.seoTitle': 'Guides de jeu, revérifiés à chaque gros patch',
+  'section.guide.seoDesc':
+    'Soluces, builds et guides de progression pour les jeux en service, chacun indiquant la '
+    + 'version du jeu sur laquelle il a été vérifié.',
+  'section.setup.seoTitle': 'Réglages et configurations matérielles',
+  'section.setup.seoDesc':
+    'Réglages graphiques, manette et configuration matérielle des jeux que nous couvrons, '
+    + 'mesurés sur nos propres machines plutôt que recopiés d’une fiche.',
   'section.news.title': 'Actus',
   'section.news.lede': 'Le fil de la rédaction, mis à jour en continu.',
   'section.review.title': 'Tests',
@@ -358,8 +402,11 @@ const fr: Dict = {
   'archive.next': 'Page suivante',
 
   'games.title': 'Base de jeux',
+  'games.seoTitle': 'Tous les jeux en service que nous couvrons',
   'games.lede': (n: number) => `${n} jeux suivis. Chaque fiche regroupe notre note, la version testée et tous nos articles sur le jeu.`,
-  'games.desc': 'Tous les jeux que nous suivons, avec leur note, leur version testée et notre couverture complète.',
+  'games.desc':
+    'Tous les jeux en service que nous suivons, avec leur note, la version testée, leur date de '
+    + 'sortie et chaque test, guide et actu que nous avons publiés dessus.',
   'games.upcomingSub': 'Ce que nous couvrirons',
   'games.allTitle': 'Tous les jeux',
   'games.allSub': 'Classés par note',
@@ -372,7 +419,9 @@ const fr: Dict = {
   'game.noneOfType': (label: string) => `Nous n’avons pas publié de ${label.toLowerCase()} sur ce jeu.`,
   'game.alsoFollowSub': 'Les autres jeux que nous couvrons',
   'game.votes': (n: string) => `${n} votes`,
-  'game.desc': (title: string, studio: string) => `${title} — ${studio}. Notre note, la version suivie et toute notre couverture.`,
+  'game.desc': (title: string, studio: string) =>
+    `${title}, de ${studio} : notre note, la version sur laquelle nous l’avons testé, où l’acheter, `
+    + 'et chaque test, guide et actu que nous avons publiés dessus.',
   'game.follow': 'Suivre ce jeu',
   'game.fullPage': 'Fiche complète →',
   'game.seePage': 'Voir la fiche',
@@ -537,7 +586,7 @@ const de: Dict = {
   'home.goToStory': (n: number) => `Thema ${n}`,
   'home.pauseStories': 'Top-Themen anhalten',
   'home.playStories': 'Top-Themen fortsetzen',
-  'home.pick': 'Wähle deine Inhalte',
+  'home.pick': 'Dein ultimativer Gaming-Blog',
   'home.allStories': 'Alles',
   'home.moreStories': 'Auch lesenswert',
   'home.seeDeals': 'Zu den Angeboten',
@@ -565,6 +614,23 @@ const de: Dict = {
   'noun.review': 'Tests',
   'noun.guide': 'Guides',
   'noun.setup': 'Technik-Guides',
+  /* Siehe den englischen Block: diese Einträge dienen nur dem `<head>`. */
+  'section.news.seoTitle': 'Spiele-News, Patches und Studio-Updates',
+  'section.news.seoDesc':
+    'Patch Notes, Studio-Statements und Release-Termine zu den Live-Service-Spielen, die wir '
+    + 'begleiten — datiert, belegt und laufend korrigiert.',
+  'section.review.seoTitle': 'Spieletests mit getesteter Version und Wertung',
+  'section.review.seoDesc':
+    'Bewertete Tests zu Live-Service-Spielen. Wir kaufen, was wir testen, nennen die getestete '
+    + 'Version und korrigieren die Wertung, wenn sich das Spiel ändert.',
+  'section.guide.seoTitle': 'Spiele-Guides, nach jedem großen Patch geprüft',
+  'section.guide.seoDesc':
+    'Komplettlösungen, Builds und Fortschritts-Guides zu Live-Service-Spielen — jeder mit der '
+    + 'Spielversion, gegen die er zuletzt geprüft wurde.',
+  'section.setup.seoTitle': 'Einstellungen und Hardware-Guides für Spiele',
+  'section.setup.seoDesc':
+    'Grafikeinstellungen, Controller und Hardware-Konfiguration für die Spiele, die wir '
+    + 'begleiten — auf unseren eigenen Rechnern gemessen, nicht abgeschrieben.',
   'section.news.title': 'News',
   'section.news.lede': 'Der Ticker der Redaktion, laufend aktualisiert.',
   'section.review.title': 'Tests',
@@ -590,8 +656,11 @@ const de: Dict = {
   'archive.next': 'Nächste Seite',
 
   'games.title': 'Spieldatenbank',
+  'games.seoTitle': 'Alle Live-Service-Spiele, die wir begleiten',
   'games.lede': (n: number) => `${n} Spiele im Blick. Jede Seite bündelt unsere Wertung, die beobachtete Version und alle unsere Artikel zum Spiel.`,
-  'games.desc': 'Alle Spiele, die wir beobachten — mit Wertung, getesteter Version und unserer gesamten Berichterstattung.',
+  'games.desc':
+    'Alle Live-Service-Spiele, die wir beobachten — mit Wertung, getesteter Version, Release-Termin '
+    + 'sowie jedem Test, Guide und Artikel, den wir dazu veröffentlicht haben.',
   'games.upcomingSub': 'Was wir begleiten werden',
   'games.allTitle': 'Alle Spiele',
   'games.allSub': 'Nach Wertung sortiert',
@@ -604,7 +673,9 @@ const de: Dict = {
   'game.noneOfType': (label: string) => `Wir haben noch keine ${label} zu diesem Spiel veröffentlicht.`,
   'game.alsoFollowSub': 'Die anderen Spiele, die wir begleiten',
   'game.votes': (n: string) => `${n} Stimmen`,
-  'game.desc': (title: string, studio: string) => `${title} — ${studio}. Unsere Wertung, die beobachtete Version und unsere gesamte Berichterstattung.`,
+  'game.desc': (title: string, studio: string) =>
+    `${title} von ${studio}: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder `
+    + 'Test, Guide und Artikel, den wir dazu veröffentlicht haben.',
   'game.follow': 'Spiel beobachten',
   'game.fullPage': 'Ganze Seite →',
   'game.seePage': 'Zur Spielseite',

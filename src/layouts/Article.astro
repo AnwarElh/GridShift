@@ -228,7 +228,7 @@ const jsonLd: Record<string, unknown> = {
           <a class="card-framed" href={gameHref(lang, game.id)} style="display:block">
             <Kicker plain tone="mute">{t('review.theGame')}</Kicker>
             <div style="display:flex;gap:12px;margin-top:12px">
-              <Fig src={game.data.cover} ratio="3-4" style="width:62px;border-radius:2px;flex:none" />
+              <Fig src={game.data.cover} ratio="3-4" sizes="62px" style="width:62px;border-radius:2px;flex:none" />
               <div>
                 <b style="display:block;font-size:var(--ui-md)">{game.data.title}</b>
                 <span class="meta">{game.data.studio} · {game.data.released}</span>

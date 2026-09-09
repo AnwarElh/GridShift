@@ -1,7 +1,7 @@
 ---
 import Fig from './Fig.astro';
 import { site, platforms, genres } from '../site';
-import { getGames } from '../lib/content';
+import { getGames, getPosts, allTags } from '../lib/content';
 import { num, scoreBucket, shortDate } from '../lib/format';
 import { slugifyTag } from '../lib/content';
 import {
@@ -21,6 +21,17 @@ const others = otherLocales(lang);
 const t = useT(lang);
 
 const games = await getGames(Astro.locals, lang);
+/* Les jetons du méga-menu sont des liens vers /tag/<slug>/, et cette route ne
+   connaît que les étiquettes portées par un article : une plateforme ou un
+   genre que personne n'a encore taguée n'a pas de page, et le lien tombait sur
+   un 404. Sept d'un coup, dans la barre — donc sur chaque page du site.
+   La liste de `site.ts` reste ce qu'on VEUT montrer ; ce filtre ne garde que
+   ce qui existe. Le jour où un article porte l'étiquette, le jeton revient
+   tout seul. */
+const liveTags = new Set(allTags(await getPosts(Astro.locals, lang)).map(([t]) => slugifyTag(t)));
+const linkable = (list: string[]) => list.filter((x) => liveTags.has(slugifyTag(x)));
+const navPlatforms = linkable(platforms);
+const navGenres = linkable(genres[lang]);
 /* Le méga-menu n'est pas une liste de liens : c'est un chercheur de jeux. */
 const followed = [...games]
   .sort((a, b) => (b.data.followers ?? 0) - (a.data.followers ?? 0))
@@ -64,7 +75,7 @@ const links = [
               <div class="mega-list">
                 {followed.map((g) => (
                   <a class="mega-item" href={gameHref(lang, g.id)}>
-                    <Fig src={g.data.cover} ratio="3-4" class="cover" />
+                    <Fig src={g.data.cover} ratio="3-4" class="cover" sizes="34px" />
                     <span><b>{g.data.title}</b><span>{g.data.studio} · {g.data.released}</span></span>
                     <span class="sc" style={g.data.score !== undefined ? `color:var(--sc-${scoreBucket(g.data.score)})` : 'color:var(--tx-3)'}>
                       {g.data.score !== undefined ? num(g.data.score, lang) : t('mega.upcomingSoon')}
@@ -74,14 +85,22 @@ const links = [
               </div>
             </div>
             <div class="mega-col">
-              <p class="mega-h">{t('mega.byPlatform')}</p>
-              <div class="chipbar">
-                {platforms.map((p) => <a class="tag" href={tagHref(lang, slugifyTag(p))}>{p}</a>)}
-              </div>
-              <p class="mega-h" style="margin-top:24px">{t('mega.byGenre')}</p>
-              <div class="chipbar">
-                {genres[lang].map((g) => <a class="tag" href={tagHref(lang, slugifyTag(g))}>{g}</a>)}
-              </div>
+              {navPlatforms.length > 0 && (
+                <Fragment>
+                  <p class="mega-h">{t('mega.byPlatform')}</p>
+                  <div class="chipbar">
+                    {navPlatforms.map((p) => <a class="tag" href={tagHref(lang, slugifyTag(p))}>{p}</a>)}
+                  </div>
+                </Fragment>
+              )}
+              {navGenres.length > 0 && (
+                <Fragment>
+                  <p class="mega-h" style={navPlatforms.length > 0 ? 'margin-top:24px' : undefined}>{t('mega.byGenre')}</p>
+                  <div class="chipbar">
+                    {navGenres.map((g) => <a class="tag" href={tagHref(lang, slugifyTag(g))}>{g}</a>)}
+                  </div>
+                </Fragment>
+              )}
             </div>
             <div class="mega-col">
               <p class="mega-h">{t('mega.upcoming')}</p>

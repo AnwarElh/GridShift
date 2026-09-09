@@ -1107,7 +1107,6 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .pick{padding-block:var(--s-6) var(--s-5);text-align:center}
 .pick-h{font-family:var(--f-display);font-size:var(--d3);font-style:italic;
   letter-spacing:-.02em;margin-bottom:var(--s-5)}
-.pick-h::after{content:":"}
 .pills{display:flex;flex-wrap:wrap;gap:var(--s-2);justify-content:center}
 .pill{display:inline-flex;align-items:center;gap:7px;min-height:40px;
   padding:0 var(--s-4);
@@ -1541,6 +1540,10 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
     /* `center` vient du plateau en éventail, où les cartes flottent ; dans un
        rail il désaligne les diapositives de la hauteur qui les sépare. */
     align-items:stretch;
+    /* et `justify-content` avec : centrées, les pistes débordent des DEUX
+       côtés, et ce qui déborde à gauche n'est atteignable par aucun
+       défilement — le rail s'ouvrait donc sur la troisième diapo. */
+    justify-content:start;
     gap:var(--s-3);padding-inline:var(--pad);
     overflow-x:auto;scroll-snap-type:x mandatory;
     overscroll-behavior-x:contain;scrollbar-width:none}
@@ -1554,6 +1557,10 @@ dialog.cmd::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
      donc une, et l'image tombait à zéro. */
   .dtile-fan{position:static;width:auto;transform:none;
     background:var(--s1);border:1px solid var(--line)}
+  /* la cinquième carte est cachée plus haut parce qu'elle sortait de
+     l'éventail ; dans un rail elle a toute la place, et sans elle le sixième
+     point de la réglette ne menait nulle part. */
+  .f5{display:block}
   .dtile-fan:hover{transform:none}
   .dtile-lead{width:auto}
   /* la jaquette portrait ne tient pas dans un rail : toutes les diapositives

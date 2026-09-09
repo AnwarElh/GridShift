@@ -9,14 +9,20 @@ import { useT } from '../i18n/ui';
    la vignette y porte déjà le titre et le studio, et la grille est un point
    d'entrée, pas une fiche. Les autres grilles la gardent : sur « Tous les
    jeux » et en bas d'une fiche, c'est la donnée qui fait choisir. */
-interface Props { game: Game; count?: number; meta?: boolean; }
-const { game, count, meta = true } = Astro.props;
+/* `sizes` : la même carte occupe deux emplacements très différents. Dans
+   `.pgrid` et `.grid-2` elle est une ligne, et sa vignette fait 76 px de large ;
+   dans `.ggrid` de l'accueil la feuille de style la déplie en affiche et la
+   vignette remplit la case — 205 px mesurés sur six pistes dans 1312. C'est
+   donc le conteneur qui sait, pas la carte : il passe la valeur, et à défaut
+   c'est la ligne, le cas des deux grilles sur trois. */
+interface Props { game: Game; count?: number; meta?: boolean; sizes?: string; }
+const { game, count, meta = true, sizes = '76px' } = Astro.props;
 const d = game.data;
 const lang = langFromPath(Astro.url.pathname);
 const t = useT(lang);
 ---
 <a class="card-game" href={gameHref(lang, game.id)}>
-  <Fig src={d.cover} alt="" ratio="3-4" />
+  <Fig src={d.cover} alt="" ratio="3-4" sizes={sizes} />
   <span>
     <b>{d.title}</b><span class="studio">{d.studio} · {d.genre}</span>
     <Platforms platforms={d.platforms} style="margin-top:8px" />

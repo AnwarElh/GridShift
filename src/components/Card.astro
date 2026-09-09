@@ -33,10 +33,28 @@ const r = ratio ?? (
 /* la note est la raison d'être d'une carte de test : elle se pose sur la
    vignette à sa vraie taille, pas en pastille de 11 px dans un coin */
 const withNote = variant === 'verdict' && data.score !== undefined;
+
+/* `sizes` annonce la largeur de l'EMPLACEMENT, et sans lui `Fig` retombe sur
+   `100vw` : le navigateur croit alors la vignette large comme la fenêtre et
+   prend la plus grande variante — 1920 px pour une carte de 96. Chaque valeur
+   suit la feuille de style : `.pgrid` tient trois colonnes dans 1312 px, deux
+   sous 1024 et une sous 560 ; `.card-xs` a une largeur fixe.
+   La carte étroite du rail est un peu plus petite que la case de grille : on
+   l'annonce à la taille de la case, parce qu'une surestimation coûte des
+   octets là où une sous-estimation coûte de la netteté. */
+const SIZES: Record<NonNullable<Props['variant']>, string> = {
+  wide:    '(max-width:860px) 100vw, 620px',
+  lead:    '(max-width:560px) 92vw, (max-width:1024px) 47vw, 420px',
+  md:      '(max-width:560px) 92vw, (max-width:1024px) 47vw, 420px',
+  sm:      '(max-width:560px) 92vw, (max-width:1024px) 47vw, 420px',
+  verdict: '(max-width:560px) 92vw, (max-width:1024px) 47vw, 420px',
+  review:  '(max-width:560px) 92vw, (max-width:1024px) 47vw, 420px',
+  xs:      '(max-width:560px) 82px, 96px',
+};
 ---
 {variant === 'review' ? (
   <a class="card card-review" href={post.href}>
-    <Fig src={data.cover} alt={data.title} ratio={r} />
+    <Fig src={data.cover} alt={data.title} ratio={r} sizes={SIZES[variant]} />
     {data.score !== undefined && (
       <span class="plate"><span class="plate-in"><Score score={data.score} size="sm" /></span></span>
     )}
@@ -53,7 +71,7 @@ const withNote = variant === 'verdict' && data.score !== undefined;
     ]}>
     <Fig src={data.cover} alt="" ratio={r}
          widths={variant === 'wide' ? [640, 960, 1280] : undefined}
-         sizes={variant === 'wide' ? '(max-width:860px) 100vw, 620px' : undefined} />
+         sizes={SIZES[variant]} />
     {variant !== 'xs' && <Chips post={post} max={variant === 'lead' || variant === 'wide' ? 3 : 2} showScore={!withNote} />}
     {withNote && <span class="card-note"><Score score={data.score!} /></span>}
     <div class="card-body">

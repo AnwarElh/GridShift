@@ -1,5 +1,6 @@
 ---
 import '../styles/autnic.css';
+import { metaDescription } from '../lib/meta';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import TabBar from '../components/TabBar.astro';
@@ -31,9 +32,16 @@ const others = otherLocales(lang);
 const t = useT(lang);
 
 const {
-  title, description = siteCopy[lang].description, ogType = 'website',
+  title, description: rawDescription = siteCopy[lang].description, ogType = 'website',
   image, noindex = false, jsonLd, alt,
 } = Astro.props;
+
+/* Une seule coupe, ici : c'est par ce gabarit que passe CHAQUE description du
+   site — chapô d'article, biographie d'auteur, présentation de rubrique. La
+   poser chez l'appelant l'aurait laissée à réécrire à chaque nouveau type de
+   page, et c'est exactement comme ça que vingt articles se sont retrouvés avec
+   une description coupée par le moteur au milieu d'une phrase. */
+const description = metaDescription(rawDescription);
 
 /* `trailingSlash: 'ignore'` laisse la racine du site sans barre finale :
    Astro.url.pathname y vaut « /GridShift », que GitHub Pages redirige en 301

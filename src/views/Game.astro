@@ -75,7 +75,8 @@ const jsonLd = {
   <div class="hub">
     <div class="hub-bg">{d.hero ? <Fig src={d.hero} ratio="21-9" /> : <span class="ph"></span>}</div>
     <div class="hub-in">
-      <Fig src={d.cover} alt={d.title} ratio="3-4" class="hub-cover" />
+      <Fig src={d.cover} alt={d.title} ratio="3-4" class="hub-cover"
+           sizes="(max-width:560px) 88px, (max-width:1024px) 126px, 180px" />
       <div class="hub-id">
         <Crumbs trail={[{ label: t('nav.games'), href: pageHref(lang, 'games') }, { label: d.title }]} style="margin-bottom:12px" />
         <h1>{d.title}</h1>

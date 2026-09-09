@@ -59,7 +59,7 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
   }
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.w3.org/1999/sitemap/0.9"
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${entries.map((e) => `  <url>
     <loc>${esc(e.loc)}</loc>${e.lastmod ? `

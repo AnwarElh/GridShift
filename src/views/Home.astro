@@ -253,7 +253,11 @@ const jsonLd = {
         <a class="more" href={pageHref(lang, 'games')}>{t('home.allGames')}</a>
       </div>
       <div class="ggrid">
-        {covered.map((g) => <GameCard game={g} meta={false} />)}
+        {/* la seule grille qui déplie la carte en affiche : six pistes de 205 px
+            dans 1312, deux pistes sous 860 px. */}
+        {covered.map((g) => (
+          <GameCard game={g} meta={false} sizes="(max-width:860px) 47vw, 205px" />
+        ))}
       </div>
     </section>
 
