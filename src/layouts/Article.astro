@@ -80,10 +80,16 @@ const jsonLd: Record<string, unknown> = {
         { label: data.title },
       ]} />
 
+      <!-- L'ouverture n'est PAS pleine fenêtre : `.ahero-cover` vit dans la page
+           et s'arrête à sa largeur — 1312 px mesurés, soit `--page` moins ses
+           deux marges. `100vw` promettait donc 1920 sur un écran de 1920 en
+           densité 1, et faisait descendre la variante 1920 (553 Ko) là où la
+           1440 (307 Ko) suffisait. C'est l'image LCP : c'est l'octet le plus
+           cher de la page. -->
       <div class="ahero-cover">
         {artImg && (
           <Fig src={artImg} alt={data.coverCaption ?? data.title} ratio="21-9"
-               widths={[900, 1440, 1920]} sizes="100vw" priority />
+               widths={[900, 1440, 1920]} sizes="(max-width:1360px) 100vw, 1312px" priority />
         )}
         <div class="ahero-body">
           <Chips post={post} max={3} />
