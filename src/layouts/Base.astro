@@ -19,6 +19,7 @@ interface Props {
   ogType?: 'website' | 'article';
   image?: string;
   noindex?: boolean;
+  markdown?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   /* Le chemin de CETTE page dans une langue donnée. Seule la page le sait : un
      article a une traduction précise, pas seulement « la même rubrique ».
@@ -33,7 +34,7 @@ const t = useT(lang);
 
 const {
   title, description: rawDescription = siteCopy[lang].description, ogType = 'website',
-  image, noindex = false, jsonLd, alt,
+  image, noindex = false, jsonLd, alt, markdown,
 } = Astro.props;
 
 /* Une seule coupe, ici : c'est par ce gabarit que passe CHAQUE description du
@@ -78,6 +79,7 @@ const alternates = alt
 <title>{fullTitle}</title>
 <meta name="description" content={description}>
 <link rel="canonical" href={canonical}>
+{markdown && <link rel="alternate" type="text/markdown" href={markdown} title="Markdown source">}
 {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
 <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml">
 <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')}>

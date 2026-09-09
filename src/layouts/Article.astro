@@ -64,6 +64,18 @@ const jsonLd: Record<string, unknown> = {
   author: { '@type': 'Person', name: post.author.data.name, url: new URL(authorHref(lang, post.author.id), site.url).href },
   publisher,
   mainEntityOfPage: new URL(post.href, site.url).href,
+  /* `about` relie l'article au JEU, pas à un mot-clé : c'est ce qui permet à un
+     moteur de répondre « que dit Autnic de GTA 6 » sans lire les vingt titres
+     pour deviner de quoi ils parlent. Le même nom et le même studio que la
+     fiche du jeu, donc la même entité. */
+  ...(game
+    ? { about: { '@type': 'VideoGame', name: game.data.title, publisher: game.data.studio } }
+    : {}),
+  articleSection: sectionLabel,
+  /* Un modèle qui choisit entre trois sources cite plus volontiers celle dont
+     il sait qu'elle est entière et gratuite : ces deux-là le disent. */
+  wordCount: post.body.trim().split(/\s+/).length,
+  isAccessibleForFree: true,
   ...(cover ? { image: new URL(cover, site.url).href } : {}),
   ...(isTest && data.score !== undefined && game
     ? {
@@ -74,7 +86,8 @@ const jsonLd: Record<string, unknown> = {
     : {}),
 };
 ---
-<Base title={data.seoTitle ?? data.title} description={data.lede} ogType="article" image={cover} jsonLd={jsonLd} alt={alt}>
+<Base title={data.seoTitle ?? data.title} description={data.lede} ogType="article" image={cover}
+      jsonLd={jsonLd} alt={alt} markdown={new URL(`${post.href.replace(/\/$/, '')}.md`, site.url).href}>
   <CtxBar slot="ctxbar" title={data.title} game={game?.data.title} />
 
   <header class="ahero">
