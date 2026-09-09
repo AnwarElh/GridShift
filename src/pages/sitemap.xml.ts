@@ -3,7 +3,7 @@ import { getContent } from '../lib/content.ts';
 import { site } from '../site.ts';
 import {
   articleHref, gameHref, sectionHref, pageHref, homeHref, authorHref,
-  sectionKeys, locales, otherLocales, type Locale,
+  sectionKeys, locales, defaultLocale, type Locale,
 } from '../i18n/config.ts';
 
 /* Le plan de site, rendu depuis D1.
@@ -29,23 +29,71 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
   /* `alts` est une liste depuis qu'il y a trois langues : un seul `alt` ne
      déclarait qu'une traduction sur deux, et l'allemand — le dernier venu —
      aurait été celui qu'on tait. La liste vient de `locales`, donc une
-     quatrième langue n'aura rien à changer ici. */
-  const entries: { loc: string; lastmod?: Date; alts?: { lang: Locale; loc: string }[] }[] = [];
+     quatrième langue n'aura rien à changer ici.
+
+     Elle inclut la page ELLE-MÊME, et `x-default`. Un ensemble hreflang doit
+     être réflexif : chaque version déclare toutes les versions, la sienne
+     comprise, sinon Google écarte l'ensemble au lieu d'en garder la moitié. Les
+     balises du `<head>` le faisaient déjà correctement ; ce fichier, non — ce
+     qui n'avait aucune conséquence tant que son espace de noms le rendait
+     illisible, et en a une depuis qu'il ne l'est plus. */
+  const entries: { loc: string; lastmod?: Date; alts?: { lang: Locale | 'x-default'; loc: string }[] }[] = [];
+
+  /* La date la plus récente d'une liste d'articles : c'est ce qui date une page
+     de rubrique, de jeu ou d'auteur, dont le contenu EST cette liste. Inventer
+     une date pour les pages qui n'en ont pas — mentions légales, cookies —
+     serait pire que de n'en donner aucune : Google cesse de lire `lastmod` dès
+     qu'il le prend en défaut, et il le prend en défaut sur tout le fichier. */
+  const latest = (list: { data: { updated?: Date; date: Date } }[]): Date | undefined =>
+    list.reduce<Date | undefined>((max, p) => {
+      const d = p.data.updated ?? p.data.date;
+      return !max || d > max ? d : max;
+    }, undefined);
 
   for (const lang of locales) {
-    const others = otherLocales(lang);
     const { posts, games, authors } = await getContent(locals, lang);
+    /* Toutes les langues, celle-ci comprise, plus x-default sur la langue par
+       défaut : c'est la même liste pour chaque page d'un même ensemble. */
+    const altsFor = (href: (l: Locale) => string) => [
+      ...locales.map((l) => ({ lang: l as Locale | 'x-default', loc: abs(href(l)) })),
+      { lang: 'x-default' as const, loc: abs(href(defaultLocale)) },
+    ];
 
     entries.push({
       loc: abs(homeHref(lang)),
-      alts: others.map((o) => ({ lang: o, loc: abs(homeHref(o)) })),
+      lastmod: latest(posts),
+      alts: altsFor(homeHref),
     });
-    for (const k of sectionKeys) entries.push({ loc: abs(sectionHref(lang, k)) });
-    for (const p of ['games', 'about', 'credits', 'legal', 'privacy', 'cookies'] as const) {
-      entries.push({ loc: abs(pageHref(lang, p)) });
+    for (const k of sectionKeys) {
+      entries.push({
+        loc: abs(sectionHref(lang, k)),
+        lastmod: latest(posts.filter((p) => p.section === k)),
+        alts: altsFor((l) => sectionHref(l, k)),
+      });
     }
-    for (const g of games) entries.push({ loc: abs(gameHref(lang, g.id)) });
-    for (const a of authors) entries.push({ loc: abs(authorHref(lang, a.id)) });
+    for (const p of ['games', 'about', 'credits', 'legal', 'privacy', 'cookies'] as const) {
+      entries.push({
+        loc: abs(pageHref(lang, p)),
+        /* « Tous les jeux » liste les jeux et bouge avec eux ; les pages
+           légales ne bougent qu'à la main, et se taisent donc. */
+        lastmod: p === 'games' ? latest(posts) : undefined,
+        alts: altsFor((l) => pageHref(l, p)),
+      });
+    }
+    for (const g of games) {
+      entries.push({
+        loc: abs(gameHref(lang, g.id)),
+        lastmod: latest(posts.filter((p) => p.game?.id === g.id)),
+        alts: altsFor((l) => gameHref(l, g.id)),
+      });
+    }
+    for (const a of authors) {
+      entries.push({
+        loc: abs(authorHref(lang, a.id)),
+        lastmod: latest(posts.filter((p) => p.author.id === a.id)),
+        alts: altsFor((l) => authorHref(l, a.id)),
+      });
+    }
     for (const p of posts) {
       entries.push({
         loc: abs(p.href),
@@ -53,7 +101,7 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
         /* Le même nom de fichier dans les autres langues est la traduction :
            c'est ce lien que hreflang doit annoncer. L'export refuse un article
            qui manque dans une langue, donc l'adresse existe toujours. */
-        alts: others.map((o) => ({ lang: o, loc: abs(articleHref(o, p.section, p.slug)) })),
+        alts: altsFor((l) => articleHref(l, p.section, p.slug)),
       });
     }
   }

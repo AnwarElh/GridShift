@@ -2,8 +2,9 @@
 import Base from '../layouts/Base.astro';
 import Archive from '../components/Archive.astro';
 import { getPosts, byType, pageOf, allTags } from '../lib/content';
+import { site, orgId } from '../site';
 import {
-  langFromPath, sectionHref, type SectionKey,
+  langFromPath, sectionHref, htmlLang, type SectionKey,
 } from '../i18n/config';
 import { useT } from '../i18n/ui';
 
@@ -34,8 +35,41 @@ const meta = {
 const posts = byType(await getPosts(Astro.locals, lang), section);
 const page = pageOf(posts, pageNum, 12, sectionHref(lang, section));
 const filters = allTags(posts).slice(0, 6).map(([tag]) => tag);
+
+/* Ce que la page EST, dit à la machine.
+ *
+ * Les quatre rubriques ne déclaraient rien du tout : un moteur y voyait une
+ * page quelconque portant douze liens, sans savoir qu'elle en est l'index ni
+ * ce qu'elle indexe. `CollectionPage` le dit, `ItemList` donne l'ordre — celui
+ * de la page, donc la date décroissante — et chaque entrée porte son titre et
+ * son adresse.
+ *
+ * La liste ne décrit QUE la page courante, pas les cent vingt articles de la
+ * rubrique : une liste qui annonce ce qui n'est pas sur la page est fausse, et
+ * la pagination existe justement pour que chaque page ait la sienne. */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: meta.seoTitle,
+  description: meta.seoDesc,
+  url: new URL(page.base === sectionHref(lang, section) && pageNum === 1
+    ? sectionHref(lang, section) : Astro.url.pathname, site.url).href,
+  inLanguage: htmlLang[lang],
+  isPartOf: { '@id': orgId },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: page.items.length,
+    itemListOrder: 'https://schema.org/ItemListOrderDescending',
+    itemListElement: page.items.map((p, i) => ({
+      '@type': 'ListItem',
+      position: (pageNum - 1) * 12 + i + 1,
+      url: new URL(p.href, site.url).href,
+      name: p.data.title,
+    })),
+  },
+};
 ---
-<Base title={meta.seoTitle} description={meta.seoDesc} alt={(l) => sectionHref(l, section)}>
+<Base title={meta.seoTitle} description={meta.seoDesc} jsonLd={jsonLd} alt={(l) => sectionHref(l, section)}>
   <Archive
     title={meta.title}
     lede={meta.lede}
