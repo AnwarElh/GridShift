@@ -986,14 +986,20 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .masthead .btn{min-height:44px;padding-inline:var(--s-5)}
 
 /* La barre de rubriques : l'axe de navigation du portail, toujours visible. */
-/* Le titre de l'accueil : il occupe la place laissée par la barre de
-   rubriques, donc la réclame ne bouge pas. Il nomme le sujet et non la
-   maison — le nom est déjà dans le bandeau, le <title> et le JSON-LD. */
+/* Le titre de l'accueil. Il nomme le sujet et non la maison — le nom est
+   déjà dans le bandeau, le <title> et le JSON-LD.
+
+   Il porte lui-même son air, en haut comme en bas. Il n'en avait pas au
+   début : la barre du dessus, qui portait la réclame, lui laissait ses
+   32px de retrait. La réclame partie, cette barre ne paraît plus que s'il
+   y a des offres — et le titre se retrouvait collé au fil d'actualité,
+   sa hampe touchant presque la bande colorée. Une marge qui dépend d'un
+   voisin facultatif n'est pas une marge. */
 .home-h1{font-family:var(--f-display);font-size:var(--d4);font-stretch:96%;
   letter-spacing:-.012em;line-height:1.18;color:var(--tx);
   /* 34ch coupait « live-service » en deux au trait d'union. On laisse la
      ligne respirer et `balance` répartit les deux lignes à parts égales. */
-  max-width:52ch;text-wrap:balance;margin:0 0 var(--s-5)}
+  max-width:52ch;text-wrap:balance;margin:var(--s-6) 0}
 
 
 /* ── LE JEU DE CARTES ──────────────────────────────────────
