@@ -82,6 +82,35 @@ const alternates = alt
       { lang: 'x-default', href: lang === defaultLocale ? canonical : abs(alt(defaultLocale)) },
     ]
   : [];
+
+/* La page suivante, chargée pendant qu'on hésite.
+ *
+ * Les pages sortent du cache edge en quelques dizaines de millisecondes ; ce
+ * qui reste lent, c'est l'aller-retour après le clic. Les règles de spéculation
+ * le déplacent avant : au survol sur ordinateur, au toucher sur mobile
+ * (`moderate`), le navigateur récupère le HTML, et le clic ouvre une page déjà
+ * là. Rien à charger — c'est le navigateur qui le fait, sans une ligne de JS.
+ *
+ * `prefetch`, pas `prerender` : on récupère le HTML sans l'exécuter. Aucun
+ * script ne tourne d'avance, donc aucune pub affichée ni aucune vue comptée
+ * pour une page que le lecteur n'ouvrira peut-être pas.
+ *
+ * Exclus : les fichiers qui ne sont pas des pages (.md, .xml, .txt), et les
+ * jetons de rubrique de l'accueil, que le script détourne pour filtrer le fil
+ * sur place — les précharger serait une requête pour rien. */
+const speculation = {
+  prefetch: [{
+    source: 'document',
+    where: {
+      and: [
+        { href_matches: withBase('/*') },
+        { not: { href_matches: ['/*.md', '/*.xml', '/*.txt'].map(withBase) } },
+        { not: { selector_matches: '[data-filter] a' } },
+      ],
+    },
+    eagerness: 'moderate',
+  }],
+};
 ---
 <!doctype html>
 <html lang={htmlLang[lang]} data-theme="nuit">
@@ -99,7 +128,10 @@ const alternates = alt
      préférence système — accrochée à prefers-color-scheme, la couleur du chrome
      contredisait la page. -->
 <meta name="theme-color" content="#0E1016">
-{noindex && <meta name="robots" content="noindex,follow">}
+<!-- `max-image-preview:large` : sans lui, Discover peut réduire l'image d'une
+     page à une vignette au lieu de la grande carte. Un média qui vit de ses
+     images n'a rien de mieux à montrer que l'image. -->
+<meta name="robots" content={noindex ? 'noindex,follow' : 'max-image-preview:large'}>
 
 <meta property="og:site_name" content={site.name}>
 <meta property="og:type" content={ogType}>
@@ -134,6 +166,8 @@ const alternates = alt
     }
   } catch {}
 </script>
+
+<script type="speculationrules" is:inline set:html={JSON.stringify(speculation)} />
 
 {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
 </head>

@@ -6,7 +6,7 @@ import Deals from '../components/Deals.astro';
 import Fig from '../components/Fig.astro';
 import { getPosts, getGames, byType, byGame, spreadByGame } from '../lib/content';
 import { time, ago, iso } from '../lib/format';
-import { site, siteCopy, siteHome } from '../site';
+import { site, siteCopy, siteHome, publisher } from '../site';
 import {
   langFromPath, homeHref, sectionHref, pageHref,
   type SectionKey, sectionKeys,
@@ -127,6 +127,10 @@ const jsonLd = {
   url: siteHome,
   inLanguage: lang,
   description: siteCopy[lang].description,
+  /* L'éditeur, par son `@id` : sans lui, le site était la seule page à ne pas
+     dire qui le publie, et l'accueil un nœud isolé du graphe que les articles
+     et /à-propos/ relient tous à la même Organization. */
+  publisher,
 };
 ---
 <Base title={t('home.title')} jsonLd={jsonLd} alt={homeHref}>

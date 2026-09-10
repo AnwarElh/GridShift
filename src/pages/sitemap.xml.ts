@@ -37,7 +37,14 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
      balises du `<head>` le faisaient déjà correctement ; ce fichier, non — ce
      qui n'avait aucune conséquence tant que son espace de noms le rendait
      illisible, et en a une depuis qu'il ne l'est plus. */
-  const entries: { loc: string; lastmod?: Date; alts?: { lang: Locale | 'x-default'; loc: string }[] }[] = [];
+  const entries: { loc: string; lastmod?: Date; alts?: { lang: Locale | 'x-default'; loc: string }[]; images?: string[] }[] = [];
+
+  /* L'image qui ouvre la page, déclarée à Google Images. Le site est fait
+     d'images : les laisser découvrir au hasard du rendu, c'était laisser la
+     moitié du contenu hors de l'index. L'original, pas une variante : c'est
+     l'image que la page désigne, et la seule adresse qui ne dépend pas d'une
+     échelle. */
+  const img = (m?: { src: string }) => (m ? [new URL(m.src, origin).href] : []);
 
   /* La date la plus récente d'une liste d'articles : c'est ce qui date une page
      de rubrique, de jeu ou d'auteur, dont le contenu EST cette liste. Inventer
@@ -85,6 +92,7 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
         loc: abs(gameHref(lang, g.id)),
         lastmod: latest(posts.filter((p) => p.game?.id === g.id)),
         alts: altsFor((l) => gameHref(l, g.id)),
+        images: img(g.data.cover),
       });
     }
     for (const a of authors) {
@@ -102,17 +110,21 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
            c'est ce lien que hreflang doit annoncer. L'export refuse un article
            qui manque dans une langue, donc l'adresse existe toujours. */
         alts: altsFor((l) => articleHref(l, p.section, p.slug)),
+        /* la même que l'ouverture de l'article (`artImg` dans Article.astro) */
+        images: img(p.data.cover ?? p.game?.data.hero),
       });
     }
   }
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${entries.map((e) => `  <url>
     <loc>${esc(e.loc)}</loc>${e.lastmod ? `
     <lastmod>${e.lastmod.toISOString()}</lastmod>` : ''}${e.alts?.length ? `
-${e.alts.map((a) => `    <xhtml:link rel="alternate" hreflang="${a.lang}" href="${esc(a.loc)}"/>`).join('\n')}` : ''}
+${e.alts.map((a) => `    <xhtml:link rel="alternate" hreflang="${a.lang}" href="${esc(a.loc)}"/>`).join('\n')}` : ''}${e.images?.length ? `
+${e.images.map((src) => `    <image:image><image:loc>${esc(src)}</image:loc></image:image>`).join('\n')}` : ''}
   </url>`).join('\n')}
 </urlset>
 `;

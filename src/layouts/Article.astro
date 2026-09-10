@@ -47,6 +47,17 @@ const stepAnchors = data.steps.map((s) => slugger.slug(s));
    /reviews/echo-divide-test/ à /fr/tests/echo-divide-test/. */
 const alt = (l: Locale) => articleHref(l, data.type, post.slug);
 
+/* Le jeu tel que sa fiche le déclare — même nom, même studio, même adresse —
+   qu'il soit le sujet d'un article (`about`) ou l'objet d'un test
+   (`itemReviewed`). L'`url` est ce qui en fait UNE entité avec la fiche, et non
+   deux homonymes. */
+const gameNode = game && {
+  '@type': 'VideoGame',
+  name: game.data.title,
+  author: { '@type': 'Organization', name: game.data.studio },
+  url: new URL(gameHref(lang, game.id), site.url).href,
+};
+
 const jsonLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
   inLanguage: htmlLang[lang],
@@ -67,9 +78,7 @@ const jsonLd: Record<string, unknown> = {
      moteur de répondre « que dit Autnic de GTA 6 » sans lire les vingt titres
      pour deviner de quoi ils parlent. Le même nom et le même studio que la
      fiche du jeu, donc la même entité. */
-  ...(game
-    ? { about: { '@type': 'VideoGame', name: game.data.title, publisher: game.data.studio } }
-    : {}),
+  ...(gameNode ? { about: gameNode } : {}),
   articleSection: sectionLabel,
   /* Un modèle qui choisit entre trois sources cite plus volontiers celle dont
      il sait qu'elle est entière et gratuite : ces deux-là le disent. */
@@ -78,7 +87,7 @@ const jsonLd: Record<string, unknown> = {
   ...(cover ? { image: new URL(cover, site.url).href } : {}),
   ...(isTest && data.score !== undefined && game
     ? {
-        itemReviewed: { '@type': 'VideoGame', name: game.data.title, publisher: game.data.studio, genre: game.data.genre },
+        itemReviewed: { ...gameNode, genre: game.data.genre },
         reviewRating: { '@type': 'Rating', ratingValue: data.score, bestRating: 10, worstRating: 0 },
         reviewBody: data.verdict,
       }
@@ -173,7 +182,7 @@ const jsonLd: Record<string, unknown> = {
           <div class="read">
             {bodyShot && (
               <figure class="shot">
-                <Fig src={bodyShot} alt="" ratio="21-9" as="span" style="display:block;border-radius:var(--r-1)" widths={[600, 920, 1200]} sizes="(max-width:1180px) 100vw, 920px" />
+                <Fig src={bodyShot} alt={bodyShotCaption ?? ''} ratio="21-9" as="span" style="display:block;border-radius:var(--r-1)" widths={[600, 920, 1200]} sizes="(max-width:1180px) 100vw, 920px" />
                 <figcaption>{bodyShotCaption}<Credit img={bodyShot} /></figcaption>
               </figure>
             )}

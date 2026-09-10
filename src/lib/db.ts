@@ -35,6 +35,27 @@ export interface Media {
   variants: Variant[];
 }
 
+/* Les variantes webp qu'un emplacement demande.
+ *
+ * `widths` décrit un intervalle, pas une liste de fichiers : l'échelle d'une
+ * image dépend de son original, et une largeur demandée peut ne pas y figurer.
+ * Le filtre exact d'avant jetait en silence toute largeur absente — le héros
+ * d'article demandait 900, qui n'existe pas, ne gardait que 1440 et 1920, et un
+ * téléphone chargeait 307 Ko là où 77 suffisaient.
+ *
+ * On garde donc tout ce qui couvre l'intervalle : de la plus grande variante
+ * sous la plus petite largeur demandée à la plus petite au-dessus de la plus
+ * grande. Le navigateur choisit dedans. Jamais vide tant que l'échelle ne l'est
+ * pas : servir l'original de 1920px dans une vignette est la régression que
+ * tout ce dispositif existe pour empêcher. */
+export function pickVariants(variants: Variant[], widths?: number[]): Variant[] {
+  const asc = variants.filter((v) => v.format === 'webp').sort((a, b) => a.width - b.width);
+  if (!widths?.length || !asc.length) return asc;
+  const lo = asc.findLast((v) => v.width <= Math.min(...widths))?.width ?? asc[0].width;
+  const hi = asc.find((v) => v.width >= Math.max(...widths))?.width ?? asc[asc.length - 1].width;
+  return asc.filter((v) => v.width >= lo && v.width <= hi);
+}
+
 export interface AuthorData {
   name: string; initials: string; since?: string;
   role: string; bio: string; creds: string[];

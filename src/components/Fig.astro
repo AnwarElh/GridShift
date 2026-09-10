@@ -1,5 +1,6 @@
 ---
 import type { Media, Variant } from '../lib/content';
+import { pickVariants } from '../lib/db';
 /* Figure du système : image réelle si elle existe, plaque vide sinon.
  *
  * L'image ne vient plus du build mais de R2, et les variantes ont été
@@ -29,16 +30,9 @@ const {
   widths, sizes, priority = false,
 } = Astro.props;
 
-/* Les variantes retenues : celles que l'emplacement demande, ou l'échelle
-   entière à défaut de consigne. On garde toujours au moins une variante —
-   servir l'original de 1920px dans une vignette de 82px est la régression que
-   tout ce dispositif existe pour empêcher. */
-const webp: Variant[] = (src?.variants ?? []).filter((v: Variant) => v.format === 'webp');
-const chosen = widths?.length
-  ? webp.filter((v: Variant) => widths.includes(v.width))
-  : webp;
-const scale: Variant[] = (chosen.length ? chosen : webp).slice()
-  .sort((a: Variant, b: Variant) => a.width - b.width);
+/* Les variantes retenues : celles qui couvrent les largeurs que l'emplacement
+   demande, ou l'échelle entière à défaut de consigne (voir `pickVariants`). */
+const scale: Variant[] = pickVariants(src?.variants ?? [], widths);
 
 const srcset = scale.map((v: Variant) => `${v.src} ${v.width}w`).join(', ');
 /* Le `src` de repli : la plus grande variante retenue plutôt que l'original,

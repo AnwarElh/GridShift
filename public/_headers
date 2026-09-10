@@ -1,0 +1,13 @@
+# Sans ce fichier, Cloudflare sert les fichiers statiques avec
+# `max-age=0, must-revalidate` : chaque page vue redemandait la feuille de style
+# avant de pouvoir peindre — un aller-retour réseau de plus, à chaque visite.
+
+# /_astro/ porte l'empreinte du contenu dans le nom : un changement produit un
+# autre nom, jamais une autre version sous le même. Un an, sans revalider.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Les polices ne sont pas empreintées : un mois, et un nouveau nom de fichier si
+# l'une d'elles change un jour.
+/fonts/*
+  Cache-Control: public, max-age=2592000

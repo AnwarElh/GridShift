@@ -60,14 +60,19 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'VideoGame',
   name: d.title,
-  publisher: d.studio,
+  /* Le studio est l'auteur, pas l'éditeur : Sandfall développe Expedition 33,
+     Kepler l'édite. `publisher` affirmait le contraire pour la moitié du
+     catalogue. */
+  author: { '@type': 'Organization', name: d.studio },
   genre: d.genre,
   inLanguage: lang,
   gamePlatform: d.platforms.map((p) => p.name),
   url: new URL(gameHref(lang, game.id), site.url).href,
-  ...(d.score !== undefined
-    ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: d.score, bestRating: 10, ratingCount: Math.max(1, posts.length) } }
-    : {}),
+  /* Pas d'`aggregateRating`. La note de la rédaction est UNE note : la déclarer
+     agrégée, avec pour « nombre de votes » le nombre de nos propres articles,
+     c'est le balisage trompeur que Google sanctionne d'une action manuelle. Le
+     test porte déjà sa `reviewRating`, et c'est la bonne place. À rétablir le
+     jour où `userScore`/`userVotes` compteront de vrais votes. */
 };
 ---
 <Base title={titleWithin(d.title, t('game.seoSuffixes'))} description={t('game.desc')(d.title, d.studio)} jsonLd={jsonLd}

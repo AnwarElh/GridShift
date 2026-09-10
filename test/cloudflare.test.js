@@ -23,7 +23,7 @@ mock.module(import.meta.resolve('../src/i18n/config.ts'), {
 });
 
 const { cacheKey, isCacheable, ttlFrom } = await import('../src/lib/cache.ts');
-const { load } = await import('../src/lib/db.ts');
+const { load, pickVariants } = await import('../src/lib/db.ts');
 
 const req = (url, headers = {}) => new Request(url, { headers });
 
@@ -150,4 +150,31 @@ test('load() lit les colonnes allemandes', async () => {
   assert.deepEqual(authors[0].data.creds, ['c'], 'le JSON traduit suit la langue');
   assert.equal(posts[0].lang, 'de');
   assert.equal(games[0].data.score, 8.2, 'les chiffres ne sont pas dupliqués par langue');
+});
+
+/* Le choix des variantes d'une image. Ce qui casse ici casse en silence : le
+   srcset reste valide, il perd seulement ses petites tailles, et un téléphone
+   télécharge l'image du bureau. */
+const v = (width, format = 'webp') => ({ width, height: width, format, src: `x.${width}.${format}` });
+const ladder = [480, 720, 1080, 1440, 1920].map((w) => v(w));
+const widthsOf = (list) => list.map((x) => x.width);
+
+test('une largeur absente de l\'échelle ne vide pas le bas du srcset', () => {
+  assert.deepEqual(widthsOf(pickVariants(ladder, [900, 1440, 1920])), [720, 1080, 1440, 1920]);
+});
+
+test('une demande sous la plus petite variante garde la plus petite', () => {
+  assert.deepEqual(widthsOf(pickVariants([164, 240, 300].map((w) => v(w)), [148])), [164]);
+});
+
+test('une demande au-delà de la plus grande garde la plus grande', () => {
+  assert.deepEqual(widthsOf(pickVariants(ladder, [2400])), [1920]);
+});
+
+test("sans consigne : toute l'échelle webp, de la plus petite à la plus grande", () => {
+  assert.deepEqual(widthsOf(pickVariants([v(1080), v(480), v(720, 'jpeg')])), [480, 1080]);
+});
+
+test("sans variante, rien : le composant retombe sur l'original", () => {
+  assert.deepEqual(pickVariants([], [480]), []);
 });
