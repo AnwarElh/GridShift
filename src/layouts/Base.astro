@@ -30,6 +30,18 @@ interface Props {
 }
 const lang = langFromPath(Astro.url.pathname);
 const others = otherLocales(lang);
+/* Depuis que R2 sert les médias sous son propre domaine, l'image LCP vit sur
+   une AUTRE origine : le navigateur doit ouvrir DNS + TCP + TLS avant de
+   pouvoir la demander, et il ne commence qu'en rencontrant la balise. Le
+   preconnect lance cette poignée de main dès la lecture du <head>.
+   Rien à précharger en plus : l'image d'ouverture porte déjà fetchpriority
+   haute, et le scanner de préchargement la trouve pendant l'analyse.
+   Pas de `crossorigin` — une <img> sans cet attribut n'emprunte pas une
+   connexion anonyme, et le preconnect resterait inutilisé. */
+const mediaBase = (Astro.locals as { runtime?: { env?: { MEDIA_BASE_URL?: string } } })
+  .runtime?.env?.MEDIA_BASE_URL ?? '';
+const mediaOrigin = /^https?:\/\//.test(mediaBase) ? new URL(mediaBase).origin : null;
+
 const t = useT(lang);
 
 const {
@@ -106,6 +118,8 @@ const alternates = alt
      Les trois familles du premier écran sont préchargées : Inter compose
      l'interface, Chakra Petch les titres — donc l'élément LCP — et
      JetBrains Mono toutes les étiquettes de rubrique, visibles dès le Fil. -->
+{mediaOrigin && <link rel="preconnect" href={mediaOrigin} />}
+
 <link rel="preload" href={withBase('/fonts/inter-normal-latin.woff2')} as="font" type="font/woff2" crossorigin>
 <link rel="preload" href={withBase('/fonts/chakra-700-latin.woff2')} as="font" type="font/woff2" crossorigin>
 <link rel="preload" href={withBase('/fonts/jetbrains-normal-latin.woff2')} as="font" type="font/woff2" crossorigin>

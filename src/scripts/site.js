@@ -350,15 +350,28 @@ if (grid) {
 const ctx = $('#ctxbar'), readbar = $('#readbar'), art = $('#article-body');
 if (ctx && art) {
   let queued = false;
+  /* La géométrie de l'article ne change pas quand on défile — seulement quand
+     la mise en page bouge. La lire à chaque image la faisait recalculer de
+     force, juste après les écritures de l'image précédente : c'est le
+     « forced reflow » que le rapport Lighthouse chiffrait à 53 ms. On la
+     mesure donc hors du chemin de défilement.
+     ponytail: ResizeObserver suit la taille de l'article, pas sa position —
+     un décalage de offsetTop sans changement de sa propre boîte ne serait vu
+     qu'au défilement suivant. Passer à un observateur sur <body> le jour où
+     un gabarit rend ce cas possible. */
+  let top = 0, h = 0;
+  const measure = () => { top = art.offsetTop; h = art.offsetHeight; };
   const update = () => {
-    const top = art.offsetTop, h = art.offsetHeight, y = scrollY + innerHeight * 0.3;
+    const y = scrollY + innerHeight * 0.3;
     const inside = y > top && y < top + h;
     ctx.classList.toggle('on', inside);
     if (inside) readbar.style.transform = 'scaleX(' + Math.min(1, Math.max(0, (y - top) / h)).toFixed(3) + ')';
     queued = false;
   };
   addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
-  update();
+  /* Le rappel part aussi à l'observation : c'est lui qui fait la mesure
+     initiale, y compris quand une image tardive rallonge l'article. */
+  new ResizeObserver(() => { measure(); update(); }).observe(art);
 }
 
 /* partage : l'API native sur mobile, le presse-papier ailleurs */
