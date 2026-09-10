@@ -160,13 +160,27 @@ if (slider && dotbar) {
 
   let timer = null, stopped = false, held = false;
 
-  const posOf = (i) => slides[i].offsetLeft - slider.offsetLeft;
+  /* La position d'une diapo ne dépend que de la mise en page, jamais du
+     défilement. La relire à chaque mesure — une fois par diapo, juste après
+     que markAt() a écrit des attributs — forçait un recalcul synchrone : le
+     « forced reflow » du rapport Lighthouse. On la retient, et on la reprend
+     quand le conteneur change de taille (rotation, redimensionnement, image
+     tardive). `scrollLeft` reste lu à la volée : c'est la seule valeur qui
+     change vraiment au doigt. */
+  let pos = [];
+  const measurePos = () => {
+    const base = slider.offsetLeft;
+    pos = slides.map((el) => el.offsetLeft - base);
+  };
+  const posOf = (i) => pos[i] ?? 0;
   const current = () => {
     const x = slider.scrollLeft;
     let best = 0, gap = Infinity;
     slides.forEach((_, i) => { const d = Math.abs(posOf(i) - x); if (d < gap) { gap = d; best = i; } });
     return best;
   };
+  /* Le rappel part dès l'observation : c'est lui qui fait la mesure initiale. */
+  new ResizeObserver(measurePos).observe(slider);
   const markAt = (i) => dots.forEach((d, n) => d.setAttribute('aria-current', String(n === i)));
   /* au doigt c'est le défilement qui fait foi ; au clic, on marque tout de
      suite — attendre l'événement de défilement laissait le point en retard */
