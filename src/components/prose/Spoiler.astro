@@ -1,8 +1,0 @@
----
-interface Props { summary?: string; }
-const { summary = 'Contient un détail de l’histoire' } = Astro.props;
----
-<details class="spoiler">
-  <summary>⚠ {summary}</summary>
-  <slot />
-</details>

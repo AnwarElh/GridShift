@@ -63,6 +63,13 @@ export default defineConfig({
     imageService: 'passthrough',
     platformProxy: { enabled: true, configPath: 'wrangler.jsonc' },
   }),
+  /* Aucune session : aucune page ne varie selon le lecteur, et c'est même ce
+     qui les rend toutes partageables en cache (isCacheable, src/lib/cache.ts).
+     Sans cette ligne l'adapter Cloudflare en suppose une et réclame une liaison
+     KV « SESSION » — un espace resté vide depuis sa création, et un avertissement
+     à chaque build invitant à le rebrancher. `memory` ne stocke rien au-delà de
+     l'isolat : c'est la façon de dire « pas de session » que l'adapter lit. */
+  session: { driver: 'memory' },
   integrations: [mdx()],
   /* Conservé pour scripts/content-to-d1.mjs, qui rend le Markdown avec la même
      chaîne : le HTML stocké dans D1 doit être celui que le site produisait. */

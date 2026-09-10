@@ -18,9 +18,12 @@
     "media:push": "node scripts/assets-to-r2.mjs",
     "media:push:remote": "node scripts/assets-to-r2.mjs --remote",
     "media:plan": "node scripts/assets-to-r2.mjs --dry-run",
+    "media:build": "node scripts/media-build.mjs",
+    "media:build:push": "node scripts/media-build.mjs --push",
+    "media:build:remote": "node scripts/media-build.mjs --push --remote",
     "og:build": "node scripts/og-build.mjs",
     "cf:provision": "bash scripts/cf-provision.sh",
-    "cf:setup": "npm run db:migrate && npm run db:seed && npm run media:push"
+    "cf:setup": "npm run db:migrate && npm run db:seed && npm run media:push && npm run media:build:push"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.13",

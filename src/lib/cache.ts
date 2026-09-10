@@ -17,16 +17,19 @@
  */
 
 /* Les formes minimales des globales du worker. On ne tire pas
-   @cloudflare/workers-types pour quatre méthodes : le module reste lisible hors
-   du worker, et testable avec un faux KV de dix lignes. */
+   @cloudflare/workers-types pour deux méthodes : le module reste lisible hors
+   du worker, et testable avec un faux KV de dix lignes.
+
+   `delete` et `list` vivaient ici pour une purge ciblée qui n'a jamais eu
+   d'appelant — et qui n'aurait pas tenu sa promesse : le Cache API du colo ne
+   s'efface que dans le point de présence qui exécute le worker, jamais dans
+   les trois cents autres. Ce qui invalide vraiment partout, c'est BUILD_ID
+   dans la clé : un déploiement suffit. */
 export interface KVLike {
   getWithMetadata<M>(key: string, opts: { type: 'arrayBuffer' }):
     Promise<{ value: ArrayBuffer | null; metadata: M | null } | null>;
   put(key: string, value: ArrayBuffer,
       opts?: { expirationTtl?: number; metadata?: unknown }): Promise<void>;
-  delete(key: string): Promise<void>;
-  list(opts?: { prefix?: string; cursor?: string; limit?: number }):
-    Promise<{ keys: { name: string }[]; list_complete: boolean; cursor?: string }>;
 }
 
 /** Le Cache API du colo. `caches.default` est propre aux Workers : il n'est pas
@@ -135,19 +138,4 @@ export async function write(
     }));
   }
   return new Response(body, { status: 200, headers });
-}
-
-/** Invalidation ciblée après une publication. KV ne sait pas supprimer par
- *  préfixe : on liste puis on supprime, par paquets de mille. */
-export async function purge(env: CacheEnv, prefix = ''): Promise<number> {
-  if (!env.CACHE) return 0;
-  let cursor: string | undefined;
-  let removed = 0;
-  do {
-    const page = await env.CACHE.list({ prefix, cursor, limit: 1000 });
-    await Promise.all(page.keys.map((k: { name: string }) => env.CACHE!.delete(k.name)));
-    removed += page.keys.length;
-    cursor = page.list_complete ? undefined : page.cursor;
-  } while (cursor);
-  return removed;
 }

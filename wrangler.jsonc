@@ -60,17 +60,15 @@
   ],
 
   "kv_namespaces": [
+    /* Le seul espace KV du site. Il n'y en avait un second, « SESSION », que
+       parce que l'adapter Cloudflare code ce nom en dur pour les sessions
+       Astro — mais le site n'en ouvre aucune : aucune page ne varie selon le
+       lecteur, c'est même ce qui les rend toutes partageables en cache
+       (isCacheable, src/lib/cache.ts). Zéro clé écrite depuis sa création.
+       Le jour où une session apparaîtra, la liaison reviendra avec elle. */
     {
       "binding": "CACHE",
       "id": "e6e0fc7d3cc44774814547209f4f430e"
-    },
-    /* Astro tient ses sessions dans KV et attend ce nom de liaison, pas un
-       autre : l'adapter Cloudflare code « SESSION » en dur. Espace distinct de
-       CACHE — une session n'a ni la durée de vie ni le sort d'une entrée de
-       cache, qu'on purge sans prévenir. */
-    {
-      "binding": "SESSION",
-      "id": "2f54bd9891064c96bed2acd3d97cc83e"
     }
   ],
 

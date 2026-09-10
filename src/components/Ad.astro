@@ -3,14 +3,11 @@
    Sans PUBLIC_ADSENSE_CLIENT dans .env, l'emplacement reste vide — la
    réservation d'espace évite le décalage de mise en page (CLS).
    `unit`, pas `slot` : `slot` est un attribut réservé côté Astro. */
-import { langFromPath, withBase } from '../i18n/config';
+import { langFromPath } from '../i18n/config';
 import { useT } from '../i18n/ui';
 interface Props { h: '90' | '250' | '280' | '600'; unit?: string; inline?: boolean; class?: string; }
 const { h, unit, inline = false, class: cls = '' } = Astro.props;
 const client = import.meta.env.PUBLIC_ADSENSE_CLIENT;
-/* PUBLIC_AD_DEMO=1 : une créa factice à la place de la plaque vide, pour
-   visualiser la page chargée. Retirer la variable et tout revient à zéro. */
-const demo = import.meta.env.PUBLIC_AD_DEMO;
 /* Le gabarit réel du format : les attributs `width` et `height` d'une image
    attendent des entiers en pixels — « 100% » n'est pas une dimension et ne
    réserve donc aucune place, ce qui décale la mise en page au chargement. */
@@ -25,8 +22,5 @@ const t = useT(langFromPath(Astro.url.pathname));
            data-ad-client={client} data-ad-slot={unit} data-full-width-responsive="false"></ins>
       <script is:inline>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>
     </Fragment>
-  ) : demo ? (
-    <img src={withBase(`/ads/${h}.jpg`)} alt="" width={box[0]} height={box[1]}
-         style="width:100%;height:100%;object-fit:cover" />
   ) : label}
 </div>
