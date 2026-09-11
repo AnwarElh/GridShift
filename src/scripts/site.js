@@ -240,7 +240,11 @@ if (slider && dotbar) {
   calm.addEventListener('change', run);
 
   dotbar.hidden = !phone.matches;
-  mark();
+  /* markAt(0), pas mark() : au démarrage `pos` est encore vide (le
+     ResizeObserver n'a pas rendu sa première mesure), donc current() rendait
+     toujours 0 — mais en lisant scrollLeft juste après l'écriture de `hidden`
+     ci-dessus. C'était le reflow forcé que Lighthouse chiffrait à 119 ms. */
+  markAt(0);
   /* l'état initial des deux icônes vient d'ici, pas du gabarit : `hidden` sur
      un enfant de <svg> n'est pas un attribut que le typage Astro accepte. */
   setPaused(false);
