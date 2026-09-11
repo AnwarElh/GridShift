@@ -55,14 +55,6 @@ export default defineConfig({
   site: process.env.SITE_URL || 'https://autnic.com',
   base: BASE,
   trailingSlash: 'ignore',
-  /* La feuille de style dans le HTML plutôt qu'en <link> : sur mobile, ce
-     fichier bloquait le premier rendu le temps d'un aller-retour de plus
-     (~300 ms au rapport Lighthouse). Le HTML y gagne ~13 Ko compressés, mais la
-     plupart des lecteurs arrivent de la recherche pour une seule page, et les
-     suivantes sont préchargées par les règles de spéculation.
-     ponytail: tout le CSS est inliné, pas seulement le critique — extraire le
-     CSS du premier écran le jour où le poids du HTML compte. */
-  build: { inlineStylesheets: 'always' },
   output: 'server',
   adapter: cloudflare({
     /* Les images sont fabriquées à la publication (scripts/media-build.mjs) et
