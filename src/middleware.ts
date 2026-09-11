@@ -1,5 +1,5 @@
 import type { MiddlewareHandler } from 'astro';
-import { read, write, isCacheable } from './lib/cache.ts';
+import { read, write, isCacheable, cacheControl } from './lib/cache.ts';
 
 /* Le cache, posé devant chaque page.
  *
@@ -85,7 +85,13 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   if (hit) {
     const headers = new Headers(hit.response.headers);
     headers.set('x-autnic-cache', hit.from);
-    return harden(new Response(hit.response.body, { status: 200, headers }));
+    /* Le colo rend la copie avec le max-age=14400 que Cloudflare y a ajouté :
+       on repose le nôtre, pour que le navigateur redemande la page. */
+    headers.set('cache-control', cacheControl(env as never));
+    /* Le statut reste celui du cache : le Cache API du colo honore
+       If-Modified-Since et rend un 304 sans corps au rechargement. Le forcer
+       en 200 servait une page vide, qui remplaçait la bonne dans le navigateur. */
+    return harden(new Response(hit.response.body, { status: hit.response.status, headers }));
   }
 
   /* Durci avant le cache, pas après : c'est cette réponse-là qui est stockée,

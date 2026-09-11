@@ -53,6 +53,14 @@ export const ttlFrom = (env: CacheEnv, fallback = 3600) => {
   return Number.isFinite(n) && n >= MIN_TTL ? n : fallback;
 };
 
+/* `s-maxage` pilote le cache du colo ; `max-age=0` oblige le navigateur à
+   redemander la page à chaque visite — un 304 s'il n'a pas changé. Sans lui,
+   Cloudflare posait max-age=14400 sur les réponses du colo : le navigateur
+   gardait quatre heures un HTML qui, après un déploiement, pointait vers des
+   fichiers /_astro/ disparus. Pas de `stale-while-revalidate` : le Cache API
+   l'ignore, et seul le navigateur l'appliquait — en resservant l'ancienne page. */
+export const cacheControl = (env: CacheEnv) => `public, max-age=0, s-maxage=${ttlFrom(env)}`;
+
 /* L'identifiant du build courant, injecté par Vite (voir astro.config.mjs).
    Hors bundle — les tests sous node — il n'existe pas : la valeur de repli
    suffit, aucun cache n'est partagé dans ce contexte. */
@@ -120,10 +128,7 @@ export async function write(
 
   const ttl = ttlFrom(env);
   const headers = new Headers(response.headers);
-  /* `s-maxage` pilote les caches partagés ; `stale-while-revalidate` autorise
-     à servir la version périmée pendant qu'on en refait une — c'est ce qui
-     évite qu'une purge fasse retomber tout le monde sur D1 en même temps. */
-  headers.set('cache-control', `public, s-maxage=${ttl}, stale-while-revalidate=${ttl * 4}`);
+  headers.set('cache-control', cacheControl(env));
   headers.set('x-autnic-cache', 'miss');
 
   const body = await response.clone().arrayBuffer();

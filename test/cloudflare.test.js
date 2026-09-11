@@ -45,6 +45,25 @@ test('une requête portant une identité n’est pas partagée', () => {
   assert.equal(isCacheable(new Request('https://g.fr/', { method: 'POST' })), false);
 });
 
+/* Au rechargement, le navigateur envoie If-Modified-Since et le Cache API du
+   colo répond 304, sans corps. Réécrit en 200, ce vide devenait la page. */
+test('un 304 du cache colo reste un 304, pas un 200 vide', async () => {
+  globalThis.caches = { default: { match: async () => new Response(null, {
+    status: 304, headers: { 'cache-control': 'public, max-age=14400, s-maxage=86400' },
+  }) } };
+  try {
+    const { onRequest } = await import('../src/middleware.ts');
+    const res = await onRequest(
+      { request: req('https://g.fr/', { 'if-modified-since': 'Fri, 11 Sep 2026 10:23:45 GMT' }), locals: {} },
+      () => assert.fail('un hit ne doit pas rendre la page'),
+    );
+    assert.equal(res.status, 304);
+    assert.match(res.headers.get('cache-control'), /max-age=0,/, 'le navigateur ne garde pas le HTML quatre heures');
+  } finally {
+    delete globalThis.caches;
+  }
+});
+
 test('la durée de vie refuse ce que KV refuse', () => {
   assert.equal(ttlFrom({ CACHE_TTL: '600' }), 600);
   assert.equal(ttlFrom({ CACHE_TTL: '5' }), 3600, 'sous 60 s, KV rejette : on retombe sur le défaut');
