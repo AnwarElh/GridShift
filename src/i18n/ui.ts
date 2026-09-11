@@ -240,7 +240,7 @@ const en = {
   'consent.title': 'We use advertising cookies.',
   'consent.body':
     'They fund the newsroom and do nothing else. None is set until you accept.',
-  'consent.more': 'Learn more',
+  'consent.more': 'Read our cookie policy',
   'consent.accept': 'Accept',
   'consent.refuse': 'Refuse',
   'consent.reset': 'Change my choice',
@@ -498,7 +498,7 @@ const fr: Dict = {
   'consent.title': 'Nous utilisons des cookies publicitaires.',
   'consent.body':
     'Ils financent la rédaction et ne servent qu’à ça. Aucun n’est déposé tant que vous n’avez pas accepté.',
-  'consent.more': 'En savoir plus',
+  'consent.more': 'Lire notre politique de cookies',
   'consent.accept': 'Accepter',
   'consent.refuse': 'Refuser',
   'consent.reset': 'Revenir sur mon choix',
@@ -757,7 +757,7 @@ const de: Dict = {
   'consent.title': 'Wir verwenden Werbe-Cookies.',
   'consent.body':
     'Damit finanzieren wir die Redaktion, mehr nicht. Vor deiner Zustimmung wird keiner gesetzt.',
-  'consent.more': 'Mehr erfahren',
+  'consent.more': 'Unsere Cookie-Richtlinie lesen',
   'consent.accept': 'Akzeptieren',
   'consent.refuse': 'Ablehnen',
   'consent.reset': 'Auswahl ändern',
