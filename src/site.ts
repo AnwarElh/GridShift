@@ -72,17 +72,17 @@ export const siteCopy: Record<Locale, { tagline: string; description: string }> 
   en: {
     tagline: 'Independent games media',
     description:
-      'Reviews, guides and news for live-service games. We buy what we review, and we revise our scores when the games change.',
+      'Reviews, guides and news for live-service games. We revise our scores when the games change.',
   },
   fr: {
     tagline: 'Média indépendant sur le jeu vidéo',
     description:
-      'Tests, guides et actus jeu vidéo. Nous testons ce que nous achetons et nous révisons nos notes quand les jeux changent.',
+      'Tests, guides et actus jeu vidéo. Nous révisons nos notes quand les jeux changent.',
   },
   de: {
     tagline: 'Unabhängiges Games-Magazin',
     description:
-      'Tests, Guides und News zu Live-Service-Spielen. Wir kaufen, was wir testen, und wir korrigieren unsere Wertungen, wenn sich die Spiele ändern.',
+      'Tests, Guides und News zu Live-Service-Spielen. Wir korrigieren unsere Wertungen, wenn sich die Spiele ändern.',
   },
 };
 

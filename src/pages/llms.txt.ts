@@ -35,13 +35,13 @@ export const GET: APIRoute = async ({ locals, site: astroSite }) => {
 
   /* Ce que la maison affirme d'elle-même, en tête et en clair.
      Un moteur qui hésite entre trois sources sur un jeu retient celle dont il
-     peut dire POURQUOI elle vaut d'être citée. « Nous achetons ce que nous
-     testons » est cette raison ; elle vivait dans une page qu'il fallait aller
-     chercher. */
+     peut dire POURQUOI elle vaut d'être citée. Dire d'où vient l'exemplaire
+     testé en fait partie ; ces règles vivaient dans une page qu'il fallait
+     aller chercher. */
   lines.push(
     '## About',
     '',
-    `- ${site.name} buys the games it reviews. When a publisher supplies a copy, the review says so.`,
+    '- When a publisher supplies a copy, the review says so.',
     '- Every review names the version it was tested on, and scores are revised when the game changes.',
     '- Every article carries a dated correction log. Published text is never edited silently.',
     `- Editorial charter, scoring method and transparency rules: ${abs(pageHref(lang, 'about'))}`,

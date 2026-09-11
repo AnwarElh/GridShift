@@ -113,7 +113,7 @@ const en = {
     + '— dated, sourced, and revised when the games change.',
   'section.review.seoTitle': 'Game reviews with a tested version and a score',
   'section.review.seoDesc':
-    'Scored reviews of live-service games. We buy what we review, name the version we tested, '
+    'Scored reviews of live-service games. We name the version we tested, '
     + 'and revise the score when the game changes under it.',
   'section.guide.seoTitle': 'Game guides, re-checked at every major patch',
   'section.guide.seoDesc':
@@ -380,7 +380,7 @@ const fr: Dict = {
     + 'suivons — datées, sourcées, et corrigées quand le jeu change.',
   'section.review.seoTitle': 'Tests de jeux, avec version testée et note',
   'section.review.seoDesc':
-    'Nos tests de jeux en service. Nous achetons ce que nous testons, nous indiquons la version '
+    'Nos tests de jeux en service. Nous indiquons la version '
     + 'testée, et nous révisons la note quand le jeu change.',
   'section.guide.seoTitle': 'Guides de jeu, revérifiés à chaque gros patch',
   'section.guide.seoDesc':
@@ -637,7 +637,7 @@ const de: Dict = {
     + 'begleiten — datiert, belegt und laufend korrigiert.',
   'section.review.seoTitle': 'Spieletests mit getesteter Version und Wertung',
   'section.review.seoDesc':
-    'Bewertete Tests zu Live-Service-Spielen. Wir kaufen, was wir testen, nennen die getestete '
+    'Bewertete Tests zu Live-Service-Spielen. Wir nennen die getestete '
     + 'Version und korrigieren die Wertung, wenn sich das Spiel ändert.',
   'section.guide.seoTitle': 'Spiele-Guides, nach jedem großen Patch geprüft',
   'section.guide.seoDesc':
