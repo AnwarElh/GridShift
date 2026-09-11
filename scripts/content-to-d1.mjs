@@ -320,6 +320,9 @@ async function main() {
       const cover = mediaKey(d.cover);
       if (cover && !mediaKeys.has(cover)) errors.push(`${lang}/${a.id} : cover introuvable (${cover})`);
       if (!SECTIONS.some((s) => s.key === d.type)) errors.push(`${lang}/${a.id} : rubrique inconnue « ${d.type} »`);
+      /* Une correction sans `updated` : le journal dirait que le texte a changé,
+         `dateModified` et le plan de site diraient le contraire. */
+      if (d.corrections?.length && !d.updated) errors.push(`${lang}/${a.id} : corrections sans date « updated »`);
 
       const html = await toHtml(a.body);
       push(`INSERT INTO articles (slug,lang,section,title,seo_title,lede,published_at,updated_at,author_id,game_id,kicker,cover_media,cover_caption,reading_minutes,tested_on,stale,live,featured,draft,score,verdict,pros,cons,playtime,review_notes,score_revision,level,steps,method,sources,corrections,body,body_html) VALUES (${q(a.id)},${q(lang)},${q(d.type)},${q(d.title)},${q(d.seoTitle)},${q(d.lede)},${q(iso(d.date))},${q(iso(d.updated))},${q(d.author)},${q(d.game)},${q(d.kicker)},${q(cover)},${q(d.coverCaption)},${n(d.readingMinutes)},${q(d.testedOn)},${b(d.stale)},${b(d.live)},${b(d.featured)},${b(d.draft)},${n(d.score)},${q(d.verdict)},${json(d.pros)},${json(d.cons)},${q(d.playtime)},${json(d.reviewNotes)},${q(d.scoreRevision)},${q(d.level)},${json(d.steps)},${q(d.method)},${q(d.sources)},${json(d.corrections)},${q(a.body)},${q(html)});`);

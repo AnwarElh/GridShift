@@ -11,7 +11,6 @@ import { useT } from './i18n/ui';
 export const site = {
   name: 'Autnic',
   url: import.meta.env.SITE ?? 'https://autnic.com',
-  twitter: '@autnic',
   email: 'redaction@autnic.com',
 };
 

@@ -10,6 +10,10 @@ platforms:
   - { name: PC, best: true }
   - { name: PS5 }
   - { name: "Xbox Series" }
+offers:
+  - { shop: Steam, price: "$69.99", url: "https://store.steampowered.com/app/3751260/", tone: brass }
+  - { shop: thebloodofdawnwalker.com, price: "—", url: "https://www.thebloodofdawnwalker.com/" }
+pricesCheckedOn: 2026-09-11
 genre:
   en: Action RPG
   fr: Action-RPG

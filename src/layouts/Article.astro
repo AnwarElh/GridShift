@@ -195,30 +195,32 @@ const jsonLd: Record<string, unknown> = {
             </div>
           )}
 
-          {(data.method || data.sources || data.corrections.length > 0) && (
-            <div class="acc" style="margin-top:48px">
-              {data.method && (
-                <details open>
-                  <summary>{t('review.howWeTested')} <span class="ind"></span></summary>
-                  <div class="acc-body">{data.method}</div>
-                </details>
-              )}
-              {data.corrections.length > 0 && (
-                <details>
-                  <summary>{t('review.corrections')} <span class="ind"></span></summary>
-                  <div class="acc-body">
-                    {data.corrections.map((c) => <p><b>{c.date}</b> — {c.text}</p>)}
-                  </div>
-                </details>
-              )}
-              {data.sources && (
-                <details>
-                  <summary>{t('review.sources')} <span class="ind"></span></summary>
-                  <div class="acc-body">{data.sources}</div>
-                </details>
-              )}
-            </div>
-          )}
+          <div class="acc" style="margin-top:48px">
+            {data.method && (
+              <details open>
+                <summary>{t('review.howWeTested')} <span class="ind"></span></summary>
+                <div class="acc-body">{data.method}</div>
+              </details>
+            )}
+            {/* Le journal des corrections est sur CHAQUE article, vide compris :
+                « Qui sommes-nous » le promet, et un journal qui n'apparaît
+                qu'une fois rempli ne prouve rien — « aucune correction » est
+                précisément l'information. */}
+            <details>
+              <summary>{t('review.corrections')} <span class="ind"></span></summary>
+              <div class="acc-body">
+                {data.corrections.length > 0
+                  ? data.corrections.map((c) => <p><b>{c.date}</b> — {c.text}</p>)
+                  : <p>{t('review.noCorrections')}</p>}
+              </div>
+            </details>
+            {data.sources && (
+              <details>
+                <summary>{t('review.sources')} <span class="ind"></span></summary>
+                <div class="acc-body">{data.sources}</div>
+              </details>
+            )}
+          </div>
 
           {data.tags.length > 0 && (
             <div class="chipbar" style="margin-top:32px">

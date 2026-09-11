@@ -165,9 +165,10 @@ const en = {
   'game.noneOfType': (label: string) => `We have not published any ${label.toLowerCase()} on this game.`,
   'game.alsoFollowSub': 'The other games we cover',
   'game.votes': (n: string) => `${n} votes`,
-  'game.desc': (title: string, studio: string) =>
-    `${title} by ${studio}: our score, the version we tested it on, where to buy it, and every `
-    + 'review, guide and news story we have published about it.',
+  'game.desc': (title: string, studio: string, has: { score: boolean; buy: boolean }) => {
+    const parts = [has.score && 'our score, the version we tested it on', has.buy && 'where to buy it'].filter(Boolean);
+    return `${title} by ${studio}: ${parts.length ? `${parts.join(', ')}, and ` : ''}every review, guide and news story we have published about it.`;
+  },
   /* Le titre d'une fiche de jeu était le nom du jeu, seul. Sur cette requête
      le studio, la boutique et la presse installée passent devant, et c'est
      normal. Les requêtes qu'un média peut gagner sont « <jeu> guides », «
@@ -215,6 +216,7 @@ const en = {
   'review.scoresMove': 'Scores move',
   'review.sources': 'Sources',
   'review.corrections': 'Corrections',
+  'review.noCorrections': 'No corrections since publication.',
   'review.inThisGuide': 'In this guide',
   'review.share': 'Share',
   'review.linkCopied': 'Link copied',
@@ -430,9 +432,10 @@ const fr: Dict = {
   'game.noneOfType': (label: string) => `Nous n’avons pas publié de ${label.toLowerCase()} sur ce jeu.`,
   'game.alsoFollowSub': 'Les autres jeux que nous couvrons',
   'game.votes': (n: string) => `${n} votes`,
-  'game.desc': (title: string, studio: string) =>
-    `${title}, de ${studio} : notre note, la version sur laquelle nous l’avons testé, où l’acheter, `
-    + 'et chaque test, guide et actu que nous avons publiés dessus.',
+  'game.desc': (title: string, studio: string, has: { score: boolean; buy: boolean }) => {
+    const parts = [has.score && 'notre note, la version sur laquelle nous l’avons testé', has.buy && 'où l’acheter'].filter(Boolean);
+    return `${title}, de ${studio} : ${parts.length ? `${parts.join(', ')}, et ` : ''}chaque test, guide et actu que nous avons publiés dessus.`;
+  },
   'game.seoSuffixes': [' — guides, test et actus', ' — guides et actus', ' — guides'],
   'game.follow': 'Suivre ce jeu',
   'game.fullPage': 'Fiche complète →',
@@ -473,6 +476,7 @@ const fr: Dict = {
   'review.scoresMove': 'Les notes bougent',
   'review.sources': 'Sources',
   'review.corrections': 'Corrections',
+  'review.noCorrections': 'Aucune correction depuis la publication.',
   'review.inThisGuide': 'Dans ce guide',
   'review.share': 'Partager',
   'review.linkCopied': 'Lien copié',
@@ -685,9 +689,10 @@ const de: Dict = {
   'game.noneOfType': (label: string) => `Wir haben noch keine ${label} zu diesem Spiel veröffentlicht.`,
   'game.alsoFollowSub': 'Die anderen Spiele, die wir begleiten',
   'game.votes': (n: string) => `${n} Stimmen`,
-  'game.desc': (title: string, studio: string) =>
-    `${title} von ${studio}: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder `
-    + 'Test, Guide und Artikel, den wir dazu veröffentlicht haben.',
+  'game.desc': (title: string, studio: string, has: { score: boolean; buy: boolean }) => {
+    const parts = [has.score && 'unsere Wertung, die getestete Version', has.buy && 'wo es zu kaufen ist'].filter(Boolean);
+    return `${title} von ${studio}: ${parts.length ? `${parts.join(', ')} und ` : ''}jeder Test, Guide und Artikel, den wir dazu veröffentlicht haben.`;
+  },
   'game.seoSuffixes': [' — Guides, Test und News', ' — Guides und News', ' — Guides'],
   'game.follow': 'Spiel beobachten',
   'game.fullPage': 'Ganze Seite →',
@@ -730,6 +735,7 @@ const de: Dict = {
   'review.scoresMove': 'Wertungen ändern sich',
   'review.sources': 'Quellen',
   'review.corrections': 'Korrekturen',
+  'review.noCorrections': 'Keine Korrekturen seit der Veröffentlichung.',
   'review.inThisGuide': 'In diesem Guide',
   'review.share': 'Teilen',
   'review.linkCopied': 'Link kopiert',

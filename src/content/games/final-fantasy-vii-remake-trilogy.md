@@ -10,6 +10,11 @@ platforms:
   - { name: "Xbox Series" }
   - { name: "Switch 2" }
   - { name: PC }
+offers:
+  - { shop: "Steam · Rebirth", price: "$49.99", url: "https://store.steampowered.com/app/2909400/" }
+  - { shop: "Steam · Remake Intergrade", price: "$39.99", url: "https://store.steampowered.com/app/1462040/" }
+  - { shop: square-enix-games.com, price: "—", url: "https://ffvii-remake.square-enix-games.com/" }
+pricesCheckedOn: 2026-09-11
 genre:
   en: Action RPG
   fr: Action-RPG

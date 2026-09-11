@@ -11,6 +11,11 @@ platforms:
   - { name: PS5 }
   - { name: "Xbox Series" }
   - { name: PC }
+offers:
+  - { shop: Nintendo eShop, price: "$69.99", url: "https://www.nintendo.com/us/store/products/onimusha-way-of-the-sword-switch-2/", tone: brass }
+  - { shop: Steam, price: "$69.99", url: "https://store.steampowered.com/app/2638890/" }
+  - { shop: capcom-games.com, price: "—", url: "https://www.capcom-games.com/onimusha/ws/en-us/" }
+pricesCheckedOn: 2026-09-11
 genre:
   en: Action-adventure
   fr: Action-aventure

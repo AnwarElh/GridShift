@@ -10,6 +10,10 @@ platforms:
   - { name: PC, best: true }
   - { name: PS5 }
   - { name: "Xbox Series" }
+offers:
+  - { shop: Steam, price: "$49.99", url: "https://store.steampowered.com/app/1903340/", tone: brass }
+  - { shop: expedition33.com, price: "—", url: "https://www.expedition33.com/" }
+pricesCheckedOn: 2026-09-11
 genre:
   en: Turn-based RPG
   fr: RPG au tour par tour

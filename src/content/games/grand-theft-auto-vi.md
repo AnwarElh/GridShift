@@ -9,6 +9,11 @@ platforms:
   - { name: PS5, best: true }
   - { name: "Xbox Series" }
   - { name: PC, unavailable: true }
+offers:
+  - { shop: PlayStation Store, price: "$79.99", url: "https://store.playstation.com/en-us/product/EP1004-PPSA01547_00-GTAVISTANDARD001", tone: brass }
+  - { shop: Xbox Store, price: "$79.99", url: "https://www.xbox.com/en-us/games/store/grand-theft-auto-vi/9nl3wwnzlzzn" }
+  - { shop: rockstargames.com, price: "—", url: "https://www.rockstargames.com/VI" }
+pricesCheckedOn: 2026-09-11
 genre:
   en: Open world
   fr: Monde ouvert

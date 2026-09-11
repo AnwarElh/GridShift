@@ -75,7 +75,7 @@ const jsonLd = {
      jour où `userScore`/`userVotes` compteront de vrais votes. */
 };
 ---
-<Base title={titleWithin(d.title, t('game.seoSuffixes'))} description={t('game.desc')(d.title, d.studio)} jsonLd={jsonLd}
+<Base title={titleWithin(d.title, t('game.seoSuffixes'))} description={t('game.desc')(d.title, d.studio, { score: d.score !== undefined, buy: d.offers.length > 0 })} jsonLd={jsonLd}
       alt={(l) => gameHref(l, game.id)}>
   <div class="hub">
     <div class="hub-bg">{d.hero ? <Fig src={d.hero} ratio="21-9" /> : <span class="ph"></span>}</div>

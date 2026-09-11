@@ -10,6 +10,11 @@ platforms:
   - { name: PS5 }
   - { name: "Xbox Series" }
   - { name: "Switch 2" }
+offers:
+  - { shop: GOG, price: "$49.99", url: "https://www.gog.com/en/game/the_witcher_3_wild_hunt_game_of_the_year_edition" }
+  - { shop: Steam, price: "$49.99", url: "https://store.steampowered.com/app/292030/" }
+  - { shop: thewitcher.com, price: "—", url: "https://www.thewitcher.com/en/witcher3" }
+pricesCheckedOn: 2026-09-11
 genre:
   en: Action RPG
   fr: Action-RPG
