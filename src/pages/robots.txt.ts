@@ -20,9 +20,10 @@ export const GET: APIRoute = () =>
       '',
       ...aiAgents.flatMap((a) => [`User-agent: ${a}`, 'Allow: /', '']),
       `Sitemap: ${site.url}${base}/sitemap.xml`,
-      /* Le plan Markdown, à côté du plan XML : un robot qui lit l'un trouve
-         l'autre sans avoir à deviner son adresse. */
-      `LLM-Content: ${site.url}${base}/llms.txt`,
+      /* Pas de ligne `LLM-Content:` : ce n'est pas une directive robots.txt.
+         Google l'ignore, mais Lighthouse déclare alors tout le fichier invalide
+         (8 points de score SEO), et llms.txt se trouve de toute façon à son
+         adresse conventionnelle, /llms.txt. */
       '',
     ].join('\n'),
     { headers: { 'content-type': 'text/plain; charset=utf-8' } },
