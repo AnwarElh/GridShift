@@ -271,7 +271,13 @@ async function main() {
   push(`-- ${new Date().toISOString()}`);
   push('PRAGMA foreign_keys = OFF;');
   push('DELETE FROM article_tags; DELETE FROM articles; DELETE FROM games;');
-  push('DELETE FROM authors; DELETE FROM media; DELETE FROM sections;');
+  /* Pas de `DELETE FROM media` : la ligne porte aussi `variants`, que seul
+     scripts/media-build.mjs écrit (db/migrations/0004). Vider la table ici
+     effaçait l'échelle responsive à chaque publication de contenu, et le site
+     servait l'original de 1920px partout jusqu'à la prochaine publication des
+     médias. Les médias sont donc mis à jour sur place, plus bas, et seuls ceux
+     qui n'existent plus dans src/assets sont retirés. */
+  push('DELETE FROM authors; DELETE FROM sections;');
   push('');
 
   push('-- rubriques');
@@ -282,8 +288,9 @@ async function main() {
 
   push('-- médias');
   for (const m of mediaRows) {
-    push(`INSERT INTO media (key,width,height,bytes,content_type,artist,licence,licence_url,source,note,checksum) VALUES (${q(m.key)},${m.width},${m.height},${m.bytes},${q(m.content_type)},${q(m.artist)},${q(m.licence)},${q(m.licenceUrl)},${q(m.source)},${q(m.note)},${q(m.checksum)});`);
+    push(`INSERT INTO media (key,width,height,bytes,content_type,artist,licence,licence_url,source,note,checksum) VALUES (${q(m.key)},${m.width},${m.height},${m.bytes},${q(m.content_type)},${q(m.artist)},${q(m.licence)},${q(m.licenceUrl)},${q(m.source)},${q(m.note)},${q(m.checksum)}) ON CONFLICT(key) DO UPDATE SET width=excluded.width,height=excluded.height,bytes=excluded.bytes,content_type=excluded.content_type,artist=excluded.artist,licence=excluded.licence,licence_url=excluded.licence_url,source=excluded.source,note=excluded.note,checksum=excluded.checksum;`);
   }
+  push(`DELETE FROM media WHERE key NOT IN (${mediaRows.map((m) => q(m.key)).join(',')});`);
   push('');
 
   push('-- auteurs');
