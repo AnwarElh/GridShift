@@ -1124,11 +1124,11 @@ dialog.modal::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
   letter-spacing:.02em;text-transform:uppercase;
   transition:background var(--t-1),border-color var(--t-1),color var(--t-1)}
 .pill:hover{border-color:var(--line-2);color:var(--tx)}
-.pill .n{font-family:var(--f-mono);font-size:var(--ui-xs);font-weight:600;opacity:.6}
+.pill .n{font-family:var(--f-mono);font-size:var(--ui-xs);font-weight:600;color:var(--tx-3)}
 /* le jeton actif porte la couleur d'action pleine : c'est le même signal que
    le bouton primaire, donc le lecteur sait déjà ce qu'il veut dire */
 .pill[aria-current]{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
-.pill[aria-current] .n{opacity:.7}
+.pill[aria-current] .n{color:inherit}
 
 /* ── LE FIL ─────────────────────────────────────────────────
    Une colonne large de vignettes, un rail de brèves. Un seul flux : la
