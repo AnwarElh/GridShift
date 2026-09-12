@@ -694,6 +694,12 @@ a.chip:hover{background:var(--chip-c,var(--brass));color:var(--on-brass);border-
 .switch[aria-checked="true"]::after{transform:translateX(18px);background:var(--on-brass)}
 
 /* newsletter — proposition claire, pas un mur */
+/* Le bloc lettre ne colle plus à ce qui le précède : il portait un
+   padding-top:0 en dur, qui supposait une section juste au-dessus pour
+   donner l'air. Sur une archive, la grille s'arrête sans marge et la
+   boîte lui était soudée. Le zéro ne vaut donc que là où l'hypothèse
+   est vraie : quand une .sec précède vraiment. */
+.sec+.news-sec{padding-top:0}
 .news-box{display:grid;gap:var(--s-4);padding:var(--s-6);
   --n:var(--notch);
   clip-path:polygon(var(--n) 0,100% 0,100% calc(100% - var(--n)),

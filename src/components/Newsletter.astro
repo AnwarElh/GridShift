@@ -8,7 +8,7 @@ const { id = 'newsletter' } = Astro.props;
 const action = import.meta.env.PUBLIC_NEWSLETTER_ACTION;
 const t = useT(langFromPath(Astro.url.pathname));
 ---
-<section class="sec" id={id} style="padding-top:0">
+<section class="sec news-sec" id={id}>
   <div class="news-box">
     <div>
       <span class="kicker">{t('news.kicker')}</span>
