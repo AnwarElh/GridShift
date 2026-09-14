@@ -1,0 +1,3674 @@
+[
+ {
+  "url": "https://autnic.com/",
+  "status": 200,
+  "final": "https://autnic.com/",
+  "title": "Live-service game reviews and guides \u2014 Autnic",
+  "desc": "Reviews, guides and news for live-service games. We buy what we review, and we revise our scores when the games change.",
+  "canonical": "https://autnic.com/",
+  "robots": null,
+  "h1": [
+   "Independent reviews, guides and news for live-service games"
+  ],
+  "imgs": 34,
+  "img_noalt": 34,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 33,
+  "ld": [
+   "WebSite"
+  ],
+  "words": 859,
+  "bytes": 44845
+ },
+ {
+  "url": "https://autnic.com/news/",
+  "status": 200,
+  "final": "https://autnic.com/news/",
+  "title": "Live-service game news, patches and updates \u2014 Autnic",
+  "desc": "Patch notes, studio statements and release dates for the live-service games we cover \u2014 dated, sourced, and revised when the games change.",
+  "canonical": "https://autnic.com/news/",
+  "robots": null,
+  "h1": [
+   "News"
+  ],
+  "imgs": 13,
+  "img_noalt": 13,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 13,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 390,
+  "bytes": 41804
+ },
+ {
+  "url": "https://autnic.com/reviews/",
+  "status": 200,
+  "final": "https://autnic.com/reviews/",
+  "title": "Game reviews with a tested version and a score \u2014 Autnic",
+  "desc": "Scored reviews of live-service games. We buy what we review, name the version we tested, and revise the score when the game changes under it.",
+  "canonical": "https://autnic.com/reviews/",
+  "robots": null,
+  "h1": [
+   "Reviews"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 254,
+  "bytes": 28687
+ },
+ {
+  "url": "https://autnic.com/guides/",
+  "status": 200,
+  "final": "https://autnic.com/guides/",
+  "title": "Game guides, re-checked at every major patch \u2014 Autnic",
+  "desc": "Walkthroughs, builds and progression guides for live-service games, each one showing the game version it was last tested against.",
+  "canonical": "https://autnic.com/guides/",
+  "robots": null,
+  "h1": [
+   "Guides"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 256,
+  "bytes": 28328
+ },
+ {
+  "url": "https://autnic.com/setup/",
+  "status": 200,
+  "final": "https://autnic.com/setup/",
+  "title": "Game settings and hardware setup guides \u2014 Autnic",
+  "desc": "Graphics settings, controller and hardware setup for the games we cover, measured on our own machines instead of copied off a spec sheet.",
+  "canonical": "https://autnic.com/setup/",
+  "robots": null,
+  "h1": [
+   "Setup"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 255,
+  "bytes": 28678
+ },
+ {
+  "url": "https://autnic.com/games/",
+  "status": 200,
+  "final": "https://autnic.com/games/",
+  "title": "Every live-service game we cover, scored \u2014 Autnic",
+  "desc": "Every live-service game we track, with its score, the version we tested, its release date and every review, guide and news story we have published on it.",
+  "canonical": "https://autnic.com/games/",
+  "robots": null,
+  "h1": [
+   "Game database"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 238,
+  "bytes": 20623
+ },
+ {
+  "url": "https://autnic.com/about/",
+  "status": 200,
+  "final": "https://autnic.com/about/",
+  "title": "Who we are \u2014 Autnic",
+  "desc": "Who writes Autnic, how we score, what we buy ourselves and what we accept \u2014 our editorial charter, our scoring method and our transparency rules, in full.",
+  "canonical": "https://autnic.com/about/",
+  "robots": null,
+  "h1": [
+   "We review what we buy"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "Organization",
+   "ImageObject",
+   "Person",
+   "Person",
+   "Person",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 524,
+  "bytes": 21897
+ },
+ {
+  "url": "https://autnic.com/credits/",
+  "status": 200,
+  "final": "https://autnic.com/credits/",
+  "title": "Photo credits \u2014 Autnic",
+  "desc": "Author, licence and source of every image used on Autnic.",
+  "canonical": "https://autnic.com/credits/",
+  "robots": null,
+  "h1": [
+   "Photo credits"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 723,
+  "bytes": 33737
+ },
+ {
+  "url": "https://autnic.com/legal-notice/",
+  "status": 200,
+  "final": "https://autnic.com/legal-notice/",
+  "title": "Legal notice \u2014 Autnic",
+  "desc": "Publisher, host and liabilities of Autnic.",
+  "canonical": "https://autnic.com/legal-notice/",
+  "robots": null,
+  "h1": [
+   "Legal notice"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 222,
+  "bytes": 15798
+ },
+ {
+  "url": "https://autnic.com/privacy/",
+  "status": 200,
+  "final": "https://autnic.com/privacy/",
+  "title": "Privacy \u2014 Autnic",
+  "desc": "What Autnic collects, why, and how to withdraw it.",
+  "canonical": "https://autnic.com/privacy/",
+  "robots": null,
+  "h1": [
+   "Privacy"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 175,
+  "bytes": 15390
+ },
+ {
+  "url": "https://autnic.com/cookies/",
+  "status": 200,
+  "final": "https://autnic.com/cookies/",
+  "title": "Cookies \u2014 Autnic",
+  "desc": "Which cookies Autnic sets, what they do, and how to change your mind.",
+  "canonical": "https://autnic.com/cookies/",
+  "robots": null,
+  "h1": [
+   "Cookies"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 152,
+  "bytes": 15165
+ },
+ {
+  "url": "https://autnic.com/games/clair-obscur-expedition-33/",
+  "status": 200,
+  "final": "https://autnic.com/games/clair-obscur-expedition-33/",
+  "title": "Clair Obscur: Expedition 33 \u2014 guides and news \u2014 Autnic",
+  "desc": "Clair Obscur: Expedition 33 by Sandfall Interactive: our score, the version we tested it on, where to buy it, and every review, guide and news story we have\u2026",
+  "canonical": "https://autnic.com/games/clair-obscur-expedition-33/",
+  "robots": null,
+  "h1": [
+   "Clair Obscur: Expedition 33"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "AggregateRating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 495,
+  "bytes": 40429
+ },
+ {
+  "url": "https://autnic.com/games/final-fantasy-vii-remake-trilogy/",
+  "status": 200,
+  "final": "https://autnic.com/games/final-fantasy-vii-remake-trilogy/",
+  "title": "Final Fantasy VII Remake Trilogy \u2014 guides and news \u2014 Autnic",
+  "desc": "Final Fantasy VII Remake Trilogy by Square Enix: our score, the version we tested it on, where to buy it, and every review, guide and news story we have\u2026",
+  "canonical": "https://autnic.com/games/final-fantasy-vii-remake-trilogy/",
+  "robots": null,
+  "h1": [
+   "Final Fantasy VII Remake Trilogy"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 516,
+  "bytes": 40239
+ },
+ {
+  "url": "https://autnic.com/games/grand-theft-auto-vi/",
+  "status": 200,
+  "final": "https://autnic.com/games/grand-theft-auto-vi/",
+  "title": "Grand Theft Auto VI \u2014 guides, review and news \u2014 Autnic",
+  "desc": "Grand Theft Auto VI by Rockstar Games: our score, the version we tested it on, where to buy it, and every review, guide and news story we have published about\u2026",
+  "canonical": "https://autnic.com/games/grand-theft-auto-vi/",
+  "robots": null,
+  "h1": [
+   "Grand Theft Auto VI"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 489,
+  "bytes": 38452
+ },
+ {
+  "url": "https://autnic.com/games/onimusha-way-of-the-sword/",
+  "status": 200,
+  "final": "https://autnic.com/games/onimusha-way-of-the-sword/",
+  "title": "Onimusha: Way of the Sword \u2014 guides and news \u2014 Autnic",
+  "desc": "Onimusha: Way of the Sword by Capcom: our score, the version we tested it on, where to buy it, and every review, guide and news story we have published about\u2026",
+  "canonical": "https://autnic.com/games/onimusha-way-of-the-sword/",
+  "robots": null,
+  "h1": [
+   "Onimusha: Way of the Sword"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "AggregateRating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 483,
+  "bytes": 40137
+ },
+ {
+  "url": "https://autnic.com/games/star-wars-kotor-remake/",
+  "status": 200,
+  "final": "https://autnic.com/games/star-wars-kotor-remake/",
+  "title": "Star Wars: Knights of the Old Republic \u2013 Remake \u2014 Autnic",
+  "desc": "Star Wars: Knights of the Old Republic \u2013 Remake by Saber Interactive: our score, the version we tested it on, where to buy it, and every review, guide and news\u2026",
+  "canonical": "https://autnic.com/games/star-wars-kotor-remake/",
+  "robots": null,
+  "h1": [
+   "Star Wars: Knights of the Old Republic \u2013 Remake"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 500,
+  "bytes": 38932
+ },
+ {
+  "url": "https://autnic.com/games/the-blood-of-dawnwalker/",
+  "status": 200,
+  "final": "https://autnic.com/games/the-blood-of-dawnwalker/",
+  "title": "The Blood of Dawnwalker \u2014 guides, review and news \u2014 Autnic",
+  "desc": "The Blood of Dawnwalker by Rebel Wolves: our score, the version we tested it on, where to buy it, and every review, guide and news story we have published\u2026",
+  "canonical": "https://autnic.com/games/the-blood-of-dawnwalker/",
+  "robots": null,
+  "h1": [
+   "The Blood of Dawnwalker"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "AggregateRating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 501,
+  "bytes": 39361
+ },
+ {
+  "url": "https://autnic.com/games/the-witcher-3-remastered/",
+  "status": 200,
+  "final": "https://autnic.com/games/the-witcher-3-remastered/",
+  "title": "The Witcher 3: Wild Hunt \u2013 Remastered \u2014 guides \u2014 Autnic",
+  "desc": "The Witcher 3: Wild Hunt \u2013 Remastered by CD PROJEKT RED: our score, the version we tested it on, where to buy it, and every review, guide and news story we\u2026",
+  "canonical": "https://autnic.com/games/the-witcher-3-remastered/",
+  "robots": null,
+  "h1": [
+   "The Witcher 3: Wild Hunt \u2013 Remastered"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 506,
+  "bytes": 38923
+ },
+ {
+  "url": "https://autnic.com/author/lina-morel/",
+  "status": 200,
+  "final": "https://autnic.com/author/lina-morel/",
+  "title": "Lina Morel \u2014 Autnic",
+  "desc": "Covers action RPGs and progression systems. Former QA tester. Re-checks her guides at every major patch instead of republishing them as they are.",
+  "canonical": "https://autnic.com/author/lina-morel/",
+  "robots": null,
+  "h1": [
+   "Lina Morel"
+  ],
+  "imgs": 12,
+  "img_noalt": 12,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 12,
+  "ld": [
+   "Person",
+   "Organization",
+   "ImageObject",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 331,
+  "bytes": 35529
+ },
+ {
+  "url": "https://autnic.com/author/nour-benali/",
+  "status": 200,
+  "final": "https://autnic.com/author/nour-benali/",
+  "title": "Nour Benali \u2014 Autnic",
+  "desc": "Follows studios, patches and working conditions across the industry. Would rather run a story two hours late and verified than first and wrong.",
+  "canonical": "https://autnic.com/author/nour-benali/",
+  "robots": null,
+  "h1": [
+   "Nour Benali"
+  ],
+  "imgs": 12,
+  "img_noalt": 12,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 12,
+  "ld": [
+   "Person",
+   "Organization",
+   "ImageObject",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 325,
+  "bytes": 35432
+ },
+ {
+  "url": "https://autnic.com/author/sacha-vidal/",
+  "status": 200,
+  "final": "https://autnic.com/author/sacha-vidal/",
+  "title": "Sacha Vidal \u2014 Autnic",
+  "desc": "Writes the long reviews and arbitrates score revisions. Twelve years in the specialist press, four of them covering console releases day to day.",
+  "canonical": "https://autnic.com/author/sacha-vidal/",
+  "robots": null,
+  "h1": [
+   "Sacha Vidal"
+  ],
+  "imgs": 9,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Person",
+   "Organization",
+   "ImageObject",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 235,
+  "bytes": 28569
+ },
+ {
+  "url": "https://autnic.com/news/onimusha-way-of-the-sword-critical-split/",
+  "status": 200,
+  "final": "https://autnic.com/news/onimusha-way-of-the-sword-critical-split/",
+  "title": "Onimusha reviews: why critics split \u2014 Autnic",
+  "desc": "Kotaku calls Way of the Sword a game at war with itself. We scored it 8.2. Read both and the disagreement turns out to be narrow, specific, and about one\u2026",
+  "canonical": "https://autnic.com/news/onimusha-way-of-the-sword-critical-split/",
+  "robots": null,
+  "h1": [
+   "Why critics can&#39;t agree on Onimusha: the argument is the open world, not the combat"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 782,
+  "bytes": 33728
+ },
+ {
+  "url": "https://autnic.com/news/the-blood-of-dawnwalker-first-hours-chores/",
+  "status": 200,
+  "final": "https://autnic.com/news/the-blood-of-dawnwalker-first-hours-chores/",
+  "title": "Dawnwalker&#39;s opening hours are chores \u2014 Autnic",
+  "desc": "The conceit is a bit: Lestat, Louis, Armand and Claudia watching a preview build. What comes out of it is a real objection about how the opening hours are\u2026",
+  "canonical": "https://autnic.com/news/the-blood-of-dawnwalker-first-hours-chores/",
+  "robots": null,
+  "h1": [
+   "Kotaku put Anne Rice&#39;s vampires on the couch for Dawnwalker&#39;s first seven hours"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 696,
+  "bytes": 33424
+ },
+ {
+  "url": "https://autnic.com/news/clair-obscur-expedition-33-broche-kingdom-hearts/",
+  "status": 200,
+  "final": "https://autnic.com/news/clair-obscur-expedition-33-broche-kingdom-hearts/",
+  "title": "Broche: Kingdom Hearts II is a top-5 game \u2014 Autnic",
+  "desc": "Guillaume Broche told Konbini's Jeux Vid\u00e9o Club he has been chasing Kingdom Hearts II's combat feel ever since.",
+  "canonical": "https://autnic.com/news/clair-obscur-expedition-33-broche-kingdom-hearts/",
+  "robots": null,
+  "h1": [
+   "Clair Obscur&#39;s director explains Expedition 33 by way of Kingdom Hearts II"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 636,
+  "bytes": 30846
+ },
+ {
+  "url": "https://autnic.com/news/the-blood-of-dawnwalker-story-timer-mod/",
+  "status": 200,
+  "final": "https://autnic.com/news/the-blood-of-dawnwalker-story-timer-mod/",
+  "title": "Dawnwalker&#39;s top mod removes the timer \u2014 Autnic",
+  "desc": "The Better Story Timer mod went up on Nexus Mods on Wednesday and passed 36,000 downloads within days, Kotaku reports.",
+  "canonical": "https://autnic.com/news/the-blood-of-dawnwalker-story-timer-mod/",
+  "robots": null,
+  "h1": [
+   "Dawnwalker&#39;s most downloaded mod deletes the one thing Rebel Wolves built the game around, and 36,000 people have already installed it"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 739,
+  "bytes": 33523
+ },
+ {
+  "url": "https://autnic.com/reviews/final-fantasy-vii-remake-trilogy-rebirth-revisited/",
+  "status": 200,
+  "final": "https://autnic.com/reviews/final-fantasy-vii-remake-trilogy-rebirth-revisited/",
+  "title": "FF7 Rebirth review, revisited in 2026 \u2014 Autnic",
+  "desc": "Two years on and nineteen months from the finale, Rebirth reads differently: not as a game that ends, but as one that spends its length earning a conclusion it\u2026",
+  "canonical": "https://autnic.com/reviews/final-fantasy-vii-remake-trilogy-rebirth-revisited/",
+  "robots": null,
+  "h1": [
+   "Final Fantasy VII Rebirth, revisited: the middle chapter that has to hand off to Revelation"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1374,
+  "bytes": 39678
+ },
+ {
+  "url": "https://autnic.com/news/grand-theft-auto-vi-china-censorship/",
+  "status": 200,
+  "final": "https://autnic.com/news/grand-theft-auto-vi-china-censorship/",
+  "title": "GTA 6 trailer censored on Bilibili \u2014 Autnic",
+  "desc": "The extended trailer was swapped around August 31 for a version that blurs smoking, underwear and bodies. Kotaku confirmed the edits; nobody has explained them.",
+  "canonical": "https://autnic.com/news/grand-theft-auto-vi-china-censorship/",
+  "robots": null,
+  "h1": [
+   "Rockstar blurred the GTA 6 trailer for Bilibili, but not on its own site"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 684,
+  "bytes": 30825
+ },
+ {
+  "url": "https://autnic.com/guides/grand-theft-auto-vi-stealing-cars-guide/",
+  "status": 200,
+  "final": "https://autnic.com/guides/grand-theft-auto-vi-stealing-cars-guide/",
+  "title": "How stealing cars works in GTA 6 \u2014 Autnic",
+  "desc": "Walk up, press Triangle, drive away \u2014 that has been the deal since 1997, and GTA 6 breaks it. Here is everything confirmed so far about carjacking, based on\u2026",
+  "canonical": "https://autnic.com/guides/grand-theft-auto-vi-stealing-cars-guide/",
+  "robots": null,
+  "h1": [
+   "Stealing a car in GTA 6 is a job now: slim jims, lockpicking, trackers, and an app that tells you what you are about to steal"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 744,
+  "bytes": 31589
+ },
+ {
+  "url": "https://autnic.com/news/grand-theft-auto-vi-fishing-hunting/",
+  "status": 200,
+  "final": "https://autnic.com/news/grand-theft-auto-vi-fishing-hunting/",
+  "title": "GTA 6 fishing is catch and release \u2014 Autnic",
+  "desc": "Rockstar North's Rob Nelson told YouTuber TGG that players cannot keep any fish they catch. Hunting, meanwhile, is a way to make money, and it is gated behind\u2026",
+  "canonical": "https://autnic.com/news/grand-theft-auto-vi-fishing-hunting/",
+  "robots": null,
+  "h1": [
+   "GTA 6&#39;s fishing is catch and release, and Rockstar&#39;s reason is the most Rockstar answer possible: it didn&#39;t fit"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 613,
+  "bytes": 30720
+ },
+ {
+  "url": "https://autnic.com/setup/final-fantasy-vii-remake-trilogy-revelation-editions/",
+  "status": 200,
+  "final": "https://autnic.com/setup/final-fantasy-vii-remake-trilogy-revelation-editions/",
+  "title": "FF7 Revelation editions compared \u2014 Autnic",
+  "desc": "Six editions across physical and digital, from $69.99 to $349.99. Only two of them contain the two story expansions, and the difference between the $99.99\u2026",
+  "canonical": "https://autnic.com/setup/final-fantasy-vii-remake-trilogy-revelation-editions/",
+  "robots": null,
+  "h1": [
+   "Every Final Fantasy VII Revelation edition, what each one actually adds, and the $349.99 one you can only buy from Square Enix"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 704,
+  "bytes": 31955
+ },
+ {
+  "url": "https://autnic.com/guides/onimusha-way-of-the-sword-parry-guide/",
+  "status": 200,
+  "final": "https://autnic.com/guides/onimusha-way-of-the-sword-parry-guide/",
+  "title": "Onimusha: Way of the Sword combat guide \u2014 Autnic",
+  "desc": "Way of the Sword teaches you to block and then quietly expects you to stop. Parry, stamina and Break Issen are one system, and the game never says so out loud.",
+  "canonical": "https://autnic.com/guides/onimusha-way-of-the-sword-parry-guide/",
+  "robots": null,
+  "h1": [
+   "The parry that steers: how Onimusha&#39;s combat actually works, and the habit that costs you fights"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1224,
+  "bytes": 37066
+ },
+ {
+  "url": "https://autnic.com/news/the-witcher-3-remastered-cdpr-ai-stance/",
+  "status": 200,
+  "final": "https://autnic.com/news/the-witcher-3-remastered-cdpr-ai-stance/",
+  "title": "CDPR: Witcher 4 made mostly by people \u2014 Autnic",
+  "desc": "Joint-CEO Micha\u0142 Nowakowski told CD Projekt's latest earnings briefing that AI is a tool the studio uses in places, not something it plans to build whole games\u2026",
+  "canonical": "https://autnic.com/news/the-witcher-3-remastered-cdpr-ai-stance/",
+  "robots": null,
+  "h1": [
+   "CD Projekt says The Witcher 4 is being made &#39;predominantly using people&#39;, which is a sentence a studio now has to say out loud"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 646,
+  "bytes": 30721
+ },
+ {
+  "url": "https://autnic.com/setup/the-witcher-3-remastered-free-upgrade-setup/",
+  "status": 200,
+  "final": "https://autnic.com/setup/the-witcher-3-remastered-free-upgrade-setup/",
+  "title": "Witcher 3 Remastered: the free upgrade \u2014 Autnic",
+  "desc": "Five storefronts qualify for the free upgrade, two expansions are already sitting in your library whether you bought them or not, and two platforms are new\u2026",
+  "canonical": "https://autnic.com/setup/the-witcher-3-remastered-free-upgrade-setup/",
+  "robots": null,
+  "h1": [
+   "Do you already own The Witcher 3 Remastered? Probably. Here is how to check before September 29"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1084,
+  "bytes": 37054
+ },
+ {
+  "url": "https://autnic.com/guides/the-witcher-3-remastered-what-changes/",
+  "status": 200,
+  "final": "https://autnic.com/guides/the-witcher-3-remastered-what-changes/",
+  "title": "Witcher 3 Remastered: what changes \u2014 Autnic",
+  "desc": "Path tracing is the headline, but the skill tree revamp and transmogrification are the two that alter an eleven-year-old game people already know by heart.",
+  "canonical": "https://autnic.com/guides/the-witcher-3-remastered-what-changes/",
+  "robots": null,
+  "h1": [
+   "Everything changing in The Witcher 3 Remastered, and which changes actually touch how it plays"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1188,
+  "bytes": 38109
+ },
+ {
+  "url": "https://autnic.com/news/final-fantasy-vii-remake-trilogy-revelation-dated/",
+  "status": 200,
+  "final": "https://autnic.com/news/final-fantasy-vii-remake-trilogy-revelation-dated/",
+  "title": "FF7 Revelation dated for April 8, 2027 \u2014 Autnic",
+  "desc": "Square Enix confirmed the date during the September State of Play with almost ten minutes of gameplay, most of it spent flying the Highwind over Gaia.",
+  "canonical": "https://autnic.com/news/final-fantasy-vii-remake-trilogy-revelation-dated/",
+  "robots": null,
+  "h1": [
+   "Final Fantasy VII Revelation lands on April 8, 2027, and Square Enix put the world map back in the sky where it belongs"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 667,
+  "bytes": 31613
+ },
+ {
+  "url": "https://autnic.com/reviews/onimusha-way-of-the-sword-review/",
+  "status": 200,
+  "final": "https://autnic.com/reviews/onimusha-way-of-the-sword-review/",
+  "title": "Onimusha: Way of the Sword review \u2014 Autnic",
+  "desc": "The first mainline Onimusha since 2006 is short, linear, gory and deliberately not a Soulslike. That last choice is the best thing about it and the source of\u2026",
+  "canonical": "https://autnic.com/reviews/onimusha-way-of-the-sword-review/",
+  "robots": null,
+  "h1": [
+   "Onimusha: Way of the Sword review: twenty years on, Capcom builds a sword game that refuses to be Sekiro"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1764,
+  "bytes": 42034
+ },
+ {
+  "url": "https://autnic.com/reviews/the-blood-of-dawnwalker-review/",
+  "status": 200,
+  "final": "https://autnic.com/reviews/the-blood-of-dawnwalker-review/",
+  "title": "The Blood of Dawnwalker review \u2014 Autnic",
+  "desc": "Rebel Wolves' first game builds its whole structure on a clock that only runs when the plot does. It is the most interesting thing an RPG has done with time in\u2026",
+  "canonical": "https://autnic.com/reviews/the-blood-of-dawnwalker-review/",
+  "robots": null,
+  "h1": [
+   "The Blood of Dawnwalker review: thirty days, eight segments a day, and an RPG brave enough to let you miss things"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1700,
+  "bytes": 42012
+ },
+ {
+  "url": "https://autnic.com/reviews/clair-obscur-expedition-33-review/",
+  "status": 200,
+  "final": "https://autnic.com/reviews/clair-obscur-expedition-33-review/",
+  "title": "Clair Obscur re-checked, 16 months on \u2014 Autnic",
+  "desc": "A debut RPG won the most awards in Game Awards history, sold eight million copies, and then gave everyone a free update that beats them up.",
+  "canonical": "https://autnic.com/reviews/clair-obscur-expedition-33-review/",
+  "robots": null,
+  "h1": [
+   "Clair Obscur: Expedition 33 review, re-checked: nine awards later, the hardest version of this game is the free one"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1801,
+  "bytes": 42337
+ },
+ {
+  "url": "https://autnic.com/news/star-wars-kotor-remake-five-years-silence/",
+  "status": 200,
+  "final": "https://autnic.com/news/star-wars-kotor-remake-five-years-silence/",
+  "title": "KOTOR Remake: the state of play in 2026 \u2014 Autnic",
+  "desc": "Announced in September 2021, halted in July 2022, rebuilt from scratch by a different studio. In September 2026 the sum total of official information is that\u2026",
+  "canonical": "https://autnic.com/news/star-wars-kotor-remake-five-years-silence/",
+  "robots": null,
+  "h1": [
+   "Five years after the KOTOR remake was announced, nobody has seen it \u2014 here is everything that is actually known"
+  ],
+  "imgs": 8,
+  "img_noalt": 7,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 7,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 930,
+  "bytes": 32500
+ },
+ {
+  "url": "https://autnic.com/setup/clair-obscur-expedition-33-platforms-setup/",
+  "status": 200,
+  "final": "https://autnic.com/setup/clair-obscur-expedition-33-platforms-setup/",
+  "title": "Clair Obscur: which platform to play on \u2014 Autnic",
+  "desc": "PS5, PC and Xbox Series, with Game Pass since day one. Language support reached twenty in June. The Switch 2 version people keep asking about does not exist.",
+  "canonical": "https://autnic.com/setup/clair-obscur-expedition-33-platforms-setup/",
+  "robots": null,
+  "h1": [
+   "Where to play Clair Obscur: Expedition 33 in 2026 \u2014 three platforms, twenty languages, and no handheld"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1017,
+  "bytes": 36211
+ },
+ {
+  "url": "https://autnic.com/setup/star-wars-kotor-remake-original-setup/",
+  "status": 200,
+  "final": "https://autnic.com/setup/star-wars-kotor-remake-original-setup/",
+  "title": "KOTOR setup: displays, pads and handhelds \u2014 Autnic",
+  "desc": "A game built for 4:3 and a keyboard, played on a 16:9 panel or a handheld. Most of the work is display and input, and most of it is done once, before you start.",
+  "canonical": "https://autnic.com/setup/star-wars-kotor-remake-original-setup/",
+  "robots": null,
+  "h1": [
+   "Making a 2003 game behave in 2026: KOTOR on modern displays, controllers and handhelds"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1299,
+  "bytes": 37944
+ },
+ {
+  "url": "https://autnic.com/guides/star-wars-kotor-remake-play-the-original/",
+  "status": 200,
+  "final": "https://autnic.com/guides/star-wars-kotor-remake-play-the-original/",
+  "title": "How to play the original KOTOR in 2026 \u2014 Autnic",
+  "desc": "The remake has no date, no footage and no store page. The 2003 game has all three \u2014 and about twenty minutes of preparation between you and a version that\u2026",
+  "canonical": "https://autnic.com/guides/star-wars-kotor-remake-play-the-original/",
+  "robots": null,
+  "h1": [
+   "How to play the original KOTOR in 2026, while the remake stays invisible"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1370,
+  "bytes": 38475
+ },
+ {
+  "url": "https://autnic.com/fr/",
+  "status": 200,
+  "final": "https://autnic.com/fr/",
+  "title": "Tests et guides des jeux live-service \u2014 Autnic",
+  "desc": "Tests, guides et actus jeu vid\u00e9o. Nous testons ce que nous achetons et nous r\u00e9visons nos notes quand les jeux changent.",
+  "canonical": "https://autnic.com/fr/",
+  "robots": null,
+  "h1": [
+   "Tests, guides et actus ind\u00e9pendants sur les jeux live-service"
+  ],
+  "imgs": 34,
+  "img_noalt": 34,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 33,
+  "ld": [
+   "WebSite"
+  ],
+  "words": 933,
+  "bytes": 45536
+ },
+ {
+  "url": "https://autnic.com/fr/actus/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/",
+  "title": "Actus, correctifs et annonces des studios \u2014 Autnic",
+  "desc": "Notes de patch, d\u00e9clarations de studio et dates de sortie des jeux en service que nous suivons \u2014 dat\u00e9es, sourc\u00e9es, et corrig\u00e9es quand le jeu change.",
+  "canonical": "https://autnic.com/fr/actus/",
+  "robots": null,
+  "h1": [
+   "Actus"
+  ],
+  "imgs": 13,
+  "img_noalt": 13,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 13,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 431,
+  "bytes": 42408
+ },
+ {
+  "url": "https://autnic.com/fr/tests/",
+  "status": 200,
+  "final": "https://autnic.com/fr/tests/",
+  "title": "Tests de jeux, avec version test\u00e9e et note \u2014 Autnic",
+  "desc": "Nos tests de jeux en service. Nous achetons ce que nous testons, nous indiquons la version test\u00e9e, et nous r\u00e9visons la note quand le jeu change.",
+  "canonical": "https://autnic.com/fr/tests/",
+  "robots": null,
+  "h1": [
+   "Tests"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 278,
+  "bytes": 29077
+ },
+ {
+  "url": "https://autnic.com/fr/guides/",
+  "status": 200,
+  "final": "https://autnic.com/fr/guides/",
+  "title": "Guides de jeu, rev\u00e9rifi\u00e9s \u00e0 chaque gros patch \u2014 Autnic",
+  "desc": "Soluces, builds et guides de progression pour les jeux en service, chacun indiquant la version du jeu sur laquelle il a \u00e9t\u00e9 v\u00e9rifi\u00e9.",
+  "canonical": "https://autnic.com/fr/guides/",
+  "robots": null,
+  "h1": [
+   "Guides"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 284,
+  "bytes": 28849
+ },
+ {
+  "url": "https://autnic.com/fr/configs/",
+  "status": 200,
+  "final": "https://autnic.com/fr/configs/",
+  "title": "R\u00e9glages et configurations mat\u00e9rielles \u2014 Autnic",
+  "desc": "R\u00e9glages graphiques, manette et configuration mat\u00e9rielle des jeux que nous couvrons, mesur\u00e9s sur nos propres machines plut\u00f4t que recopi\u00e9s d\u2019une fiche.",
+  "canonical": "https://autnic.com/fr/configs/",
+  "robots": null,
+  "h1": [
+   "Configs"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 272,
+  "bytes": 29185
+ },
+ {
+  "url": "https://autnic.com/fr/jeux/",
+  "status": 200,
+  "final": "https://autnic.com/fr/jeux/",
+  "title": "Tous les jeux en service que nous couvrons \u2014 Autnic",
+  "desc": "Tous les jeux en service que nous suivons, avec leur note, la version test\u00e9e, leur date de sortie et chaque test, guide et actu que nous avons publi\u00e9s dessus.",
+  "canonical": "https://autnic.com/fr/jeux/",
+  "robots": null,
+  "h1": [
+   "Base de jeux"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 255,
+  "bytes": 20950
+ },
+ {
+  "url": "https://autnic.com/fr/a-propos/",
+  "status": 200,
+  "final": "https://autnic.com/fr/a-propos/",
+  "title": "Qui nous sommes \u2014 Autnic",
+  "desc": "Qui \u00e9crit Autnic, comment nous notons, ce que nous achetons nous-m\u00eames et ce que nous acceptons \u2014 notre charte \u00e9ditoriale et nos r\u00e8gles de transparence, en\u2026",
+  "canonical": "https://autnic.com/fr/a-propos/",
+  "robots": null,
+  "h1": [
+   "Nous testons ce que nous achetons"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "Organization",
+   "ImageObject",
+   "Person",
+   "Person",
+   "Person",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 570,
+  "bytes": 22430
+ },
+ {
+  "url": "https://autnic.com/fr/credits/",
+  "status": 200,
+  "final": "https://autnic.com/fr/credits/",
+  "title": "Cr\u00e9dits photo \u2014 Autnic",
+  "desc": "Auteur, licence et source de chaque image utilis\u00e9e sur Autnic.",
+  "canonical": "https://autnic.com/fr/credits/",
+  "robots": null,
+  "h1": [
+   "Cr\u00e9dits photo"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 737,
+  "bytes": 34073
+ },
+ {
+  "url": "https://autnic.com/fr/mentions-legales/",
+  "status": 200,
+  "final": "https://autnic.com/fr/mentions-legales/",
+  "title": "Mentions l\u00e9gales \u2014 Autnic",
+  "desc": "\u00c9diteur, h\u00e9bergeur et responsabilit\u00e9s du site Autnic.",
+  "canonical": "https://autnic.com/fr/mentions-legales/",
+  "robots": null,
+  "h1": [
+   "Mentions l\u00e9gales"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 244,
+  "bytes": 16264
+ },
+ {
+  "url": "https://autnic.com/fr/confidentialite/",
+  "status": 200,
+  "final": "https://autnic.com/fr/confidentialite/",
+  "title": "Confidentialit\u00e9 \u2014 Autnic",
+  "desc": "Quelles donn\u00e9es Autnic collecte, pourquoi, et comment les retirer.",
+  "canonical": "https://autnic.com/fr/confidentialite/",
+  "robots": null,
+  "h1": [
+   "Confidentialit\u00e9"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 195,
+  "bytes": 15878
+ },
+ {
+  "url": "https://autnic.com/fr/cookies/",
+  "status": 200,
+  "final": "https://autnic.com/fr/cookies/",
+  "title": "Cookies \u2014 Autnic",
+  "desc": "Quels cookies Autnic d\u00e9pose, \u00e0 quoi ils servent, et comment changer d\u2019avis.",
+  "canonical": "https://autnic.com/fr/cookies/",
+  "robots": null,
+  "h1": [
+   "Cookies"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 171,
+  "bytes": 15558
+ },
+ {
+  "url": "https://autnic.com/fr/jeux/clair-obscur-expedition-33/",
+  "status": 200,
+  "final": "https://autnic.com/fr/jeux/clair-obscur-expedition-33/",
+  "title": "Clair Obscur: Expedition 33 \u2014 guides, test et actus \u2014 Autnic",
+  "desc": "Clair Obscur: Expedition 33, de Sandfall Interactive : notre note, la version sur laquelle nous l\u2019avons test\u00e9, o\u00f9 l\u2019acheter, et chaque test, guide et actu que\u2026",
+  "canonical": "https://autnic.com/fr/jeux/clair-obscur-expedition-33/",
+  "robots": null,
+  "h1": [
+   "Clair Obscur: Expedition 33"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "AggregateRating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 543,
+  "bytes": 40943
+ },
+ {
+  "url": "https://autnic.com/fr/jeux/final-fantasy-vii-remake-trilogy/",
+  "status": 200,
+  "final": "https://autnic.com/fr/jeux/final-fantasy-vii-remake-trilogy/",
+  "title": "Final Fantasy VII Remake Trilogy \u2014 guides et actus \u2014 Autnic",
+  "desc": "Final Fantasy VII Remake Trilogy, de Square Enix : notre note, la version sur laquelle nous l\u2019avons test\u00e9, o\u00f9 l\u2019acheter, et chaque test, guide et actu que nous\u2026",
+  "canonical": "https://autnic.com/fr/jeux/final-fantasy-vii-remake-trilogy/",
+  "robots": null,
+  "h1": [
+   "Final Fantasy VII Remake Trilogy"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 559,
+  "bytes": 40722
+ },
+ {
+  "url": "https://autnic.com/fr/jeux/grand-theft-auto-vi/",
+  "status": 200,
+  "final": "https://autnic.com/fr/jeux/grand-theft-auto-vi/",
+  "title": "Grand Theft Auto VI \u2014 guides, test et actus \u2014 Autnic",
+  "desc": "Grand Theft Auto VI, de Rockstar Games : notre note, la version sur laquelle nous l\u2019avons test\u00e9, o\u00f9 l\u2019acheter, et chaque test, guide et actu que nous avons\u2026",
+  "canonical": "https://autnic.com/fr/jeux/grand-theft-auto-vi/",
+  "robots": null,
+  "h1": [
+   "Grand Theft Auto VI"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 532,
+  "bytes": 38939
+ },
+ {
+  "url": "https://autnic.com/fr/jeux/onimusha-way-of-the-sword/",
+  "status": 200,
+  "final": "https://autnic.com/fr/jeux/onimusha-way-of-the-sword/",
+  "title": "Onimusha: Way of the Sword \u2014 guides, test et actus \u2014 Autnic",
+  "desc": "Onimusha: Way of the Sword, de Capcom : notre note, la version sur laquelle nous l\u2019avons test\u00e9, o\u00f9 l\u2019acheter, et chaque test, guide et actu que nous avons\u2026",
+  "canonical": "https://autnic.com/fr/jeux/onimusha-way-of-the-sword/",
+  "robots": null,
+  "h1": [
+   "Onimusha: Way of the Sword"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "AggregateRating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 526,
+  "bytes": 40645
+ },
+ {
+  "url": "https://autnic.com/fr/jeux/star-wars-kotor-remake/",
+  "status": 200,
+  "final": "https://autnic.com/fr/jeux/star-wars-kotor-remake/",
+  "title": "Star Wars: Knights of the Old Republic \u2013 Remake \u2014 Autnic",
+  "desc": "Star Wars: Knights of the Old Republic \u2013 Remake, de Saber Interactive : notre note, la version sur laquelle nous l\u2019avons test\u00e9, o\u00f9 l\u2019acheter, et chaque test\u2026",
+  "canonical": "https://autnic.com/fr/jeux/star-wars-kotor-remake/",
+  "robots": null,
+  "h1": [
+   "Star Wars: Knights of the Old Republic \u2013 Remake"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 522,
+  "bytes": 39379
+ },
+ {
+  "url": "https://autnic.com/fr/jeux/the-blood-of-dawnwalker/",
+  "status": 200,
+  "final": "https://autnic.com/fr/jeux/the-blood-of-dawnwalker/",
+  "title": "The Blood of Dawnwalker \u2014 guides, test et actus \u2014 Autnic",
+  "desc": "The Blood of Dawnwalker, de Rebel Wolves : notre note, la version sur laquelle nous l\u2019avons test\u00e9, o\u00f9 l\u2019acheter, et chaque test, guide et actu que nous avons\u2026",
+  "canonical": "https://autnic.com/fr/jeux/the-blood-of-dawnwalker/",
+  "robots": null,
+  "h1": [
+   "The Blood of Dawnwalker"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "AggregateRating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 549,
+  "bytes": 39885
+ },
+ {
+  "url": "https://autnic.com/fr/jeux/the-witcher-3-remastered/",
+  "status": 200,
+  "final": "https://autnic.com/fr/jeux/the-witcher-3-remastered/",
+  "title": "The Witcher 3: Wild Hunt \u2013 Remastered \u2014 guides \u2014 Autnic",
+  "desc": "The Witcher 3: Wild Hunt \u2013 Remastered, de CD PROJEKT RED : notre note, la version sur laquelle nous l\u2019avons test\u00e9, o\u00f9 l\u2019acheter, et chaque test, guide et actu\u2026",
+  "canonical": "https://autnic.com/fr/jeux/the-witcher-3-remastered/",
+  "robots": null,
+  "h1": [
+   "The Witcher 3: Wild Hunt \u2013 Remastered"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 536,
+  "bytes": 39436
+ },
+ {
+  "url": "https://autnic.com/fr/auteur/lina-morel/",
+  "status": 200,
+  "final": "https://autnic.com/fr/auteur/lina-morel/",
+  "title": "Lina Morel \u2014 Autnic",
+  "desc": "Couvre les action-RPG et les syst\u00e8mes de progression. Ancienne testeuse QA. V\u00e9rifie ses guides \u00e0 chaque patch majeur plut\u00f4t que de les republier tels quels.",
+  "canonical": "https://autnic.com/fr/auteur/lina-morel/",
+  "robots": null,
+  "h1": [
+   "Lina Morel"
+  ],
+  "imgs": 12,
+  "img_noalt": 12,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 12,
+  "ld": [
+   "Person",
+   "Organization",
+   "ImageObject",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 352,
+  "bytes": 36027
+ },
+ {
+  "url": "https://autnic.com/fr/auteur/nour-benali/",
+  "status": 200,
+  "final": "https://autnic.com/fr/auteur/nour-benali/",
+  "title": "Nour Benali \u2014 Autnic",
+  "desc": "Suit les studios, les patchs et les conditions de travail du secteur. Pr\u00e9f\u00e8re une actu v\u00e9rifi\u00e9e deux heures plus tard \u00e0 une actu la premi\u00e8re.",
+  "canonical": "https://autnic.com/fr/auteur/nour-benali/",
+  "robots": null,
+  "h1": [
+   "Nour Benali"
+  ],
+  "imgs": 12,
+  "img_noalt": 12,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 12,
+  "ld": [
+   "Person",
+   "Organization",
+   "ImageObject",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 352,
+  "bytes": 35845
+ },
+ {
+  "url": "https://autnic.com/fr/auteur/sacha-vidal/",
+  "status": 200,
+  "final": "https://autnic.com/fr/auteur/sacha-vidal/",
+  "title": "Sacha Vidal \u2014 Autnic",
+  "desc": "Signe les tests longs et arbitre les r\u00e9visions de note. Douze ans de presse sp\u00e9cialis\u00e9e, dont quatre \u00e0 couvrir les sorties console au jour le jour.",
+  "canonical": "https://autnic.com/fr/auteur/sacha-vidal/",
+  "robots": null,
+  "h1": [
+   "Sacha Vidal"
+  ],
+  "imgs": 9,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Person",
+   "Organization",
+   "ImageObject",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 262,
+  "bytes": 28939
+ },
+ {
+  "url": "https://autnic.com/fr/actus/onimusha-way-of-the-sword-critical-split/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/onimusha-way-of-the-sword-critical-split/",
+  "title": "Onimusha : pourquoi la presse se divise \u2014 Autnic",
+  "desc": "Kotaku d\u00e9crit Way of the Sword comme un jeu en guerre contre lui-m\u00eame. Nous lui avons mis 8,2. \u00c0 lire les deux, le d\u00e9saccord se r\u00e9v\u00e8le \u00e9troit, pr\u00e9cis et limit\u00e9\u2026",
+  "canonical": "https://autnic.com/fr/actus/onimusha-way-of-the-sword-critical-split/",
+  "robots": null,
+  "h1": [
+   "Pourquoi la critique se divise sur Onimusha : le d\u00e9bat porte sur le monde ouvert, pas le combat"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 878,
+  "bytes": 34620
+ },
+ {
+  "url": "https://autnic.com/fr/actus/the-blood-of-dawnwalker-first-hours-chores/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/the-blood-of-dawnwalker-first-hours-chores/",
+  "title": "Dawnwalker : des corv\u00e9es en ouverture \u2014 Autnic",
+  "desc": "Le proc\u00e9d\u00e9 est un gag : Lestat, Louis, Armand et Claudia commentant une partie. Ce qui en ressort est une vraie objection sur l'emploi des premi\u00e8res heures.",
+  "canonical": "https://autnic.com/fr/actus/the-blood-of-dawnwalker-first-hours-chores/",
+  "robots": null,
+  "h1": [
+   "Kotaku installe les vampires d&#39;Anne Rice sur le canap\u00e9 de Dawnwalker"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 772,
+  "bytes": 34073
+ },
+ {
+  "url": "https://autnic.com/fr/actus/clair-obscur-expedition-33-broche-kingdom-hearts/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/clair-obscur-expedition-33-broche-kingdom-hearts/",
+  "title": "Broche : Kingdom Hearts II dans son top 5 \u2014 Autnic",
+  "desc": "Guillaume Broche a dit sur Jeux Vid\u00e9o Club, chez Konbini, courir apr\u00e8s la sensation de combat de Kingdom Hearts II depuis toujours.",
+  "canonical": "https://autnic.com/fr/actus/clair-obscur-expedition-33-broche-kingdom-hearts/",
+  "robots": null,
+  "h1": [
+   "Le directeur de Clair Obscur explique Expedition 33 par Kingdom Hearts II"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 679,
+  "bytes": 31509
+ },
+ {
+  "url": "https://autnic.com/fr/actus/the-blood-of-dawnwalker-story-timer-mod/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/the-blood-of-dawnwalker-story-timer-mod/",
+  "title": "Dawnwalker : le mod qui retire le chrono \u2014 Autnic",
+  "desc": "Le mod Better Story Timer est arriv\u00e9 sur Nexus Mods mercredi et a d\u00e9pass\u00e9 les 36 000 t\u00e9l\u00e9chargements en quelques jours, rapporte Kotaku.",
+  "canonical": "https://autnic.com/fr/actus/the-blood-of-dawnwalker-story-timer-mod/",
+  "robots": null,
+  "h1": [
+   "Le mod le plus t\u00e9l\u00e9charg\u00e9 de Dawnwalker supprime la seule chose autour de laquelle Rebel Wolves a construit le jeu, et 36 000 personnes l&#39;ont d\u00e9j\u00e0 install\u00e9"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 809,
+  "bytes": 34439
+ },
+ {
+  "url": "https://autnic.com/fr/tests/final-fantasy-vii-remake-trilogy-rebirth-revisited/",
+  "status": 200,
+  "final": "https://autnic.com/fr/tests/final-fantasy-vii-remake-trilogy-rebirth-revisited/",
+  "title": "FF7 Rebirth : test revisit\u00e9 en 2026 \u2014 Autnic",
+  "desc": "Deux ans apr\u00e8s, \u00e0 dix-neuf mois du final, Rebirth se lit autrement : non comme un jeu qui se termine, mais comme un jeu qui emploie sa longueur \u00e0 m\u00e9riter une\u2026",
+  "canonical": "https://autnic.com/fr/tests/final-fantasy-vii-remake-trilogy-rebirth-revisited/",
+  "robots": null,
+  "h1": [
+   "Final Fantasy VII Rebirth, revisit\u00e9 : le volet central qui doit passer la main \u00e0 Revelation"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1456,
+  "bytes": 40329
+ },
+ {
+  "url": "https://autnic.com/fr/actus/grand-theft-auto-vi-china-censorship/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/grand-theft-auto-vi-china-censorship/",
+  "title": "GTA 6 : bande-annonce censur\u00e9e sur Bilibili \u2014 Autnic",
+  "desc": "La bande-annonce \u00e9tendue a \u00e9t\u00e9 remplac\u00e9e vers le 31 ao\u00fbt par une version qui floute cigarettes, sous-v\u00eatements et corps.",
+  "canonical": "https://autnic.com/fr/actus/grand-theft-auto-vi-china-censorship/",
+  "robots": null,
+  "h1": [
+   "Rockstar a flout\u00e9 la bande-annonce de GTA 6 pour Bilibili, mais pas sur son site"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 733,
+  "bytes": 31482
+ },
+ {
+  "url": "https://autnic.com/fr/guides/grand-theft-auto-vi-stealing-cars-guide/",
+  "status": 200,
+  "final": "https://autnic.com/fr/guides/grand-theft-auto-vi-stealing-cars-guide/",
+  "title": "GTA 6 : comment voler une voiture \u2014 Autnic",
+  "desc": "S'approcher, appuyer sur Triangle, d\u00e9marrer \u2014 c'\u00e9tait le contrat depuis 1997, et GTA 6 le rompt. Voici tout ce qui est confirm\u00e9 \u00e0 ce jour sur le vol de\u2026",
+  "canonical": "https://autnic.com/fr/guides/grand-theft-auto-vi-stealing-cars-guide/",
+  "robots": null,
+  "h1": [
+   "Voler une voiture dans GTA 6 est devenu un m\u00e9tier : r\u00e9glettes, crochetage, traceurs, et une appli qui vous dit ce que vous vous appr\u00eatez \u00e0 voler"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 777,
+  "bytes": 32438
+ },
+ {
+  "url": "https://autnic.com/fr/actus/grand-theft-auto-vi-fishing-hunting/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/grand-theft-auto-vi-fishing-hunting/",
+  "title": "GTA 6 : la p\u00eache se fait en no-kill \u2014 Autnic",
+  "desc": "Rob Nelson, de Rockstar North, a d\u00e9clar\u00e9 au YouTubeur TGG que les joueurs ne peuvent conserver aucun poisson. La chasse, elle, est un moyen de gagner de\u2026",
+  "canonical": "https://autnic.com/fr/actus/grand-theft-auto-vi-fishing-hunting/",
+  "robots": null,
+  "h1": [
+   "La p\u00eache dans GTA 6 est en no-kill, et la raison donn\u00e9e par Rockstar est la plus rockstarienne qui soit : \u00e7a n&#39;allait pas avec le jeu"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 670,
+  "bytes": 31459
+ },
+ {
+  "url": "https://autnic.com/fr/configs/final-fantasy-vii-remake-trilogy-revelation-editions/",
+  "status": 200,
+  "final": "https://autnic.com/fr/configs/final-fantasy-vii-remake-trilogy-revelation-editions/",
+  "title": "FF7 Revelation : les \u00e9ditions compar\u00e9es \u2014 Autnic",
+  "desc": "Six \u00e9ditions entre le physique et le d\u00e9mat\u00e9rialis\u00e9, de 69,99 $ \u00e0 349,99 $. Deux d'entre elles seulement contiennent les deux extensions sc\u00e9naris\u00e9es, et l'\u00e9cart\u2026",
+  "canonical": "https://autnic.com/fr/configs/final-fantasy-vii-remake-trilogy-revelation-editions/",
+  "robots": null,
+  "h1": [
+   "Toutes les \u00e9ditions de Final Fantasy VII Revelation, ce que chacune ajoute vraiment, et celle \u00e0 349,99 $ qui ne s&#39;ach\u00e8te que chez Square Enix"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 782,
+  "bytes": 32951
+ },
+ {
+  "url": "https://autnic.com/fr/guides/onimusha-way-of-the-sword-parry-guide/",
+  "status": 200,
+  "final": "https://autnic.com/fr/guides/onimusha-way-of-the-sword-parry-guide/",
+  "title": "Onimusha: Way of the Sword, guide de combat \u2014 Autnic",
+  "desc": "Way of the Sword vous apprend \u00e0 bloquer, puis attend discr\u00e8tement que vous arr\u00eatiez. Parade, endurance et Break Issen forment un seul syst\u00e8me, et le jeu ne le\u2026",
+  "canonical": "https://autnic.com/fr/guides/onimusha-way-of-the-sword-parry-guide/",
+  "robots": null,
+  "h1": [
+   "La parade qui oriente : comment fonctionne vraiment le combat d&#39;Onimusha, et l&#39;habitude qui vous co\u00fbte des combats"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1242,
+  "bytes": 38076
+ },
+ {
+  "url": "https://autnic.com/fr/actus/the-witcher-3-remastered-cdpr-ai-stance/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/the-witcher-3-remastered-cdpr-ai-stance/",
+  "title": "CDPR : The Witcher 4 fait par des humains \u2014 Autnic",
+  "desc": "Le co-PDG Micha\u0142 Nowakowski a d\u00e9clar\u00e9 lors de la derni\u00e8re pr\u00e9sentation de r\u00e9sultats de CD Projekt que l'IA est un outil que le studio emploie par endroits, et\u2026",
+  "canonical": "https://autnic.com/fr/actus/the-witcher-3-remastered-cdpr-ai-stance/",
+  "robots": null,
+  "h1": [
+   "CD Projekt affirme que The Witcher 4 est fait \u00ab principalement par des humains \u00bb, une phrase qu&#39;un studio doit d\u00e9sormais prononcer \u00e0 voix haute"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 710,
+  "bytes": 31587
+ },
+ {
+  "url": "https://autnic.com/fr/configs/the-witcher-3-remastered-free-upgrade-setup/",
+  "status": 200,
+  "final": "https://autnic.com/fr/configs/the-witcher-3-remastered-free-upgrade-setup/",
+  "title": "Witcher 3 Remastered : la mise \u00e0 niveau \u2014 Autnic",
+  "desc": "Cinq boutiques donnent droit \u00e0 la mise \u00e0 niveau gratuite, deux extensions dorment d\u00e9j\u00e0 dans votre biblioth\u00e8que que vous les ayez achet\u00e9es ou non, et deux\u2026",
+  "canonical": "https://autnic.com/fr/configs/the-witcher-3-remastered-free-upgrade-setup/",
+  "robots": null,
+  "h1": [
+   "Poss\u00e9dez-vous d\u00e9j\u00e0 The Witcher 3 Remastered ? Probablement. Comment le v\u00e9rifier avant le 29 septembre"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1185,
+  "bytes": 38321
+ },
+ {
+  "url": "https://autnic.com/fr/guides/the-witcher-3-remastered-what-changes/",
+  "status": 200,
+  "final": "https://autnic.com/fr/guides/the-witcher-3-remastered-what-changes/",
+  "title": "Witcher 3 Remastered : ce qui change \u2014 Autnic",
+  "desc": "Le path tracing fait le titre, mais la refonte de l'arbre de comp\u00e9tences et la transmogrification sont les deux points qui modifient un jeu de onze ans que\u2026",
+  "canonical": "https://autnic.com/fr/guides/the-witcher-3-remastered-what-changes/",
+  "robots": null,
+  "h1": [
+   "Tout ce qui change dans The Witcher 3 Remastered, et ce qui touche vraiment \u00e0 la fa\u00e7on dont il se joue"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1347,
+  "bytes": 39452
+ },
+ {
+  "url": "https://autnic.com/fr/actus/final-fantasy-vii-remake-trilogy-revelation-dated/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/final-fantasy-vii-remake-trilogy-revelation-dated/",
+  "title": "FF7 Revelation dat\u00e9 au 8 avril 2027 \u2014 Autnic",
+  "desc": "Square Enix a confirm\u00e9 la date lors du State of Play de septembre, avec pr\u00e8s de dix minutes de jeu pass\u00e9es pour l'essentiel \u00e0 survoler Ga\u00efa aux commandes du\u2026",
+  "canonical": "https://autnic.com/fr/actus/final-fantasy-vii-remake-trilogy-revelation-dated/",
+  "robots": null,
+  "h1": [
+   "Final Fantasy VII Revelation sort le 8 avril 2027, et Square Enix a remis la carte du monde l\u00e0 o\u00f9 elle doit \u00eatre : dans le ciel"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 725,
+  "bytes": 32324
+ },
+ {
+  "url": "https://autnic.com/fr/tests/onimusha-way-of-the-sword-review/",
+  "status": 200,
+  "final": "https://autnic.com/fr/tests/onimusha-way-of-the-sword-review/",
+  "title": "Test d&#39;Onimusha: Way of the Sword \u2014 Autnic",
+  "desc": "Le premier Onimusha canonique depuis 2006 est court, lin\u00e9aire, sanglant et volontairement pas un Souls-like. Ce dernier choix est ce qu'il a de meilleur, et la\u2026",
+  "canonical": "https://autnic.com/fr/tests/onimusha-way-of-the-sword-review/",
+  "robots": null,
+  "h1": [
+   "Test d&#39;Onimusha: Way of the Sword : vingt ans apr\u00e8s, Capcom fait un jeu de sabre qui refuse d&#39;\u00eatre Sekiro"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1937,
+  "bytes": 43749
+ },
+ {
+  "url": "https://autnic.com/fr/tests/the-blood-of-dawnwalker-review/",
+  "status": 200,
+  "final": "https://autnic.com/fr/tests/the-blood-of-dawnwalker-review/",
+  "title": "Test de The Blood of Dawnwalker \u2014 Autnic",
+  "desc": "Le premier jeu de Rebel Wolves b\u00e2tit toute sa structure sur une horloge qui n'avance que lorsque l'intrigue avance.",
+  "canonical": "https://autnic.com/fr/tests/the-blood-of-dawnwalker-review/",
+  "robots": null,
+  "h1": [
+   "Test de The Blood of Dawnwalker : trente jours, huit segments par jour, et un RPG assez courageux pour vous laisser rater des choses"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1866,
+  "bytes": 43553
+ },
+ {
+  "url": "https://autnic.com/fr/tests/clair-obscur-expedition-33-review/",
+  "status": 200,
+  "final": "https://autnic.com/fr/tests/clair-obscur-expedition-33-review/",
+  "title": "Test de Clair Obscur, seize mois apr\u00e8s \u2014 Autnic",
+  "desc": "Un premier RPG a rafl\u00e9 le plus grand nombre de r\u00e9compenses de l'histoire des Game Awards, vendu huit millions d'exemplaires, puis offert \u00e0 tout le monde une\u2026",
+  "canonical": "https://autnic.com/fr/tests/clair-obscur-expedition-33-review/",
+  "robots": null,
+  "h1": [
+   "Test de Clair Obscur: Expedition 33, rev\u00e9rifi\u00e9 : neuf r\u00e9compenses plus tard, la version la plus dure de ce jeu est la version gratuite"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1938,
+  "bytes": 43699
+ },
+ {
+  "url": "https://autnic.com/fr/actus/star-wars-kotor-remake-five-years-silence/",
+  "status": 200,
+  "final": "https://autnic.com/fr/actus/star-wars-kotor-remake-five-years-silence/",
+  "title": "Remake de KOTOR : o\u00f9 en est-on en 2026 ? \u2014 Autnic",
+  "desc": "Annonc\u00e9 en septembre 2021, arr\u00eat\u00e9 en juillet 2022, repris de z\u00e9ro par un autre studio. En septembre 2026, la totalit\u00e9 de l'information officielle tient en une\u2026",
+  "canonical": "https://autnic.com/fr/actus/star-wars-kotor-remake-five-years-silence/",
+  "robots": null,
+  "h1": [
+   "Cinq ans apr\u00e8s l&#39;annonce du remake de KOTOR, personne ne l&#39;a vu \u2014 voici tout ce que l&#39;on sait r\u00e9ellement"
+  ],
+  "imgs": 8,
+  "img_noalt": 7,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 7,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1032,
+  "bytes": 33456
+ },
+ {
+  "url": "https://autnic.com/fr/configs/clair-obscur-expedition-33-platforms-setup/",
+  "status": 200,
+  "final": "https://autnic.com/fr/configs/clair-obscur-expedition-33-platforms-setup/",
+  "title": "Clair Obscur : sur quelle plateforme jouer \u2014 Autnic",
+  "desc": "PS5, PC et Xbox Series, avec le Game Pass d\u00e8s le premier jour. La prise en charge des langues a atteint vingt en juin.",
+  "canonical": "https://autnic.com/fr/configs/clair-obscur-expedition-33-platforms-setup/",
+  "robots": null,
+  "h1": [
+   "O\u00f9 jouer \u00e0 Clair Obscur: Expedition 33 en 2026 \u2014 trois plateformes, vingt langues, et rien en portable"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1115,
+  "bytes": 37168
+ },
+ {
+  "url": "https://autnic.com/fr/configs/star-wars-kotor-remake-original-setup/",
+  "status": 200,
+  "final": "https://autnic.com/fr/configs/star-wars-kotor-remake-original-setup/",
+  "title": "KOTOR : \u00e9crans, manettes et consoles portables \u2014 Autnic",
+  "desc": "Un jeu con\u00e7u en 4/3 et au clavier, jou\u00e9 sur une dalle 16/9 ou une console portable. L'essentiel du travail porte sur l'affichage et les commandes, et se fait\u2026",
+  "canonical": "https://autnic.com/fr/configs/star-wars-kotor-remake-original-setup/",
+  "robots": null,
+  "h1": [
+   "Faire tenir un jeu de 2003 en 2026 : KOTOR sur \u00e9crans modernes, manettes et portables"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1423,
+  "bytes": 39464
+ },
+ {
+  "url": "https://autnic.com/fr/guides/star-wars-kotor-remake-play-the-original/",
+  "status": 200,
+  "final": "https://autnic.com/fr/guides/star-wars-kotor-remake-play-the-original/",
+  "title": "Jouer au KOTOR d&#39;origine en 2026 : le guide \u2014 Autnic",
+  "desc": "Le remake n'a ni date, ni images, ni fiche boutique. Le jeu de 2003 a les trois \u2014 et une vingtaine de minutes de pr\u00e9paration vous s\u00e9pare d'une version qui se\u2026",
+  "canonical": "https://autnic.com/fr/guides/star-wars-kotor-remake-play-the-original/",
+  "robots": null,
+  "h1": [
+   "Comment jouer au KOTOR d&#39;origine en 2026, pendant que le remake reste invisible"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1477,
+  "bytes": 37343
+ },
+ {
+  "url": "https://autnic.com/de/",
+  "status": 200,
+  "final": "https://autnic.com/de/",
+  "title": "Tests und Guides zu Live-Service-Spielen \u2014 Autnic",
+  "desc": "Tests, Guides und News zu Live-Service-Spielen. Wir kaufen, was wir testen, und wir korrigieren unsere Wertungen, wenn sich die Spiele \u00e4ndern.",
+  "canonical": "https://autnic.com/de/",
+  "robots": null,
+  "h1": [
+   "Unabh\u00e4ngige Tests, Guides und News zu Live-Service-Spielen"
+  ],
+  "imgs": 34,
+  "img_noalt": 34,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 33,
+  "ld": [
+   "WebSite"
+  ],
+  "words": 883,
+  "bytes": 45841
+ },
+ {
+  "url": "https://autnic.com/de/news/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/",
+  "title": "Spiele-News, Patches und Studio-Updates \u2014 Autnic",
+  "desc": "Patch Notes, Studio-Statements und Release-Termine zu den Live-Service-Spielen, die wir begleiten \u2014 datiert, belegt und laufend korrigiert.",
+  "canonical": "https://autnic.com/de/news/",
+  "robots": null,
+  "h1": [
+   "News"
+  ],
+  "imgs": 13,
+  "img_noalt": 13,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 13,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 391,
+  "bytes": 42441
+ },
+ {
+  "url": "https://autnic.com/de/tests/",
+  "status": 200,
+  "final": "https://autnic.com/de/tests/",
+  "title": "Spieletests mit getesteter Version und Wertung \u2014 Autnic",
+  "desc": "Bewertete Tests zu Live-Service-Spielen. Wir kaufen, was wir testen, nennen die getestete Version und korrigieren die Wertung, wenn sich das Spiel \u00e4ndert.",
+  "canonical": "https://autnic.com/de/tests/",
+  "robots": null,
+  "h1": [
+   "Tests"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 253,
+  "bytes": 29273
+ },
+ {
+  "url": "https://autnic.com/de/guides/",
+  "status": 200,
+  "final": "https://autnic.com/de/guides/",
+  "title": "Spiele-Guides, nach jedem gro\u00dfen Patch gepr\u00fcft \u2014 Autnic",
+  "desc": "Komplettl\u00f6sungen, Builds und Fortschritts-Guides zu Live-Service-Spielen \u2014 jeder mit der Spielversion, gegen die er zuletzt gepr\u00fcft wurde.",
+  "canonical": "https://autnic.com/de/guides/",
+  "robots": null,
+  "h1": [
+   "Guides"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 254,
+  "bytes": 28971
+ },
+ {
+  "url": "https://autnic.com/de/technik/",
+  "status": 200,
+  "final": "https://autnic.com/de/technik/",
+  "title": "Einstellungen und Hardware-Guides f\u00fcr Spiele \u2014 Autnic",
+  "desc": "Grafikeinstellungen, Controller und Hardware-Konfiguration f\u00fcr die Spiele, die wir begleiten \u2014 auf unseren eigenen Rechnern gemessen, nicht abgeschrieben.",
+  "canonical": "https://autnic.com/de/technik/",
+  "robots": null,
+  "h1": [
+   "Technik"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "CollectionPage",
+   "ItemList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 260,
+  "bytes": 29410
+ },
+ {
+  "url": "https://autnic.com/de/spiele/",
+  "status": 200,
+  "final": "https://autnic.com/de/spiele/",
+  "title": "Alle Live-Service-Spiele, die wir begleiten \u2014 Autnic",
+  "desc": "Alle Live-Service-Spiele, die wir beobachten \u2014 mit Wertung, getesteter Version, Release-Termin sowie jedem Test, Guide und Artikel, den wir dazu ver\u00f6ffentlicht\u2026",
+  "canonical": "https://autnic.com/de/spiele/",
+  "robots": null,
+  "h1": [
+   "Spieldatenbank"
+  ],
+  "imgs": 8,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 232,
+  "bytes": 21076
+ },
+ {
+  "url": "https://autnic.com/de/ueber-uns/",
+  "status": 200,
+  "final": "https://autnic.com/de/ueber-uns/",
+  "title": "Wer wir sind \u2014 Autnic",
+  "desc": "Wer Autnic schreibt, wie wir werten, was wir selbst kaufen und was wir annehmen \u2014 unser Redaktionsstatut, unsere Wertungsmethode und unsere Transparenzregeln.",
+  "canonical": "https://autnic.com/de/ueber-uns/",
+  "robots": null,
+  "h1": [
+   "Wir testen, was wir kaufen"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "Organization",
+   "ImageObject",
+   "Person",
+   "Person",
+   "Person",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 491,
+  "bytes": 22643
+ },
+ {
+  "url": "https://autnic.com/de/bildnachweise/",
+  "status": 200,
+  "final": "https://autnic.com/de/bildnachweise/",
+  "title": "Bildnachweise \u2014 Autnic",
+  "desc": "Urheber, Lizenz und Quelle jedes auf Autnic verwendeten Bildes.",
+  "canonical": "https://autnic.com/de/bildnachweise/",
+  "robots": null,
+  "h1": [
+   "Bildnachweise"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 717,
+  "bytes": 34184
+ },
+ {
+  "url": "https://autnic.com/de/impressum/",
+  "status": 200,
+  "final": "https://autnic.com/de/impressum/",
+  "title": "Impressum \u2014 Autnic",
+  "desc": "Anbieter, Hosting und Haftung von Autnic.",
+  "canonical": "https://autnic.com/de/impressum/",
+  "robots": null,
+  "h1": [
+   "Impressum"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 254,
+  "bytes": 16770
+ },
+ {
+  "url": "https://autnic.com/de/datenschutz/",
+  "status": 200,
+  "final": "https://autnic.com/de/datenschutz/",
+  "title": "Datenschutz \u2014 Autnic",
+  "desc": "Welche Daten Autnic erhebt, wozu, und wie Sie sie zur\u00fcckziehen.",
+  "canonical": "https://autnic.com/de/datenschutz/",
+  "robots": null,
+  "h1": [
+   "Datenschutz"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 170,
+  "bytes": 15915
+ },
+ {
+  "url": "https://autnic.com/de/cookies/",
+  "status": 200,
+  "final": "https://autnic.com/de/cookies/",
+  "title": "Cookies \u2014 Autnic",
+  "desc": "Welche Cookies Autnic setzt, wozu sie dienen und wie Sie Ihre Entscheidung \u00e4ndern.",
+  "canonical": "https://autnic.com/de/cookies/",
+  "robots": null,
+  "h1": [
+   "Cookies"
+  ],
+  "imgs": 4,
+  "img_noalt": 4,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 4,
+  "ld": [
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 145,
+  "bytes": 15650
+ },
+ {
+  "url": "https://autnic.com/de/spiele/clair-obscur-expedition-33/",
+  "status": 200,
+  "final": "https://autnic.com/de/spiele/clair-obscur-expedition-33/",
+  "title": "Clair Obscur: Expedition 33 \u2014 Guides, Test und News \u2014 Autnic",
+  "desc": "Clair Obscur: Expedition 33 von Sandfall Interactive: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder Test, Guide und Artikel, den wir\u2026",
+  "canonical": "https://autnic.com/de/spiele/clair-obscur-expedition-33/",
+  "robots": null,
+  "h1": [
+   "Clair Obscur: Expedition 33"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "AggregateRating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 501,
+  "bytes": 41138
+ },
+ {
+  "url": "https://autnic.com/de/spiele/final-fantasy-vii-remake-trilogy/",
+  "status": 200,
+  "final": "https://autnic.com/de/spiele/final-fantasy-vii-remake-trilogy/",
+  "title": "Final Fantasy VII Remake Trilogy \u2014 Guides und News \u2014 Autnic",
+  "desc": "Final Fantasy VII Remake Trilogy von Square Enix: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder Test, Guide und Artikel, den wir dazu\u2026",
+  "canonical": "https://autnic.com/de/spiele/final-fantasy-vii-remake-trilogy/",
+  "robots": null,
+  "h1": [
+   "Final Fantasy VII Remake Trilogy"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 511,
+  "bytes": 40862
+ },
+ {
+  "url": "https://autnic.com/de/spiele/grand-theft-auto-vi/",
+  "status": 200,
+  "final": "https://autnic.com/de/spiele/grand-theft-auto-vi/",
+  "title": "Grand Theft Auto VI \u2014 Guides, Test und News \u2014 Autnic",
+  "desc": "Grand Theft Auto VI von Rockstar Games: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder Test, Guide und Artikel, den wir dazu\u2026",
+  "canonical": "https://autnic.com/de/spiele/grand-theft-auto-vi/",
+  "robots": null,
+  "h1": [
+   "Grand Theft Auto VI"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 482,
+  "bytes": 39048
+ },
+ {
+  "url": "https://autnic.com/de/spiele/onimusha-way-of-the-sword/",
+  "status": 200,
+  "final": "https://autnic.com/de/spiele/onimusha-way-of-the-sword/",
+  "title": "Onimusha: Way of the Sword \u2014 Guides, Test und News \u2014 Autnic",
+  "desc": "Onimusha: Way of the Sword von Capcom: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder Test, Guide und Artikel, den wir dazu\u2026",
+  "canonical": "https://autnic.com/de/spiele/onimusha-way-of-the-sword/",
+  "robots": null,
+  "h1": [
+   "Onimusha: Way of the Sword"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "AggregateRating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 499,
+  "bytes": 40799
+ },
+ {
+  "url": "https://autnic.com/de/spiele/star-wars-kotor-remake/",
+  "status": 200,
+  "final": "https://autnic.com/de/spiele/star-wars-kotor-remake/",
+  "title": "Star Wars: Knights of the Old Republic \u2013 Remake \u2014 Autnic",
+  "desc": "Star Wars: Knights of the Old Republic \u2013 Remake von Saber Interactive: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder Test, Guide und\u2026",
+  "canonical": "https://autnic.com/de/spiele/star-wars-kotor-remake/",
+  "robots": null,
+  "h1": [
+   "Star Wars: Knights of the Old Republic \u2013 Remake"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 496,
+  "bytes": 39573
+ },
+ {
+  "url": "https://autnic.com/de/spiele/the-blood-of-dawnwalker/",
+  "status": 200,
+  "final": "https://autnic.com/de/spiele/the-blood-of-dawnwalker/",
+  "title": "The Blood of Dawnwalker \u2014 Guides, Test und News \u2014 Autnic",
+  "desc": "The Blood of Dawnwalker von Rebel Wolves: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder Test, Guide und Artikel, den wir dazu\u2026",
+  "canonical": "https://autnic.com/de/spiele/the-blood-of-dawnwalker/",
+  "robots": null,
+  "h1": [
+   "The Blood of Dawnwalker"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "AggregateRating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 497,
+  "bytes": 39909
+ },
+ {
+  "url": "https://autnic.com/de/spiele/the-witcher-3-remastered/",
+  "status": 200,
+  "final": "https://autnic.com/de/spiele/the-witcher-3-remastered/",
+  "title": "The Witcher 3: Wild Hunt \u2013 Remastered \u2014 Guides \u2014 Autnic",
+  "desc": "The Witcher 3: Wild Hunt \u2013 Remastered von CD PROJEKT RED: unsere Wertung, die getestete Version, wo es zu kaufen ist und jeder Test, Guide und Artikel, den wir\u2026",
+  "canonical": "https://autnic.com/de/spiele/the-witcher-3-remastered/",
+  "robots": null,
+  "h1": [
+   "The Witcher 3: Wild Hunt \u2013 Remastered"
+  ],
+  "imgs": 16,
+  "img_noalt": 15,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 16,
+  "ld": [
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 493,
+  "bytes": 39538
+ },
+ {
+  "url": "https://autnic.com/de/autor/lina-morel/",
+  "status": 200,
+  "final": "https://autnic.com/de/autor/lina-morel/",
+  "title": "Lina Morel \u2014 Autnic",
+  "desc": "Schreibt \u00fcber Action-RPGs und Progressionssysteme. Kommt aus dem QA-Test. Pr\u00fcft die Guides bei jedem gro\u00dfen Patch neu, statt sie unver\u00e4ndert wieder zu\u2026",
+  "canonical": "https://autnic.com/de/autor/lina-morel/",
+  "robots": null,
+  "h1": [
+   "Lina Morel"
+  ],
+  "imgs": 12,
+  "img_noalt": 12,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 12,
+  "ld": [
+   "Person",
+   "Organization",
+   "ImageObject",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 332,
+  "bytes": 36183
+ },
+ {
+  "url": "https://autnic.com/de/autor/nour-benali/",
+  "status": 200,
+  "final": "https://autnic.com/de/autor/nour-benali/",
+  "title": "Nour Benali \u2014 Autnic",
+  "desc": "Verfolgt Studios, Patches und Arbeitsbedingungen der Branche. Lieber eine Meldung zwei Stunden sp\u00e4ter und gepr\u00fcft als zuerst und falsch.",
+  "canonical": "https://autnic.com/de/autor/nour-benali/",
+  "robots": null,
+  "h1": [
+   "Nour Benali"
+  ],
+  "imgs": 12,
+  "img_noalt": 12,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 12,
+  "ld": [
+   "Person",
+   "Organization",
+   "ImageObject",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 316,
+  "bytes": 35905
+ },
+ {
+  "url": "https://autnic.com/de/autor/sacha-vidal/",
+  "status": 200,
+  "final": "https://autnic.com/de/autor/sacha-vidal/",
+  "title": "Sacha Vidal \u2014 Autnic",
+  "desc": "Schreibt die langen Tests und entscheidet \u00fcber Wertungskorrekturen. Zw\u00f6lf Jahre Fachpresse, davon vier im t\u00e4glichen Gesch\u00e4ft der Konsolen-Releases.",
+  "canonical": "https://autnic.com/de/autor/sacha-vidal/",
+  "robots": null,
+  "h1": [
+   "Sacha Vidal"
+  ],
+  "imgs": 9,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Person",
+   "Organization",
+   "ImageObject",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 237,
+  "bytes": 29087
+ },
+ {
+  "url": "https://autnic.com/de/news/onimusha-way-of-the-sword-critical-split/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/onimusha-way-of-the-sword-critical-split/",
+  "title": "Onimusha-Tests: Warum die Kritik gespalten ist \u2014 Autnic",
+  "desc": "Kotaku nennt Way of the Sword ein Spiel im Krieg mit sich selbst. Wir haben 8,2 vergeben. Liest man beides, ist die Uneinigkeit erstaunlich eng, sehr konkret\u2026",
+  "canonical": "https://autnic.com/de/news/onimusha-way-of-the-sword-critical-split/",
+  "robots": null,
+  "h1": [
+   "Warum die Kritik sich bei Onimusha nicht einig wird: Der Streit geht um die offene Welt, nicht um den Kampf"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 765,
+  "bytes": 34799
+ },
+ {
+  "url": "https://autnic.com/de/news/the-blood-of-dawnwalker-first-hours-chores/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/the-blood-of-dawnwalker-first-hours-chores/",
+  "title": "Dawnwalkers Anfangsstunden sind Hausarbeit \u2014 Autnic",
+  "desc": "Die Anlage ist ein Gag: Lestat, Louis, Armand und Claudia schauen einer Preview-Fassung zu. Heraus kommt ein echter Einwand dagegen, womit die ersten Stunden\u2026",
+  "canonical": "https://autnic.com/de/news/the-blood-of-dawnwalker-first-hours-chores/",
+  "robots": null,
+  "h1": [
+   "Kotaku legt f\u00fcr Dawnwalkers erste sieben Stunden Anne Rices Vampire auf die Couch"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 700,
+  "bytes": 34311
+ },
+ {
+  "url": "https://autnic.com/de/news/clair-obscur-expedition-33-broche-kingdom-hearts/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/clair-obscur-expedition-33-broche-kingdom-hearts/",
+  "title": "Broche: Kingdom Hearts II ist ein Top-5-Spiel \u2014 Autnic",
+  "desc": "Guillaume Broche hat dem Jeux Vid\u00e9o Club von Konbini gesagt, dass er dem Kampfgef\u00fchl von Kingdom Hearts II seither hinterherjagt.",
+  "canonical": "https://autnic.com/de/news/clair-obscur-expedition-33-broche-kingdom-hearts/",
+  "robots": null,
+  "h1": [
+   "Der Director von Clair Obscur erkl\u00e4rt Expedition 33 \u00fcber den Umweg Kingdom Hearts II"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 621,
+  "bytes": 31775
+ },
+ {
+  "url": "https://autnic.com/de/news/the-blood-of-dawnwalker-story-timer-mod/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/the-blood-of-dawnwalker-story-timer-mod/",
+  "title": "Dawnwalkers Top-Mod entfernt den Timer \u2014 Autnic",
+  "desc": "Der Mod Better Story Timer erschien am Mittwoch auf Nexus Mods und \u00fcberschritt binnen Tagen 36.000 Downloads, berichtet Kotaku.",
+  "canonical": "https://autnic.com/de/news/the-blood-of-dawnwalker-story-timer-mod/",
+  "robots": null,
+  "h1": [
+   "Dawnwalkers meistgeladener Mod l\u00f6scht genau das, worum Rebel Wolves das Spiel gebaut hat \u2014 36.000 Leute haben ihn schon installiert"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 717,
+  "bytes": 34430
+ },
+ {
+  "url": "https://autnic.com/de/tests/final-fantasy-vii-remake-trilogy-rebirth-revisited/",
+  "status": 200,
+  "final": "https://autnic.com/de/tests/final-fantasy-vii-remake-trilogy-rebirth-revisited/",
+  "title": "FF7 Rebirth im Test, neu betrachtet 2026 \u2014 Autnic",
+  "desc": "Zwei Jahre sp\u00e4ter und neunzehn Monate vor dem Finale liest sich Rebirth anders: nicht als Spiel, das endet, sondern als eines, das seine ganze L\u00e4nge damit\u2026",
+  "canonical": "https://autnic.com/de/tests/final-fantasy-vii-remake-trilogy-rebirth-revisited/",
+  "robots": null,
+  "h1": [
+   "Final Fantasy VII Rebirth, noch einmal betrachtet: das Mittelst\u00fcck, das an Revelation \u00fcbergeben muss"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1336,
+  "bytes": 41036
+ },
+ {
+  "url": "https://autnic.com/de/news/grand-theft-auto-vi-china-censorship/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/grand-theft-auto-vi-china-censorship/",
+  "title": "GTA-6-Trailer auf Bilibili zensiert \u2014 Autnic",
+  "desc": "Der ausf\u00fchrliche Trailer wurde um den 31. August gegen eine Fassung getauscht, die Rauchen, Unterw\u00e4sche und K\u00f6rper verpixelt.",
+  "canonical": "https://autnic.com/de/news/grand-theft-auto-vi-china-censorship/",
+  "robots": null,
+  "h1": [
+   "Rockstar hat den GTA-6-Trailer f\u00fcr Bilibili unkenntlich gemacht \u2014 auf der eigenen Seite aber nicht"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 656,
+  "bytes": 31813
+ },
+ {
+  "url": "https://autnic.com/de/guides/grand-theft-auto-vi-stealing-cars-guide/",
+  "status": 200,
+  "final": "https://autnic.com/de/guides/grand-theft-auto-vi-stealing-cars-guide/",
+  "title": "So funktioniert der Autoklau in GTA 6 \u2014 Autnic",
+  "desc": "Hingehen, Dreieck dr\u00fccken, wegfahren \u2014 so lief das seit 1997, und GTA 6 macht damit Schluss. Hier steht alles, was zum Carjacking bisher best\u00e4tigt ist, auf\u2026",
+  "canonical": "https://autnic.com/de/guides/grand-theft-auto-vi-stealing-cars-guide/",
+  "robots": null,
+  "h1": [
+   "Autoklau ist in GTA 6 ein Beruf: Slim Jim, Schlossknacken, Peilsender und eine App, die dir vorher sagt, was du gleich stiehlst"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 721,
+  "bytes": 32577
+ },
+ {
+  "url": "https://autnic.com/de/news/grand-theft-auto-vi-fishing-hunting/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/grand-theft-auto-vi-fishing-hunting/",
+  "title": "GTA 6: Angeln ist Catch and Release \u2014 Autnic",
+  "desc": "Rob Nelson von Rockstar North hat dem YouTuber TGG gesagt, dass niemand einen gefangenen Fisch behalten kann. Die Jagd dagegen ist eine Einnahmequelle \u2014 und\u2026",
+  "canonical": "https://autnic.com/de/news/grand-theft-auto-vi-fishing-hunting/",
+  "robots": null,
+  "h1": [
+   "Angeln in GTA 6 ist Catch and Release, und Rockstars Begr\u00fcndung k\u00f6nnte kaum mehr nach Rockstar klingen: Es passte nicht"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 609,
+  "bytes": 31578
+ },
+ {
+  "url": "https://autnic.com/de/technik/final-fantasy-vii-remake-trilogy-revelation-editions/",
+  "status": 200,
+  "final": "https://autnic.com/de/technik/final-fantasy-vii-remake-trilogy-revelation-editions/",
+  "title": "FF7 Revelation: Editionen im Vergleich \u2014 Autnic",
+  "desc": "Sechs Editionen, physisch und digital, von 69,99 $ bis 349,99 $. Nur zwei davon enthalten die beiden Story-Erweiterungen \u2014 und der Unterschied zwischen der\u2026",
+  "canonical": "https://autnic.com/de/technik/final-fantasy-vii-remake-trilogy-revelation-editions/",
+  "robots": null,
+  "h1": [
+   "Alle Editionen von Final Fantasy VII Revelation, was jede wirklich bringt, und die f\u00fcr 349,99 $, die es nur bei Square Enix gibt"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 682,
+  "bytes": 32846
+ },
+ {
+  "url": "https://autnic.com/de/guides/onimusha-way-of-the-sword-parry-guide/",
+  "status": 200,
+  "final": "https://autnic.com/de/guides/onimusha-way-of-the-sword-parry-guide/",
+  "title": "Onimusha: Way of the Sword \u2014 Kampf-Guide \u2014 Autnic",
+  "desc": "Way of the Sword bringt dir das Blocken bei und erwartet dann stillschweigend, dass du damit aufh\u00f6rst. Parade, Ausdauer und Break Issen sind ein einziges\u2026",
+  "canonical": "https://autnic.com/de/guides/onimusha-way-of-the-sword-parry-guide/",
+  "robots": null,
+  "h1": [
+   "Die Parade, die lenkt: Wie Onimushas Kampfsystem wirklich funktioniert \u2014 und die Gewohnheit, die dich K\u00e4mpfe kostet"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1190,
+  "bytes": 38534
+ },
+ {
+  "url": "https://autnic.com/de/news/the-witcher-3-remastered-cdpr-ai-stance/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/the-witcher-3-remastered-cdpr-ai-stance/",
+  "title": "CDPR: Witcher 4 entsteht \u00fcberwiegend menschlich \u2014 Autnic",
+  "desc": "Co-CEO Micha\u0142 Nowakowski hat im j\u00fcngsten Quartalsbriefing von CD Projekt gesagt, KI sei ein Werkzeug, das das Studio stellenweise nutzt \u2014 und nichts, womit es\u2026",
+  "canonical": "https://autnic.com/de/news/the-witcher-3-remastered-cdpr-ai-stance/",
+  "robots": null,
+  "h1": [
+   "CD Projekt sagt, The Witcher 4 entstehe \u201e\u00fcberwiegend mit Menschen\u201c \u2014 ein Satz, den ein Studio heute laut sagen muss"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 648,
+  "bytes": 31557
+ },
+ {
+  "url": "https://autnic.com/de/technik/the-witcher-3-remastered-free-upgrade-setup/",
+  "status": 200,
+  "final": "https://autnic.com/de/technik/the-witcher-3-remastered-free-upgrade-setup/",
+  "title": "Witcher 3 Remastered: das Gratis-Upgrade \u2014 Autnic",
+  "desc": "F\u00fcnf Shops qualifizieren f\u00fcr das kostenlose Upgrade, zwei Erweiterungen liegen bereits in deiner Bibliothek \u2014 gekauft oder nicht \u2014, und zwei Plattformen sind\u2026",
+  "canonical": "https://autnic.com/de/technik/the-witcher-3-remastered-free-upgrade-setup/",
+  "robots": null,
+  "h1": [
+   "Besitzt du The Witcher 3 Remastered schon? Wahrscheinlich. So pr\u00fcfst du es vor dem 29. September"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1056,
+  "bytes": 38278
+ },
+ {
+  "url": "https://autnic.com/de/guides/the-witcher-3-remastered-what-changes/",
+  "status": 200,
+  "final": "https://autnic.com/de/guides/the-witcher-3-remastered-what-changes/",
+  "title": "Witcher 3 Remastered: Was sich \u00e4ndert \u2014 Autnic",
+  "desc": "Path Tracing ist die Schlagzeile, aber die \u00dcberarbeitung des Fertigkeitenbaums und die Transmogrifikation sind die beiden Punkte, die ein elf Jahre altes Spiel\u2026",
+  "canonical": "https://autnic.com/de/guides/the-witcher-3-remastered-what-changes/",
+  "robots": null,
+  "h1": [
+   "Alles, was sich in The Witcher 3 Remastered \u00e4ndert \u2014 und welche \u00c4nderungen wirklich das Spielgef\u00fchl anfassen"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1129,
+  "bytes": 39343
+ },
+ {
+  "url": "https://autnic.com/de/news/final-fantasy-vii-remake-trilogy-revelation-dated/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/final-fantasy-vii-remake-trilogy-revelation-dated/",
+  "title": "FF7 Revelation auf 8. April 2027 datiert \u2014 Autnic",
+  "desc": "Square Enix hat das Datum im September-State-of-Play best\u00e4tigt, dazu fast zehn Minuten Gameplay \u2014 das meiste davon im Flug mit der Highwind \u00fcber Gaia.",
+  "canonical": "https://autnic.com/de/news/final-fantasy-vii-remake-trilogy-revelation-dated/",
+  "robots": null,
+  "h1": [
+   "Final Fantasy VII Revelation erscheint am 8. April 2027, und Square Enix h\u00e4ngt die Weltkarte zur\u00fcck in den Himmel, wo sie hingeh\u00f6rt"
+  ],
+  "imgs": 9,
+  "img_noalt": 8,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 8,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 632,
+  "bytes": 32331
+ },
+ {
+  "url": "https://autnic.com/de/tests/onimusha-way-of-the-sword-review/",
+  "status": 200,
+  "final": "https://autnic.com/de/tests/onimusha-way-of-the-sword-review/",
+  "title": "Onimusha: Way of the Sword im Test \u2014 Autnic",
+  "desc": "Das erste Onimusha der Hauptreihe seit 2006 ist kurz, linear, blutig und mit Absicht kein Soulslike. Diese letzte Entscheidung ist das Beste daran \u2014 und die\u2026",
+  "canonical": "https://autnic.com/de/tests/onimusha-way-of-the-sword-review/",
+  "robots": null,
+  "h1": [
+   "Onimusha: Way of the Sword im Test \u2014 zwanzig Jahre sp\u00e4ter baut Capcom ein Schwertspiel, das sich weigert, Sekiro zu sein"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1707,
+  "bytes": 43828
+ },
+ {
+  "url": "https://autnic.com/de/tests/the-blood-of-dawnwalker-review/",
+  "status": 200,
+  "final": "https://autnic.com/de/tests/the-blood-of-dawnwalker-review/",
+  "title": "The Blood of Dawnwalker im Test \u2014 Autnic",
+  "desc": "Rebel Wolves' erstes Spiel baut seine gesamte Struktur auf eine Uhr, die nur l\u00e4uft, wenn die Handlung l\u00e4uft. Das ist das Interessanteste, was ein RPG seit\u2026",
+  "canonical": "https://autnic.com/de/tests/the-blood-of-dawnwalker-review/",
+  "robots": null,
+  "h1": [
+   "The Blood of Dawnwalker im Test: drei\u00dfig Tage, acht Abschnitte pro Tag und ein RPG, das mutig genug ist, dich Dinge verpassen zu lassen"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1686,
+  "bytes": 43691
+ },
+ {
+  "url": "https://autnic.com/de/tests/clair-obscur-expedition-33-review/",
+  "status": 200,
+  "final": "https://autnic.com/de/tests/clair-obscur-expedition-33-review/",
+  "title": "Clair Obscur nachgepr\u00fcft, 16 Monate sp\u00e4ter \u2014 Autnic",
+  "desc": "Ein RPG-Erstling gewann die meisten Preise in der Geschichte der Game Awards, verkaufte sich acht Millionen Mal und schenkte danach allen ein kostenloses\u2026",
+  "canonical": "https://autnic.com/de/tests/clair-obscur-expedition-33-review/",
+  "robots": null,
+  "h1": [
+   "Clair Obscur: Expedition 33 im Test, nachgepr\u00fcft \u2014 neun Auszeichnungen sp\u00e4ter ist die h\u00e4rteste Fassung dieses Spiels die kostenlose"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Review",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "VideoGame",
+   "Rating",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1747,
+  "bytes": 44042
+ },
+ {
+  "url": "https://autnic.com/de/news/star-wars-kotor-remake-five-years-silence/",
+  "status": 200,
+  "final": "https://autnic.com/de/news/star-wars-kotor-remake-five-years-silence/",
+  "title": "KOTOR Remake: der Stand im Jahr 2026 \u2014 Autnic",
+  "desc": "Im September 2021 angek\u00fcndigt, im Juli 2022 gestoppt, von einem anderen Studio von Grund auf neu gebaut. Im September 2026 besteht die Summe der offiziellen\u2026",
+  "canonical": "https://autnic.com/de/news/star-wars-kotor-remake-five-years-silence/",
+  "robots": null,
+  "h1": [
+   "F\u00fcnf Jahre nach der Ank\u00fcndigung des KOTOR-Remakes hat es niemand gesehen \u2014 hier steht alles, was wirklich bekannt ist"
+  ],
+  "imgs": 8,
+  "img_noalt": 7,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 7,
+  "ld": [
+   "NewsArticle",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 887,
+  "bytes": 33474
+ },
+ {
+  "url": "https://autnic.com/de/technik/clair-obscur-expedition-33-platforms-setup/",
+  "status": 200,
+  "final": "https://autnic.com/de/technik/clair-obscur-expedition-33-platforms-setup/",
+  "title": "Clair Obscur: Auf welcher Plattform spielen? \u2014 Autnic",
+  "desc": "PS5, PC und Xbox Series, seit dem ersten Tag im Game Pass. Die Sprachunterst\u00fctzung erreichte im Juni zwanzig. Die Switch-2-Fassung, nach der alle fragen, gibt\u2026",
+  "canonical": "https://autnic.com/de/technik/clair-obscur-expedition-33-platforms-setup/",
+  "robots": null,
+  "h1": [
+   "Wo man Clair Obscur: Expedition 33 im Jahr 2026 spielt \u2014 drei Plattformen, zwanzig Sprachen und kein Handheld"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 947,
+  "bytes": 37177
+ },
+ {
+  "url": "https://autnic.com/de/technik/star-wars-kotor-remake-original-setup/",
+  "status": 200,
+  "final": "https://autnic.com/de/technik/star-wars-kotor-remake-original-setup/",
+  "title": "KOTOR einrichten: Bild, Controller, Handheld \u2014 Autnic",
+  "desc": "Ein Spiel, gebaut f\u00fcr 4:3 und Tastatur, gespielt auf einem 16:9-Panel oder einem Handheld. Das meiste ist Bild und Eingabe, und das meiste erledigt man einmal\u2026",
+  "canonical": "https://autnic.com/de/technik/star-wars-kotor-remake-original-setup/",
+  "robots": null,
+  "h1": [
+   "Ein Spiel von 2003 im Jahr 2026 zum Benehmen bringen: KOTOR auf modernen Bildschirmen, Controllern und Handhelds"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1256,
+  "bytes": 39478
+ },
+ {
+  "url": "https://autnic.com/de/guides/star-wars-kotor-remake-play-the-original/",
+  "status": 200,
+  "final": "https://autnic.com/de/guides/star-wars-kotor-remake-play-the-original/",
+  "title": "Das originale KOTOR 2026 spielen \u2014 Autnic",
+  "desc": "Das Remake hat kein Datum, kein Videomaterial und keine Shopseite. Das Spiel von 2003 hat alle drei \u2014 und rund zwanzig Minuten Vorbereitung liegen zwischen dir\u2026",
+  "canonical": "https://autnic.com/de/guides/star-wars-kotor-remake-play-the-original/",
+  "robots": null,
+  "h1": [
+   "Wie man das urspr\u00fcngliche KOTOR im Jahr 2026 spielt, solange das Remake unsichtbar bleibt"
+  ],
+  "imgs": 10,
+  "img_noalt": 9,
+  "img_emptyalt": 0,
+  "img_nodims": 0,
+  "img_lazy": 9,
+  "ld": [
+   "Article",
+   "Person",
+   "Organization",
+   "ImageObject",
+   "VideoGame",
+   "BreadcrumbList",
+   "ListItem",
+   "ListItem",
+   "ListItem",
+   "ListItem"
+  ],
+  "words": 1350,
+  "bytes": 39943
+ }
+]

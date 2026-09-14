@@ -14,9 +14,6 @@ import {
 import { useT } from '../i18n/ui';
 
 const lang = langFromPath(Astro.url.pathname);
-/* Le formulaire poste vers le fournisseur défini dans .env. Sans lui, il ne
-   fait rien et le dit plutôt que de faire semblant d'avoir inscrit. */
-const newsletterAction = import.meta.env.PUBLIC_NEWSLETTER_ACTION;
 const t = useT(lang);
 const posts = await getPosts(Astro.locals, lang);
 const games = await getGames(Astro.locals, lang);
@@ -279,8 +276,8 @@ const jsonLd = {
           <p>{t('home.promoBody')}</p>
         </div>
         <div class="promo-signup">
-          <form class="news-form" action={newsletterAction} method="post" novalidate
-                data-newsletter={newsletterAction ? undefined : ''}>
+          <form class="news-form" action="/api/newsletter" method="post" novalidate>
+            <input type="hidden" name="lang" value={lang}>
             <label class="sr" for="nl">{t('news.email')}</label>
             <input class="input" id="nl" name="email" type="email" inputmode="email"
                    autocomplete="email" spellcheck="false" autocapitalize="off"

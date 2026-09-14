@@ -103,8 +103,10 @@ export interface D1Like {
   prepare(sql: string): {
     bind(...values: unknown[]): {
       all<T = Record<string, unknown>>(): Promise<{ results: T[] }>;
+      run(): Promise<{ success: boolean }>;
     };
     all<T = Record<string, unknown>>(): Promise<{ results: T[] }>;
+    run(): Promise<{ success: boolean }>;
   };
 }
 

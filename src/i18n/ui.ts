@@ -233,8 +233,10 @@ const en = {
   'news.terms': 'One email a week. Unsubscribe in one click.',
   'news.errEmpty': 'Enter your email address.',
   'news.errInvalid': 'That address doesn’t look right — check the @ and the domain.',
-  'news.notConfigured': 'Signup not configured',
-  'news.notConfiguredBody': 'Set PUBLIC_NEWSLETTER_ACTION in .env',
+  'news.errServer': 'Something went wrong — try again.',
+  'news.success': 'You’re in!',
+  'news.successBody': 'We’ll write to you next Tuesday.',
+  'news.duplicate': 'You’re already subscribed!',
 
   /* consentement */
   'consent.title': 'We use advertising cookies.',
@@ -492,8 +494,10 @@ const fr: Dict = {
   'news.terms': 'Un envoi par semaine. Désabonnement en un clic.',
   'news.errEmpty': 'Entrez votre adresse e-mail.',
   'news.errInvalid': 'Cette adresse ne semble pas valide — vérifiez le @ et le domaine.',
-  'news.notConfigured': 'Inscription non configurée',
-  'news.notConfiguredBody': 'Renseignez PUBLIC_NEWSLETTER_ACTION dans .env',
+  'news.errServer': 'Un problème est survenu — réessayez.',
+  'news.success': 'C’est noté !',
+  'news.successBody': 'On vous écrit mardi prochain.',
+  'news.duplicate': 'Vous êtes déjà inscrit(e) !',
 
   'consent.title': 'Nous utilisons des cookies publicitaires.',
   'consent.body':
@@ -751,8 +755,10 @@ const de: Dict = {
   'news.terms': 'Eine E-Mail pro Woche. Abmeldung mit einem Klick.',
   'news.errEmpty': 'Gib deine E-Mail-Adresse ein.',
   'news.errInvalid': 'Diese Adresse sieht nicht richtig aus — prüf das @ und die Domain.',
-  'news.notConfigured': 'Anmeldung nicht eingerichtet',
-  'news.notConfiguredBody': 'PUBLIC_NEWSLETTER_ACTION in .env setzen',
+  'news.errServer': 'Etwas ist schiefgelaufen — versuch es nochmal.',
+  'news.success': 'Du bist dabei!',
+  'news.successBody': 'Wir schreiben dir nächsten Dienstag.',
+  'news.duplicate': 'Du bist bereits angemeldet!',
 
   'consent.title': 'Wir verwenden Werbe-Cookies.',
   'consent.body':

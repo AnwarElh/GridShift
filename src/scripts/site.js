@@ -427,15 +427,15 @@ function toast(title, detail = '') {
   if (stack.children.length > 3) stack.firstElementChild?.remove();
 }
 
-/* Lettre : un seul gestionnaire pour la validation, l'état d'envoi et le cas
-   « fournisseur non configuré ». En deux gestionnaires, une adresse invalide
-   déclenchait AUSSI le message de configuration — deux réponses pour une
-   seule erreur. Le formulaire porte `novalidate` : le message va sous le
-   champ, pas dans une bulle native qui saute au premier clic. */
+/* Lettre : un seul gestionnaire pour la validation et l'envoi vers D1.
+   Le formulaire porte `novalidate` : le message va sous le champ, pas dans
+   une bulle native qui saute au premier clic. La requête part en fetch vers
+   /api/newsletter — le serveur stocke dans D1 et rend du JSON. */
 document.querySelectorAll('.news-form').forEach((f) => {
   const input = f.querySelector('input[type="email"]');
   const btn = f.querySelector('button[type="submit"]');
   const msg = document.getElementById(input?.getAttribute('aria-describedby') ?? '');
+  const ctaLabel = btn?.textContent ?? '';
 
   const setError = (text) => {
     if (msg) { msg.textContent = text; msg.hidden = false; }
@@ -446,28 +446,41 @@ document.querySelectorAll('.news-form').forEach((f) => {
     if (msg) { msg.hidden = true; msg.textContent = ''; }
     input?.removeAttribute('aria-invalid');
   };
+  const unlock = () => {
+    if (btn) { btn.disabled = false; btn.textContent = ctaLabel; }
+  };
   on(input, 'input', clearError);
 
-  on(f, 'submit', (e) => {
+  on(f, 'submit', async (e) => {
+    e.preventDefault();
     clearError();
-    if (!input.value.trim()) {
-      e.preventDefault();
-      setError(S.newsEmpty);
-      return;
-    }
-    if (!input.checkValidity()) {
-      e.preventDefault();
-      setError(S.newsInvalid);
-      return;
-    }
-    if (f.hasAttribute('data-newsletter')) {
-      /* pas de fournisseur : on le dit, on ne fait pas semblant d'avoir inscrit */
-      e.preventDefault();
-      toast(S.newsUnconfigured, S.newsUnconfiguredBody);
-      return;
-    }
-    /* la requête part : le bouton se verrouille et le dit */
+    if (!input.value.trim()) { setError(S.newsEmpty); return; }
+    if (!input.checkValidity()) { setError(S.newsInvalid); return; }
+
     if (btn) { btn.disabled = true; btn.textContent = S.newsSending; }
+
+    try {
+      const res = await fetch(f.action, {
+        method: 'POST',
+        body: new FormData(f),
+      });
+      const body = await res.json();
+      if (body.ok) {
+        if (body.duplicate) {
+          toast(S.newsDuplicate);
+        } else {
+          toast(S.newsSuccess, S.newsSuccessBody);
+        }
+        input.value = '';
+        unlock();
+      } else {
+        setError(body.error === 'invalid email' ? S.newsInvalid : S.newsErrServer);
+        unlock();
+      }
+    } catch {
+      setError(S.newsErrServer);
+      unlock();
+    }
   });
 });
 

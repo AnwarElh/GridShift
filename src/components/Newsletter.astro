@@ -3,10 +3,8 @@ import { langFromPath } from '../i18n/config';
 import { useT } from '../i18n/ui';
 interface Props { id?: string; }
 const { id = 'newsletter' } = Astro.props;
-/* Formulaire posté vers le fournisseur défini dans .env (Buttondown, Beehiiv…).
-   Sans NEWSLETTER_ACTION, il ne fait rien et le dit. */
-const action = import.meta.env.PUBLIC_NEWSLETTER_ACTION;
-const t = useT(langFromPath(Astro.url.pathname));
+const lang = langFromPath(Astro.url.pathname);
+const t = useT(lang);
 ---
 <section class="sec news-sec" id={id}>
   <div class="news-box">
@@ -15,8 +13,8 @@ const t = useT(langFromPath(Astro.url.pathname));
       <h2 class="d3" style="margin:10px 0 8px">{t('news.title')}</h2>
       <p style="color:var(--tx-2);max-width:56ch">{t('news.body')}</p>
     </div>
-    <form class="news-form" action={action} method="post" novalidate
-          data-newsletter={action ? undefined : ''}>
+    <form class="news-form" action="/api/newsletter" method="post" novalidate>
+      <input type="hidden" name="lang" value={lang}>
       <label class="sr" for="nl">{t('news.email')}</label>
       <input class="input" id="nl" name="email" type="email" inputmode="email"
              autocomplete="email" spellcheck="false" autocapitalize="off"
@@ -28,3 +26,4 @@ const t = useT(langFromPath(Astro.url.pathname));
     <p class="meta">{t('news.terms')}</p>
   </div>
 </section>
+

@@ -1,0 +1,114 @@
+{
+  "summary": {
+    "health_score": 76,
+    "previous_score": 53,
+    "audit_date": "2026-09-10",
+    "business_type": "Publisher (games media, ad-supported + affiliate)",
+    "top_findings": [
+      "Critical: Game hubs emit a fabricated AggregateRating (ratingCount = number of Autnic's own articles) on 9 URLs; src/views/Game.astro:68-70",
+      "High: About and llms.txt promise a dated correction log on every article; 0 of 63 articles populate it",
+      "High: The 'We buy what we review' tagline contradicts 2 of 4 reviews, which were played on publisher codes (disclosed in-review)",
+      "High: The article hero srcset offers only 1440w/1920w because Fig.astro's exact-match filter drops the missing 900w variant",
+      "High: No max-image-preview:large, so Discover can't use large image cards"
+    ],
+    "quick_wins": [
+      "Delete the aggregateRating spread in Game.astro:68-70",
+      "Emit max-image-preview:large in Base.astro:102",
+      "Snap requested widths to the nearest available variant in Fig.astro:37-39",
+      "Set alt={bodyShotCaption} on the body screenshot, Article.astro:176",
+      "Replace the leftover 'Your ultimate gaming blog' H2 on the homepage"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 83,
+      "what_works": ["126/126 sitemap URLs 200, self-canonical, reciprocal hreflang", "Real 404s in en/fr/de", ".md alternates noindexed + canonical Link header", "Own robots.txt, AI user-agents get 200", "Full security header set"],
+      "findings": [
+        {"title": "No cache purge on D1 publish", "severity": "Medium", "description": "CACHE_TTL 86400 (wrangler.jsonc:97), swr=345600; the targeted purge was removed (src/lib/cache.ts:23-27). Corrections published to D1 can take up to 24h to reach every edge.", "recommendation": "Purge the article URLs in all locales from the D1 publish hook."},
+        {"title": "IndexNow fires only on git deploys", "severity": "Medium", "description": "deploy.yml:121-126 is the only caller; src/lib/indexnow.ts:54 is never called from D1 publishes.", "recommendation": "Call submitToIndexNow from the same D1 publish hook."},
+        {"title": "Trailing-slash duplicates return 200", "severity": "Low", "description": "astro.config.mjs:57 trailingSlash 'ignore'; /reviews and /reviews/ both return 200 (canonical is correct).", "recommendation": "301 to the slash form in middleware."},
+        {"title": "www takes 2 redirect hops", "severity": "Low", "description": "http://www.autnic.com -> https://www -> https://autnic.com", "recommendation": "Single Cloudflare redirect rule."}
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 72,
+      "what_works": ["Reviews of 1,700-1,938 words with structured version/platform/playtime/copy-source disclosure", "About charter: paid copies, ad separation, scoring rubric", "Full fr/de translations", "Pre-release guides honestly hedged", "Fictional-games risk from 27 Aug resolved"],
+      "findings": [
+        {"title": "Correction-log promise unmet", "severity": "High", "description": "About.astro:62/86 and llms.txt promise a dated log on every article; corrections is populated in 0/63 files and only renders when non-empty (Article.astro:189-201).", "recommendation": "Always render the block, with 'No corrections since publication' when empty; log real corrections."},
+        {"title": "Tagline overclaims", "severity": "High", "description": "'We buy what we review' in the home meta/og/WebSite/llms.txt; Onimusha and Dawnwalker reviews were played on publisher codes (disclosed in method).", "recommendation": "Reword to match the About policy."},
+        {"title": "No first-hand imagery", "severity": "Medium", "description": "All review images are publisher press assets.", "recommendation": "1-2 reviewer-captured screenshots per review."},
+        {"title": "News built around another outlet's take", "severity": "Medium", "description": "e.g. onimusha-way-of-the-sword-critical-split, structured as 'Kotaku says X'.", "recommendation": "Lead with Autnic's own angle, then cite."},
+        {"title": "Author credentials can't be checked", "severity": "Low", "description": "No named prior outlets or profile links; initials avatars.", "recommendation": "One external credential per author."}
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 80,
+      "what_works": ["Query-led titles of 39-51 chars; hook kept in the H1", "No duplicate meta descriptions", "One H1 per page", "Every article one click from the homepage"],
+      "findings": [
+        {"title": "Hub descriptions promise 'where to buy it'", "severity": "Medium", "description": "Template at src/i18n/ui.ts:169 (en), :689 (de); no buy links render on hubs.", "recommendation": "Render the whereToBuy block on hubs or drop the clause."},
+        {"title": "Review titles carry no hook", "severity": "Medium", "description": "10-20 chars of spare title budget unused.", "recommendation": "Query first, then a short hook."},
+        {"title": "FF7 editions page lacks a comparison table", "severity": "Medium", "description": "0 tables, 1 outbound link, for a comparison query.", "recommendation": "Editions x contents x price table plus buy links."},
+        {"title": "Template filler H2 on the homepage", "severity": "Low", "description": "'Your ultimate gaming blog' (Home.astro pick-h).", "recommendation": "Replace with real section copy."},
+        {"title": "Identical titles across locales", "severity": "Low", "description": "Game hubs, authors, cookies.", "recommendation": "Localized hub suffixes."}
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 72,
+      "what_works": ["Site-wide BreadcrumbList from one component", "Stable publisher @id", "Correct NewsArticle/Article/Review typing", "reviewRating matches the visible score", "No HowTo/FAQPage"],
+      "findings": [
+        {"title": "Fabricated AggregateRating", "severity": "Critical", "description": "Game.astro:69 ratingCount: Math.max(1, posts.length); live ratingValue 8.2, ratingCount 3 on 9 hub URLs.", "recommendation": "Delete it until real user votes exist."},
+        {"title": "Orphaned homepage WebSite, no sameAs", "severity": "High", "description": "Home.astro:123-130 emits a bare WebSite; no sameAs anywhere in src.", "recommendation": "Emit [Organization, WebSite] with publisher @id; add sameAs in site.ts:42-53."},
+        {"title": "dateModified not tied to corrections", "severity": "Medium", "description": "Article.astro:62; content.config.ts:37,64.", "recommendation": "Zod refine in the content schema."},
+        {"title": "itemReviewed has no url", "severity": "Low", "description": "Article.astro:81.", "recommendation": "Link to the game hub."}
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 75,
+      "what_works": ["LCP image eager + fetchpriority=high", "CLS 0 (width/height everywhere)", "Consent-gated ads, no pre-consent CLS", "TBT negligible", "Immutable media caching"],
+      "findings": [
+        {"title": "Article hero srcset lacks small variants", "severity": "High", "description": "Article.astro:109 requests 900w, which 404s; the Fig.astro:37-39 exact-match filter leaves 1440w/1920w only (307 KB minimum). Review lab LCP 10.3s (single run, with a 5.25s lab TTFB anomaly; re-verify).", "recommendation": "Snap requested widths to the nearest existing variant in Fig.astro."},
+        {"title": "Font preloads compete with the LCP image", "severity": "Medium", "description": "41% of the homepage LCP is element render delay; 3 font preloads at top priority.", "recommendation": "Drop the JetBrains Mono preload; keep Chakra only if above the fold."}
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 61,
+      "what_works": ["AI bots allowed, 200", "Well-formed llms.txt", ".md alternates advertised", "Full SSR text", "No leftover Gridshift strings"],
+      "findings": [
+        {"title": "Unanchored Organization entity", "severity": "High", "description": "Orphaned homepage WebSite; no sameAs.", "recommendation": "Same fix as Schema."},
+        {"title": "llms.txt repeats the unmet correction-log claim", "severity": "Medium", "description": "0 articles have corrections.", "recommendation": "Resolved by the correction-log fix."},
+        {"title": "Short passages", "severity": "Low", "description": "Paragraphs of 17-85 words.", "recommendation": "Answer-first under question H2s; no padding."}
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 78,
+      "what_works": ["width/height on all 1,331 images", "Responsive WebP", "1920x1080 og:image per article", "Descriptive hero alt", "Empty alt on card thumbnails (correct)"],
+      "findings": [
+        {"title": "No max-image-preview:large", "severity": "High", "description": "Base.astro:102 only emits noindex.", "recommendation": "Emit max-image-preview:large on indexable pages."},
+        {"title": "Body screenshot has empty alt", "severity": "Medium", "description": "Article.astro:176 alt=\"\" despite a figcaption.", "recommendation": "alt={bodyShotCaption}."},
+        {"title": "No image sitemap entries", "severity": "Medium", "description": "sitemap.xml.ts has no image namespace.", "recommendation": "Add image:image for cover and hero."},
+        {"title": "og:image has no dimensions or alt", "severity": "Low", "description": "Base.astro:109.", "recommendation": "Add og:image:width/height/alt."}
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {"name": "Phase 0: Measurement", "timeframe": "Before anything", "items": ["Connect GSC + Bing Webmaster Tools, submit the sitemap, add a PSI API key"]},
+      {"name": "Phase 1: Critical Fixes", "timeframe": "Week 1", "items": ["Delete the AggregateRating", "Always-visible correction log", "Tie dateModified to corrections", "Reword the tagline", "Keep or remove the hub buy promise", "max-image-preview:large", "Fig nearest-variant srcset", "Body-shot alt, homepage H2, og dimensions"]},
+      {"name": "Phase 2: High-Impact Improvements", "timeframe": "Weeks 2-3", "items": ["D1 publish hook: purge + IndexNow", "Organization + sameAs", "Image sitemap", "Review title hooks, FF7 editions table, compact consent banner, trim font preloads"]},
+      {"name": "Phase 3: Content & Authority", "timeframe": "Month 2", "items": ["Reviewer-captured screenshots", "Own-angle-first news", "Checkable author credentials", "Hub intros", "Google News sitemap if News is a goal"]},
+      {"name": "Phase 4: Monitoring & Iteration", "timeframe": "Ongoing", "items": ["Drift baseline after Phase 1", "Re-audit with GSC/CrUX", "Re-check robots.txt after Cloudflare zone changes"]}
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/",
+    "crawl": "crawl.json"
+  }
+}
